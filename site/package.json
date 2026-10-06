@@ -1,0 +1,14 @@
+{
+  "name": "kimura-kantei-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "build:pages": "PREVIEW_BASE=/kimura-kantei node scripts/build-pages.mjs"
+  },
+  "dependencies": {
+    "astro": "7.3.6"
+  }
+}

@@ -1,0 +1,128 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import FaqList from '../../components/FaqList.astro';
+import CaseCard from '../../components/CaseCard.astro';
+import ColumnCard from '../../components/ColumnCard.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import { getService } from '../../data/services';
+import { getFaqs } from '../../data/faq';
+import { profile } from '../../data/profile';
+import { site } from '../../data/site';
+import { article } from '../../lib/schema';
+import { formatDate, isoDate } from '../../lib/date';
+import { u } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const columns = await getCollection('column');
+  return columns.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const path = `/column/${entry.id}/`;
+const { Content, headings } = await render(entry);
+const toc = headings.filter((h) => h.depth === 2);
+const svcs = d.services.map((s) => getService(s));
+const faqs = getFaqs(d.relatedFaq);
+const cases = (await getCollection('cases')).filter((c) => d.relatedCases.includes(c.id)).sort((a, b) => a.data.order - b.data.order);
+const others = (await getCollection('column')).filter((c) => c.id !== entry.id);
+---
+<BaseLayout
+  title={d.title}
+  description={d.description}
+  path={path}
+  ogType="article"
+  breadcrumbs={[{ name: 'コラム', path: '/column/' }, { name: d.title, path }]}
+  jsonLd={[article({ headline: d.title, description: d.description, path, datePublished: d.publishedAt, dateModified: d.updatedAt, author: d.author, citations: d.sources })]}
+>
+  <article class="article">
+    <header class="page-header page-header--article">
+      <div class="container container--narrow">
+        <p class="page-header__eyebrow">{d.category}</p>
+        <h1 class="page-header__title">{d.title}</h1>
+        <p class="article__meta">
+          <span>公開日 <time datetime={isoDate(d.publishedAt)}>{formatDate(d.publishedAt)}</time></span>
+          <span>更新日 <time datetime={isoDate(d.updatedAt)}>{formatDate(d.updatedAt)}</time></span>
+          <span>執筆：{d.author === 'kimura' ? `${profile.name}（${profile.credentials.slice(0, 2).join('・')}）` : site.name}</span>
+        </p>
+      </div>
+    </header>
+
+    <div class="container container--narrow article__body">
+      <div class="summary-box">
+        <p class="summary-box__title">この記事の要点</p>
+        <ul class="check-list">{d.points.map((p) => <li>{p}</li>)}</ul>
+      </div>
+
+      {toc.length > 2 && (
+        <nav class="toc toc--article" aria-label="目次">
+          <p class="toc__title">目次</p>
+          <ol class="toc__list toc__list--ol">{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+        </nav>
+      )}
+
+      <div class="prose prose--article"><Content /></div>
+
+      {d.sources.length > 0 && (
+        <section class="sources" aria-labelledby="src-title">
+          <h2 class="sources__title" id="src-title">参考資料</h2>
+          <ul class="sources__list">
+            {d.sources.map((s) => (
+              <li>{s.url ? <a href={s.url} target="_blank" rel="noopener">{s.title}</a> : s.title}<span>（{s.publisher}）</span></li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {svcs.length > 0 && (
+        <aside class="related-svc" aria-labelledby="rel-svc">
+          <h2 class="related-svc__title" id="rel-svc">このテーマのご相談</h2>
+          <ul class="related-svc__list">{svcs.map((s) => <li><a href={u(`/services/${s.slug}/`)}>{s.name}</a></li>)}</ul>
+        </aside>
+      )}
+
+      <aside class="author-box" aria-labelledby="author-title">
+        <h2 class="author-box__title" id="author-title">この記事について</h2>
+        <div class="author-box__inner">
+          <img src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt={`${profile.name}の写真`} loading="lazy" decoding="async">
+          <div>
+            <p>{d.author === 'kimura' ? `${profile.name}（${profile.credentials.join('・')}）が執筆しました。` : `${site.name}が執筆しました。`}{d.originalUrl && `${formatDate(d.publishedAt)}に当社ブログで公開した記事を、新しいサイトへの移行にあわせて再構成しています。`}</p>
+            <p>ご相談には、代表の{profile.name}（{profile.credentials.slice(0, 2).join('・')}）が対応します。</p>
+            <a href={u('/profile/')}>代表のプロフィールを見る</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </article>
+
+  {faqs.length > 0 && (
+    <section class="section section--white" aria-labelledby="faq-title">
+      <div class="container container--narrow">
+        <SectionHead en="FAQ" title="関連するご質問" id="faq-title" />
+        <FaqList items={faqs} />
+      </div>
+    </section>
+  )}
+
+  {cases.length > 0 && (
+    <section class="section" aria-labelledby="cases-title">
+      <div class="container">
+        <SectionHead en="Case studies" title="関連する事例" id="cases-title" />
+        <div class="case-grid">{cases.map((c) => <CaseCard entry={c} compact />)}</div>
+      </div>
+    </section>
+  )}
+
+  {others.length > 0 && (
+    <section class="section section--white" aria-labelledby="others-title">
+      <div class="container">
+        <SectionHead en="Column" title="ほかのコラム" id="others-title" />
+        <div class="column-grid">{others.map((c) => <ColumnCard entry={c} />)}</div>
+        <p class="more-link"><a href={u('/column/')}>コラムの一覧を見る</a></p>
+      </div>
+    </section>
+  )}
+
+  <ContactCta />
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+import { nav, contact, site } from '../data/site';
+import { u } from '../lib/url';
+
+interface Props { path: string }
+const { path } = Astro.props;
+const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+<header class="site-header" id="top">
+  <div class="site-header__inner container">
+    <a class="brand" href={u('/')} aria-label={`${site.name} トップページ`}>
+      <img class="brand__logo" src={u('/assets/img/logo/kimura-logo.png')} width="230" height="168" alt="">
+      <span class="brand__text">
+        <span class="brand__name">{site.name}</span>
+        <span class="brand__sub">{site.tagline}</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="global-nav">
+      <span class="nav-toggle__bar" aria-hidden="true"></span>
+      <span class="nav-toggle__label">メニュー</span>
+    </button>
+
+    <nav class="global-nav" id="global-nav" aria-label="メインメニュー">
+      <ul class="global-nav__list">
+        {nav.map((item) => (
+          <li><a href={u(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+        ))}
+      </ul>
+      <div class="global-nav__cta">
+        <a class="header-tel" href={contact.telHref}>
+          <span class="header-tel__num">{contact.tel}</span>
+          <span class="header-tel__time">受付 {contact.hours}</span>
+        </a>
+        <a class="btn btn--primary btn--sm" href={u('/contact/')}>相談を申し込む</a>
+      </div>
+    </nav>
+  </div>
+</header>

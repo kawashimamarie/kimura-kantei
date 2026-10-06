@@ -1,0 +1,98 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CaseCard from '../../components/CaseCard.astro';
+import ColumnCard from '../../components/ColumnCard.astro';
+import ProfileBox from '../../components/ProfileBox.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import { getService } from '../../data/services';
+import { article } from '../../lib/schema';
+import { u } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const cases = await getCollection('cases');
+  return cases.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const path = `/cases/${entry.id}/`;
+const { Content } = await render(entry);
+const svcs = d.services.map((s) => getService(s));
+const columns = (await getCollection('column')).filter((c) => d.relatedColumns.includes(c.id));
+const others = (await getCollection('cases')).filter((c) => c.id !== entry.id).sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout
+  title={`${d.title}（事例）`}
+  description={d.description}
+  path={path}
+  ogType="article"
+  ogImage={d.cover.src}
+  breadcrumbs={[{ name: '事例', path: '/cases/' }, { name: d.title, path }]}
+  jsonLd={[article({ headline: d.title, description: d.description, path, image: d.cover.src, author: 'organization' })]}
+>
+  <article class="article">
+    <header class="page-header page-header--article">
+      <div class="container container--narrow">
+        <p class="page-header__eyebrow">事例</p>
+        <h1 class="page-header__title">{d.title}</h1>
+        <p class="article__meta">{d.meta}</p>
+        <ul class="case-card__tags">{d.tags.map((t) => <li>{t}</li>)}</ul>
+      </div>
+    </header>
+
+    <div class="container container--narrow article__body">
+      <figure class="article__cover">
+        <img src={u(d.cover.src)} width={d.cover.width} height={d.cover.height} alt={d.cover.alt}>
+      </figure>
+
+      <dl class="case-summary">
+        <div><dt>ご相談</dt><dd>{d.summary.consult}</dd></div>
+        <div><dt>課題</dt><dd>{d.summary.issue}</dd></div>
+        <div><dt>専門家の視点</dt><dd>{d.summary.approach}</dd></div>
+        <div><dt>結果</dt><dd>{d.summary.result}</dd></div>
+      </dl>
+
+      <div class="prose"><Content /></div>
+
+      {d.gallery.length > 0 && (
+        <div class="gallery">
+          {d.gallery.map((g) => (
+            <figure class="gallery__item">
+              <img src={u(g.src)} width={g.width} height={g.height} alt={g.alt} loading="lazy" decoding="async">
+              {g.caption && <figcaption>{g.caption}</figcaption>}
+            </figure>
+          ))}
+        </div>
+      )}
+
+      <aside class="related-svc" aria-labelledby="rel-svc">
+        <h2 class="related-svc__title" id="rel-svc">この事例に関連するご相談</h2>
+        <ul class="related-svc__list">
+          {svcs.map((s) => <li><a href={u(`/services/${s.slug}/`)}>{s.name}</a></li>)}
+        </ul>
+      </aside>
+
+      <ProfileBox />
+    </div>
+  </article>
+
+  {columns.length > 0 && (
+    <section class="section section--white" aria-labelledby="col-title">
+      <div class="container">
+        <SectionHead en="Column" title="関連するコラム" id="col-title" />
+        <div class="column-grid">{columns.map((c) => <ColumnCard entry={c} />)}</div>
+      </div>
+    </section>
+  )}
+
+  <section class="section" aria-labelledby="others-title">
+    <div class="container">
+      <SectionHead en="Case studies" title="ほかの事例" id="others-title" />
+      <div class="case-grid">{others.map((c) => <CaseCard entry={c} compact />)}</div>
+      <p class="more-link"><a href={u('/cases/')}>事例の一覧を見る</a></p>
+    </div>
+  </section>
+
+  <ContactCta />
+</BaseLayout>

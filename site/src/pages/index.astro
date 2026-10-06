@@ -1,0 +1,200 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CaseCard from '../components/CaseCard.astro';
+import ColumnCard from '../components/ColumnCard.astro';
+import FaqList from '../components/FaqList.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { site, contact } from '../data/site';
+import { services } from '../data/services';
+import { profile } from '../data/profile';
+import { getFaqs } from '../data/faq';
+import { website, person } from '../lib/schema';
+import { u } from '../lib/url';
+
+const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order).slice(0, 3);
+const columns = (await getCollection('column')).sort((a, b) => b.data.updatedAt.getTime() - a.data.updatedAt.getTime()).slice(0, 3);
+const faqs = getFaqs(['consult-only', 'satei-vs-kantei', 'fee']);
+
+const concerns = [
+  { q: '相続した実家や土地を、兄弟で公平に分けたい', tag: '相続・遺産分割', href: '/services/inheritance/' },
+  { q: '親子・親族の間で不動産を売買したい。価格はどう決めればいい？', tag: '親族間売買', href: '/services/family-transaction/' },
+  { q: '地代や家賃の値上げ・値下げを求められた（求めたい）', tag: '地代・家賃', href: '/services/rent/' },
+  { q: '立退きの話が出ている。提示された立退料は妥当なのか知りたい', tag: '立退料', href: '/services/eviction/' },
+  { q: '借地の家や底地をこの先どうするか、地主・借地人と話がまとまらない', tag: '借地権・底地', href: '/services/rent/#leasehold' },
+  { q: '不動産会社の査定だけでは不安。第三者の目で価格を確かめたい', tag: '不動産鑑定', href: '/services/appraisal/' },
+  { q: '中古住宅を売る前・買う前に、建物の状態を確かめておきたい', tag: 'インスペクション', href: '/services/seismic/#inspection' },
+  { q: '古い家の耐震性が心配。助成金が使えるかも知りたい', tag: '耐震診断・改修', href: '/services/seismic/' },
+  { q: '銀行の担保評価が思ったより低い。借入れの相談材料がほしい', tag: '担保評価', href: '/services/appraisal/' },
+];
+
+const reasons = [
+  { title: '土地の価格も、建物の状態も、一人の専門家が判断', text: '不動産鑑定士と一級建築士の両資格。建物の状態まで踏まえて、根拠のある評価をお示しします。', href: '/profile/', link: '代表のプロフィール' },
+  { title: '公的評価や裁判所の実務に携わってきた鑑定士', text: '地価公示の評価員や、東京地方裁判所（借地非訟事件）の鑑定専門委員などを務めてきました。', href: '/profile/', link: '公的な役割・委員歴' },
+  { title: '評価して終わりではなく、売買・改修まで一つの窓口で', text: '鑑定業者・一級建築士事務所・宅建業者として、評価から売買・耐震改修までご相談いただけます。', href: '/about/', link: '会社案内' },
+];
+---
+<BaseLayout
+  fullTitle={`相続・親族間売買・地代家賃・立退料の不動産鑑定｜${site.name}（東京・阿佐ヶ谷）`}
+  title="トップ"
+  description="相続した不動産の分け方、親族間売買の価格、地代・家賃、立退料、建物の耐震やインスペクションまで。不動産鑑定士・一級建築士の木村修が、価格と建物の両面からご相談に応じます。JR阿佐ヶ谷駅徒歩1分、初回のご相談は無料。"
+  path="/"
+  jsonLd={[website(), person()]}
+>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero__inner">
+      <div class="hero__body">
+        <p class="hero__eyebrow">東京・阿佐ヶ谷の不動産鑑定事務所</p>
+        <h1 class="hero__title" id="hero-title">
+          <span class="hero__title-topics">相続・親族間売買・地代家賃・立退料。</span>
+          不動産の「いくらが妥当か」を、<br class="u-pc">根拠をもってお示しします。
+        </h1>
+        <p class="hero__lead">不動産鑑定士と一級建築士の資格をもつ代表・木村修が、土地の価格だけでなく建物の状態まで踏まえて評価・助言します。ご家族の話し合いや交渉、裁判・税務の場でも説明できる「客観的な根拠」づくりをお手伝いします。</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary btn--lg" href={u('/contact/')}>相談を申し込む<span class="btn__note">初回無料</span></a>
+          <a class="btn btn--outline btn--lg" href="#concerns">お悩みから探す</a>
+        </div>
+        <p class="hero__tel">
+          お電話でのご相談予約：<a href={contact.telHref}>{contact.tel}</a>
+          <span class="hero__tel-time">（受付 {contact.hours}）</span>
+        </p>
+      </div>
+
+      <aside class="hero__card" aria-label="代表者">
+        <figure class="hero-profile">
+          <img class="hero-profile__photo" src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt="代表取締役 木村修の写真">
+          <figcaption class="hero-profile__caption">
+            <span class="hero-profile__role">代表取締役</span>
+            <span class="hero-profile__name">{profile.name}</span>
+            <span class="hero-profile__cred"><span>不動産鑑定士</span><span>一級建築士</span></span>
+          </figcaption>
+        </figure>
+        <ul class="hero-credentials">
+          <li>国土交通省 地価公示 評価員</li>
+          <li>東京地方裁判所<br>借地非訟事件 鑑定専門委員</li>
+          <li>東京都 固定資産評価員</li>
+        </ul>
+        <a class="hero__card-link" href={u('/profile/')}>代表プロフィールを見る</a>
+      </aside>
+    </div>
+
+    <div class="container">
+      <ul class="trust-bar" aria-label="当社の概要">
+        <li><strong>2006年</strong><span>阿佐ヶ谷で創業</span></li>
+        <li><strong>不動産鑑定 × 建築</strong><span>2つの専門性から総合的に判断</span></li>
+        <li><strong>初回相談無料</strong><span>来社・訪問・Zoom</span></li>
+        <li><strong>駅徒歩1分</strong><span>JR中央線 阿佐ヶ谷駅</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--concerns" id="concerns" aria-labelledby="concerns-title">
+    <div class="container">
+      <SectionHead en="Your concerns" title="このようなお悩みはありませんか？" id="concerns-title" lead="専門用語がわからなくても大丈夫です。近いものを選ぶと、ご相談できる内容をご案内します。" />
+      <ul class="concern-grid">
+        {concerns.map((c) => (
+          <li>
+            <a class="concern-card" href={u(c.href)}>
+              <span class="concern-card__q">{c.q}</span>
+              <span class="concern-card__tag">{c.tag}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="concerns__note">「どれに当てはまるのかわからない」という段階でも大丈夫です。お話を伺いながら、何が問題なのかを一緒に整理するところから始めます。<a href={u('/contact/')}>相談の申し込み方法を見る</a></p>
+    </div>
+  </section>
+
+  <section class="section section--reasons" aria-labelledby="reasons-title">
+    <div class="container">
+      <SectionHead en="Why Kimura" title="木村不動産鑑定が選ばれる理由" id="reasons-title" />
+      <ol class="reason-cards">
+        {reasons.map((r, i) => (
+          <li class="reason-card">
+            <span class="reason-card__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="reason-card__title">{r.title}</h3>
+            <p class="reason-card__text">{r.text}</p>
+            <a class="reason-card__link" href={u(r.href)}>{r.link}</a>
+          </li>
+        ))}
+      </ol>
+      <div class="motto">
+        <p class="motto__label">相談を受けるときのモットー</p>
+        <p class="motto__text">ご相談者を、できるだけ<em>揉めさせない</em>こと。</p>
+        <p class="motto__body">そのために、まずはお話をよく伺い、問題点を整理するところから始めます。整理してみると、考え方ひとつで解決の道筋が見えることも少なくありません。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--services" aria-labelledby="services-title">
+    <div class="container">
+      <SectionHead en="Services" title="ご相談いただける内容" id="services-title" lead="不動産の「価格」と「建物」のご相談に、ひとつの事務所で対応します。" />
+      <ul class="svc-grid svc-grid--3">
+        {services.map((s) => (
+          <li class="svc-card">
+            <h3 class="svc-card__title"><a href={u(`/services/${s.slug}/`)}>{s.name}</a></h3>
+            <p class="svc-card__text">{s.summary}</p>
+            <span class="card-more" aria-hidden="true">詳しく見る</span>
+          </li>
+        ))}
+      </ul>
+      <p class="more-link"><a href={u('/services/')}>ご相談内容の一覧を見る</a></p>
+    </div>
+  </section>
+
+  <section class="section section--cases" aria-labelledby="cases-title">
+    <div class="container">
+      <SectionHead en="Case studies" title="ご相談・解決事例" id="cases-title" lead="どんな相談に、専門家としてどう考え、どう解決に向かったのか。実際の事例をご紹介します。" />
+      <div class="case-grid">{cases.map((c) => <CaseCard entry={c} />)}</div>
+      <p class="more-link"><a href={u('/cases/')}>事例の一覧を見る</a></p>
+    </div>
+  </section>
+
+  <section class="section section--column" aria-labelledby="column-title">
+    <div class="container">
+      <SectionHead en="Column" title="コラム" id="column-title" lead="不動産の価格や建物について、ご相談の多いテーマを実務の視点で解説します。" />
+      <div class="column-grid">{columns.map((c) => <ColumnCard entry={c} />)}</div>
+      <p class="more-link"><a href={u('/column/')}>コラムの一覧を見る</a></p>
+    </div>
+  </section>
+
+  <section class="section section--profile" aria-labelledby="profile-title">
+    <div class="container">
+      <SectionHead en="Profile" title="代表プロフィール" id="profile-title" />
+      <div class="profile-summary">
+        <img class="profile-summary__photo" src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt="代表取締役 木村修の写真" loading="lazy" decoding="async">
+        <div class="profile-summary__body">
+          <p class="profile__role">{profile.title}</p>
+          <p class="profile__name">{profile.name}<span class="profile__kana">{profile.kana}</span></p>
+          <ul class="profile__creds">{profile.credentials.map((c) => <li>{c}</li>)}</ul>
+          <p class="profile-summary__text">大学院で工学を学び、建設コンサルティング会社で地震防災・構造（橋梁）の設計検討に従事。不動産鑑定事務所・不動産会社を経て、2006年に阿佐ヶ谷で独立しました。地価公示の評価員や東京地方裁判所（借地非訟事件）の鑑定専門委員などを務めてきました。</p>
+          <a class="btn btn--outline" href={u('/profile/')}>プロフィールを詳しく見る</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--fees" aria-labelledby="fees-title">
+    <div class="container">
+      <SectionHead en="Fees" title="料金の目安" id="fees-title" lead="ご依頼の前に、費用のお見積りをお伝えします。お見積りまでは費用はかかりません。" />
+      <ul class="fee-summary">
+        <li><span>ご相談</span><strong>初回無料</strong></li>
+        <li><span>不動産鑑定評価書</span><strong>25万円〜</strong></li>
+        <li><span>意見書・調査報告書</span><strong>15万円〜</strong></li>
+        <li><span>木造 簡易耐震診断</span><strong>3万円〜</strong></li>
+      </ul>
+      <p class="more-link"><a href={u('/fees/')}>料金の目安をすべて見る</a></p>
+    </div>
+  </section>
+
+  <section class="section section--faq" aria-labelledby="faq-title">
+    <div class="container container--narrow">
+      <SectionHead en="FAQ" title="よくあるご質問" id="faq-title" />
+      <FaqList items={faqs} />
+      <p class="more-link"><a href={u('/faq/')}>よくあるご質問の一覧を見る</a></p>
+    </div>
+  </section>
+
+  <ContactCta />
+</BaseLayout>

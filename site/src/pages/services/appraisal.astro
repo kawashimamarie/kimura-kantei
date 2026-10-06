@@ -1,0 +1,126 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import { u } from '../../lib/url';
+
+const uses = [
+  { name: '遺産分割', text: '相続人どうしで不動産を分けるとき、客観的な立場から評価します。', href: '/services/inheritance/' },
+  { name: '親族間・同族間の売買', text: '親子間・関連会社間・法人と代表者間などの売買で、適正な時価を示します。', href: '/services/family-transaction/' },
+  { name: '地代・家賃', text: '改定交渉や調停で、賃料の根拠となる資料を作成します。', href: '/services/rent/' },
+  { name: '立退料', text: 'オーナー側・借家人側どちらの立場でも、立退料を評価します。', href: '/services/eviction/' },
+  { name: '税務申告', text: '路線価による評価よりも鑑定評価が低い場合、節税効果が期待できることがあります。土地建物の内訳価格（建物の減価償却の基礎）にも。' },
+  { name: '裁判・調停', text: '共有物分割、遺産分割、遺留分、地代の増減額などをめぐる評価に。' },
+  { name: '担保評価', text: '金融機関の評価が低い、借入額を伸ばしたい、銀行と交渉したいときの資料に。' },
+  { name: '現物出資', text: '会社への増資を、現金ではなく不動産で行うときの評価に。' },
+  { name: '海外不動産', text: '中国・韓国・香港・台湾の鑑定事務所との業務提携を通じて対応します。' },
+];
+---
+<ServiceLayout
+  slug="appraisal"
+  title="不動産鑑定・評価"
+  metaTitle="不動産鑑定・評価｜鑑定評価書・意見書の作成（東京・阿佐ヶ谷／全国対応）"
+  description="不動産鑑定士が、不動産の適正な価格・賃料を調べ、根拠とともに書面にまとめます。鑑定評価書と意見書の違い、遺産分割・親族間売買・地代家賃・立退料・税務・調停など鑑定評価が使われる場面をご案内します。全国対応。"
+  lead="不動産の「いくらが妥当か」を、不動産鑑定士が根拠とともにお示しします。ご家族の話し合いや交渉、税務・調停・裁判など、第三者に価格の根拠を説明する必要がある場面でお役立てください。"
+  areaServed="日本"
+>
+  <section class="section section--white" aria-labelledby="about-title">
+    <div class="container">
+      <SectionHead en="About" title="不動産鑑定とは" id="about-title" />
+      <div class="two-col">
+        <div class="prose">
+          <p>不動産鑑定士は、国土交通省が所管する国家資格です。不動産の鑑定評価は、不動産鑑定士だけが行うことのできる業務です。</p>
+          <p>鑑定評価では、不動産の権利関係や取引市場を調べ、その不動産の有効な活用方法を分析したうえで、経済的な価値を判断します。そのためには、民法や借地借家法、都市計画法、建築基準法などの法律、税制や経済環境の変化、土地の最適な活用方法、取引の相場観など、幅広い知識と経験が必要です。</p>
+        </div>
+        <div class="note-box">
+          <p class="note-box__title">ご依頼の前にお伝えできること</p>
+          <ul class="check-list">
+            <li>正式なご依頼の前に、概算の評価額をお伝えします</li>
+            <li>費用のお見積りをお出しします</li>
+            <li>全国の不動産に対応します</li>
+            <li>納期のご相談も承ります</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="types-title">
+    <div class="container">
+      <SectionHead en="Reports" title="目的に応じた書面をご用意します" id="types-title" lead="使う場面や目的によって、必要な書面は異なります。どれが適しているかは、ご相談の際にご案内します。" />
+      <div class="point-grid point-grid--3">
+        <div class="point-card">
+          <h3 class="point-card__title">不動産鑑定評価書</h3>
+          <p>国が定めた不動産鑑定評価基準に則って行う、正式な鑑定の結果をまとめた書面です。</p>
+        </div>
+        <div class="point-card">
+          <h3 class="point-card__title">意見書・調査報告書</h3>
+          <p>不動産鑑定評価基準に則らない調査の結果をまとめた書面です。</p>
+        </div>
+        <div class="point-card">
+          <h3 class="point-card__title">机上での査定</h3>
+          <p>現地調査を伴わない、簡易な査定です。</p>
+        </div>
+      </div>
+      <p class="section-note">このほか、価格や賃料を示さないコンサルティング（不動産に関する法律・経済指標・市場の情報・税制の知識を生かしたご相談）にも対応しています。</p>
+      <p class="more-link"><a href={u('/fees/')}>料金の目安を見る</a></p>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="uses-title">
+    <div class="container">
+      <SectionHead en="Use cases" title="鑑定評価が役立つ場面" id="uses-title" />
+      <ul class="use-grid">
+        {uses.map((x) => (
+          <li class={`use-card${x.href ? ' use-card--link' : ''}`}>
+            <h3 class="use-card__title">{x.href ? <a href={u(x.href)}>{x.name}</a> : x.name}</h3>
+            <p>{x.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="pro-title">
+    <div class="container">
+      <SectionHead en="For professionals" title="弁護士・税理士の先生方、法人の皆様へ" id="pro-title" lead="先生方のクライアント様や一般企業様がお持ちの不動産について、さまざまな問題の解決を不動産鑑定士がサポートします。ご発注前に、机上での概算評価額をお伝えすることも可能です（正式な鑑定とは差が出る場合があります）。" />
+      <div class="point-grid point-grid--3">
+        <div class="point-card">
+          <h3 class="point-card__title">税理士の先生へ</h3>
+          <ul class="dot-list">
+            <li>相続の土地評価で、路線価方式による評価との違いを知りたいとき</li>
+            <li>親族間・同族会社間で不動産を売買・交換するとき</li>
+            <li>税務申告（節税対策、減価償却費の資料）</li>
+            <li>不動産を現物出資するとき</li>
+          </ul>
+        </div>
+        <div class="point-card">
+          <h3 class="point-card__title">弁護士の先生へ</h3>
+          <ul class="dot-list">
+            <li>賃料の鑑定評価</li>
+            <li>立退料の鑑定評価</li>
+            <li>借地権・底地・地代・借地権の更新料の鑑定評価</li>
+            <li>遺留分や遺産分割の参考資料</li>
+          </ul>
+        </div>
+        <div class="point-card">
+          <h3 class="point-card__title">法人の皆様へ</h3>
+          <ul class="dot-list">
+            <li>オーナーとテナントの間の賃料の増減、立退料の交渉</li>
+            <li>減損会計や賃貸等不動産の時価評価など、会計上の要請</li>
+            <li>M&amp;A、株式上場の準備、事業承継における不動産の価値の把握</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="relation-title">
+    <div class="container">
+      <div class="relation-box">
+        <p class="relation-box__label">不動産鑑定 × 建築</p>
+        <h2 class="relation-box__title" id="relation-title">建物も、建築の専門家の目で確かめて評価します</h2>
+        <p>当社の代表は、不動産鑑定士と一級建築士の両方の資格をもっています。一級建築士による建物の精緻な調査と、不動産鑑定士による分析を組み合わせることで、土地だけでなく建物の状態まで踏まえた評価を行います。</p>
+      </div>
+    </div>
+  </section>
+</ServiceLayout>

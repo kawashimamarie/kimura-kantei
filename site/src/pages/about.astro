@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ProfileBox from '../components/ProfileBox.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { site, contact, company } from '../data/site';
+import { u } from '../lib/url';
+---
+<BaseLayout
+  title="木村不動産鑑定について（会社案内・アクセス）"
+  description="株式会社木村不動産鑑定の会社案内。2006年に東京・阿佐ヶ谷で創業。不動産鑑定業者・一級建築士事務所・宅地建物取引業者・東京都木造住宅耐震診断事務所として、不動産の価格と建物の両面からご相談に応じています。JR中央線「阿佐ヶ谷」駅から徒歩1分。"
+  path="/about/"
+  breadcrumbs={[{ name: '会社案内', path: '/about/' }]}
+>
+  <PageHeader eyebrow="About us" title="木村不動産鑑定について" lead="2006年に東京・阿佐ヶ谷で創業して以来、不動産鑑定を中心に、建物診断、不動産の売買の仲介、相続に関わるご相談に携わってきました。" />
+
+  <section class="section section--white" aria-labelledby="message-title">
+    <div class="container">
+      <div class="two-col two-col--media">
+        <div>
+          <SectionHead en="Message" title="ごあいさつ" id="message-title" />
+          <div class="prose">
+            <p>当社は平成18年（2006年）に、杉並区阿佐ヶ谷で不動産鑑定事務所として設立されました。その後、不動産鑑定を中心に、建物診断、不動産仲介、相続に関わる相談業務に携わってきました。</p>
+            <p>事業環境や不動産市場は常に変化していますが、専門職業家としてたゆまず努力し、研鑽することが社会的な使命だと考えています。ホームページやご紹介をきっかけにご相談に来られた方の、不動産に関する悩みを少しでも解消することが、私たちのやりがいです。</p>
+            <p>これからも不動産の調査・鑑定の精度を高め、多面的・総合的に「解決する力」を磨き、皆様のご期待に応えてまいります。</p>
+            <p class="prose__sign">代表取締役 木村 修</p>
+          </div>
+        </div>
+        <figure class="media-figure">
+          <img src={u('/assets/img/office/office-reception.jpg')} width="1200" height="900" alt="事務所の受付" loading="lazy" decoding="async">
+          <figcaption>阿佐ヶ谷の事務所</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="strength-title">
+    <div class="container">
+      <SectionHead en="Our strengths" title="ひとつの事務所で、価格から建物まで" id="strength-title" lead="不動産鑑定業者・一級建築士事務所・宅地建物取引業者・東京都木造住宅耐震診断事務所として登録しています。" />
+      <div class="point-grid point-grid--3">
+        <div class="point-card">
+          <h3 class="point-card__title">不動産鑑定 × 建築</h3>
+          <p>一級建築士による建物の精緻な調査と、不動産鑑定士による分析を組み合わせ、建物の状態まで踏まえて不動産を評価します。</p>
+        </div>
+        <div class="point-card">
+          <h3 class="point-card__title">評価から売買・改修まで</h3>
+          <p>不動産鑑定から、売却・購入の仲介、インスペクション、耐震診断・改修まで、ひとつの窓口でご相談いただけます。</p>
+        </div>
+        <div class="point-card">
+          <h3 class="point-card__title">専門家との連携</h3>
+          <p>事案に応じて、弁護士・税理士・司法書士などの専門家と連携して対応します。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="overview-title">
+    <div class="container container--narrow">
+      <SectionHead en="Company" title="会社概要" id="overview-title" />
+      <table class="info-table">
+        <tbody>
+          <tr><th scope="row">商号</th><td>{site.name}<br><span class="info-table__sub">{site.nameEn}</span></td></tr>
+          <tr><th scope="row">設立</th><td>{company.foundedLabel}</td></tr>
+          <tr><th scope="row">代表者</th><td><a href={u('/profile/')}>{company.representative}</a></td></tr>
+          <tr><th scope="row">所在地</th><td>〒{contact.postalCode}<br>{contact.address}</td></tr>
+          <tr><th scope="row">電話・FAX</th><td><span class="u-nowrap">TEL <a href={contact.telHref}>{contact.tel}</a></span>／<span class="u-nowrap">FAX {contact.fax}</span></td></tr>
+          <tr><th scope="row">メール</th><td><a href={`mailto:${contact.email}`}>{contact.email}</a></td></tr>
+          <tr><th scope="row">営業時間</th><td>{contact.hours}</td></tr>
+          <tr><th scope="row">業務内容</th><td><ul class="dot-list">{company.business.map((b) => <li>{b}</li>)}</ul></td></tr>
+          <tr><th scope="row">登録・許認可</th><td><ul class="dot-list">{company.licenses.map((l) => <li>{l}</li>)}</ul></td></tr>
+          <tr><th scope="row">所属団体</th><td><ul class="dot-list">{company.memberships.map((m) => <li>{m}</li>)}</ul></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="access-title" id="access">
+    <div class="container">
+      <SectionHead en="Access" title="アクセス" id="access-title" />
+      <div class="office office--light">
+        <figure class="office__photo">
+          <img src={u('/assets/img/office/office-meeting.jpg')} width="1200" height="900" alt="事務所内の相談スペース" loading="lazy" decoding="async">
+        </figure>
+        <div class="office__info">
+          <p class="office__access">{contact.access}<br><small>{contact.accessSub}</small></p>
+          <address class="office__address">〒{contact.postalCode}<br>{contact.address}</address>
+          <p class="office__hint">ご来社の際は、事前にお電話またはメールでご予約ください。</p>
+          <a class="btn btn--outline" href={contact.mapUrl} target="_blank" rel="noopener">地図を開く（Google マップ）</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-label="代表プロフィール">
+    <div class="container">
+      <ProfileBox label="代表" text="不動産鑑定士・一級建築士・技術士補（建設部門）。地価公示などの公的評価や、東京地方裁判所（借地非訟事件）の鑑定専門委員などを務めてきました。" />
+    </div>
+  </section>
+
+  <ContactCta />
+</BaseLayout>

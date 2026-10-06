@@ -1,0 +1,13 @@
+---
+// 下層ページ冒頭の見出しエリア（h1 はここで1つだけ出力する）
+interface Props { eyebrow?: string; title: string; lead?: string }
+const { eyebrow, title, lead } = Astro.props;
+---
+<section class="page-header">
+  <div class="container page-header__inner">
+    {eyebrow && <p class="page-header__eyebrow">{eyebrow}</p>}
+    <h1 class="page-header__title">{title}</h1>
+    {lead && <p class="page-header__lead">{lead}</p>}
+    <slot />
+  </div>
+</section>

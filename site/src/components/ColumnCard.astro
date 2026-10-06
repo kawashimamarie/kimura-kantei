@@ -1,0 +1,15 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { u } from '../lib/url';
+import { formatDate, isoDate } from '../lib/date';
+interface Props { entry: CollectionEntry<'column'>; headingLevel?: 2 | 3 }
+const { entry, headingLevel = 3 } = Astro.props;
+const d = entry.data;
+const H = `h${headingLevel}`;
+---
+<article class="column-card">
+  <p class="column-card__cat">{d.category}</p>
+  <H class="column-card__title"><a href={u(`/column/${entry.id}/`)}>{d.title}</a></H>
+  <p class="column-card__excerpt">{d.description}</p>
+  <p class="column-card__meta"><time datetime={isoDate(d.updatedAt)}>{formatDate(d.updatedAt)} 更新</time></p>
+</article>

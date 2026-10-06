@@ -1,0 +1,124 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ColumnCard from '../components/ColumnCard.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { profile } from '../data/profile';
+import { services } from '../data/services';
+import { person } from '../lib/schema';
+import { u, abs } from '../lib/url';
+
+const columns = (await getCollection('column')).sort((a, b) => b.data.updatedAt.getTime() - a.data.updatedAt.getTime());
+const profilePage = {
+  '@type': 'ProfilePage',
+  '@id': `${abs('/profile/')}#page`,
+  url: abs('/profile/'),
+  name: '代表 木村修 プロフィール',
+  mainEntity: { '@id': `${abs('/profile/')}#kimura-osamu` },
+};
+---
+<BaseLayout
+  title="代表 木村修（不動産鑑定士・一級建築士）プロフィール"
+  description="株式会社木村不動産鑑定 代表取締役 木村修のプロフィール。不動産鑑定士・一級建築士・技術士補（建設部門）。地価公示評価員、東京地方裁判所（借地非訟事件）鑑定専門委員などの公的な役割、委員歴、講演、仕事に対する考え方をご紹介します。"
+  path="/profile/"
+  ogType="article"
+  ogImage={profile.photo}
+  breadcrumbs={[{ name: '代表 木村修', path: '/profile/' }]}
+  jsonLd={[person(), profilePage]}
+>
+  <section class="page-header page-header--profile">
+    <div class="container profile-hero">
+      <img class="profile-hero__photo" src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt={`${profile.name}の写真`}>
+      <div class="profile-hero__body">
+        <p class="page-header__eyebrow">代表プロフィール</p>
+        <h1 class="profile-hero__name">{profile.name}<span class="profile-hero__kana">{profile.kana}</span></h1>
+        <p class="profile-hero__title">{profile.title}</p>
+        <ul class="profile__creds">{profile.credentials.map((c) => <li>{c}</li>)}</ul>
+        <p class="profile-hero__lead">大学院で工学を学び、建設コンサルティング会社で地震防災・構造（橋梁）の設計検討に従事。その後、不動産鑑定事務所と不動産会社で鑑定評価・バリュエーション・投資分析を経験し、2006年に阿佐ヶ谷で独立しました。建物の構造がわかる不動産鑑定士として、価格と建物の両面からご相談に向き合っています。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="philosophy-title">
+    <div class="container container--narrow">
+      <SectionHead en="Philosophy" title="仕事に対する考え方" id="philosophy-title" />
+      <div class="motto motto--left">
+        <p class="motto__label">ご相談を受けるときのモットー</p>
+        <p class="motto__text">ご相談者を、できるだけ<em>揉めさせない</em>こと。</p>
+      </div>
+      <div class="prose">
+        <p>そのために、ご相談者のお話に親身になって耳を傾け、誠心誠意対応することを大切にしています。</p>
+        <p>悩みを伺って問題点を整理してみると、何に悩んでいたのかがはっきりし、考え方ひとつで解決してしまうことも少なくありません。お医者さんにたとえるなら、大切なのは問診です。よく診断しないまま、いきなり手術をするようなことはしません。不動産の専門家として良識をもって向き合い、その方に合った最善の方法をご提案します。そのために、日頃から不動産・建築・税務・法律の勉強を欠かさないようにしています。</p>
+        <p>安心して不動産のことを相談できる場所は、意外と多くありません。不動産に関する誠実な相談相手になることは、不動産鑑定士としての責任だと考えています。できるだけ、ご相談だけで解決できるよう心がけています。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="expertise-title">
+    <div class="container">
+      <div class="profile-cols">
+        <section class="profile-block" aria-labelledby="expertise-title">
+          <h2 class="profile-block__title" id="expertise-title">専門分野</h2>
+          <ul class="profile-block__list">{profile.expertise.map((e) => <li>{e}</li>)}</ul>
+          <p class="profile-block__links">関連するご相談：{services.map((s, i) => <>{i > 0 && '／'}<a href={u(`/services/${s.slug}/`)}>{s.name}</a></>)}</p>
+        </section>
+        <section class="profile-block" aria-labelledby="cred-title">
+          <h2 class="profile-block__title" id="cred-title">資格</h2>
+          <ul class="profile-block__list">{profile.credentials.map((c) => <li>{c}</li>)}</ul>
+        </section>
+        <section class="profile-block" aria-labelledby="career-title">
+          <h2 class="profile-block__title" id="career-title">経歴</h2>
+          <ol class="profile-block__timeline">
+            {profile.career.map((c) => c.year ? <li><span>{c.year}</span>{c.text}</li> : <li class="is-undated">{c.text}</li>)}
+          </ol>
+        </section>
+        <section class="profile-block" aria-labelledby="public-title">
+          <h2 class="profile-block__title" id="public-title">公的評価・裁判所に関わる役割</h2>
+          <ul class="profile-block__list">{profile.publicRoles.map((r) => <li>{r}</li>)}</ul>
+        </section>
+        <section class="profile-block" aria-labelledby="committee-title">
+          <h2 class="profile-block__title" id="committee-title">委員・相談員の実績（歴任を含む）</h2>
+          <ul class="profile-block__list">{profile.committees.map((r) => <li>{r}</li>)}</ul>
+        </section>
+        <section class="profile-block" aria-labelledby="talks-title">
+          <h2 class="profile-block__title" id="talks-title">主な講演・投稿</h2>
+          <ul class="profile-block__list profile-block__list--talks">
+            {profile.talks.map((t) => <li>「{t.title}」<small>{t.date}／{t.host}</small></li>)}
+            <li>GMO不動産査定への投稿<small>2026年3月</small></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="vietnam-title">
+    <div class="container container--narrow">
+      <SectionHead en="Activities" title="海外での講演" id="vietnam-title" />
+      <div class="prose">
+        <p>国土交通省とベトナム天然資源・環境省が主催した土地・不動産分野の法制度セミナー（ハノイ）で、公益社団法人日本不動産鑑定士協会連合会の国際委員会代表としてスピーカーを務めました。テーマは、経済発展が進むベトナムで課題となっている「土地収用に関する評価実務」です。</p>
+      </div>
+    </div>
+  </section>
+
+  {columns.length > 0 && (
+    <section class="section" aria-labelledby="articles-title">
+      <div class="container">
+        <SectionHead en="Column" title="当社のコラム" id="articles-title" lead="木村不動産鑑定が、ご相談の多いテーマを実務の視点で解説しています。" />
+        <div class="column-grid">{columns.map((c) => <ColumnCard entry={c} />)}</div>
+        <p class="more-link"><a href={u('/column/')}>コラムの一覧を見る</a></p>
+      </div>
+    </section>
+  )}
+
+  <section class="section section--white" aria-label="会社案内へ">
+    <div class="container container--narrow">
+      <div class="link-panel">
+        <p>会社の概要・許認可・所属団体・アクセスは、会社案内をご覧ください。</p>
+        <a class="btn btn--outline" href={u('/about/')}>会社案内を見る</a>
+      </div>
+    </div>
+  </section>
+
+  <ContactCta />
+</BaseLayout>

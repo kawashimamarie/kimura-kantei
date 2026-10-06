@@ -1,0 +1,96 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import { u } from '../../lib/url';
+---
+<ServiceLayout
+  slug="seismic"
+  title="耐震診断・耐震改修と建物調査"
+  metaTitle="耐震診断・耐震改修（助成金申請サポート）とインスペクション｜一級建築士"
+  description="一級建築士が木造住宅の耐震診断から改修設計・工事・設計監理までを担当し、区の助成金の申請もサポートします。中古住宅のインスペクション（建物状況調査）やフラット35適合証明にも対応します。"
+  lead="古い家の耐震性が心配。中古住宅を売る前・買う前に、建物の状態を確かめておきたい。一級建築士が建物を調べ、必要な改修や使える助成金の制度まで、わかりやすくご案内します。"
+  profileText="一級建築士・杉並区木造耐震診断士として建物を調べ、不動産鑑定士として建物が不動産の価値に与える影響まで踏まえてご相談に応じています。"
+>
+  <section class="section section--white" aria-labelledby="diag-title">
+    <div class="container">
+      <SectionHead en="Seismic diagnosis" title="耐震診断と、助成金を使った耐震改修" id="diag-title" lead="耐震性に不安のある木造住宅について、まず建物の耐震性を大まかに評価し、さらに詳しい診断や補強が必要かどうかを判定します。必要に応じて、改修の設計・工事・設計監理まで一貫して対応します。" />
+      <ol class="flow-inline">
+        <li><span>1</span><h3>簡易な診断</h3><p>区から派遣される木造耐震診断士などが建物を調べ、耐震性を大まかに評価します。</p></li>
+        <li><span>2</span><h3>精密診断</h3><p>さらに詳しく調べ、補強が必要かどうかを判定します。木造の精密診断には、ほとんどの区や市で助成金の制度があります。</p></li>
+        <li><span>3</span><h3>耐震改修</h3><p>改修の設計、工事、設計監理を行います。助成金を活用した耐震改修の実績もあります。</p></li>
+      </ol>
+      <div class="note-box note-box--wide">
+        <p class="note-box__title">助成金の申請もサポートします</p>
+        <p>当社は東京都23区に登録しているため、各区の補助金・助成金の申請が可能で、代理申請も承ります。お悩みに合った助成金の制度をご案内しますので、耐震性が不安な方はお気軽にご相談ください。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="inspection-title" id="inspection">
+    <div class="container">
+      <SectionHead en="Inspection" title="インスペクション（既存住宅状況調査）" id="inspection-title" lead="中古住宅を安心して取引するために、売買の前に建物の状態を調べることをおすすめしています。当社は建物の劣化調査や耐震診断の実績をもとに、充実した調査を行います。" />
+      <div class="two-col">
+        <div class="prose">
+          <p>調査の対象は、屋根、外壁、内壁、柱、梁、傾き、給排水設備など、多岐にわたります。インスペクションを行うことで、売買契約の際の重要事項説明書への記載や、既存住宅売買瑕疵保険への加入が可能になります。</p>
+          <p>状況調査で問題がなければ、購入後に雨漏りなどが起きたときの補修費用を補償する既存住宅瑕疵保険に加入できる場合があります。保険料は保証期間や保証金額によって異なり、当社でお見積りできます。</p>
+        </div>
+        <div class="note-box">
+          <p class="note-box__title">こんな方におすすめです</p>
+          <ul class="check-list">
+            <li>中古住宅の購入前に、雨漏りや耐震性が心配な方</li>
+            <li>売却前に、補修が必要な箇所を把握しておきたい方</li>
+            <li>インスペクションを実施していない物件と差別化したい売主様</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-table-wrap">
+        <table class="compare-table">
+          <caption>インスペクションのメリットと注意点</caption>
+          <thead>
+            <tr><th scope="col"></th><th scope="col">メリット</th><th scope="col">注意点</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">売主</th>
+              <td><ul class="dot-list"><li>補修が必要な箇所や劣化箇所を把握し、売却後に責任を問われる可能性を知ることができる</li><li>インスペクションを実施していない物件と差別化できる</li><li>瑕疵保険を付けることで、売却後の一定の保証を付けて売却できる</li></ul></td>
+              <td><ul class="dot-list"><li>大規模なリフォームや修繕が必要になる場合がある</li><li>リフォームや修繕が必要な箇所が見つかった場合、値引きの交渉をされる可能性がある</li></ul></td>
+            </tr>
+            <tr>
+              <th scope="row">買主</th>
+              <td><ul class="dot-list"><li>白アリの被害などを把握して、欠陥のある住宅を避けられる</li><li>劣化の状況を把握し、購入後のリフォームや修繕の費用を予測できる</li><li>瑕疵保険を付けて、購入後の一定の保証を受けられる</li></ul></td>
+              <td><ul class="dot-list"><li>売主にインスペクション実施の承諾を得る必要がある</li><li>欠陥が見つかった場合に、価格交渉や契約の中断ができるようにしておく必要がある</li></ul></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="flat35-title" id="flat35">
+    <div class="container">
+      <SectionHead en="Flat 35" title="フラット35適合証明" id="flat35-title" />
+      <div class="two-col">
+        <div class="prose">
+          <p>フラット35を利用すると、最長35年の固定金利で中古住宅を購入することができます。そのために必要な適合証明書を発行します。</p>
+          <p>旧耐震基準の物件や、築年数の古い戸建住宅などでも発行できる場合があります。発行できるかどうかは、事前に書類（机上）で検討します。</p>
+        </div>
+        <div class="note-box">
+          <p class="note-box__title">住宅ローンでお困りの方へ</p>
+          <p>金融機関との提携もありますので、他社でローンの利用が難しいと言われた方もご相談ください。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="relation-title">
+    <div class="container">
+      <div class="relation-box">
+        <p class="relation-box__label">不動産鑑定 × 建築</p>
+        <h2 class="relation-box__title" id="relation-title">建物を直すことが、不動産の価値や使い道を変えることも</h2>
+        <p>耐震改修やリフォームは、住まいの安全性を高めるだけでなく、空き家や借地上の古い建物の使い道を広げることにもつながります。当社では、一級建築士として建物を調べ、不動産鑑定士として改修後の活用や価値まで踏まえてご提案します。</p>
+        <p class="more-link more-link--left"><a href={u('/fees/')}>耐震診断・インスペクションの料金の目安を見る</a></p>
+      </div>
+    </div>
+  </section>
+</ServiceLayout>

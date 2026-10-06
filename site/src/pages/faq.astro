@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHead from '../components/SectionHead.astro';
+import FaqList from '../components/FaqList.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { faqs, faqCategories } from '../data/faq';
+import { faqPage } from '../lib/schema';
+import { u } from '../lib/url';
+
+const cats = Object.entries(faqCategories) as [keyof typeof faqCategories, string][];
+---
+<BaseLayout
+  title="よくあるご質問"
+  description="木村不動産鑑定によく寄せられるご質問をまとめました。相談だけでもよいか、費用の目安、不動産会社の査定と不動産鑑定の違い、相続・親族間売買・地代家賃・立退料・耐震診断のご相談についてお答えします。"
+  path="/faq/"
+  breadcrumbs={[{ name: 'よくあるご質問', path: '/faq/' }]}
+  jsonLd={[faqPage(faqs, '/faq/')]}
+>
+  <PageHeader eyebrow="FAQ" title="よくあるご質問" lead="ご相談の前によくいただくご質問をまとめました。ここにないことも、お気軽にお問い合わせください。">
+    <nav class="toc" aria-label="質問の分類">
+      <ul class="toc__list">{cats.map(([k, v]) => <li><a href={`#cat-${k}`}>{v}</a></li>)}</ul>
+    </nav>
+  </PageHeader>
+
+  {cats.map(([k, v], i) => (
+    <section class={`section ${i % 2 === 0 ? 'section--white' : ''}`} aria-labelledby={`cat-${k}`}>
+      <div class="container container--narrow">
+        <SectionHead title={v} id={`cat-${k}`} />
+        <FaqList items={faqs.filter((f) => f.category === k)} />
+      </div>
+    </section>
+  ))}
+
+  <section class="section section--white" aria-label="関連ページ">
+    <div class="container container--narrow">
+      <div class="link-panel">
+        <p>費用の目安は料金ページで、ご相談の内容ごとの詳しい説明は各サービスのページでご案内しています。</p>
+        <div class="link-panel__actions">
+          <a class="btn btn--outline" href={u('/fees/')}>料金の目安</a>
+          <a class="btn btn--outline" href={u('/services/')}>ご相談内容</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ContactCta />
+</BaseLayout>

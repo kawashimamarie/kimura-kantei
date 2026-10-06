@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHead from '../components/SectionHead.astro';
+import FlowSteps from '../components/FlowSteps.astro';
+import { contact } from '../data/site';
+import { u } from '../lib/url';
+
+const mailBody = [
+  'お名前：',
+  'ご連絡先（電話番号）：',
+  'ご希望の連絡方法（メール／電話／ご来社）：',
+  'ご相談の内容（わかる範囲で構いません）：',
+  '',
+].join('\n');
+const mailto = `mailto:${contact.email}?subject=${encodeURIComponent('ご相談のお申し込み')}&body=${encodeURIComponent(mailBody)}`;
+---
+<BaseLayout
+  title="お問い合わせ・ご相談"
+  description="木村不動産鑑定へのお問い合わせ・ご相談の方法です。初回のご相談は無料。お電話（03-5356-9158）またはメールでご予約ください。ご来社・ご訪問・Zoomでのご相談に対応します。JR中央線「阿佐ヶ谷」駅から徒歩1分。"
+  path="/contact/"
+  breadcrumbs={[{ name: 'お問い合わせ', path: '/contact/' }]}
+>
+  <PageHeader eyebrow="Contact" title="お問い合わせ・ご相談" lead="「こんなことを相談していいのかな」という段階でも大丈夫です。初回のご相談は無料です。お電話またはメールで、お気軽にご予約ください。" />
+
+  <section class="section section--white" aria-labelledby="ways-title">
+    <div class="container">
+      <h2 class="u-visually-hidden" id="ways-title">お問い合わせの方法</h2>
+      <div class="contact-ways">
+        <div class="contact-way">
+          <p class="contact-way__label">お電話</p>
+          <a class="contact-way__main" href={contact.telHref}>{contact.tel}</a>
+          <p class="contact-way__note">営業時間 {contact.hours}</p>
+          <p class="contact-way__text">「〇〇のことで相談したい」とお伝えください。ご相談の日時を決めさせていただきます。</p>
+        </div>
+        <div class="contact-way">
+          <p class="contact-way__label">メール</p>
+          <a class="contact-way__main contact-way__main--mail" href={`mailto:${contact.email}`}>{contact.email}</a>
+          <p class="contact-way__text">お名前・ご連絡先・ご相談の内容（わかる範囲で構いません）をお書き添えください。当社からご返信します。</p>
+          <a class="btn btn--primary btn--block" href={mailto}>メールで申し込む</a>
+        </div>
+      </div>
+      <ul class="contact__points contact__points--light">
+        <li>初回のご相談は無料</li>
+        <li>ご来社・ご訪問・Zoomで対応</li>
+        <li>ご相談内容は外部に漏らしません</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="flow-title">
+    <div class="container">
+      <SectionHead en="Flow" title="ご相談の流れ" id="flow-title" lead="ご予約からお見積りまでは無料です。お見積りの内容をご確認いただいてから、ご依頼いただくかどうかをお決めください。" />
+      <FlowSteps />
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="access-title">
+    <div class="container">
+      <SectionHead en="Access" title="事務所へのアクセス" id="access-title" />
+      <div class="office office--light">
+        <figure class="office__photo">
+          <img src={u('/assets/img/office/office-meeting.jpg')} width="1200" height="900" alt="事務所内の相談スペース" loading="lazy" decoding="async">
+        </figure>
+        <div class="office__info">
+          <p class="office__access">{contact.access}<br><small>{contact.accessSub}</small></p>
+          <address class="office__address">〒{contact.postalCode}<br>{contact.address}</address>
+          <a class="btn btn--outline" href={contact.mapUrl} target="_blank" rel="noopener">地図を開く（Google マップ）</a>
+        </div>
+      </div>
+      <p class="more-link"><a href={u('/faq/')}>よくあるご質問を見る</a></p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import CaseCard from '../../components/CaseCard.astro';
+import ContactCta from '../../components/ContactCta.astro';
+
+const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout
+  title="事例"
+  description="木村不動産鑑定がお手伝いした事例をご紹介します。相続した借地上の空き家の賃貸活用、借地上のアパートの再生と土地の取得、助成金を使った耐震改修など。ご相談の内容・課題・専門家としての考え方・結果をまとめています。"
+  path="/cases/"
+  breadcrumbs={[{ name: '事例', path: '/cases/' }]}
+>
+  <PageHeader eyebrow="Case studies" title="事例" lead="どのようなご相談に、専門家としてどう考え、どう解決に向かったのか。実際の事例をご紹介します。個人や物件が特定されないよう、地域は区までの表記にしています。" />
+  <section class="section section--white" aria-label="事例の一覧">
+    <div class="container">
+      <div class="case-grid">{cases.map((c) => <CaseCard entry={c} headingLevel={2} />)}</div>
+    </div>
+  </section>
+  <ContactCta />
+</BaseLayout>

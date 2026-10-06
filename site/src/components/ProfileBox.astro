@@ -1,0 +1,16 @@
+---
+// 「この分野を担当する専門家」として代表プロフィールへつなぐ囲み
+import { profile } from '../data/profile';
+import { u } from '../lib/url';
+interface Props { label?: string; text?: string }
+const { label = 'ご相談を担当する専門家', text = '不動産鑑定士・一級建築士として、不動産の価格と建物の両面からご相談に応じています。' } = Astro.props;
+---
+<aside class="profile-box" aria-label={label}>
+  <img class="profile-box__photo" src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt={`${profile.name}の写真`} loading="lazy" decoding="async">
+  <div class="profile-box__body">
+    <p class="profile-box__label">{label}</p>
+    <p class="profile-box__name">{profile.name}<span>{profile.credentials.slice(0, 2).join('・')}</span></p>
+    <p class="profile-box__text">{text}</p>
+    <a class="profile-box__link" href={u('/profile/')}>プロフィールを見る</a>
+  </div>
+</aside>

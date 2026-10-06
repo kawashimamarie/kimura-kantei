@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import { services, otherServices } from '../../data/services';
+import { u } from '../../lib/url';
+
+const groups = [
+  { key: 'price', title: '不動産の価格・賃料を知りたい', desc: '不動産鑑定士による評価・意見書' },
+  { key: 'building', title: '建物の状態を知りたい', desc: '一級建築士による調査・診断・改修' },
+] as const;
+---
+<BaseLayout
+  title="ご相談内容"
+  description="木村不動産鑑定にご相談いただける内容の一覧です。不動産鑑定・評価、相続・遺産分割、親族間売買、地代・家賃・借地、立退料、耐震診断・耐震改修・インスペクションなど、不動産の価格と建物の両面からご相談に応じます。"
+  path="/services/"
+  breadcrumbs={[{ name: 'ご相談内容', path: '/services/' }]}
+>
+  <PageHeader eyebrow="Services" title="ご相談内容" lead="不動産の「価格」と「建物」のご相談に、不動産鑑定士・一級建築士がひとつの事務所で対応します。どれに当てはまるかわからない場合も、お気軽にご相談ください。" />
+
+  {groups.map((g) => (
+    <section class="section section--white service-index" aria-labelledby={`g-${g.key}`}>
+      <div class="container">
+        <SectionHead title={g.title} lead={g.desc} id={`g-${g.key}`} />
+        <ul class="svc-grid">
+          {services.filter((s) => s.group === g.key).map((s) => (
+            <li class="svc-card">
+              <h3 class="svc-card__title"><a href={u(`/services/${s.slug}/`)}>{s.name}</a></h3>
+              <p class="svc-card__text">{s.summary}</p>
+              <ul class="svc-card__concerns">{s.concerns.slice(0, 2).map((c) => <li>{c}</li>)}</ul>
+              <span class="card-more" aria-hidden="true">詳しく見る</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
+
+  <section class="section" aria-labelledby="others-title">
+    <div class="container">
+      <SectionHead title="そのほかのご相談" id="others-title" lead="次のようなご相談にも対応しています。詳しくはお問い合わせください。" />
+      <ul class="point-grid point-grid--3">
+        {otherServices.map((o) => (
+          <li class="point-card"><h3 class="point-card__title">{o.name}</h3><p>{o.text}</p></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <ContactCta />
+</BaseLayout>

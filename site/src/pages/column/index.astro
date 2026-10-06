@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ColumnCard from '../../components/ColumnCard.astro';
+import ContactCta from '../../components/ContactCta.astro';
+
+const columns = (await getCollection('column')).sort((a, b) => b.data.updatedAt.getTime() - a.data.updatedAt.getTime());
+---
+<BaseLayout
+  title="コラム"
+  description="不動産の売買・相続・建物・耐震などについて、木村不動産鑑定が実務の視点で解説するコラムです。"
+  path="/column/"
+  breadcrumbs={[{ name: 'コラム', path: '/column/' }]}
+>
+  <PageHeader eyebrow="Column" title="コラム" lead="不動産の価格や建物について、ご相談の多いテーマを実務の視点でわかりやすく解説します。" />
+  <section class="section section--white" aria-label="コラムの一覧">
+    <div class="container">
+      <div class="column-grid">{columns.map((c) => <ColumnCard entry={c} headingLevel={2} />)}</div>
+    </div>
+  </section>
+  <ContactCta />
+</BaseLayout>

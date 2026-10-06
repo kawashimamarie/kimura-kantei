@@ -1,0 +1,25 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { u } from '../lib/url';
+interface Props { entry: CollectionEntry<'cases'>; compact?: boolean; headingLevel?: 2 | 3 }
+const { entry, compact = false, headingLevel = 3 } = Astro.props;
+const d = entry.data;
+const H = `h${headingLevel}`;
+---
+<article class="case-card">
+  <img class="case-card__img" src={u(d.cover.src)} width={d.cover.width} height={d.cover.height} alt={d.cover.alt} loading="lazy" decoding="async">
+  <div class="case-card__body">
+    <ul class="case-card__tags">{d.tags.map((t) => <li>{t}</li>)}</ul>
+    <H class="case-card__title"><a href={u(`/cases/${entry.id}/`)}>{d.title}</a></H>
+    <p class="case-card__meta">{d.meta}</p>
+    {compact
+      ? <p class="case-card__excerpt">{d.summary.result}</p>
+      : (
+        <dl class="case-card__detail">
+          <div><dt>ご相談</dt><dd>{d.summary.consult}</dd></div>
+          <div><dt>結果</dt><dd>{d.summary.result}</dd></div>
+        </dl>
+      )}
+    <span class="card-more" aria-hidden="true">事例を読む</span>
+  </div>
+</article>

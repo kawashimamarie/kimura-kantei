@@ -1,0 +1,77 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import { u } from '../../lib/url';
+---
+<ServiceLayout
+  slug="rent"
+  title="地代・家賃・借地の評価"
+  metaTitle="地代・家賃の適正額と借地権・底地の評価｜改定交渉・調停の根拠資料"
+  description="地代や家賃の値上げ・値下げ、借地権・底地・更新料の評価。交渉や調停・裁判で説明できる根拠資料を、不動産鑑定士が作成します。地主・借地人、オーナー・テナントどちらの立場のご相談にも対応します。"
+  lead="地代や家賃を見直したい、見直しを求められた。借地や底地をこの先どうするか決めたい。そんなとき、気持ちだけで交渉するのではなく、相手方にも説明できる「根拠」を用意することが、話し合いを前に進める近道です。"
+  profileText="東京地方裁判所の借地非訟事件で鑑定専門委員を務めてきた経験をもとに、地代・家賃・借地のご相談に応じています。"
+>
+  <section class="section section--white" aria-labelledby="rent-title">
+    <div class="container">
+      <SectionHead en="Rent" title="地代・家賃の改定交渉" id="rent-title" />
+      <div class="two-col">
+        <div class="prose">
+          <p>地代・家賃の改定交渉では、不動産鑑定士が作成した根拠資料を用意することで、ただ情に訴えるだけの交渉ではなく、相手方に納得していただくための<strong>「裏づけのある交渉」</strong>ができるようになります。</p>
+          <p>地主・借地人、オーナー・テナントのどちらの立場のご相談にも対応します。話し合いがまとまらず、調停や裁判で地代の増額・減額が争われる場合の資料としても、鑑定評価書が役立ちます。弁護士の先生方からのご依頼も承ります。</p>
+        </div>
+        <div class="note-box">
+          <p class="note-box__title">このようなときにご相談ください</p>
+          <ul class="check-list">
+            <li>地代・家賃の値上げ・値下げを求められた</li>
+            <li>地代・家賃の見直しを申し入れたい</li>
+            <li>今の地代・家賃が適正なのか知りたい</li>
+            <li>調停・裁判の資料が必要になった</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="leasehold-title" id="leasehold">
+    <div class="container">
+      <SectionHead en="Leasehold" title="借地権・底地・更新料" id="leasehold-title" lead="借地に関わるご相談は、地主様と借地人様の双方の事情が絡むため、話し合いが長引きがちです。それぞれの権利の価値を評価し、解決の糸口を一緒に探します。" />
+      <div class="point-grid point-grid--3">
+        <div class="point-card">
+          <h3 class="point-card__title">借地権・底地の評価</h3>
+          <p>借地権や底地（借地権が付いた土地）の価値を鑑定評価します。</p>
+        </div>
+        <div class="point-card">
+          <h3 class="point-card__title">地代・更新料のご相談</h3>
+          <p>地主様と借地人様の間の、地代や更新料に関するご相談に応じます。</p>
+        </div>
+        <div class="point-card">
+          <h3 class="point-card__title">底地の買取</h3>
+          <p>宅地建物取引業者として、鑑定と仲介を組み合わせた底地の買取のご相談も承ります。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="exp-title">
+    <div class="container">
+      <SectionHead en="Experience" title="地代・借地の評価に関わってきた経験" id="exp-title" />
+      <ul class="fact-list">
+        <li>東京地方裁判所（借地非訟事件）の鑑定専門委員を務めてきました。</li>
+        <li>東京地方裁判所鑑定委員協会で「付随処分としての地代評価について」をテーマに講演しました（2022年11月）。</li>
+        <li>国土交通省の地価公示や東京都の地価調査など、公的な土地評価にも携わってきました。</li>
+      </ul>
+      <p class="more-link"><a href={u('/profile/')}>代表のプロフィールを見る</a></p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="relation-title">
+    <div class="container">
+      <div class="relation-box">
+        <p class="relation-box__label">不動産鑑定 × 建築</p>
+        <h2 class="relation-box__title" id="relation-title">借地上の建物の価値も、建築の視点で見直します</h2>
+        <p>借地上の古い建物は、そのままでは活用しにくいと考えられがちです。一級建築士として建物の状態を確かめ、改修によって価値を高められるかを検討することで、地主様との交渉や将来の売却に新しい選択肢が生まれることがあります。</p>
+        <p>たとえば、<a href={u('/cases/nakano-apartment/')}>借地上のアパートを再生し、その後地主様との交渉で土地を取得できた事例</a>や、<a href={u('/cases/suginami-rental/')}>相続した借地上の空き家を賃貸に活用した事例</a>があります。</p>
+      </div>
+    </div>
+  </section>
+</ServiceLayout>

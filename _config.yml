@@ -1,4 +1,9 @@
 # GitHub Pages（確認用プレビュー）の設定
-# Webサイトとして公開する必要のないファイルを、公開対象から外す。
+# リポジトリ直下には site/ でビルドした HTML を置いている。
+# ソースや Webサイトとして公開する必要のないファイルは、公開対象から外す。
 exclude:
   - README.md
+  - site/
+  - .gitignore
+# GitHub Pages の既定テーマ（不要な CSS が追加される）を使わない
+theme: null

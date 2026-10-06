@@ -1,0 +1,10 @@
+---
+interface Props { en?: string; title: string; lead?: string; id?: string; level?: 2 | 3 }
+const { en, title, lead, id, level = 2 } = Astro.props;
+const H = `h${level}`;
+---
+<header class="section-head">
+  {en && <p class="section-head__en">{en}</p>}
+  <H class="section-head__title" id={id}>{title}</H>
+  {lead && <p class="section-head__lead">{lead}</p>}
+</header>

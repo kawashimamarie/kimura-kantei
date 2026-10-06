@@ -1,0 +1,68 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import { u } from '../../lib/url';
+---
+<ServiceLayout
+  slug="inheritance"
+  title="相続・遺産分割の不動産評価"
+  metaTitle="相続・遺産分割の不動産評価｜兄弟で公平に分けるための不動産鑑定"
+  description="相続した不動産をどう評価し、どう分けるか。不動産鑑定士・一級建築士が、遺産分割の話し合いに客観的な立場から評価と助言をお届けします。古い建物の評価や、相続した空き家・借地のご相談にも対応します。"
+  lead="相続した実家や土地を、兄弟姉妹でどう分けるか。不動産は現金のように分けられないため、話し合いの前提となる「価値」を客観的に示すことが大切です。遺産分割協議に、第三者の立場から評価と助言をお届けします。"
+  profileText="不動産鑑定士として遺産分割の評価に携わり、一級建築士として建物の状態まで確かめます。相続した不動産の活用や売却のご相談にも応じています。"
+>
+  <section class="section section--white" aria-labelledby="support-title">
+    <div class="container">
+      <SectionHead en="Support" title="木村不動産鑑定が対応できること" id="support-title" />
+      <div class="point-grid">
+        <div class="point-card">
+          <h3 class="point-card__title">遺産分割の話し合いへの助言</h3>
+          <p>遺産分割協議に、客観的な立場からアドバイスします。相続が始まる前に「子どもたちにどう配分すれば公平か」を考えておきたい、というご相談も承ります。</p>
+        </div>
+        <div class="point-card">
+          <h3 class="point-card__title">鑑定評価書の作成</h3>
+          <p>話し合いの資料として、また調停・裁判で遺産分割や遺留分が争点になったときの資料として、不動産鑑定評価書を作成します。弁護士の先生方からのご依頼も承ります。</p>
+        </div>
+        <div class="point-card">
+          <h3 class="point-card__title">税務に関わる評価</h3>
+          <p>路線価による評価よりも鑑定評価が低くなる場合には、節税効果が期待できることがあります。税理士の先生方からのご相談・ご依頼も承り、税務については提携税理士と連携して対応します。</p>
+        </div>
+        <div class="point-card">
+          <h3 class="point-card__title">相続した不動産の活用・売却</h3>
+          <p>相続した空き家や借地上の建物をどうするか。賃貸・売却などの選択肢を、建物の状態も踏まえて一緒に考えます。売却の際は、司法書士・税理士などの専門家と連携してお手伝いします。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="points-title">
+    <div class="container">
+      <SectionHead en="Points" title="専門家として確認するポイント" id="points-title" />
+      <ol class="numbered-points">
+        <li>
+          <h3>土地の評価：路線価と市場価値の違い</h3>
+          <p>相続税の申告では、土地は路線価方式で評価するのが一般的です。路線価による評価は画一的で、課税の公平性が保たれる面がある一方、個々の土地の市場価値とは異なる場合があります。鑑定評価では、その不動産の市場価値を追求して評価します。</p>
+        </li>
+        <li>
+          <h3>建物の評価：古い建物ほど差が出やすい</h3>
+          <p>建物は固定資産税評価額で評価するのが一般的ですが、とくに古くなった建物は、固定資産税評価額と市場価値が大きく離れる傾向があります。土地だけでなく、建物の評価についてもご相談ください。</p>
+        </li>
+        <li>
+          <h3>権利関係</h3>
+          <p>借地権など、土地や建物にどのような権利が付いているかによって、不動産の価値は変わります。鑑定評価では、権利関係を調べたうえで価値を判断します。</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="relation-title">
+    <div class="container">
+      <div class="relation-box">
+        <p class="relation-box__label">不動産鑑定 × 建築</p>
+        <h2 class="relation-box__title" id="relation-title">建物の状態まで確かめて、価値と活用方法を考えます</h2>
+        <p>相続した不動産には、古い建物や空き家が含まれることも少なくありません。一級建築士の目で建物の状態を確かめ、不動産鑑定士として価値を判断することで、「分ける」だけでなく「どう活かすか」まで一緒に考えることができます。</p>
+        <p><a href={u('/cases/suginami-rental/')}>相続した借地上の空き家を、リフォームして賃貸する計画をご提案した事例</a>もご覧ください。</p>
+      </div>
+    </div>
+  </section>
+</ServiceLayout>

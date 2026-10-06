@@ -1,0 +1,6 @@
+# 依存パッケージ・ビルド中間生成物
+site/node_modules/
+site/dist/
+site/.astro/
+# 社内用メモ（Publicリポジトリに含めない）
+.private/

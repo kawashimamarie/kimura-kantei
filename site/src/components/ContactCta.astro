@@ -1,0 +1,32 @@
+---
+// 全ページ共通の問い合わせ案内
+import { contact } from '../data/site';
+import { u } from '../lib/url';
+interface Props { title?: string }
+const { title } = Astro.props;
+---
+<section class="section section--contact" aria-labelledby="cta-title">
+  <div class="container">
+    <div class="contact">
+      <div class="contact__body">
+        <p class="contact__eyebrow">ご相談・お問い合わせ</p>
+        <h2 class="contact__title" id="cta-title">{title ?? <><span>「こんなことを相談していいのかな」</span><span>という段階から、どうぞ。</span></>}</h2>
+        <p class="contact__lead">まだ売るかどうか決めていない。家族で話し合う前に、目安だけ知っておきたい。何が問題なのか、自分でもよくわからない――。そうした段階のご相談も歓迎しています。お話を伺い、問題点を整理するところから始めます。</p>
+        <ul class="contact__points">
+          <li>初回のご相談は無料</li>
+          <li>ご来社・ご訪問・Zoomで対応</li>
+          <li>ご相談内容は外部に漏らしません</li>
+        </ul>
+      </div>
+      <div class="contact__actions">
+        <a class="contact-tel" href={contact.telHref}>
+          <span class="contact-tel__label">お電話でのご相談・ご予約</span>
+          <span class="contact-tel__num">{contact.tel}</span>
+          <span class="contact-tel__time">受付 {contact.hours}</span>
+        </a>
+        <a class="btn btn--primary btn--lg btn--block" href={u('/contact/')}>相談の申し込み方法を見る</a>
+        <a class="btn btn--ghost btn--block" href={`mailto:${contact.email}`}>メールで問い合わせる<span class="btn__sub">{contact.email}</span></a>
+      </div>
+    </div>
+  </div>
+</section>

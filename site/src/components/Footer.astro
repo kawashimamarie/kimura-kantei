@@ -1,0 +1,45 @@
+---
+import { site, contact, company } from '../data/site';
+import { services } from '../data/services';
+import { u } from '../lib/url';
+---
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div class="site-footer__brand">
+      <span class="site-footer__logo-wrap">
+        <img src={u('/assets/img/logo/kimura-logo.png')} width="230" height="168" alt={site.name} loading="lazy" decoding="async">
+      </span>
+      <p class="site-footer__name">{site.name}</p>
+      <p class="site-footer__addr">〒{contact.postalCode} {contact.address}<br>
+        <span class="u-nowrap">TEL <a href={contact.telHref}>{contact.tel}</a></span>／<span class="u-nowrap">FAX {contact.fax}</span><br>
+        受付 {contact.hours}<br>
+        <a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+    </div>
+
+    <nav class="site-footer__nav" aria-label="フッターメニュー">
+      <h2 class="site-footer__heading">ご相談内容</h2>
+      <ul>
+        {services.map((s) => <li><a href={u(`/services/${s.slug}/`)}>{s.name}</a></li>)}
+        <li><a href={u('/services/')}>ご相談内容の一覧</a></li>
+      </ul>
+      <h2 class="site-footer__heading">木村不動産鑑定について</h2>
+      <ul>
+        <li><a href={u('/profile/')}>代表 木村修</a></li>
+        <li><a href={u('/about/')}>会社案内・アクセス</a></li>
+        <li><a href={u('/cases/')}>事例</a></li>
+        <li><a href={u('/column/')}>コラム</a></li>
+        <li><a href={u('/fees/')}>料金の目安</a></li>
+        <li><a href={u('/faq/')}>よくあるご質問</a></li>
+        <li><a href={u('/contact/')}>お問い合わせ</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-footer__license">
+      <h2 class="site-footer__heading">登録・許認可</h2>
+      <ul>{company.licenses.map((l) => <li>{l}</li>)}</ul>
+      <h2 class="site-footer__heading">所属団体</h2>
+      <ul>{company.memberships.map((m) => <li>{m}</li>)}</ul>
+    </div>
+  </div>
+  <p class="site-footer__copy"><small>&copy; <span data-year>2026</span> {site.nameEn}</small></p>
+</footer>
