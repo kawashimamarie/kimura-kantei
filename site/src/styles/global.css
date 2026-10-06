@@ -769,7 +769,8 @@ body { padding-bottom: 76px; }
 .case-card__title a { color: var(--c-ink); text-decoration: none; }
 .case-card__title a::after { content: ""; position: absolute; inset: 0; border-radius: 16px; }
 .case-card__excerpt { color: var(--c-ink-soft); font-size: .9375rem; line-height: 1.8; }
-.case-card .card-more { margin-top: .25rem; }
+.case-card__body { flex: 1; }
+.case-card .card-more { margin-top: auto; padding-top: .25rem; }
 
 .more-link { margin-top: 1.75rem; text-align: right; }
 .more-link a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
@@ -1048,3 +1049,18 @@ body { padding-bottom: 76px; }
 @media (max-width: 359px) {
   .trust-bar { grid-template-columns: 1fr; }
 }
+
+/* --- /services/：専門家・法人の皆様へ --- */
+.pro-panel { display: grid; gap: 1.25rem; }
+@media (min-width: 960px) { .pro-panel { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 1.5rem; align-items: start; } }
+.pro-panel__list { display: grid; gap: .875rem; }
+.pro-panel__list li { padding: 1.25rem 1.5rem; background: var(--c-surface); border: 1px solid var(--c-line); border-radius: var(--radius); }
+.pro-panel__list h3 { font-size: 1.0625rem; margin-bottom: .35rem; }
+.pro-panel__list p { color: var(--c-ink-soft); font-size: .9375rem; line-height: 1.85; }
+.pro-panel__side { display: grid; gap: 1rem; padding: 1.5rem; background: var(--c-surface); border: 1px solid var(--c-primary-100); border-radius: var(--radius); }
+.pro-panel__label { color: var(--c-primary); font-weight: 700; }
+.pro-panel__side .dot-list { font-size: .9375rem; }
+.pro-panel__links { display: grid; gap: .25rem; }
+.pro-panel__links a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; font-size: .9375rem; }
+.pro-panel__links a::after { content: "→"; margin-left: .4em; }
+.link-panel--spaced { margin-top: 2rem; }

@@ -146,7 +146,7 @@ const reasons = [
   <section class="section section--cases" aria-labelledby="cases-title">
     <div class="container">
       <SectionHead en="Case studies" title="ご相談・解決事例" id="cases-title" lead="どんな相談に、専門家としてどう考え、どう解決に向かったのか。実際の事例をご紹介します。" />
-      <div class="case-grid">{cases.map((c) => <CaseCard entry={c} />)}</div>
+      <div class="case-grid">{cases.map((c) => <CaseCard entry={c} compact />)}</div>
       <p class="more-link"><a href={u('/cases/')}>事例の一覧を見る</a></p>
     </div>
   </section>
@@ -177,7 +177,7 @@ const reasons = [
 
   <section class="section section--fees" aria-labelledby="fees-title">
     <div class="container">
-      <SectionHead en="Fees" title="料金の目安" id="fees-title" lead="ご依頼の前に、費用のお見積りをお伝えします。お見積りまでは費用はかかりません。" />
+      <SectionHead en="Fees" title="料金の目安" id="fees-title" lead="主な料金の目安です。実際の費用は、ご依頼の前にお見積りでお伝えします。" />
       <ul class="fee-summary">
         <li><span>ご相談</span><strong>初回無料</strong></li>
         <li><span>不動産鑑定評価書</span><strong>25万円〜</strong></li>

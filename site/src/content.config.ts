@@ -27,7 +27,8 @@ const cases = defineCollection({
     relatedColumns: z.array(z.string()).default([]),
     cover: image,
     gallery: z.array(image).default([]),
-    // 4項目の要約（一覧・トップのカード用）
+    teaser: z.string(), // トップや関連事例のカードに出す1〜2行の紹介文（数値などの詳細は詳細ページで）
+    // 4項目の要約（事例一覧・事例詳細用）
     summary: z.object({
       consult: z.string(),
       issue: z.string(),

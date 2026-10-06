@@ -7,8 +7,8 @@ import { services, otherServices } from '../../data/services';
 import { u } from '../../lib/url';
 
 const groups = [
-  { key: 'price', title: '不動産の価格・賃料を知りたい', desc: '不動産鑑定士による評価・意見書' },
-  { key: 'building', title: '建物の状態を知りたい', desc: '一級建築士による調査・診断・改修' },
+  { key: 'price', title: '不動産鑑定・評価のご相談', desc: '相続や親族間の売買、地代・家賃、立退料など、不動産の価格や賃料が問題になる場面で、不動産鑑定士が客観的な根拠をお示しします。' },
+  { key: 'building', title: '建物の調査・耐震のご相談', desc: '一級建築士が建物の状態を調べ、耐震診断・耐震改修やインスペクション、フラット35適合証明に対応します。' },
 ] as const;
 ---
 <BaseLayout
@@ -37,10 +37,36 @@ const groups = [
     </section>
   ))}
 
-  <section class="section" aria-labelledby="others-title">
+  <section class="section section--tint" aria-labelledby="pro-title">
+    <div class="container">
+      <SectionHead en="For professionals" title="専門家・法人の皆様へ" id="pro-title" lead="弁護士・税理士の先生方のクライアント様や、一般企業様がお持ちの不動産について、不動産鑑定士が評価の面からサポートします。ご発注の前に、机上での概算評価額をお伝えすることも可能です。" />
+      <div class="pro-panel">
+        <ul class="pro-panel__list">
+          <li><h3>弁護士の先生へ</h3><p>賃料・立退料・借地権・底地・更新料の鑑定評価、遺留分や遺産分割の参考資料など</p></li>
+          <li><h3>税理士の先生へ</h3><p>相続の土地評価、親族間・同族会社間の売買や交換、税務申告、不動産の現物出資など</p></li>
+          <li><h3>法人の皆様へ</h3><p>賃料の増減や立退料の交渉、減損会計・時価評価、M&amp;A・事業承継に伴う不動産の評価など</p></li>
+        </ul>
+        <div class="pro-panel__side">
+          <p class="pro-panel__label">公的評価・裁判所に関わる経験</p>
+          <ul class="dot-list">
+            <li>国土交通省 地価公示 評価員</li>
+            <li>東京都 地価調査 評価員</li>
+            <li>東京地方裁判所（借地非訟事件）鑑定専門委員</li>
+          </ul>
+          <div class="pro-panel__links">
+            <a href={u('/services/appraisal/#for-professionals')}>ご依頼いただける内容</a>
+            <a href={u('/profile/')}>代表の経歴・公的な役割</a>
+          </div>
+          <a class="btn btn--primary btn--block" href={u('/contact/')}>ご依頼・お見積りの相談</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="others-title">
     <div class="container">
       <SectionHead title="そのほかのご相談" id="others-title" lead="次のようなご相談にも対応しています。詳しくはお問い合わせください。" />
-      <ul class="point-grid point-grid--3">
+      <ul class="point-grid">
         {otherServices.map((o) => (
           <li class="point-card"><h3 class="point-card__title">{o.name}</h3><p>{o.text}</p></li>
         ))}

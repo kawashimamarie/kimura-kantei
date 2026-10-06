@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import SectionHead from '../components/SectionHead.astro';
-import FlowSteps from '../components/FlowSteps.astro';
 import ContactCta from '../components/ContactCta.astro';
 import { u } from '../lib/url';
 // 料金は現行公式サイトで記載が一致している項目のみ掲載する。
@@ -13,7 +12,7 @@ import { u } from '../lib/url';
   path="/fees/"
   breadcrumbs={[{ name: '料金の目安', path: '/fees/' }]}
 >
-  <PageHeader eyebrow="Fees" title="料金の目安" lead="ご依頼の前に、費用のお見積りをお出しします。不動産の所在地・種類・規模・用途によって費用は異なりますので、まずはお気軽にご相談ください。" />
+  <PageHeader eyebrow="Fees" title="料金の目安" lead="費用は、不動産の所在地・種類・規模・用途によって異なります。下記は目安としてご覧ください。" />
 
   <section class="section section--white" aria-labelledby="consult-title">
     <div class="container">
@@ -33,7 +32,7 @@ import { u } from '../lib/url';
               <tr><th scope="row">意見書・調査報告書<small>不動産鑑定評価基準に則らない調査</small></th><td>15万円〜</td></tr>
             </tbody>
           </table>
-          <p class="fee-card__foot">正式なご依頼の前に、概算の評価額をお伝えします。<a href={u('/services/appraisal/')}>書面の違いを見る</a></p>
+          <p class="fee-card__foot"><a href={u('/services/appraisal/')}>鑑定評価書と意見書の違いを見る</a></p>
         </div>
 
         <div class="fee-card">
@@ -54,7 +53,7 @@ import { u } from '../lib/url';
       </div>
 
       <ul class="note-list">
-        <li>エリア・種類・規模・用途によってお見積りします。複数の物件をまとめてご依頼いただく場合はお値引きします。</li>
+        <li>複数の物件をまとめてご依頼いただく場合はお値引きします。</li>
         <li>不動産鑑定から売買の仲介に進んだ場合は、セットでの割引を適用します。</li>
         <li>補助金・助成金の代理申請も承ります。当社は東京都23区に登録しているため、各区の補助金の申請が可能です。</li>
         <li>フラット35適合証明書は、発行できるかどうかを事前に書類（机上）で検討します。</li>
@@ -64,11 +63,27 @@ import { u } from '../lib/url';
     </div>
   </section>
 
-  <section class="section" aria-labelledby="flow-title">
+  <section class="section" aria-labelledby="estimate-title">
     <div class="container">
-      <SectionHead en="Flow" title="ご依頼までの流れ" id="flow-title" lead="お見積りまでは費用はかかりません。" />
-      <FlowSteps />
-      <p class="more-link"><a href={u('/faq/')}>よくあるご質問を見る</a></p>
+      <SectionHead en="Estimate" title="お見積りについて" id="estimate-title" />
+      <div class="point-grid point-grid--3">
+        <div class="point-card">
+          <h3 class="point-card__title">ご依頼の前にお見積り</h3>
+          <p>ご相談の内容を伺ったうえで、必要な調査と費用をお伝えします。お見積りまでは費用はかかりません。</p>
+        </div>
+        <div class="point-card">
+          <h3 class="point-card__title">概算の評価額もお伝えします</h3>
+          <p>不動産鑑定では、正式なご依頼の前に概算の評価額をお伝えします。正式な鑑定の結果とは差が出る場合があります。</p>
+        </div>
+        <div class="point-card">
+          <h3 class="point-card__title">目的に合った書面を</h3>
+          <p>鑑定評価書と意見書・調査報告書のどちらが必要かは、書面を使う場面によって異なります。ご相談の際にご案内します。</p>
+        </div>
+      </div>
+      <div class="link-panel link-panel--spaced">
+        <p>ご予約から、お見積り・ご依頼・ご報告までの流れは、お問い合わせのページでご案内しています。</p>
+        <a class="btn btn--outline" href={u('/contact/#flow')}>ご相談からご依頼までの流れを見る</a>
+      </div>
     </div>
   </section>
 

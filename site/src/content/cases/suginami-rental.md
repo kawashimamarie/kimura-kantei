@@ -3,6 +3,7 @@ title: 相続した借地上の空き家を、返さずに「貸す」という�
 description: 杉並区・築48年の戸建て。相続で空き家になった借地上の住まいを、地主へ無償で返還する前に、リフォームして賃貸する計画をご提案した事例です。
 meta: 杉並区・築48年の戸建て
 tags: [相続, 借地権, 空き家活用, 耐震改修]
+teaser: 相続で空き家になった借地上の戸建てを、地主様へ返す前に、リフォームして賃貸に活用する計画をご提案しました。
 order: 1
 services: [seismic, rent, inheritance]
 relatedColumns: [seismic-standards-history]
