@@ -1,0 +1,4 @@
+# GitHub Pages（確認用プレビュー）の設定
+# Webサイトとして公開する必要のないファイルを、公開対象から外す。
+exclude:
+  - README.md
