@@ -11,9 +11,7 @@ import FaqList from '../../components/FaqList.astro';
 import CaseCard from '../../components/CaseCard.astro';
 import ContactCta from '../../components/ContactCta.astro';
 import SampleNotice from '../../samples/SampleNotice.astro';
-import MangaIntro from '../../samples/MangaIntro.astro';
-import MethodDiagram from '../../samples/MethodDiagram.astro';
-import Icon from '../../samples/Icon.astro';
+import Icon from '../../samples/PhIcon.astro';
 import '../../samples/visual.css';
 import { getEntry } from 'astro:content';
 import { getService } from '../../data/services';
@@ -38,11 +36,19 @@ const toc = [
 ];
 
 const methods = [
-  { type: 'genbutsu', name: '現物分割', alt: '実家は兄へ、預貯金は妹へ、それぞれそのまま分ける図', what: '実家は兄、預貯金は妹のように、そのままの形で分ける。', caution: '財産の価値に差があると、不公平感が生まれやすい。' },
-  { type: 'daisho', name: '代償分割', alt: '実家を兄が引き継ぎ、兄から妹へ代償金を支払う図', what: '実家を引き継ぐ人が、ほかの相続人にお金（代償金）を支払う。', caution: '代償金の額を決めるために実家の評価額が必要。支払う側に資金が必要。' },
-  { type: 'kanka', name: '換価分割', alt: '実家を売却し、売却代金を兄と妹で分ける図', what: '実家を売却し、売却代金を分ける。', caution: '実家を手放すことになる。売却の時期や価格の合意が必要。' },
-  { type: 'kyoyu', name: '共有分割', alt: '実家を兄と妹の共有にし、それぞれが持ち分を持つ図', what: '実家を兄弟の共有名義にする。', caution: '売却や建替えのたびに共有者の合意が必要になるなど、問題を先送りすることがある。' },
+  { type: 'genbutsu', name: '現物分割', alt: '現物分割の説明図。兄が実家（建物・土地）を、妹が別の土地（または別の不動産）を、それぞれそのまま相続する様子。注意：平等に分けられる財産がない場合は、ほかの分割方法を検討する必要がある', what: '実家は兄、別の土地は妹のように、財産をそのままの形で分ける。', caution: '財産の価値に差があると、不公平感が生まれやすい。平等に分けられる財産がない場合は、ほかの分割方法を検討する必要がある。' },
+  { type: 'daisho', name: '代償分割', alt: '代償分割の説明図。兄が「この実家は僕が相続して住み続けたい」、妹が「私は代償金を受け取って他の生活資金にしたい」と話し、兄から妹へ代償金が渡る様子。注意：代償金の額を決めるために実家の評価額を算定する必要があり、支払う側に資金が必要', what: '実家を引き継ぐ人が、ほかの相続人にお金（代償金）を支払う。', caution: '代償金の額を決めるために実家の評価額が必要。支払う側に資金が必要。' },
+  { type: 'kanka', name: '換価分割', alt: '換価分割の説明図。兄と妹が実家を売却し、売却代金6,000万円を兄3,000万円・妹3,000万円に分ける様子（金額は説明用の例）。注意：売却には時間がかかる場合があり、売却価格によっては希望どおりの金額にならないこともある', what: '実家を売却し、売却代金を分ける。', caution: '実家を手放すことになる。売却の時期や価格の合意が必要。売却には時間がかかる場合があり、売却価格によっては希望どおりの金額にならないこともある。' },
+  { type: 'kyoyu', name: '共有分割', alt: '共有分割の説明図。兄と妹が実家を共有名義で相続し、持ち分はそれぞれ2分の1（説明用の例）。注意：将来、売却や建て替えなどを行う際に共有者全員の同意が必要になる', what: '実家を兄弟の共有名義にする。', caution: '売却や建替えのたびに共有者の合意が必要になるなど、問題を先送りすることがある。' },
 ] as const;
+
+const methodImg: Record<string, { m768: string; m1152: string; m1536: string }> = {
+  genbutsu: { m768: u('/assets/img/samples/inherit-genbutsu-768.webp'), m1152: u('/assets/img/samples/inherit-genbutsu-1152.webp'), m1536: u('/assets/img/samples/inherit-genbutsu-1536.webp') },
+  daisho: { m768: u('/assets/img/samples/inherit-daisho-768.webp'), m1152: u('/assets/img/samples/inherit-daisho-1152.webp'), m1536: u('/assets/img/samples/inherit-daisho-1536.webp') },
+  kanka: { m768: u('/assets/img/samples/inherit-kanka-768.webp'), m1152: u('/assets/img/samples/inherit-kanka-1152.webp'), m1536: u('/assets/img/samples/inherit-kanka-1536.webp') },
+  kyoyu: { m768: u('/assets/img/samples/inherit-kyoyu-768.webp'), m1152: u('/assets/img/samples/inherit-kyoyu-1152.webp'), m1536: u('/assets/img/samples/inherit-kyoyu-1536.webp') },
+};
+const mangaAlt = '冒頭のマンガ（説明用の架空の例）。実家の前で、兄が「この実家は思い出があるから住み続けたいんだ」、妹が「私は現金で受け取って新しい生活を始めたい」と話し、専門家が「この家の価値は見る人によって金額が違う。相続では『どう分けるか』と『いくらと考えるか』の2つが大きなポイント」と説明する。続いて、同じ家でも相続税の評価額・不動産会社の査定額・鑑定評価額で金額が違う例と、感情だけで決めると話がまとまらない様子を描いている';
 
 // 公的な評価（制度上の目途つき）
 const publicPrices = [
@@ -155,7 +161,27 @@ if (!caseEntry) throw new Error('suginami-rental が見つかりません');
     <div class="container container--narrow article__body c-body">
       <p class="c-lead">親が遺した実家を、兄弟姉妹でどう分けるか。話し合いを前に進めるための「評価の考え方」を、図で整理しました。</p>
 
-      <div class="c-manga"><MangaIntro /></div>
+      <figure class="c-manga">
+        <a class="c-zoom" href={u('/assets/img/samples/inherit-manga-1536.webp')} target="_blank" rel="noopener">
+          <picture>
+            <source media="(max-width: 767px)" srcset={u('/assets/img/samples/inherit-manga-sp-780.webp')} width="780" height="2117">
+            <img src={u('/assets/img/samples/inherit-manga-1536.webp')} srcset={`${u('/assets/img/samples/inherit-manga-768.webp')} 768w, ${u('/assets/img/samples/inherit-manga-1152.webp')} 1152w, ${u('/assets/img/samples/inherit-manga-1536.webp')} 1536w`} sizes="(min-width: 1132px) 1100px, 100vw" width="1536" height="1024" alt={mangaAlt} decoding="async" fetchpriority="high">
+          </picture>
+        </a>
+        <figcaption>
+          <p>※説明用の架空の例です。登場人物（兄・妹・専門家）と会話は、実際のご相談者や当社代表の発言ではありません。図中の金額も説明用の例です。</p>
+          <details class="c-transcript">
+            <summary>マンガのセリフをテキストで読む</summary>
+            <dl>
+              <div><dt>兄</dt><dd>この実家は思い出があるから住み続けたいんだ</dd></div>
+              <div><dt>妹</dt><dd>私は現金で受け取って新しい生活を始めたい…</dd></div>
+              <div><dt>専門家</dt><dd>でも、この家の価値は見る人によって金額が違うんです。つまり、相続では「どう分けるか」と「いくらと考えるか」の2つが大きなポイントになります</dd></div>
+              <div><dt>図</dt><dd>同じ家でも、こんなに金額が違うことがあります（例：相続税の評価額〈路線価など〉2,000万円、不動産会社の査定額〈時価の目安〉3,000万円、不動産鑑定士の鑑定評価額2,800万円）</dd></div>
+              <div><dt>図</dt><dd>だからこそ、感情だけで決めるとトラブルになりやすいのです（兄「この価格で売るのはもったいない…」、妹「もっと高く評価できるはず…」、「話がまとまらない…」）</dd></div>
+            </dl>
+          </details>
+        </figcaption>
+      </figure>
 
       <div class="c-points">
         <p class="c-points__title">この記事でわかること</p>
@@ -193,14 +219,20 @@ if (!caseEntry) throw new Error('suginami-rental が見つかりません');
         <p>遺産の分割は、遺産の種類・性質や各相続人の生活の状況など、一切の事情を考慮して行うと定められています（民法第906条）。</p>
         <div class="c-methods">
           {methods.map((m) => (
-            <div class="c-method">
-              <h3>{m.name}</h3>
-              <MethodDiagram type={m.type} label={m.alt} />
-              <p class="c-method__what">{m.what}</p>
-              <p class="c-method__caution"><span>注意</span>{m.caution}</p>
-            </div>
+            <figure class="c-method">
+              <h3 class="u-visually-hidden">{m.name}</h3>
+              <a class="c-zoom" href={methodImg[m.type].m1536} target="_blank" rel="noopener">
+                <img src={methodImg[m.type].m1536} srcset={`${methodImg[m.type].m768} 768w, ${methodImg[m.type].m1152} 1152w, ${methodImg[m.type].m1536} 1536w`} sizes="(min-width: 1032px) 1000px, 100vw" width="1536" height="1024" alt={m.alt} loading="lazy" decoding="async">
+              </a>
+              <figcaption class="c-method__text">
+                <p class="c-method__name">{m.name}</p>
+                <p class="c-method__what">{m.what}</p>
+                <p class="c-method__caution"><span>注意</span>{m.caution}</p>
+              </figcaption>
+            </figure>
           ))}
         </div>
+        <p class="c-small c-center">※図中の金額・持ち分の割合は説明用の例です。画像はタップ（クリック）で拡大できます。</p>
         <p class="c-key">「兄が住み続け、妹はお金で受け取りたい」なら<strong>代償分割</strong>。<br class="u-pc">代償金の額は、<strong>実家をいくらと考えるか</strong>で決まります。</p>
       </section>
 
@@ -211,8 +243,8 @@ if (!caseEntry) throw new Error('suginami-rental が見つかりません');
         <p>兄弟が調べた「実家の価格」が違うのは、物差しの違いによることが少なくありません。</p>
 
         <h3 class="c-h3">国や自治体が、決まったルールで評価する価格</h3>
-        <p class="c-sub">地価公示価格など＝100としたときの、制度上の水準の目途</p>
-        <div class="c-bars">
+        <p class="c-sub">地価公示価格など＝100としたときの、制度上の水準の目途（目盛りは25ごと）</p>
+        <div class="c-bars" role="group" aria-label="地価公示価格など＝100としたときの評価水準の目途">
           {publicPrices.map((p) => (
             <div class="c-bar">
               <div class="c-bar__head"><b>{p.name}</b><span>{p.value}</span></div>
@@ -265,7 +297,7 @@ if (!caseEntry) throw new Error('suginami-rental が見つかりません');
             <p class="c-contrast__big">共通のルールで<br>一律に計算</p>
             <p>相続税の申告で使う評価です。路線価が定められていない地域では、固定資産税評価額に一定の倍率を掛ける「倍率方式」で評価します。</p>
           </div>
-          <div class="c-contrast__vs" aria-hidden="true">≠</div>
+          <div class="c-contrast__vs" aria-hidden="true"><span>≠</span></div>
           <div class="c-contrast__side">
             <p class="c-contrast__label">実際に取引される価格（時価）</p>
             <p class="c-contrast__big">個別の事情が<br>反映される</p>
@@ -291,9 +323,9 @@ if (!caseEntry) throw new Error('suginami-rental が見つかりません');
         <p class="c-eyebrow">05</p>
         <h2 id="kantei">不動産鑑定評価が役立つ場面</h2>
         <p>不動産鑑定士は、法律（不動産の鑑定評価に関する法律）にもとづく国家資格です。遺産分割では、たとえば次のような場面で判断の材料になります。</p>
-        <ul class="c-scenes">
-          {scenes.map((s) => <li><span class="c-icon c-icon--solid"><Icon name={s.icon} size={24} /></span><span>{s.text}</span></li>)}
-        </ul>
+        <ol class="c-scenes">
+          {scenes.map((s, i) => <li><span class="c-scenes__no">{String(i + 1).padStart(2, '0')}</span><span class="c-scenes__icon"><Icon name={s.icon} size={30} /></span><span class="c-scenes__text">{s.text}</span></li>)}
+        </ol>
 
         <h3 class="c-h3">価格を求める3つの手法（不動産鑑定評価基準）</h3>
         <ul class="c-trio">
@@ -360,7 +392,7 @@ if (!caseEntry) throw new Error('suginami-rental が見つかりません');
         <ul class="sources__list">
           {sources.map((s) => <li><a href={s.url} target="_blank" rel="noopener">{s.title}</a><span>（{s.publisher}）</span></li>)}
         </ul>
-        <p class="c-small">制度・法令の内容は{checkedOn}に各機関の公表資料で確認したものです。図はすべて当社が作成したもので、マンガは説明用の架空の例です。税金や法律についての個別の判断は、税理士・弁護士などの専門家にご確認ください。</p>
+        <p class="c-small">制度・法令の内容は{checkedOn}に各機関の公表資料で確認したものです。マンガと分割方法のイラストは説明用の架空の例で、図中の金額も例示です。アイコンは Phosphor Icons（MIT License）を使用しています。税金や法律についての個別の判断は、税理士・弁護士などの専門家にご確認ください。</p>
       </section>
 
       <aside class="related-svc" aria-labelledby="rel-svc">
@@ -405,8 +437,18 @@ if (!caseEntry) throw new Error('suginami-rental が見つかりません');
   /* ---- 本文の基本 ---- */
   .c-body p { line-height: 1.95; }
   .c-lead { font-size: 1.125rem; line-height: 1.9; margin-bottom: 2rem; }
-  .c-manga { margin-bottom: 2.75rem; }
+  .c-manga { margin: 0 0 2.75rem; }
+  .c-manga img, .c-method img { display: block; width: 100%; height: auto; }
+  .c-zoom { display: block; }
+  .c-manga .c-zoom { border-radius: 6px; overflow: hidden; box-shadow: 0 1px 2px rgba(38, 41, 43, .06), 0 8px 28px rgba(38, 41, 43, .08); }
   @media (min-width: 900px) { .c-manga { width: min(1100px, calc(100vw - 32px)); margin-left: 50%; transform: translateX(-50%); } }
+  @media (max-width: 767px) { .c-manga .c-zoom { margin-inline: -16px; border-radius: 0; box-shadow: none; } }
+  .c-manga figcaption { margin-top: .875rem; font-size: .8125rem; color: var(--c-muted); line-height: 1.75; }
+  .c-transcript { margin-top: .5rem; }
+  .c-transcript summary { cursor: pointer; color: var(--c-primary); font-weight: 700; font-size: .875rem; }
+  .c-transcript dl { display: grid; gap: .5rem; margin-top: .75rem; padding: 1rem 1.125rem; border-left: 2px solid var(--c-line); }
+  .c-transcript dl > div { display: grid; grid-template-columns: 4em 1fr; gap: .5rem; font-size: .875rem; color: var(--c-ink-soft); }
+  .c-transcript dt { font-weight: 700; color: var(--c-ink); }
 
   .c-points { padding-left: 1.125rem; border-left: 3px solid var(--c-primary); }
   .c-points__title { font-weight: 700; color: var(--c-primary); margin-bottom: .5rem; }
@@ -435,9 +477,8 @@ if (!caseEntry) throw new Error('suginami-rental が見つかりません');
   .c-key strong { color: var(--c-primary); }
   @media (max-width: 599px) { .c-key { text-align: left; font-size: 1.0625rem; } }
 
-  .c-icon { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--c-primary-50); color: var(--c-primary); flex: none; }
-  .c-icon--sand { background: var(--c-sand-50); color: var(--c-sand-700); }
-  .c-icon--solid { background: var(--c-primary); color: #fff; width: 46px; height: 46px; }
+  .c-icon { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: #fff; border: 1px solid var(--c-primary-100); color: var(--c-primary); flex: none; }
+  .c-icon--sand { border-color: var(--c-sand-100); color: var(--c-sand-700); }
 
   /* 01 理由 */
   .c-reasons { display: grid; gap: 1.5rem; }
@@ -448,23 +489,28 @@ if (!caseEntry) throw new Error('suginami-rental が見つかりません');
   .c-reasons li > span:last-child { font-size: .9375rem; color: var(--c-ink-soft); line-height: 1.75; }
 
   /* 02 分け方 */
-  .c-methods { display: grid; gap: 0; margin-top: 1.5rem; }
-  @media (min-width: 768px) { .c-methods { grid-template-columns: 1fr 1fr; column-gap: 2.5rem; } }
-  .c-method { padding: 1.75rem 0; border-top: 1px solid var(--c-line); }
-  .c-method h3 { font-size: 1.25rem; color: var(--c-primary); margin-bottom: .75rem; }
-  .c-method :global(.method-svg) { max-width: 360px; margin: 0 auto .75rem; }
+  .c-methods { display: grid; gap: 2.75rem; margin-top: 1.75rem; }
+  @media (min-width: 1032px) { .c-methods { width: min(1000px, calc(100vw - 32px)); margin-left: 50%; transform: translateX(-50%); } }
+  .c-method { margin: 0; }
+  .c-method .c-zoom { border-radius: 6px; overflow: hidden; box-shadow: 0 1px 2px rgba(38, 41, 43, .06), 0 8px 28px rgba(38, 41, 43, .08); }
+  @media (max-width: 767px) { .c-method .c-zoom { margin-inline: -16px; border-radius: 0; box-shadow: none; border-block: 1px solid var(--c-line); } }
+  /* 画像内の説明文はスマホでは小さくなるため、HTMLのテキストを併記（PCでは画像の文字が読めるので視覚的には隠す） */
+  .c-method__text { margin-top: 1rem; }
+  .c-method__name { font-size: 1.125rem; font-weight: 700; color: var(--c-primary); margin-bottom: .25rem; }
   .c-method__what { font-weight: 500; }
   .c-method__caution { margin-top: .35rem; font-size: .9375rem; color: var(--c-ink-soft); line-height: 1.8 !important; }
-  .c-method__caution span { display: inline-block; margin-right: .5em; padding: 0 .5em; border-radius: 4px; background: var(--c-sand-50); color: var(--c-sand-700); font-size: .8125rem; font-weight: 700; }
+  .c-method__caution span { display: inline-block; margin-right: .5em; padding: 0 .5em; border-radius: 3px; border: 1px solid var(--c-sand-100); color: var(--c-sand-700); font-size: .75rem; font-weight: 700; vertical-align: .1em; }
+  @media (min-width: 768px) { .c-method__text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } }
+  .c-center { text-align: center; }
 
   /* 03 価格 */
   .c-bars { display: grid; gap: 1.75rem; }
-  .c-bar__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .4rem; }
-  .c-bar__head b { font-size: 1.0625rem; }
-  .c-bar__head span { font-size: 1.25rem; font-weight: 700; color: var(--c-primary); white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .c-bar__track { height: 14px; border-radius: 3px; background: #ece8e1; overflow: hidden; }
-  .c-bar__fill { height: 100%; background: var(--c-primary); border-radius: 0 3px 3px 0; }
-  .c-bar__meta { margin-top: .5rem; font-size: .8125rem; font-weight: 700; color: var(--c-muted); line-height: 1.6 !important; }
+  .c-bar__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .5rem; }
+  .c-bar__head b { font-size: 1rem; font-weight: 700; }
+  .c-bar__head span { font-size: 1.375rem; font-weight: 700; color: var(--c-primary); white-space: nowrap; font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+  .c-bar__track { position: relative; height: 10px; border-radius: 999px; background: repeating-linear-gradient(to right, transparent 0 calc(25% - 1px), rgba(38, 41, 43, .12) calc(25% - 1px) 25%), #efebe4; overflow: hidden; }
+  .c-bar__fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #3d6e72, var(--c-primary)); }
+  .c-bar__meta { margin-top: .55rem; font-size: .75rem; font-weight: 700; letter-spacing: .02em; color: var(--c-muted); line-height: 1.6 !important; }
   .c-bar__note { font-size: .9375rem; color: var(--c-ink-soft); line-height: 1.75 !important; }
   .c-two { display: grid; gap: 1.75rem; }
   @media (min-width: 700px) { .c-two { grid-template-columns: 1fr 1fr; gap: 0; } .c-two > div { padding-right: 1.75rem; } .c-two > div + div { padding: 0 0 0 1.75rem; border-left: 1px solid var(--c-line); } }
@@ -482,7 +528,10 @@ if (!caseEntry) throw new Error('suginami-rental が見つかりません');
   .c-contrast__label { font-size: .875rem; font-weight: 700; color: var(--c-muted); }
   .c-contrast__big { font-size: 1.375rem; font-weight: 700; line-height: 1.45 !important; color: var(--c-primary); margin: .25rem 0 .75rem; }
   .c-contrast__side > p:last-child, .c-contrast__side > p:nth-child(3) { font-size: .9375rem; color: var(--c-ink-soft); line-height: 1.8; }
-  .c-contrast__vs { align-self: center; justify-self: center; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--c-sand-50); color: var(--c-sand-700); font-size: 1.5rem; font-weight: 700; }
+  .c-contrast__vs { position: relative; align-self: stretch; justify-self: center; display: grid; place-items: center; min-height: 48px; }
+  .c-contrast__vs::before { content: ""; position: absolute; inset: 0 auto 0 50%; width: 1px; background: var(--c-line); }
+  .c-contrast__vs span { position: relative; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--c-bg, #fbfaf7); border: 1px solid var(--c-sand-100); color: var(--c-sand-700); font-size: 1.25rem; font-weight: 700; }
+  @media (max-width: 699px) { .c-contrast__vs::before { inset: 50% 0 auto 0; width: auto; height: 1px; } .c-contrast__vs { width: 100%; } }
   @media (max-width: 699px) { .c-contrast__side { padding: .5rem 0; } }
   .c-factors { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem 1rem; }
   .c-factors li { display: flex; align-items: center; gap: .5rem; font-size: .9375rem; font-weight: 500; }
@@ -494,11 +543,15 @@ if (!caseEntry) throw new Error('suginami-rental が見つかりません');
   .c-split b { display: block; font-size: 1.0625rem; margin-bottom: .2rem; }
 
   /* 05 鑑定評価 */
-  .c-scenes { display: grid; gap: 1rem; margin-top: 1.5rem; }
-  @media (min-width: 700px) { .c-scenes { grid-template-columns: 1fr 1fr; gap: 1.1rem 2rem; } }
-  .c-scenes li { display: grid; grid-template-columns: 46px 1fr; gap: .875rem; align-items: center; font-weight: 500; line-height: 1.6; }
+  .c-scenes { display: grid; margin-top: 1.75rem; border-top: 1px solid var(--c-ink); counter-reset: none; }
+  @media (min-width: 700px) { .c-scenes { grid-template-columns: 1fr 1fr; column-gap: 2.5rem; } }
+  .c-scenes li { display: grid; grid-template-columns: 2.25rem 36px 1fr; gap: .75rem; align-items: center; padding: 1.125rem 0; border-bottom: 1px solid var(--c-line); }
+  .c-scenes__no { font-size: .8125rem; font-weight: 700; letter-spacing: .08em; color: var(--c-sand-700); font-variant-numeric: tabular-nums; }
+  .c-scenes__icon { color: var(--c-primary); display: grid; place-items: center; }
+  .c-scenes__text { font-size: 1rem; font-weight: 500; line-height: 1.6; color: var(--c-ink); }
   .c-trio { display: grid; gap: 1.5rem; }
   @media (min-width: 700px) { .c-trio { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; text-align: center; } .c-trio li { justify-items: center; } }
+  .c-trio li, .c-reasons li { align-content: start; }
   .c-trio li { display: grid; gap: .3rem; }
   @media (max-width: 699px) { .c-trio li { grid-template-columns: 52px 1fr; column-gap: 1rem; } .c-trio .c-icon { grid-row: span 2; } }
   .c-trio b { font-size: 1.0625rem; }
@@ -511,12 +564,12 @@ if (!caseEntry) throw new Error('suginami-rental が見つかりません');
   /* 06 流れ・期限 */
   .c-flow { display: grid; margin-top: .5rem; }
   .c-flow li { position: relative; display: grid; grid-template-columns: 40px 1fr; gap: 1rem; padding-bottom: 1.75rem; }
-  .c-flow li:not(:last-child)::before { content: ""; position: absolute; left: 19px; top: 40px; bottom: 0; width: 2px; background: var(--c-primary-100); }
-  .c-flow__num { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--c-primary); color: #fff; font-weight: 700; position: relative; z-index: 1; }
+  .c-flow li:not(:last-child)::before { content: ""; position: absolute; left: 19.5px; top: 40px; bottom: 0; width: 1px; background: var(--c-primary-100); }
+  .c-flow__num { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 1.5px solid var(--c-primary); color: var(--c-primary); font-weight: 700; font-variant-numeric: tabular-nums; position: relative; z-index: 1; }
   .c-flow li > div { padding-top: .45rem; }
   .c-flow b { font-size: 1.0625rem; line-height: 1.5; }
   .c-flow p { margin-top: .2rem; font-size: .9375rem; color: var(--c-ink-soft); line-height: 1.8 !important; }
-  .c-flow__q .c-flow__num { background: var(--c-sand-700); clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); border-radius: 0; }
+  .c-flow__q .c-flow__num { border: 0; background: var(--c-sand-700); color: #fff; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); border-radius: 0; }
   .c-branch { display: grid; gap: .6rem; margin-top: .6rem; }
   .c-branch > div { display: grid; grid-template-columns: 3.5em 1fr; gap: .5rem; font-size: .9375rem; line-height: 1.8; }
   .c-branch dt { font-weight: 700; color: var(--c-sand-700); }
