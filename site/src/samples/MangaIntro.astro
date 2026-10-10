@@ -58,18 +58,21 @@ const drop = (x: number, y: number) => `<path d="M${x} ${y} q-6 9 0 13 q6-4 0-13
 
 const panels = [
   {
+    bg: '#f4efe6',
     scene: `<rect width="360" height="200" fill="#f4efe6"/><rect y="154" width="360" height="46" fill="#e6dccb"/>${house(180)}${brother(70, 'talk')}${sister(290, 'smile')}`,
     alt: '実家の前で、兄と妹が話している様子のイラスト',
     left: 'この家は、ぼくが住み続けたいんだ。',
     right: '私は、自分の分をお金で受け取りたいな。',
   },
   {
+    bg: '#eef3f3',
     scene: `<rect width="360" height="200" fill="#eef3f3"/><rect y="170" width="360" height="30" fill="#dbe6e6"/>${brother(80, 'doubt', paper(112, 128, '評価額', -6))}${sister(280, 'doubt', paper(200, 130, '査定', 6))}`,
     alt: '兄は「評価額」と書かれた書類を、妹は「査定」と書かれた書類を持って、首をかしげている様子のイラスト',
     left: '相続税の評価額で考えればいいよね？',
     right: '不動産会社の査定は、もっと高かったよ？',
   },
   {
+    bg: '#faf6ef',
     scene: `<rect width="360" height="200" fill="#faf6ef"/><rect y="170" width="360" height="30" fill="#f3eadb"/>${brother(90, 'worry', drop(128, 56))}${sister(270, 'worry', drop(232, 58))}<text x="180" y="96" text-anchor="middle" font-size="40" font-weight="700" fill="#c9ab82">?</text>`,
     alt: '兄と妹が困った表情で考え込んでいる様子のイラスト',
     narration: '話し合いの論点は2つ。<strong>「どう分けるか」</strong>と<strong>「いくらと考えるか」</strong>です。',
@@ -79,7 +82,7 @@ const panels = [
 <figure class="manga">
   <div class="manga__panels">
     {panels.map((p, i) => (
-      <div class="manga__panel">
+      <div class="manga__panel" style={`background:${p.bg}`}>
         <span class="manga__num" aria-hidden="true">{i + 1}</span>
         {p.narration ? (
           <p class="manga__narration"><span set:html={p.narration} /></p>
@@ -89,7 +92,7 @@ const panels = [
             <p class="bubble bubble--right"><span class="u-visually-hidden">妹：</span>{p.right}</p>
           </div>
         )}
-        <svg class="manga__scene" viewBox="0 0 360 200" role="img" aria-label={p.alt} set:html={p.scene} />
+        <svg class="manga__scene" viewBox="14 28 332 172" role="img" aria-label={p.alt} set:html={p.scene} />
       </div>
     ))}
   </div>
@@ -98,18 +101,23 @@ const panels = [
 
 <style>
   .manga { margin: 0; }
-  .manga__panels { display: grid; gap: 1rem; }
-  @media (min-width: 900px) { .manga__panels { grid-template-columns: repeat(3, 1fr); } }
-  .manga__panel { position: relative; display: flex; flex-direction: column; border: 2px solid #3a3330; border-radius: 6px; background: #fff; overflow: hidden; }
-  .manga__num { position: absolute; top: 6px; left: 8px; z-index: 1; font-size: .75rem; font-weight: 700; color: var(--c-muted); }
-  .manga__bubbles { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; padding: 1.4rem .75rem .9rem; flex: 1; align-items: end; }
-  .bubble { position: relative; margin: 0; padding: .55rem .7rem; border: 2px solid #3a3330; border-radius: 16px; background: #fff; font-size: .9375rem; font-weight: 500; line-height: 1.55; }
+  .manga__panels { display: grid; gap: .625rem; }
+  @media (min-width: 900px) { .manga__panels { grid-template-columns: repeat(3, 1fr); gap: .875rem; } }
+  .manga__panel { position: relative; display: flex; flex-direction: column; border: 2px solid #3a3330; border-radius: 4px; overflow: hidden; }
+  /* スマホでは左右いっぱいに広げて、絵とセリフを大きく見せる */
+  @media (max-width: 899px) {
+    .manga__panels { margin-inline: -16px; }
+    .manga__panel { border-left: 0; border-right: 0; border-radius: 0; }
+  }
+  .manga__num { position: absolute; top: 8px; left: 10px; z-index: 1; font-size: .75rem; font-weight: 700; color: var(--c-muted); }
+  .manga__bubbles { display: grid; grid-template-columns: 1fr 1fr; gap: .625rem; padding: 1.75rem .875rem .25rem; flex: 1; align-items: end; }
+  .bubble { position: relative; margin: 0; padding: .65rem .8rem; border: 2px solid #3a3330; border-radius: 18px; background: #fff; font-size: 1rem; font-weight: 500; line-height: 1.6; }
   .bubble::after { content: ""; position: absolute; bottom: -11px; width: 14px; height: 14px; background: #fff; border-right: 2px solid #3a3330; border-bottom: 2px solid #3a3330; }
-  .bubble--left::after { left: 22%; transform: rotate(45deg) skew(8deg, 8deg); }
+  .bubble--left::after { left: 24%; transform: rotate(45deg) skew(8deg, 8deg); }
   .bubble--right { align-self: start; }
-  .bubble--right::after { right: 22%; transform: rotate(45deg) skew(8deg, 8deg); }
-  .manga__narration { margin: 0; padding: 1.4rem 1rem .9rem; flex: 1; display: flex; align-items: center; font-size: 1rem; line-height: 1.7; background: #fff; }
+  .bubble--right::after { right: 24%; transform: rotate(45deg) skew(8deg, 8deg); }
+  .manga__narration { margin: 1.75rem .875rem .25rem; padding: .75rem 1rem; flex: 1; display: flex; align-items: center; border: 2px solid #3a3330; background: #fff; font-size: 1.0625rem; font-weight: 500; line-height: 1.7; }
   .manga__narration :global(strong) { color: var(--c-primary); }
-  .manga__scene { display: block; width: 100%; height: auto; border-top: 2px solid #3a3330; }
+  .manga__scene { display: block; width: 100%; height: auto; }
   .manga__caption { margin-top: .75rem; font-size: .8125rem; color: var(--c-muted); line-height: 1.7; }
 </style>
