@@ -1,7 +1,8 @@
 ---
-// 【提案用サンプル】SEO・AI検索向けコラム（新規）。
-// - 原稿は src/samples/column-inheritance-fair-division.md。正式公開時は src/content/column/ へ移し、
-//   公開日・更新日・執筆者（木村修本人の確認が取れた場合のみ 'kimura'）を設定する。
+// 【提案用サンプル】SEO・AI検索向けコラム（ビジュアル版）。
+// - 冒頭マンガ・比較図・比較表・フローチャートなどで、文章の説明を図に置き換えている。
+// - 図の重要な情報は HTML のテキストにも残す（SVG は装飾・補助）。
+// - 正式公開時は src/content/column/ へ移す。公開日・更新日・執筆者（木村修本人の確認が取れた場合のみ 'kimura'）を設定する。
 // - コラム一覧・トップ・関連欄には出さない（既存ページに影響させない）。
 // - 公開日はまだないため表示せず、構造化データにも datePublished / dateModified を入れない。
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -10,7 +11,10 @@ import FaqList from '../../components/FaqList.astro';
 import CaseCard from '../../components/CaseCard.astro';
 import ContactCta from '../../components/ContactCta.astro';
 import SampleNotice from '../../samples/SampleNotice.astro';
-import { Content, frontmatter as fm, getHeadings } from '../../samples/column-inheritance-fair-division.md';
+import MangaIntro from '../../samples/MangaIntro.astro';
+import MethodDiagram from '../../samples/MethodDiagram.astro';
+import Icon from '../../samples/Icon.astro';
+import '../../samples/visual.css';
 import { getEntry } from 'astro:content';
 import { getService } from '../../data/services';
 import { getFaqs, type Faq } from '../../data/faq';
@@ -19,8 +23,43 @@ import { article, faqPage } from '../../lib/schema';
 import { u } from '../../lib/url';
 
 const path = '/samples/column-inheritance-fair-division/';
-const toc = getHeadings().filter((h) => h.depth === 2);
+const title = '相続した実家を兄弟で公平に分けるには？ 不動産鑑定士が解説する評価の考え方';
+const description = '相続した実家を兄弟姉妹で公平に分けるには、「どう分けるか」と「いくらと考えるか」の整理が欠かせません。遺産分割の4つの方法、路線価・固定資産税評価額・査定・鑑定評価の違い、不動産鑑定が役立つ場面を、図解と公的な情報をもとに解説します。';
 const checkedOn = '2026年10月10日';
+
+const toc = [
+  { id: 'why', text: '実家の相続で、話し合いがこじれやすい理由' },
+  { id: 'methods', text: '遺産分割の4つの方法' },
+  { id: 'prices', text: '不動産の「価格」はひとつではない' },
+  { id: 'value', text: '路線価と「実際の価値」の違い' },
+  { id: 'kantei', text: '不動産鑑定評価が役立つ場面' },
+  { id: 'steps', text: '話し合いを進める5つのステップ' },
+  { id: 'policy', text: '当社の考え方' },
+];
+
+const methods = [
+  { type: 'genbutsu', name: '現物分割', alt: '実家は兄へ、預貯金は妹へ、それぞれそのまま分ける図', what: '実家は兄、預貯金は妹のように、財産をそのままの形で分けます。', caution: '財産の価値に差があると、不公平感が生まれやすくなります。' },
+  { type: 'daisho', name: '代償分割', alt: '実家を兄が引き継ぎ、兄から妹へ代償金を支払う図', what: '実家を引き継ぐ人が、ほかの相続人にお金（代償金）を支払います。', caution: '代償金の額を決めるために実家の評価額が必要です。支払う側に資金が必要になります。' },
+  { type: 'kanka', name: '換価分割', alt: '実家を売却し、売却代金を兄と妹で分ける図', what: '実家を売却し、売却代金を分けます。', caution: '実家を手放すことになります。売却の時期や価格について合意が必要です。' },
+  { type: 'kyoyu', name: '共有分割', alt: '実家を兄と妹の共有にし、それぞれが持ち分を持つ図', what: '実家を兄弟の共有名義にします。', caution: '将来、売却や建替えのたびに共有者の合意が必要になるなど、問題を先送りすることがあります。' },
+] as const;
+
+const prices = [
+  { name: '公示価格（地価公示）', who: '国土交通省の土地鑑定委員会', why: '土地取引の指標など', when: '毎年1月1日時点', point: '標準地の「正常な価格」。2人以上の不動産鑑定士の鑑定評価をもとに判定される' },
+  { name: '路線価（相続税路線価）', who: '国税庁', why: '相続税・贈与税の計算', when: '毎年1月1日時点', point: '地価公示価格などをもとにした価格の80％程度を目途に定められている' },
+  { name: '固定資産税評価額', who: '市町村（東京23区は東京都）', why: '固定資産税などの課税', when: '原則3年ごとに評価替え', point: '宅地は地価公示価格などの7割を目途に評価される' },
+  { name: '査定価格', who: '不動産会社', why: '売却の依頼を受けるときなど', when: '依頼のつど', point: '売れると見込まれる価格についての意見。根拠を明らかにする必要があるが、会社によって差が出ることがある' },
+  { name: '鑑定評価額', who: '不動産鑑定士', why: '価格の根拠を第三者に示したいときなど', when: '依頼のつど（価格時点を定めて評価）', point: '国の不動産鑑定評価基準に則り、個々の不動産の事情を調べて経済価値を判定する。根拠を書面で示す' },
+];
+
+const scenes = [
+  { icon: 'yen', text: '代償分割で、代償金の根拠となる評価額を決めたい' },
+  { icon: 'scale', text: '相続人の間で、不動産の評価が食い違っている' },
+  { icon: 'court', text: '遺産分割の調停・裁判や、遺留分が争点になっている' },
+  { icon: 'handshake', text: '相続人の一人が、ほかの相続人から持ち分を買い取る' },
+  { icon: 'key', text: '借地権・底地・共有など、権利関係が複雑な不動産がある' },
+  { icon: 'building', text: '古い建物や空き家など、市場での価値がわかりにくい' },
+];
 
 // この記事のためのよくある質問（構造化データ FAQPage はこの4問だけに付ける）
 const articleFaqs: Faq[] = [
@@ -72,23 +111,23 @@ const sources = [
   { title: '宅地建物取引業法（第34条の2）', publisher: 'e-Gov法令検索（デジタル庁）', url: 'https://laws.e-gov.go.jp/law/327AC1000000176' },
   { title: '不動産登記法（第76条の2）', publisher: 'e-Gov法令検索（デジタル庁）', url: 'https://laws.e-gov.go.jp/law/416AC0000000123' },
   { title: 'No.4205 相続税の申告と納税', publisher: '国税庁', url: 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/sozoku/4205.htm' },
+  { title: 'No.4604 路線価方式による宅地の評価', publisher: '国税庁', url: 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/hyoka/4604.htm' },
 ];
 
 const inheritance = getService('inheritance');
 const svcs = ['inheritance', 'appraisal', 'family-transaction'].map((s) => getService(s));
 const caseEntry = await getEntry('cases', 'suginami-rental');
 if (!caseEntry) throw new Error('suginami-rental が見つかりません');
-const beforeImg = caseEntry.data.gallery[0];
 ---
 <BaseLayout
-  title={fm.title}
-  description={fm.description}
+  title={title}
+  description={description}
   path={path}
   ogType="article"
-  breadcrumbs={[{ name: 'コラム', path: '/column/' }, { name: fm.title, path }]}
+  breadcrumbs={[{ name: 'コラム', path: '/column/' }, { name: title, path }]}
   jsonLd={[
     {
-      ...article({ headline: fm.title, description: fm.description, path, author: 'organization', citations: sources }),
+      ...article({ headline: title, description, path, author: 'organization', citations: sources }),
       about: ['遺産分割', '相続した不動産の評価', '路線価', '不動産鑑定評価'],
     },
     faqPage(articleFaqs, path),
@@ -99,8 +138,8 @@ const beforeImg = caseEntry.data.gallery[0];
   <article class="article">
     <header class="page-header page-header--article">
       <div class="container container--narrow">
-        <p class="page-header__eyebrow">{fm.category}</p>
-        <h1 class="page-header__title">{fm.title}</h1>
+        <p class="page-header__eyebrow">相続・遺産分割</p>
+        <h1 class="page-header__title">{title}</h1>
         <p class="article__meta">
           <span>制度・法令の確認日 {checkedOn}</span>
           <span>株式会社木村不動産鑑定</span>
@@ -111,18 +150,169 @@ const beforeImg = caseEntry.data.gallery[0];
     <div class="container container--narrow article__body">
       <div class="summary-box">
         <p class="summary-box__title">この記事の要点</p>
-        <ul class="check-list">{fm.points.map((p: string) => <li>{p}</li>)}</ul>
+        <ul class="check-list">
+          <li>実家の相続は、「<strong>どう分けるか</strong>（分け方）」と「<strong>いくらと考えるか</strong>（評価）」を分けて整理すると、話し合いが進めやすくなります。</li>
+          <li>不動産の価格には、路線価・固定資産税評価額・査定・鑑定評価など複数の物差しがあり、目的が異なります。</li>
+          <li>どの評価額を使うかは相続人の間で決めます。食い違うときは、不動産鑑定士の評価が判断の材料になります。</li>
+        </ul>
       </div>
 
       <nav class="toc toc--article" aria-label="目次">
         <p class="toc__title">目次</p>
         <ol class="toc__list toc__list--ol">
-          {toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+          {toc.map((h) => <li><a href={`#${h.id}`}>{h.text}</a></li>)}
           <li><a href="#faq-title">よくあるご質問</a></li>
         </ol>
       </nav>
 
-      <div class="prose prose--article sample-prose"><Content /></div>
+      <!-- 1. マンガと3つの理由 -->
+      <section class="v-sec" aria-labelledby="why">
+        <h2 id="why">実家の相続で、話し合いがこじれやすい理由</h2>
+        <div class="v-wide"><MangaIntro /></div>
+        <p style="margin-top:1.5rem">こうした食い違いの背景には、主に次の3つの理由があります。</p>
+        <div class="v-grid v-grid--3" style="margin-top:1rem">
+          <div class="v-card"><span class="v-card__icon"><Icon name="split" /></span><p class="v-card__title">現金のように分けられない</p><p>土地や建物は、きれいに等分することが難しい財産です。</p></div>
+          <div class="v-card"><span class="v-card__icon"><Icon name="scale" /></span><p class="v-card__title">「いくらか」の物差しが複数ある</p><p>どの評価額を使うかで、金額が変わります。</p></div>
+          <div class="v-card"><span class="v-card__icon"><Icon name="heart" /></span><p class="v-card__title">思い入れや事情が違う</p><p>住み続けたい人、現金がほしい人など、望む形が異なります。</p></div>
+        </div>
+      </section>
+
+      <!-- 2. 4つの分け方 -->
+      <section class="v-sec" aria-labelledby="methods">
+        <h2 id="methods">遺産分割の4つの方法</h2>
+        <p>民法は、遺産の分割は、遺産の種類・性質や、各相続人の年齢・職業・生活の状況など一切の事情を考慮して行うと定めています（民法第906条）。実家を分ける方法には、一般に次の4つがあります。</p>
+        <div class="v-grid v-grid--2" style="margin-top:1.25rem">
+          {methods.map((m) => (
+            <div class="v-card method-card">
+              <p class="method-card__name">{m.name}</p>
+              <MethodDiagram type={m.type} label={m.alt} />
+              <dl>
+                <div><dt>どう分ける</dt><dd>{m.what}</dd></div>
+                <div><dt>主な注意点</dt><dd>{m.caution}</dd></div>
+              </dl>
+            </div>
+          ))}
+        </div>
+        <div class="v-callout">
+          <span class="v-callout__icon"><Icon name="yen" size={30} /></span>
+          <p>マンガの「兄が住み続け、妹はお金で受け取りたい」という場合は、<strong>代償分割</strong>が選択肢になります。このとき代償金をいくらにするかは、<strong>実家をいくらと考えるか</strong>で決まります。</p>
+        </div>
+      </section>
+
+      <!-- 3. 価格の種類 -->
+      <section class="v-sec" aria-labelledby="prices">
+        <h2 id="prices">不動産の「価格」はひとつではない</h2>
+        <p>同じ土地でも、何のために評価するかによって、いくつもの「価格」があります。兄弟が調べた「実家の価格」が違うのは、この物差しの違いによることが少なくありません。</p>
+        <div class="v-table-wrap" style="margin-top:1.25rem">
+          <table class="v-table">
+            <caption class="u-visually-hidden">不動産の価格の種類と、それぞれの目的・特徴</caption>
+            <thead><tr><th scope="col">名称</th><th scope="col">誰が</th><th scope="col">何のために</th><th scope="col">時点・見直し</th><th scope="col">特徴</th></tr></thead>
+            <tbody>
+              {prices.map((p) => (
+                <tr><th scope="row">{p.name}</th><td data-label="誰が">{p.who}</td><td data-label="何のために">{p.why}</td><td data-label="時点・見直し">{p.when}</td><td data-label="特徴">{p.point}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <figure class="v-figure">
+          <p class="v-figure__title">制度上の評価水準の目途<span class="v-tag v-tag--general">地価公示価格など＝100とした場合</span></p>
+          <div class="v-bars">
+            <div class="v-bar"><div class="v-bar__label"><b>地価公示価格など</b><span class="v-bar__value">100</span></div><div class="v-bar__track"><div class="v-bar__fill" style="width:100%" title="地価公示価格など：100"></div></div></div>
+            <div class="v-bar"><div class="v-bar__label"><b>路線価</b><span class="v-bar__value">80程度</span></div><div class="v-bar__track"><div class="v-bar__fill" style="width:80%" title="路線価：80程度を目途"></div></div></div>
+            <div class="v-bar"><div class="v-bar__label"><b>固定資産税評価額（宅地）</b><span class="v-bar__value">70</span></div><div class="v-bar__track"><div class="v-bar__fill" style="width:70%" title="固定資産税評価額（宅地）：7割を目途"></div></div></div>
+          </div>
+          <figcaption>国税庁・総務省が公表している評価の「目途」を図にしたものです。個々の土地の時価との比率が、必ずこのとおりになるわけではありません。不動産会社の査定や鑑定評価には、決まった割合はありません。</figcaption>
+        </figure>
+      </section>
+
+      <!-- 4. 路線価と実際の価値 -->
+      <section class="v-sec" aria-labelledby="value">
+        <h2 id="value">路線価と「実際の価値」の違い</h2>
+        <p>相続税の申告では、路線価が定められている地域の土地は路線価をもとに評価します（定められていない地域では、固定資産税評価額に一定の倍率を掛ける「倍率方式」）。多くの土地を公平に評価するための、共通のルールです。一方、実際の価値は、次のような個別の事情にも左右されます。</p>
+        <div class="v-grid v-grid--4" style="margin-top:1.25rem">
+          <div class="v-card v-card--tint"><span class="v-card__icon"><Icon name="house" /></span><p class="v-card__title">土地の形・道路</p><p>建物を建てられるかどうかを含みます。</p></div>
+          <div class="v-card v-card--tint"><span class="v-card__icon"><Icon name="building" /></span><p class="v-card__title">建物の状態</p><p>古い建物は、評価額と市場価値が大きく離れることがあります。</p></div>
+          <div class="v-card v-card--tint"><span class="v-card__icon"><Icon name="key" /></span><p class="v-card__title">権利関係</p><p>借地権・底地・共有などの状況です。</p></div>
+          <div class="v-card v-card--tint"><span class="v-card__icon"><Icon name="chart" /></span><p class="v-card__title">周辺の取引</p><p>実際の取引の動向です。</p></div>
+        </div>
+        <div class="v-grid v-grid--2" style="margin-top:1.25rem">
+          <div class="v-callout" style="margin-top:0"><span class="v-callout__icon"><Icon name="handshake" size={30} /></span><p><strong>全員が合意すれば</strong>、固定資産税評価額や路線価などを参考に評価することもできます（家庭裁判所の説明資料）。</p></div>
+          <div class="v-callout v-callout--sand" style="margin-top:0"><span class="v-callout__icon"><Icon name="court" size={30} /></span><p><strong>意見が対立する場合</strong>、遺産分割調停では、遺産について鑑定を行うなどして事情を把握し、話し合いが進められます。鑑定の費用は当事者の負担です。</p></div>
+        </div>
+      </section>
+
+      <!-- 5. 鑑定評価が役立つ場面 -->
+      <section class="v-sec" aria-labelledby="kantei">
+        <h2 id="kantei">不動産鑑定評価が役立つ場面</h2>
+        <p>不動産鑑定士は、法律（不動産の鑑定評価に関する法律）にもとづく国家資格で、権利関係や取引市場を調べ、その不動産の経済価値を判定します。遺産分割では、たとえば次のような場面で判断の材料になります。</p>
+        <ul class="scene-grid">
+          {scenes.map((s) => <li><span class="scene-grid__icon"><Icon name={s.icon} size={26} /></span><span>{s.text}</span></li>)}
+        </ul>
+
+        <figure class="v-figure">
+          <p class="v-figure__title">価格を求める3つの手法<span class="v-tag v-tag--general">不動産鑑定評価基準</span></p>
+          <div class="v-grid v-grid--3">
+            <div class="v-card v-card--sand"><span class="v-card__icon"><Icon name="tools" /></span><p class="v-card__title">原価法</p><p>いま新たに用意するといくらかかるか（再調達原価）から、古くなった分を差し引いて求めます。</p></div>
+            <div class="v-card v-card--sand"><span class="v-card__icon"><Icon name="compare" /></span><p class="v-card__title">取引事例比較法</p><p>似た不動産の取引事例と比べて求めます。</p></div>
+            <div class="v-card v-card--sand"><span class="v-card__icon"><Icon name="coins" /></span><p class="v-card__title">収益還元法</p><p>将来生み出すと期待される収益から求めます。</p></div>
+          </div>
+          <figcaption>不動産の種類や状況に応じて、手法を使い分けます。</figcaption>
+        </figure>
+
+        <p style="margin-top:1.25rem">一方、全員が相続税評価額や査定額で納得している場合など、鑑定評価までは必要ないこともあります。正式な「不動産鑑定評価書」と、鑑定評価基準に則らない「意見書・調査報告書」の違いは、<a href={u('/services/appraisal/')}>不動産鑑定・評価のページ</a>でご案内しています。</p>
+        <div class="v-callout v-callout--sand">
+          <span class="v-callout__icon"><Icon name="alert" size={28} /></span>
+          <p>相続税の申告では、路線価による評価よりも鑑定評価のほうが低くなる場合に、鑑定評価をもとに申告することが検討される場合があります。どの評価を用いるかは税務上の判断を伴うため、税理士にご相談ください。</p>
+        </div>
+      </section>
+
+      <!-- 6. 5つのステップ -->
+      <section class="v-sec" aria-labelledby="steps">
+        <h2 id="steps">話し合いを進める5つのステップ</h2>
+        <figure class="v-figure">
+          <p class="v-figure__title">遺産分割の話し合いの流れ<span class="v-tag v-tag--general">一般的な流れ</span></p>
+          <ol class="v-flow">
+            <li class="v-flow__step"><div class="v-flow__body"><p class="v-flow__title"><Icon name="search" size={22} />財産と相続人を確認する</p><p>登記事項証明書や固定資産税の課税明細書などで、土地・建物の内容を確かめます。</p></div></li>
+            <li class="v-flow__step"><div class="v-flow__body"><p class="v-flow__title"><Icon name="people" size={22} />それぞれの希望を出し合う</p><p>住み続けたい、お金で受け取りたい、売ってもよい、などを共有します。</p></div></li>
+            <li class="v-flow__step"><div class="v-flow__body"><p class="v-flow__title"><Icon name="scale" size={22} />評価の物差しを決める</p><p>路線価、査定、鑑定評価など、どの評価額を使うかを話し合います。</p></div></li>
+            <li class="v-flow__step v-flow__step--decision"><div class="v-flow__body"><p class="v-flow__title">評価と分け方に、全員が納得できる？</p>
+              <div class="v-branch">
+                <div><b>はい</b>次のステップへ進みます。</div>
+                <div><b>いいえ</b>利害関係のない専門家（不動産鑑定士など）の評価を参考に、改めて話し合います。それでもまとまらない場合は、家庭裁判所の遺産分割調停を利用できます（不成立の場合は審判へ移ります）。</div>
+              </div></div></li>
+            <li class="v-flow__step"><div class="v-flow__body"><p class="v-flow__title"><Icon name="doc" size={22} />合意内容を書面にし、手続きを進める</p><p>遺産分割協議書を作成し、相続登記などの手続きを進めます。</p></div></li>
+          </ol>
+        </figure>
+
+        <figure class="v-figure">
+          <p class="v-figure__title"><Icon name="calendar" size={22} />知っておきたい3つの期限</p>
+          <ol class="deadline">
+            <li><span class="deadline__when">10か月以内</span><span class="deadline__what">相続税の申告（必要な場合）</span><span class="deadline__from">亡くなったことを知った日の翌日から</span></li>
+            <li><span class="deadline__when">3年以内</span><span class="deadline__what">相続登記の申請（2024年4月1日から義務化）</span><span class="deadline__from">相続の開始と、不動産の取得を知った日から</span></li>
+            <li><span class="deadline__when">10年経過後</span><span class="deadline__what">原則として、特別受益（生前贈与など）や寄与分（介護などの貢献）を考慮した分割を主張できなくなる（2023年4月1日施行の民法改正）</span><span class="deadline__from">相続開始から</span></li>
+          </ol>
+          <figcaption>起算点はそれぞれ異なり、例外や経過措置もあります。遺産分割そのものには、いつまでに終えなければならないという期限は定められていません。具体的な期限は専門家にご確認ください。</figcaption>
+        </figure>
+      </section>
+
+      <!-- 7. 当社の考え方 -->
+      <section class="v-sec" aria-labelledby="policy">
+        <h2 id="policy">当社の考え方</h2>
+        <div class="policy">
+          <img class="policy__photo" src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt={`${profile.name}の写真`} loading="lazy" decoding="async">
+          <div>
+            <p class="policy__motto">モットーは、ご相談に来られた方を<br>「できるだけ揉めさせない」こと。</p>
+            <ul class="check-list">
+              <li><a href={u('/profile/')}>代表の{profile.name}</a>が、不動産鑑定士・一級建築士として相続・遺産分割の評価のご相談に応じています。</li>
+              <li>国土交通省の地価公示や、東京都の固定資産税路線価などの評価員を務めてきました。</li>
+              <li>建物の状態まで確かめられるため、古い実家や空き家を含む相続にも対応します。</li>
+              <li>相続が始まる前の「どう配分すれば公平か」というご相談も承ります。</li>
+              <li>税務は提携税理士と、法律に関わる問題は弁護士などの専門家と連携します。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
       <aside class="svc-cta" aria-labelledby="svc-cta-title">
         <p class="svc-cta__label">相続・遺産分割のご相談</p>
@@ -139,7 +329,7 @@ const beforeImg = caseEntry.data.gallery[0];
         <ul class="sources__list">
           {sources.map((s) => <li><a href={s.url} target="_blank" rel="noopener">{s.title}</a><span>（{s.publisher}）</span></li>)}
         </ul>
-        <p class="note">制度・法令の内容は{checkedOn}に各機関の公表資料で確認したものです。税金や法律についての個別の判断は、税理士・弁護士などの専門家にご確認ください。</p>
+        <p class="v-note">制度・法令の内容は{checkedOn}に各機関の公表資料で確認したものです。図はすべて当社が作成したもので、マンガは説明用の架空の例です。税金や法律についての個別の判断は、税理士・弁護士などの専門家にご確認ください。</p>
       </section>
 
       <aside class="related-svc" aria-labelledby="rel-svc">
@@ -174,11 +364,14 @@ const beforeImg = caseEntry.data.gallery[0];
       <SectionHead en="Related" title="関連する記事・事例" id="related-title" />
       <div class="related-grid">
         <a class="related-card" href={u('/samples/case-suginami-rental-insight/')}>
-          {beforeImg && <img class="related-card__img" src={u(beforeImg.src)} width={beforeImg.width} height={beforeImg.height} alt={beforeImg.alt} loading="lazy" decoding="async">}
+          <picture>
+            <source type="image/webp" srcset={`${u('/assets/img/samples/suginami48-exterior-after-480.webp')} 480w, ${u('/assets/img/samples/suginami48-exterior-after-800.webp')} 800w`} sizes="(min-width: 768px) 560px, 100vw">
+            <img class="related-card__img" src={u('/assets/img/cases/suginami-house-rental-after.jpg')} width="800" height="600" alt="リフォーム後の木造2階建て住宅の外観" loading="lazy" decoding="async">
+          </picture>
           <div class="related-card__body">
-          <p class="related-card__cat">事例解説</p>
-          <p class="related-card__title">杉並区の空き家を賃貸住宅として再生した事例　専門家はどこを見て「貸す」を提案したのか</p>
-          <p class="related-card__text">相続で空き家になった借地上の戸建てについて、借地権の価値、建物の状態、利回りの見方を解説します。</p>
+            <p class="related-card__cat">事例解説</p>
+            <p class="related-card__title">杉並区の空き家を賃貸住宅として再生した事例　専門家はどこを見て「貸す」を提案したのか</p>
+            <p class="related-card__text">ビフォー・アフターの写真と図解で、借地権の価値、建物の状態、収支の見方を解説します。</p>
           </div>
         </a>
         <CaseCard entry={caseEntry} compact />
@@ -190,35 +383,40 @@ const beforeImg = caseEntry.data.gallery[0];
 </BaseLayout>
 
 <style>
-  .note { margin-top: .75rem; font-size: .9375rem; color: var(--c-muted); }
-  /* 本文の表：SP では横スクロールさせず、セルを縦に積む */
-  .sample-prose :global(table) { margin: 1.25rem 0; background: var(--c-surface); }
-  .sample-prose :global(td:first-child) { white-space: normal; }
-  .sample-prose :global(th:first-child), .sample-prose :global(td:first-child) { min-width: 7.5em; }
-  @media (max-width: 599px) {
-    .sample-prose :global(table), .sample-prose :global(thead), .sample-prose :global(tbody), .sample-prose :global(tr), .sample-prose :global(th), .sample-prose :global(td) { display: block; }
-    .sample-prose :global(thead) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-    .sample-prose :global(tr) { margin-bottom: 1rem; border: 1px solid var(--c-line); border-radius: var(--radius); overflow: hidden; }
-    .sample-prose :global(td) { border: 0; border-top: 1px solid var(--c-line); }
-    .sample-prose :global(td:first-child) { border-top: 0; background: var(--c-primary-50); }
-    .sample-prose :global(td:not(:first-child))::before { display: block; margin-bottom: .2rem; font-size: .8125rem; font-weight: 700; color: var(--c-muted); }
-    /* 1つ目の表：分け方／2つ目の表：価格の種類（列見出しを各セルに表示） */
-    .sample-prose :global(table:nth-of-type(1) td:nth-child(2))::before { content: "内容"; }
-    .sample-prose :global(table:nth-of-type(1) td:nth-child(3))::before { content: "主な注意点"; }
-    .sample-prose :global(table:nth-of-type(2) td:nth-child(2))::before { content: "誰が・何のために"; }
-    .sample-prose :global(table:nth-of-type(2) td:nth-child(3))::before { content: "特徴"; }
-  }
-  .svc-cta { margin-top: 3rem; padding: clamp(1.5rem, 1rem + 2vw, 2.25rem); border-radius: 16px; background: var(--c-sand-50); border: 1px solid var(--c-sand-100); }
-  .svc-cta__label { display: inline-block; margin-bottom: .75rem; padding: .15em .8em; border-radius: 999px; background: var(--c-primary); color: #fff; font-size: .8125rem; font-weight: 700; }
+  .method-card__name { font-weight: 700; font-size: 1.0625rem; color: var(--c-primary); margin-bottom: .5rem; }
+  @media (max-width: 399px) { .method-card { padding: 1rem .75rem; } }
+  .method-card dl { border-top: 1px solid var(--c-line); padding-top: .75rem; margin-top: .75rem; }
+
+  .scene-grid { display: grid; gap: .75rem; margin-top: 1.25rem; }
+  @media (min-width: 640px) { .scene-grid { grid-template-columns: 1fr 1fr; } }
+  .scene-grid li { display: grid; grid-template-columns: auto 1fr; gap: .875rem; align-items: center; padding: .875rem 1rem; border-radius: var(--radius); background: var(--c-surface); border: 1px solid var(--c-line); font-size: .9375rem; line-height: 1.7; }
+  .scene-grid__icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--c-primary); color: #fff; }
+
+  .deadline { display: grid; gap: .75rem; }
+  @media (min-width: 768px) { .deadline { grid-template-columns: repeat(3, 1fr); } }
+  .deadline li { position: relative; display: grid; gap: .3rem; align-content: start; padding: 1rem 1.1rem 1.1rem; border-radius: var(--radius); background: var(--c-primary-50); border-top: 4px solid var(--c-primary); }
+  .deadline__when { font-size: 1.375rem; font-weight: 700; color: var(--c-primary); line-height: 1.3; }
+  .deadline__what { font-weight: 700; line-height: 1.6; font-size: .9375rem; }
+  .deadline__from { font-size: .8125rem; color: var(--c-muted); line-height: 1.6; }
+
+  .policy { display: grid; gap: 1.25rem; padding: clamp(1.25rem, 1rem + 1.5vw, 2rem); border-radius: 16px; background: var(--c-sand-50); border: 1px solid var(--c-sand-100); }
+  @media (min-width: 640px) { .policy { grid-template-columns: 140px 1fr; align-items: start; } }
+  .policy__photo { width: 120px; height: auto; border-radius: 8px; }
+  .policy__motto { font-size: 1.125rem; font-weight: 700; line-height: 1.7; color: var(--c-primary); margin-bottom: .875rem; }
+  .policy .check-list li { font-size: .9375rem; }
+
+  .svc-cta { margin-top: 3rem; padding: clamp(1.5rem, 1rem + 2vw, 2.25rem); border-radius: 16px; background: var(--c-primary-50); border: 1px solid var(--c-primary-100); }
+  .svc-cta .svc-cta__label { display: inline-block; margin-bottom: .75rem; padding: .15em .8em; border-radius: 999px; background: var(--c-primary); color: #fff; font-size: .8125rem; font-weight: 700; }
   .svc-cta__title { font-size: var(--fs-h3, 1.375rem); line-height: 1.5; margin-bottom: .75rem; }
-  .svc-cta p { color: var(--c-ink-soft); line-height: 1.9; }
+  .svc-cta p:not(.svc-cta__label) { color: var(--c-ink-soft); line-height: 1.9; }
   .svc-cta__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
   @media (max-width: 599px) { .svc-cta__actions .btn { width: 100%; } }
+
   .related-grid { display: grid; gap: 1.25rem; }
   @media (min-width: 768px) { .related-grid { grid-template-columns: 1fr 1fr; } }
   .related-card { display: block; overflow: hidden; border-radius: var(--radius); background: var(--c-surface); border: 1px solid var(--c-line); color: inherit; text-decoration: none; }
   .related-card:hover { border-color: var(--c-primary-100); box-shadow: 0 6px 20px rgba(0, 0, 0, .06); }
-  .related-card__img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+  .related-card__img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; height: auto; }
   .related-card__body { padding: 1.25rem 1.5rem 1.5rem; }
   .related-card__cat { color: var(--c-sand-700); font-size: .8125rem; font-weight: 700; margin-bottom: .5rem; }
   .related-card__title { font-weight: 700; color: var(--c-primary); line-height: 1.6; margin-bottom: .5rem; }

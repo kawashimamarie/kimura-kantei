@@ -1,0 +1,96 @@
+/* サンプル記事（ビジュアル版）の共通スタイル。サンプルページだけが読み込む。 */
+
+.v-lead { font-size: 1.0625rem; line-height: 1.95; }
+.v-sec { margin-top: clamp(3rem, 2rem + 3vw, 4.5rem); }
+.v-sec > h2, .v-h2 { font-size: clamp(1.3125rem, 1.15rem + .7vw, 1.625rem); line-height: 1.5; margin-bottom: 1rem; padding-bottom: .6rem; border-bottom: 2px solid var(--c-sand-100); }
+.v-sec p { line-height: 1.95; }
+.v-sec p + p { margin-top: 1rem; }
+.v-note { margin-top: .75rem; font-size: .875rem; color: var(--c-muted); line-height: 1.75; }
+.v-wide { width: min(1100px, calc(100vw - 32px)); margin-left: 50%; transform: translateX(-50%); }
+
+/* ラベル */
+.v-tag { display: inline-block; padding: .15em .7em; border-radius: 999px; font-size: .8125rem; font-weight: 700; line-height: 1.6; white-space: nowrap; vertical-align: .1em; }
+.v-tag--fact { background: var(--c-primary); color: #fff; }
+.v-tag--general { background: var(--c-sand-100); color: var(--c-sand-700); }
+.v-tag--image { background: #eceae6; color: var(--c-ink-soft); }
+
+/* 図のカード */
+.v-figure { margin: 1.5rem 0 0; padding: clamp(1rem, .6rem + 1.6vw, 1.75rem); border: 1px solid var(--c-line); border-radius: var(--radius); background: var(--c-surface); }
+.v-figure > figcaption { margin-top: 1rem; font-size: .875rem; color: var(--c-muted); line-height: 1.75; }
+.v-figure__title { font-weight: 700; margin-bottom: 1rem; display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+
+/* アイコン付きカードの格子 */
+.v-grid { display: grid; gap: .875rem; }
+@media (min-width: 640px) { .v-grid--2 { grid-template-columns: 1fr 1fr; } .v-grid--3 { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 900px) { .v-grid--4 { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 640px) and (max-width: 899px) { .v-grid--4 { grid-template-columns: 1fr 1fr; } }
+.v-card { padding: 1.125rem 1.25rem; border-radius: var(--radius); background: var(--c-surface); border: 1px solid var(--c-line); }
+.v-card--tint { background: var(--c-primary-50); border-color: var(--c-primary-100); }
+.v-card--sand { background: var(--c-sand-50); border-color: var(--c-sand-100); }
+.v-card__icon { display: inline-grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--c-primary-50); color: var(--c-primary); margin-bottom: .6rem; }
+.v-card--tint .v-card__icon { background: #fff; }
+.v-card__title { font-weight: 700; color: var(--c-ink); line-height: 1.55; margin-bottom: .35rem; }
+.v-card p { font-size: .9375rem; line-height: 1.8; color: var(--c-ink-soft); }
+.v-card p + p { margin-top: .4rem; }
+.v-card dl { display: grid; gap: .5rem; margin-top: .5rem; }
+.v-card dt { font-size: .8125rem; font-weight: 700; color: var(--c-muted); }
+.v-card dd { font-size: .9375rem; line-height: 1.75; }
+
+/* 横棒グラフ（HTML/CSS） */
+.v-bars { display: grid; gap: .9rem; }
+.v-bar { display: grid; gap: .3rem; }
+.v-bar__label { display: flex; justify-content: space-between; gap: 1rem; font-size: .9375rem; }
+.v-bar__label b { font-weight: 700; }
+.v-bar__value { font-weight: 700; color: var(--c-ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.v-bar__track { height: 22px; border-radius: 4px; background: #f1eee8; overflow: hidden; }
+.v-bar__fill { height: 100%; border-radius: 0 4px 4px 0; background: var(--c-primary); }
+.v-bar__fill--sand { background: #b5793a; }
+.v-bar__fill--light { background: #7fa3a6; }
+
+/* フローチャート */
+.v-flow { display: grid; gap: 0; counter-reset: vflow; }
+.v-flow__step { position: relative; display: grid; grid-template-columns: 44px 1fr; gap: .875rem; align-items: start; padding-bottom: 1.75rem; }
+.v-flow__step::before { counter-increment: vflow; content: counter(vflow); display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--c-primary); color: #fff; font-weight: 700; font-size: 1.0625rem; position: relative; z-index: 1; }
+.v-flow__step::after { content: ""; position: absolute; left: 21px; top: 44px; bottom: 0; width: 2px; background: var(--c-primary-100); }
+.v-flow__step:last-child { padding-bottom: 0; }
+.v-flow__step:last-child::after { display: none; }
+.v-flow__body { padding: .7rem 1rem; border-radius: var(--radius); background: var(--c-surface); border: 1px solid var(--c-line); }
+.v-flow__title { font-weight: 700; line-height: 1.55; display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+.v-flow__body p { margin-top: .3rem; font-size: .9375rem; line-height: 1.8; color: var(--c-ink-soft); }
+.v-flow__step--decision::before { background: var(--c-sand-700); border-radius: 0; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+.v-flow__step--decision .v-flow__body { background: var(--c-sand-50); border-color: var(--c-sand-100); }
+.v-branch { display: grid; gap: .6rem; margin-top: .6rem; }
+@media (min-width: 640px) { .v-branch { grid-template-columns: 1fr 1fr; } }
+.v-branch > div { padding: .6rem .8rem; border-radius: 8px; background: #fff; border: 1px dashed var(--c-sand); font-size: .9375rem; line-height: 1.7; }
+.v-branch b { display: block; color: var(--c-sand-700); font-size: .8125rem; }
+
+/* 数値タイル */
+.v-stats { display: grid; gap: .75rem; grid-template-columns: 1fr 1fr; }
+@media (min-width: 768px) { .v-stats { grid-template-columns: repeat(3, 1fr); } }
+.v-stat { padding: 1rem; border-radius: var(--radius); background: var(--c-surface); border: 1px solid var(--c-line); }
+.v-stat__label { font-size: .8125rem; color: var(--c-muted); font-weight: 700; line-height: 1.5; }
+.v-stat__num { margin-top: .2rem; font-size: clamp(1.375rem, 1.15rem + 1vw, 1.75rem); font-weight: 700; color: var(--c-primary); line-height: 1.3; font-variant-numeric: tabular-nums; }
+.v-stat__num small { font-size: .55em; margin-left: .15em; color: var(--c-ink-soft); }
+.v-stat__sub { margin-top: .2rem; font-size: .8125rem; color: var(--c-ink-soft); line-height: 1.5; }
+
+/* 表 */
+.v-table-wrap { overflow-x: auto; }
+.v-table { width: 100%; border-collapse: collapse; font-size: .9375rem; background: var(--c-surface); }
+.v-table th, .v-table td { padding: .8rem .9rem; border: 1px solid var(--c-line); text-align: left; vertical-align: top; line-height: 1.7; }
+.v-table thead th { background: var(--c-sand-50); white-space: nowrap; font-size: .875rem; }
+.v-table tbody th { background: var(--c-primary-50); color: var(--c-primary); min-width: 8em; }
+@media (max-width: 639px) {
+  .v-table, .v-table thead, .v-table tbody, .v-table tr, .v-table th, .v-table td { display: block; }
+  .v-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .v-table tr { margin-bottom: .875rem; border: 1px solid var(--c-line); border-radius: var(--radius); overflow: hidden; }
+  .v-table th, .v-table td { border: 0; border-top: 1px solid var(--c-line); }
+  .v-table tbody th { border-top: 0; }
+  .v-table td[data-label]::before { content: attr(data-label); display: block; margin-bottom: .15rem; font-size: .8125rem; font-weight: 700; color: var(--c-muted); }
+}
+
+/* 吹き出し風の補足 */
+.v-callout { margin-top: 1.25rem; display: grid; grid-template-columns: auto 1fr; gap: .875rem; align-items: start; padding: 1rem 1.25rem; border-radius: var(--radius); background: var(--c-primary-50); border: 1px solid var(--c-primary-100); }
+.v-callout__icon { color: var(--c-primary); margin-top: .1rem; }
+.v-callout p { font-size: .9375rem; line-height: 1.85; }
+.v-callout--sand { background: var(--c-sand-50); border-color: var(--c-sand-100); }
+.v-callout--sand .v-callout__icon { color: var(--c-sand-700); }

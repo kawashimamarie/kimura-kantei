@@ -1,13 +1,16 @@
 ---
-// 【提案用サンプル】既存事例（/cases/suginami-rental/）を補足する「専門家の考え方」ページ。
-// - 事例の事実は、現行公式サイト（https://www.kimurakantei.jp/業務内容/）の掲載内容だけを使う。
+// 【提案用サンプル】既存事例（/cases/suginami-rental/）を補足する「専門家の考え方」ページ（ビジュアル版）。
+// - 事例の事実・写真・数値は、現行公式サイト（https://www.kimurakantei.jp/業務内容/）の掲載内容だけを使う。
+//   写真は同ページの本事例（杉並区 築48年戸建「空家から貸家に」）の「リフォーム前／後」に掲載されているもの。
 // - それ以外は「一般的な解説」として区別し、この事例で実際に行った検討・結果としては書かない。
-// - 既存ページからはリンクしない（一覧・関連欄にも出さない）。正式公開時は URL・導線を改めて決める。
+// - 間取り・構造の図面は実物がないため作らない。独自の投資回収年数の計算もしない。
+// - 既存ページからはリンクしない（一覧・関連欄にも出さない）。
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import SectionHead from '../../components/SectionHead.astro';
 import ProfileBox from '../../components/ProfileBox.astro';
 import ContactCta from '../../components/ContactCta.astro';
 import SampleNotice from '../../samples/SampleNotice.astro';
+import Icon from '../../samples/Icon.astro';
+import '../../samples/visual.css';
 import { getEntry } from 'astro:content';
 import { getService } from '../../data/services';
 import { article } from '../../lib/schema';
@@ -19,13 +22,33 @@ const c = caseEntry.data;
 const casePath = '/cases/suginami-rental/';
 const path = '/samples/case-suginami-rental-insight/';
 const title = '杉並区の空き家を賃貸住宅として再生した事例　専門家はどこを見て「貸す」を提案したのか';
-const description = '相続で空き家になった杉並区の借地上の戸建てを、地主様へ返す前にリフォームして賃貸する計画をご提案した事例をもとに、不動産鑑定士・一級建築士が確かめるポイント（借地権の価値、建物の状態、利回りの見方）を、事実と一般的な解説に分けて紹介します。';
+const description = '相続で空き家になった杉並区の借地上の戸建てを、地主様へ返す前にリフォームして賃貸する計画をご提案した事例を、ビフォー・アフターの写真と図解で紹介します。借地権の価値、建物の状態、収支の見方を、事実と一般的な解説に分けて説明します。';
 const svcs = c.services.map((s) => getService(s));
+
+const img = (name: string, sizes: number[] = [480, 800]) => ({
+  src: u(`/assets/img/samples/${name}-${sizes[sizes.length - 1]}.webp`),
+  srcset: sizes.map((w) => `${u(`/assets/img/samples/${name}-${w}.webp`)} ${w}w`).join(', '),
+});
+const pairs = [
+  { title: '外観', before: { ...img('suginami48-exterior-before'), alt: 'リフォーム前の住宅の外観。ブロック塀の向こうに建物が見える' }, after: { ...img('suginami48-exterior-after'), alt: 'リフォーム後の住宅の外観。外壁を塗り替え、バルコニーが新しくなっている' } },
+  { title: '玄関まわり', before: { ...img('suginami48-entrance-before'), alt: 'リフォーム前の玄関まわりと庭。草木が伸びている' }, after: { ...img('suginami48-entrance-after'), alt: 'リフォーム後の玄関まわり。新しい玄関ドアとアプローチ、植栽' } },
+  { title: '室内（キッチン）', before: { ...img('suginami48-kitchen-before'), alt: 'リフォーム前のダイニングキッチン' }, after: { ...img('suginami48-kitchen-after', [480, 640]), alt: 'リフォーム後のキッチンと室内' } },
+];
+const eaves = { ...img('suginami48-eaves-before'), alt: 'リフォーム前の外まわりの木部' };
+
+const works = ['耐震', '断熱', '玄関ドア交換', '窓交換', 'バルコニー交換', '間取り変更', '外壁・屋根塗装', '設備更新', '玄関アプローチ・駐車場整備', '庭木剪定'];
+
+// 公開値（現行公式サイトに掲載の計画値）
+const COST = 1100; // 万円（約）
+const RENT_M = 18; // 万円/月（約）
+const RENT_Y = RENT_M * 12; // 216万円
+const ratio = ((RENT_Y / COST) * 100).toFixed(1); // 19.6
 
 const sources = [
   { title: '耐震リフォーム事例（杉並区 築48年戸建「空家から貸家に」）', publisher: '株式会社木村不動産鑑定（現行公式サイト）', url: 'https://www.kimurakantei.jp/業務内容/' },
   { title: 'No.4611 借地権の評価', publisher: '国税庁', url: 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/hyoka/4611.htm' },
   { title: '借地借家法（第17条・第19条、附則第6条）', publisher: 'e-Gov法令検索（デジタル庁）', url: 'https://laws.e-gov.go.jp/law/403AC0000000090' },
+  { title: '不動産鑑定評価基準', publisher: '国土交通省', url: 'https://www.mlit.go.jp/common/001204083.pdf' },
 ];
 ---
 <BaseLayout
@@ -54,98 +77,172 @@ const sources = [
     </header>
 
     <div class="container container--narrow article__body">
-      <p class="lead">相続で空き家になった借地上の戸建てを、地主様へ返す前に、リフォームして賃貸する計画をご提案した事例があります。このページでは、その事例をもとに、不動産鑑定士・一級建築士がどのような点を確かめながら選択肢を考えるのかをご紹介します。</p>
+      <p class="v-lead">相続で空き家になった借地上の戸建てを、地主様へ返す前に、リフォームして賃貸する計画をご提案した事例です。写真と図で、不動産鑑定士・一級建築士がどこを確かめながら選択肢を考えるのかをご紹介します。</p>
 
       <div class="legend" role="note">
         <p class="legend__title">このページの読み方</p>
         <ul>
-          <li><span class="tag tag--fact">事例の事実</span>当社が公開している事例の内容です。</li>
-          <li><span class="tag tag--general">一般的な解説</span>同じような状況で一般に確かめることが多い点を整理したものです。この事例で実際に行った検討の内容や結果を示すものではありません。</li>
+          <li><span class="v-tag v-tag--fact">事例の事実</span>当社が現行の公式サイトで公開している、この事例の内容・写真・数値です。</li>
+          <li><span class="v-tag v-tag--general">一般的な解説</span>同じような状況で一般に確かめることが多い点です。この事例で実際に行った検討の内容や結果を示すものではありません。</li>
         </ul>
       </div>
 
       <nav class="toc toc--article" aria-label="目次">
         <p class="toc__title">目次</p>
         <ol class="toc__list toc__list--ol">
-          <li><a href="#facts">この事例で公開している事実</a></li>
-          <li><a href="#options">「返す」か「活かす」か：3つの選択肢</a></li>
-          <li><a href="#appraiser">不動産鑑定士の視点：借地権も財産として考える</a></li>
-          <li><a href="#architect">一級建築士の視点：直して使える建物かを見極める</a></li>
-          <li><a href="#numbers">計画の数字の見方：表面利回りと実質利回り</a></li>
-          <li><a href="#inheritance">相続人が複数いる場合は</a></li>
+          <li><a href="#beforeafter">ビフォー・アフター</a></li>
+          <li><a href="#facts">この事例のあらまし</a></li>
+          <li><a href="#options">空き家の選択肢を比べる</a></li>
+          <li><a href="#flow">改修から収益化までの流れ</a></li>
+          <li><a href="#numbers">収支のイメージ</a></li>
+          <li><a href="#relation">建物・収益・価値の関係</a></li>
         </ol>
       </nav>
 
-      <section class="block" aria-labelledby="facts">
-        <p class="tag tag--fact">事例の事実</p>
-        <h2 id="facts">この事例で公開している事実</h2>
-        <figure class="article__cover">
-          <img src={u(c.cover.src)} width={c.cover.width} height={c.cover.height} alt={c.cover.alt}>
-          <figcaption>リフォーム後の外観</figcaption>
-        </figure>
-        <dl class="case-summary">
-          <div><dt>経緯</dt><dd>ご両親が亡くなり、相続人であるご相談者様が引き継いだ戸建て（杉並区・築48年）が空き家になっていました。</dd></div>
-          <div><dt>土地の権利</dt><dd>借地権（旧借地法）。ご相談者様は当初、地主様へ土地を無償で返還するお気持ちでした。</dd></div>
-          <div><dt>ご提案</dt><dd>返還する前に、リフォームして賃貸する選択肢をご提案。フルリノベーションで建物の耐用年数を延ばす計画です。</dd></div>
-          <div><dt>計画の数字</dt><dd>リフォーム代金は約1,100万円、家賃は約18万円。表面利回りは約20％（実質約16％）で、約7年で投資を回収し、その後は純収益が得られる計画としました。</dd></div>
-          <div><dt>将来の選択肢</dt><dd>借地権付建物として売却する道も残っています。</dd></div>
-        </dl>
-        <p class="to-case"><a href={u(casePath)}>工事の内容と、リフォーム前後の写真は事例ページへ</a></p>
-      </section>
-
-      <section class="block" aria-labelledby="options">
-        <p class="tag tag--general">一般的な解説</p>
-        <h2 id="options">「返す」か「活かす」か：3つの選択肢</h2>
-        <p>相続した借地上の建物が空き家になったとき、考えられる道は大きく分けて次の3つです。この事例では、ご相談者様が当初お考えだった「返還」の前に、「貸す」という選択肢をご提案しました。</p>
-        <div class="table-wrap">
-          <table>
-            <caption class="u-visually-hidden">借地上の空き家の主な選択肢</caption>
-            <thead><tr><th scope="col">選択肢</th><th scope="col">一般的な特徴</th><th scope="col">事前に確かめたいこと</th></tr></thead>
-            <tbody>
-              <tr><th scope="row">土地を返還する</th><td>建物の管理や、地代などの負担から離れられます。</td><td>借地権は財産としての価値を持つことがあり、無償で返還すると、その価値を手放すことになります。返還の条件は、契約の内容や地主様との話し合いによって決まります。</td></tr>
-              <tr><th scope="row">建物を直して貸す</th><td>借地権を持ち続けながら、賃料収入を得られます。</td><td>改修にかかる費用と回収の見通し、賃貸の需要、地代などの継続的な負担、借地契約に増改築を制限する取り決めがあるかどうか。</td></tr>
-              <tr><th scope="row">借地権付建物として売却する</th><td>まとまった資金に換えることができます。</td><td>土地の賃借権を譲渡するには、原則として地主様の承諾が必要です。承諾が得られない場合に、裁判所が承諾に代わる許可を与える制度もあります（借地借家法第19条）。</td></tr>
-            </tbody>
-          </table>
+      <!-- 1. ビフォー・アフター -->
+      <section class="v-sec" aria-labelledby="beforeafter">
+        <h2 id="beforeafter">ビフォー・アフター <span class="v-tag v-tag--fact">事例の事実</span></h2>
+        <div class="ba-list">
+          {pairs.map((p) => (
+            <figure class="ba">
+              <figcaption class="ba__title">{p.title}</figcaption>
+              <div class="ba__pair">
+                <div class="ba__item">
+                  <span class="ba__badge">リフォーム前</span>
+                  <img src={p.before.src} srcset={p.before.srcset} sizes="(min-width: 900px) 420px, 50vw" width="800" height="600" alt={p.before.alt} loading="lazy" decoding="async">
+                </div>
+                <div class="ba__arrow" aria-hidden="true">→</div>
+                <div class="ba__item">
+                  <span class="ba__badge ba__badge--after">リフォーム後</span>
+                  <img src={p.after.src} srcset={p.after.srcset} sizes="(min-width: 900px) 420px, 50vw" width="800" height="600" alt={p.after.alt} loading="lazy" decoding="async">
+                </div>
+              </div>
+            </figure>
+          ))}
         </div>
-        <p class="note">どの道が適しているかは、借地契約の内容、建物の状態、相続人の方々のご意向などによって異なります。</p>
+        <p class="v-note">写真は、現行の公式サイトでこの事例の「リフォーム前」「リフォーム後」として掲載しているものです。撮影の位置・角度は前後で異なります。工事の一覧と、そのほかの写真は<a href={u(casePath)}>事例ページ</a>でご覧いただけます。</p>
       </section>
 
-      <section class="block" aria-labelledby="appraiser">
-        <p class="tag tag--general">一般的な解説</p>
-        <h2 id="appraiser">不動産鑑定士の視点：借地権も財産として考える</h2>
-        <p>借地権とは、建物の所有を目的とする地上権または土地の賃借権のことです。土地は地主様のものでも、借地権そのものが財産としての価値を持つことがあります。</p>
-        <p>たとえば相続税の計算では、借地権も課税の対象となる財産で、一般に「その土地を更地とした場合の価額 × 借地権割合」で評価されます。借地権割合は地域ごとに定められ、国税庁の路線価図などに表示されています。</p>
-        <p>一方で、実際に取引されるときの借地権の価値は、契約の内容や地代の水準、残りの契約期間、地主様との関係などによって変わります。相続税の評価額と、市場で取引される価格は、必ずしも一致しません。「返す」と決める前に、手放そうとしているものの価値を一度確かめておくことが大切です。</p>
-        <p>なお、1992年（平成4年）8月1日の借地借家法の施行より前に設定された借地権では、契約の更新などについて、旧借地法の規定が引き続き適用されます（借地借家法附則第6条など）。どの規定が適用されるかによって、考え方が変わる点があります。</p>
+      <!-- 2. あらまし -->
+      <section class="v-sec" aria-labelledby="facts">
+        <h2 id="facts">この事例のあらまし <span class="v-tag v-tag--fact">事例の事実</span></h2>
+        <ol class="story">
+          <li><span class="story__icon"><Icon name="people" size={24} /></span><div><b>相続で空き家に</b>ご両親が亡くなり、相続人であるご相談者様が引き継いだ戸建て（杉並区・築48年）が空き家になりました。</div></li>
+          <li><span class="story__icon"><Icon name="key" size={24} /></span><div><b>土地は借地</b>借地権（旧借地法）。ご相談者様は当初、地主様へ土地を<strong>無償で返還する</strong>お気持ちでした。</div></li>
+          <li><span class="story__icon"><Icon name="rent" size={24} /></span><div><b>「貸す」をご提案</b>返還する前に、リフォームして賃貸する選択肢をご提案。フルリノベーションで建物の耐用年数を延ばす計画です。</div></li>
+          <li><span class="story__icon"><Icon name="sell" size={24} /></span><div><b>将来の選択肢も</b>借地権付建物として売却する道も残っています。</div></li>
+        </ol>
       </section>
 
-      <section class="block" aria-labelledby="architect">
-        <p class="tag tag--general">一般的な解説</p>
-        <h2 id="architect">一級建築士の視点：直して使える建物かを見極める</h2>
-        <p>「貸す」という選択肢が現実的かどうかは、建物を直して使い続けられるかにかかっています。古い木造住宅であれば、構造や劣化の状態、耐震性を確かめたうえで、どこまで手を入れるかを考えます。</p>
-        <p>この事例の工事には、耐震・断熱・窓の交換・間取り変更・設備更新などが含まれています<span class="inline-tag">事例の事実</span>。賃貸住宅として貸す場合、安全性と住み心地の両方が、賃料や入居者の決まりやすさに影響しうるためです。</p>
-        <p>また、借地契約に増改築を制限する取り決めがある場合は、大きなリフォームの前に地主様の承諾が必要になることがあります。話し合いがまとまらないときに、裁判所が承諾に代わる許可を与える制度もあります（借地借家法第17条第2項）。</p>
-        <p class="note">木造住宅の耐震基準の移り変わりについては、コラム「<a href={u('/column/seismic-standards-history/')}>能登半島地震から考える、木造住宅の耐震基準の変遷と課題</a>」で解説しています。</p>
+      <!-- 3. 選択肢の比較 -->
+      <section class="v-sec" aria-labelledby="options">
+        <h2 id="options">空き家の選択肢を比べる <span class="v-tag v-tag--general">一般的な解説</span></h2>
+        <p>相続した借地上の建物が空き家になったとき、考えられる道は大きく分けて次の3つです。</p>
+        <div class="opt-grid">
+          <div class="opt">
+            <p class="opt__head"><span class="opt__icon"><Icon name="sell" size={30} /></span>売却する</p>
+            <dl>
+              <div><dt>得られるもの</dt><dd>まとまった資金に換えられます。</dd></div>
+              <div><dt>主な負担・注意点</dt><dd>土地の賃借権を譲渡するには、原則として地主様の承諾が必要です（承諾に代わる裁判所の許可の制度もあります。借地借家法第19条）。</dd></div>
+              <div><dt>確かめたいこと</dt><dd>借地契約の内容、地主様のご意向、借地権付建物としての価値。</dd></div>
+            </dl>
+          </div>
+          <div class="opt opt--pick">
+            <p class="opt__flag"><span class="v-tag v-tag--fact">事例の事実</span>この事例でご提案</p>
+            <p class="opt__head"><span class="opt__icon"><Icon name="rent" size={30} /></span>直して貸す</p>
+            <dl>
+              <div><dt>得られるもの</dt><dd>借地権を持ち続けながら、賃料収入を得られます。</dd></div>
+              <div><dt>主な負担・注意点</dt><dd>改修費のほか、空室・修繕・地代・税金などの負担があります。</dd></div>
+              <div><dt>確かめたいこと</dt><dd>建物を直して使えるか、賃貸の需要、増改築を制限する取り決めの有無。</dd></div>
+            </dl>
+          </div>
+          <div class="opt">
+            <p class="opt__head"><span class="opt__icon"><Icon name="return" size={30} /></span>その他の活用</p>
+            <dl>
+              <div><dt>例</dt><dd>土地の返還、ご自身やご家族の住まいとしての利用など。</dd></div>
+              <div><dt>主な負担・注意点</dt><dd>返還すると、建物の管理や地代の負担から離れられる一方、借地権の価値を手放すことになりえます。返還の条件は契約や話し合いで決まります。</dd></div>
+              <div><dt>この事例では</dt><dd><span class="v-tag v-tag--fact">事例の事実</span> 当初は、土地の無償返還をお考えでした。</dd></div>
+            </dl>
+          </div>
+        </div>
       </section>
 
-      <section class="block" aria-labelledby="numbers">
-        <p class="tag tag--general">一般的な解説</p>
-        <h2 id="numbers">計画の数字の見方：表面利回りと実質利回り</h2>
-        <p>賃貸の計画では、利回りという指標がよく使われます。</p>
-        <dl class="formula">
-          <div><dt>表面利回り</dt><dd>年間の賃料収入 ÷ 投資額</dd></div>
-          <div><dt>実質利回り</dt><dd>（年間の賃料収入 − 地代・建物の固定資産税・管理費・修繕費などの経費）÷ 投資額</dd></div>
-        </dl>
-        <p>この事例で公開している数字にあてはめると、家賃約18万円 × 12か月 ＝ 年間約216万円、これをリフォーム代金約1,100万円で割ると約19.6％となり、公開している「表面利回り約20％」と一致します。実質利回り（約16％）の計算に含めた経費の内訳は公開していません。</p>
-        <p>いずれも計画の段階の数字で、実際の収支は、空室の期間や修繕の発生などによって変わることがあります。</p>
+      <!-- 4. 流れ -->
+      <section class="v-sec" aria-labelledby="flow">
+        <h2 id="flow">改修から収益化までの流れ</h2>
+        <figure class="v-figure">
+          <p class="v-figure__title">借地上の空き家を直して貸すまで<span class="v-tag v-tag--general">一般的な流れ</span><span class="v-tag v-tag--fact">事例の事実</span>は本事例で公開している内容</p>
+          <ol class="v-flow">
+            <li class="v-flow__step"><div class="v-flow__body"><p class="v-flow__title"><Icon name="doc" size={22} />権利と契約を確かめる</p><p>借地契約の期間・地代・増改築の取り決めなどを確認します。1992年8月1日の借地借家法施行より前に設定された借地権では、契約の更新などに旧借地法の規定が引き続き適用されます（同法附則第6条など）。</p></div></li>
+            <li class="v-flow__step"><div class="v-flow__body"><p class="v-flow__title"><Icon name="search" size={22} />建物の状態を確かめる</p><p>構造や劣化の状態、耐震性を確かめ、直して使い続けられるかを見極めます。</p>
+              <figure class="flow-photo">
+                <img src={eaves.src} srcset={eaves.srcset} sizes="(min-width: 768px) 360px, 80vw" width="800" height="600" alt={eaves.alt} loading="lazy" decoding="async">
+                <figcaption><span class="v-tag v-tag--fact">事例の事実</span> リフォーム前の外まわり（本事例）</figcaption>
+              </figure></div></li>
+            <li class="v-flow__step"><div class="v-flow__body"><p class="v-flow__title"><Icon name="chart" size={22} />改修計画と収支を考える</p><p>どこまで手を入れるか、費用と賃料の見通しを検討します。</p><p class="fact-line"><span class="v-tag v-tag--fact">事例の事実</span> フルリノベーションで耐用年数を延ばす計画に。</p></div></li>
+            <li class="v-flow__step"><div class="v-flow__body"><p class="v-flow__title"><Icon name="handshake" size={22} />必要な承諾・手続き</p><p>増改築を制限する取り決めがある場合は、地主様の承諾が必要になることがあります。協議が調わないときに、裁判所が承諾に代わる許可を与える制度もあります（借地借家法第17条第2項）。</p></div></li>
+            <li class="v-flow__step"><div class="v-flow__body"><p class="v-flow__title"><Icon name="tools" size={22} />改修工事</p><p class="fact-line"><span class="v-tag v-tag--fact">事例の事実</span> 本事例の工事内容</p><ul class="chips">{works.map((w) => <li>{w}</li>)}</ul></div></li>
+            <li class="v-flow__step"><div class="v-flow__body"><p class="v-flow__title"><Icon name="rent" size={22} />賃貸する</p><p class="fact-line"><span class="v-tag v-tag--fact">事例の事実</span> 家賃は約18万円の計画です。</p></div></li>
+            <li class="v-flow__step"><div class="v-flow__body"><p class="v-flow__title"><Icon name="coins" size={22} />収益と将来の選択肢</p><p class="fact-line"><span class="v-tag v-tag--fact">事例の事実</span> 約7年で投資を回収し、その後は純収益が得られる計画。将来は借地権付建物として売却する道も残っています。</p></div></li>
+          </ol>
+        </figure>
       </section>
 
-      <section class="block" aria-labelledby="inheritance">
-        <p class="tag tag--general">一般的な解説</p>
-        <h2 id="inheritance">相続人が複数いる場合は</h2>
-        <p>相続人が複数いる場合、借地権付きの建物を「返す」「貸す」「売る」のどれにするかは、遺産分割の話し合いとも関わります。誰が引き継ぐのか、ほかの財産とどう釣り合いをとるのかを考えるには、その不動産の価値を客観的に把握しておくことが役立ちます。</p>
-        <p class="note">相続した不動産を兄弟姉妹で公平に分けるための評価の考え方は、コラム「<a href={u('/samples/column-inheritance-fair-division/')}>相続した実家を兄弟で公平に分けるには？</a>」で解説しています。</p>
+      <!-- 5. 収支イメージ -->
+      <section class="v-sec" aria-labelledby="numbers">
+        <h2 id="numbers">収支のイメージ</h2>
+        <p class="v-figure__title" style="margin-bottom:.75rem"><span class="v-tag v-tag--fact">事例の事実</span>公開している計画の数字</p>
+        <div class="v-stats">
+          <div class="v-stat"><p class="v-stat__label">リフォーム代金</p><p class="v-stat__num">約1,100<small>万円</small></p></div>
+          <div class="v-stat"><p class="v-stat__label">家賃</p><p class="v-stat__num">約18<small>万円/月</small></p></div>
+          <div class="v-stat"><p class="v-stat__label">表面利回り</p><p class="v-stat__num">約20<small>％</small></p></div>
+          <div class="v-stat"><p class="v-stat__label">実質利回り</p><p class="v-stat__num">約16<small>％</small></p></div>
+          <div class="v-stat v-stat--wide"><p class="v-stat__label">投資回収の見込み（計画）</p><p class="v-stat__num">約7<small>年</small></p><p class="v-stat__sub">その後は純収益が得られる計画</p></div>
+        </div>
+
+        <figure class="v-figure">
+          <p class="v-figure__title">リフォーム代金と年間の家賃<span class="v-tag v-tag--general">公開値からの計算</span></p>
+          <div class="v-bars">
+            <div class="v-bar"><div class="v-bar__label"><b>リフォーム代金</b><span class="v-bar__value">約{COST.toLocaleString()}万円</span></div><div class="v-bar__track"><div class="v-bar__fill v-bar__fill--sand" style="width:100%" title={`リフォーム代金：約${COST.toLocaleString()}万円`}></div></div></div>
+            <div class="v-bar"><div class="v-bar__label"><b>年間の家賃（約18万円×12か月）</b><span class="v-bar__value">約{RENT_Y}万円</span></div><div class="v-bar__track"><div class="v-bar__fill" style={`width:${(RENT_Y / COST) * 100}%`} title={`年間の家賃：約${RENT_Y}万円`}></div></div></div>
+          </div>
+          <figcaption>年間の家賃（約{RENT_Y}万円）は、リフォーム代金（約1,100万円）の約{ratio}％にあたり、公開している表面利回り（約20％）と同程度の水準です。この比率は、空室・経費・税金などを差し引く前のものです。</figcaption>
+        </figure>
+
+        <figure class="v-figure">
+          <p class="v-figure__title">表面利回りと実質利回り<span class="v-tag v-tag--fact">事例の事実</span></p>
+          <div class="v-bars">
+            <div class="v-bar"><div class="v-bar__label"><b>表面利回り</b><span class="v-bar__value">約20％</span></div><div class="v-bar__track"><div class="v-bar__fill" style="width:80%" title="表面利回り：約20％"></div></div></div>
+            <div class="v-bar"><div class="v-bar__label"><b>実質利回り</b><span class="v-bar__value">約16％</span></div><div class="v-bar__track"><div class="v-bar__fill v-bar__fill--light" style="width:64%" title="実質利回り：約16％"></div></div></div>
+          </div>
+          <div class="v-grid v-grid--2" style="margin-top:1.25rem">
+            <div class="v-card v-card--tint"><p class="v-card__title">表面利回り</p><p>年間の賃料収入 ÷ 投資額</p></div>
+            <div class="v-card v-card--tint"><p class="v-card__title">実質利回り</p><p>（年間の賃料収入 − 地代・建物の固定資産税・管理費・修繕費などの経費）÷ 投資額</p></div>
+          </div>
+          <figcaption>グラフの目盛りは0〜25％です。実質利回りの計算に含めた経費の内訳は公開していません。</figcaption>
+        </figure>
+
+        <div class="v-callout v-callout--sand">
+          <span class="v-callout__icon"><Icon name="alert" size={28} /></span>
+          <p>「約7年」は、公開している計画上の見込みです。実際の回収期間は、空室の期間・修繕・税金などによって変わります。このページでは、家賃だけでリフォーム代金を割った年数を「回収期間」として示すことはしていません。</p>
+        </div>
+      </section>
+
+      <!-- 6. 関係図 -->
+      <section class="v-sec" aria-labelledby="relation">
+        <h2 id="relation">建物・収益・価値の関係 <span class="v-tag v-tag--general">一般的な解説</span></h2>
+        <p>不動産鑑定士と一級建築士の視点を重ねると、建物の状態から不動産の価値までが、ひとつながりで見えてきます。</p>
+        <ol class="chain">
+          <li><span class="chain__icon"><Icon name="search" size={28} /></span><b>建物の状態</b><p>構造・劣化・耐震性によって、必要な改修の内容と費用が変わります。</p></li>
+          <li><span class="chain__icon"><Icon name="tools" size={28} /></span><b>改修</b><p>安全性や住み心地を高める改修は、賃料や入居者の決まりやすさに影響しえます。</p></li>
+          <li><span class="chain__icon"><Icon name="coins" size={28} /></span><b>収益性</b><p>賃料から経費を差し引いた収益が、利回りや回収の見通しを左右します。</p></li>
+          <li><span class="chain__icon"><Icon name="scale" size={28} /></span><b>不動産の価値</b><p>鑑定評価には、将来の収益から価格を求める「収益還元法」があります。借地権付建物の価値は、契約の内容や地主様との関係などにも左右されます。</p></li>
+        </ol>
+        <div class="v-callout">
+          <span class="v-callout__icon"><Icon name="key" size={28} /></span>
+          <p>相続税の計算では、借地権も財産として評価の対象になり、一般に「その土地を更地とした場合の価額 × 借地権割合」で評価されます（国税庁）。ただし、市場で取引される価格と一致するとは限りません。「返す」と決める前に、手放そうとしているものの価値を確かめておくことが大切です。</p>
+        </div>
+        <p style="margin-top:1.25rem">相続人が複数いる場合は、「返す」「貸す」「売る」の選択が遺産分割の話し合いとも関わります。評価の考え方は、コラム「<a href={u('/samples/column-inheritance-fair-division/')}>相続した実家を兄弟で公平に分けるには？</a>」で図解しています。</p>
       </section>
 
       <section class="sources" aria-labelledby="src-title">
@@ -153,7 +250,7 @@ const sources = [
         <ul class="sources__list">
           {sources.map((s) => <li><a href={s.url} target="_blank" rel="noopener">{s.title}</a><span>（{s.publisher}）</span></li>)}
         </ul>
-        <p class="note">法令・制度の内容は2026年10月10日に確認したものです。個別の事案への当てはめについては、契約内容などを確認したうえでの判断が必要です。</p>
+        <p class="v-note">法令・制度の内容は2026年10月10日に確認したものです。図はすべて当社が作成した説明用のもので、この建物の間取りや構造を示すものではありません。個別の事案への当てはめには、契約内容などを確認したうえでの判断が必要です。</p>
       </section>
 
       <aside class="related-svc" aria-labelledby="rel-svc">
@@ -174,46 +271,59 @@ const sources = [
 
 <style>
   .page-header__title .sub { display: block; margin-top: .5rem; font-size: .62em; font-weight: 500; color: var(--c-ink-soft); }
-  .lead { font-size: 1.0625rem; line-height: 1.95; margin-bottom: 1.75rem; }
-  .legend { padding: 1.25rem 1.5rem; border: 1px solid var(--c-line); border-radius: var(--radius); background: var(--c-surface); margin-bottom: 2rem; }
+  .legend { margin-top: 1.75rem; padding: 1.25rem 1.5rem; border: 1px solid var(--c-line); border-radius: var(--radius); background: var(--c-surface); margin-bottom: 2rem; }
   .legend__title { font-weight: 700; margin-bottom: .5rem; }
   .legend ul { display: grid; gap: .5rem; }
   .legend li { line-height: 1.75; font-size: .9375rem; }
-  .legend .tag { margin-right: .6em; }
-  .tag { display: inline-block; padding: .15em .7em; border-radius: 999px; font-size: .8125rem; font-weight: 700; line-height: 1.6; white-space: nowrap; }
-  .tag--fact { background: var(--c-primary); color: #fff; }
-  .tag--general { background: var(--c-sand-100); color: var(--c-sand-700); }
-  .inline-tag { display: inline-block; margin-left: .35em; padding: 0 .5em; border-radius: 4px; font-size: .75rem; font-weight: 700; color: #fff; background: var(--c-primary); vertical-align: .1em; }
-  .block { margin-top: 3rem; }
-  .block > .tag { margin-bottom: .5rem; }
-  .block h2 { font-size: var(--fs-h3, 1.375rem); margin-bottom: 1rem; line-height: 1.5; }
-  .block p { line-height: 1.95; }
-  .block p + p { margin-top: 1rem; }
-  .block .case-summary { margin: 1.5rem 0 1rem; }
-  .article__cover figcaption { margin-top: .5rem; font-size: .875rem; color: var(--c-muted); }
-  .to-case a { font-weight: 700; }
-  .note { margin-top: 1rem; font-size: .9375rem; color: var(--c-muted); }
-  .table-wrap { margin-top: 1.25rem; overflow-x: auto; }
-  .table-wrap table { width: 100%; border-collapse: collapse; background: var(--c-surface); font-size: .9375rem; }
-  .table-wrap th, .table-wrap td { padding: .875rem; border: 1px solid var(--c-line); text-align: left; vertical-align: top; line-height: 1.75; }
-  .table-wrap thead th { background: var(--c-sand-50); white-space: nowrap; }
-  .table-wrap tbody th { color: var(--c-primary); background: var(--c-primary-50); min-width: 7em; }
-  .formula { display: grid; gap: 1px; margin: 1.25rem 0; border: 1px solid var(--c-line); border-radius: var(--radius); overflow: hidden; background: var(--c-line); }
-  .formula > div { display: grid; gap: .25rem; padding: 1rem 1.25rem; background: var(--c-surface); }
-  .formula dt { font-weight: 700; color: var(--c-primary); }
-  .sources .note { margin-top: .75rem; }
+  .legend .v-tag { margin-right: .6em; }
+
+  .ba-list { display: grid; gap: 1.5rem; margin-top: 1.25rem; }
+  .ba { margin: 0; }
+  .ba__title { font-weight: 700; margin-bottom: .5rem; color: var(--c-primary); }
+  .ba__pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: .5rem; align-items: center; }
+  .ba__item { position: relative; border-radius: 10px; overflow: hidden; background: #eee; }
+  .ba__item img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+  .ba__badge { position: absolute; top: 8px; left: 8px; padding: .15em .6em; border-radius: 4px; background: rgba(38, 41, 43, .78); color: #fff; font-size: .8125rem; font-weight: 700; }
+  .ba__badge--after { background: var(--c-primary); }
+  .ba__arrow { color: var(--c-sand-700); font-weight: 700; font-size: 1.25rem; }
+  @media (max-width: 479px) { .ba__pair { grid-template-columns: 1fr; } .ba__arrow { justify-self: center; transform: rotate(90deg); line-height: 1; } }
+
+  .story { display: grid; gap: .75rem; margin-top: 1rem; }
+  @media (min-width: 768px) { .story { grid-template-columns: 1fr 1fr; } }
+  .story li { display: grid; grid-template-columns: auto 1fr; gap: .875rem; padding: 1rem 1.125rem; border-radius: var(--radius); background: var(--c-surface); border: 1px solid var(--c-line); font-size: .9375rem; line-height: 1.8; }
+  .story b { display: block; color: var(--c-primary); font-size: 1rem; margin-bottom: .15rem; }
+  .story__icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--c-primary-50); color: var(--c-primary); }
+
+  .opt-grid { display: grid; gap: .875rem; margin-top: 1.25rem; }
+  @media (min-width: 768px) { .opt-grid { grid-template-columns: repeat(3, 1fr); align-items: stretch; } }
+  .opt { padding: 1.125rem 1.125rem 1.25rem; border-radius: var(--radius); background: var(--c-surface); border: 1px solid var(--c-line); }
+  .opt--pick { border: 2px solid var(--c-primary); background: var(--c-primary-50); }
+  .opt__flag { font-size: .8125rem; font-weight: 700; color: var(--c-primary); margin-bottom: .5rem; display: flex; gap: .4rem; align-items: center; flex-wrap: wrap; }
+  .opt__head { display: flex; align-items: center; gap: .6rem; font-weight: 700; font-size: 1.125rem; margin-bottom: .75rem; }
+  .opt__icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--c-sand-50); color: var(--c-sand-700); }
+  .opt--pick .opt__icon { background: #fff; color: var(--c-primary); }
+  .opt dl { display: grid; gap: .6rem; }
+  .opt dt { font-size: .8125rem; font-weight: 700; color: var(--c-muted); }
+  .opt dd { font-size: .9375rem; line-height: 1.75; }
+
+  .flow-photo { margin: .75rem 0 0; max-width: 360px; }
+  .flow-photo img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  .flow-photo figcaption { margin-top: .4rem; font-size: .8125rem; color: var(--c-muted); }
+  .fact-line { color: var(--c-ink) !important; }
+  .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .5rem; }
+  .chips li { padding: .2em .7em; border-radius: 999px; background: var(--c-primary-50); border: 1px solid var(--c-primary-100); font-size: .875rem; color: var(--c-primary); }
+
+  .v-stat--wide { grid-column: span 2; }
+  @media (min-width: 768px) { .v-stat--wide { grid-column: span 2; } }
+
+  .chain { display: grid; gap: 1.75rem; margin-top: 1.25rem; counter-reset: chain; }
+  @media (min-width: 900px) { .chain { grid-template-columns: repeat(4, 1fr); gap: 1.5rem; } }
+  .chain li { position: relative; padding: 1.125rem; border-radius: var(--radius); background: var(--c-surface); border: 1px solid var(--c-line); text-align: center; }
+  .chain b { display: block; font-size: 1.0625rem; color: var(--c-primary); margin: .4rem 0 .35rem; }
+  .chain p { font-size: .875rem; line-height: 1.75; color: var(--c-ink-soft); text-align: left; }
+  .chain__icon { display: inline-grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--c-primary); color: #fff; }
+  .chain li:not(:last-child)::after { content: "↓"; position: absolute; left: 50%; bottom: -1.55rem; transform: translateX(-50%); color: var(--c-sand-700); font-weight: 700; font-size: 1.125rem; }
+  @media (min-width: 900px) { .chain li:not(:last-child)::after { content: "→"; left: auto; right: -1.25rem; bottom: auto; top: 2.4rem; transform: none; } }
+
   .back-to-case { margin-top: 2rem; }
-  @media (max-width: 599px) {
-    .table-wrap table, .table-wrap thead, .table-wrap tbody, .table-wrap tr, .table-wrap th, .table-wrap td { display: block; }
-    .table-wrap thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-    .table-wrap tr { margin-bottom: 1rem; border: 1px solid var(--c-line); border-radius: var(--radius); overflow: hidden; }
-    .table-wrap th, .table-wrap td { border: 0; border-top: 1px solid var(--c-line); }
-    .table-wrap tbody th { border-top: 0; }
-    .table-wrap td::before { display: block; margin-bottom: .25rem; font-size: .8125rem; font-weight: 700; color: var(--c-muted); }
-    .table-wrap td:nth-of-type(1)::before { content: "一般的な特徴"; }
-    .table-wrap td:nth-of-type(2)::before { content: "事前に確かめたいこと"; }
-  }
-  @media (min-width: 768px) {
-    .case-summary > div { grid-template-columns: 8em 1fr; gap: 1rem; }
-  }
 </style>

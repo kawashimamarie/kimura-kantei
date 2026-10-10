@@ -1,0 +1,115 @@
+---
+// 冒頭の3コママンガ（説明用の架空の例）。
+// 登場人物・背景は SVG で描いたオリジナル。セリフは HTML のテキストにして、スマホでも読め、
+// 検索エンジン・読み上げソフトにも内容が伝わるようにしている。
+const SKIN = '#f6dcc8';
+const face = (cx: number, cy: number, mood: 'smile' | 'talk' | 'doubt' | 'worry') => {
+  const eyes = `<ellipse cx="${cx - 11}" cy="${cy + 2}" rx="2.6" ry="3.4" fill="#2b2522"/><ellipse cx="${cx + 11}" cy="${cy + 2}" rx="2.6" ry="3.4" fill="#2b2522"/>`;
+  const cheeks = `<ellipse cx="${cx - 18}" cy="${cy + 12}" rx="5" ry="3" fill="#f0b9a3" opacity=".7"/><ellipse cx="${cx + 18}" cy="${cy + 12}" rx="5" ry="3" fill="#f0b9a3" opacity=".7"/>`;
+  const brows = {
+    smile: `<path d="M${cx - 16} ${cy - 8}q5-3 10 0M${cx + 6} ${cy - 8}q5-3 10 0"/>`,
+    talk: `<path d="M${cx - 16} ${cy - 8}q5-3 10 0M${cx + 6} ${cy - 8}q5-3 10 0"/>`,
+    doubt: `<path d="M${cx - 16} ${cy - 9}l10 2M${cx + 6} ${cy - 6}q5-4 10-1"/>`,
+    worry: `<path d="M${cx - 16} ${cy - 6}l10-3M${cx + 16} ${cy - 6}l-10-3"/>`,
+  }[mood];
+  const mouth = {
+    smile: `<path d="M${cx - 7} ${cy + 13}q7 7 14 0"/>`,
+    talk: `<ellipse cx="${cx}" cy="${cy + 15}" rx="5" ry="4" fill="#9c4a3c" stroke="none"/>`,
+    doubt: `<path d="M${cx - 6} ${cy + 16}h12"/>`,
+    worry: `<path d="M${cx - 7} ${cy + 18}q7-6 14 0"/>`,
+  }[mood];
+  return `${cheeks}${eyes}<g fill="none" stroke="#2b2522" stroke-width="2.2" stroke-linecap="round">${brows}${mouth}</g>`;
+};
+const brother = (cx: number, mood: Parameters<typeof face>[2], extra = '') => `
+  <g>
+    <path d="M${cx - 48} 200 Q${cx - 46} 124 ${cx} 121 Q${cx + 46} 124 ${cx + 48} 200 Z" fill="#2f5a5e"/>
+    <path d="M${cx - 12} 121 l12 14 l12 -14" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+    <circle cx="${cx - 30}" cy="86" r="6" fill="${SKIN}"/><circle cx="${cx + 30}" cy="86" r="6" fill="${SKIN}"/>
+    <circle cx="${cx}" cy="84" r="31" fill="${SKIN}"/>
+    <path d="M${cx - 32} 82 Q${cx - 34} 48 ${cx} 49 Q${cx + 34} 48 ${cx + 32} 80 Q${cx + 20} 62 ${cx - 2} 65 Q${cx - 20} 66 ${cx - 32} 82 Z" fill="#3a3330"/>
+    ${face(cx, 84, mood)}
+    ${extra}
+  </g>`;
+const sister = (cx: number, mood: Parameters<typeof face>[2], extra = '') => `
+  <g>
+    <path d="M${cx - 36} 86 Q${cx - 38} 46 ${cx} 47 Q${cx + 38} 46 ${cx + 36} 86 L${cx + 37} 110 Q${cx + 26} 115 ${cx + 21} 104 L${cx - 21} 104 Q${cx - 26} 115 ${cx - 37} 110 Z" fill="#6b4a3a"/>
+    <path d="M${cx - 46} 200 Q${cx - 44} 126 ${cx} 123 Q${cx + 44} 126 ${cx + 46} 200 Z" fill="#c9ab82"/>
+    <path d="M${cx - 13} 124 L${cx} 152 L${cx + 13} 124 Z" fill="#fbf7f0"/>
+    <circle cx="${cx}" cy="85" r="30" fill="${SKIN}"/>
+    <path d="M${cx - 31} 82 Q${cx - 28} 53 ${cx} 53 Q${cx + 28} 53 ${cx + 31} 80 Q${cx + 14} 67 ${cx - 3} 71 Q${cx - 18} 71 ${cx - 31} 82 Z" fill="#6b4a3a"/>
+    ${face(cx, 86, mood)}
+    ${extra}
+  </g>`;
+const paper = (x: number, y: number, label: string, rot = 0) => `
+  <g transform="rotate(${rot} ${x + 24} ${y + 30})">
+    <rect x="${x - 4}" y="${y}" width="56" height="60" rx="3" fill="#fff" stroke="#b9ad9b" stroke-width="1.5"/>
+    <text x="${x + 24}" y="${y + 17}" text-anchor="middle" font-size="14" font-weight="700" fill="#2f5a5e">${label}</text>
+    <path d="M${x + 9} ${y + 28}h30M${x + 9} ${y + 37}h30M${x + 9} ${y + 46}h20" stroke="#cfc6b8" stroke-width="2" stroke-linecap="round"/>
+  </g>`;
+const house = (cx: number) => `
+  <g opacity=".95">
+    <path d="M${cx - 62} 78 L${cx} 30 L${cx + 62} 78 Z" fill="#b9a487"/>
+    <rect x="${cx - 50}" y="76" width="100" height="78" fill="#efe7da"/>
+    <rect x="${cx - 12}" y="110" width="24" height="44" fill="#a1866a"/>
+    <rect x="${cx - 40}" y="92" width="20" height="18" fill="#cfe0e1" stroke="#a1866a" stroke-width="2"/>
+    <rect x="${cx + 20}" y="92" width="20" height="18" fill="#cfe0e1" stroke="#a1866a" stroke-width="2"/>
+  </g>`;
+const drop = (x: number, y: number) => `<path d="M${x} ${y} q-6 9 0 13 q6-4 0-13z" fill="#9cc7d4"/>`;
+
+const panels = [
+  {
+    scene: `<rect width="360" height="200" fill="#f4efe6"/><rect y="154" width="360" height="46" fill="#e6dccb"/>${house(180)}${brother(70, 'talk')}${sister(290, 'smile')}`,
+    alt: '実家の前で、兄と妹が話している様子のイラスト',
+    left: 'この家は、ぼくが住み続けたいんだ。',
+    right: '私は、自分の分をお金で受け取りたいな。',
+  },
+  {
+    scene: `<rect width="360" height="200" fill="#eef3f3"/><rect y="170" width="360" height="30" fill="#dbe6e6"/>${brother(80, 'doubt', paper(112, 128, '評価額', -6))}${sister(280, 'doubt', paper(200, 130, '査定', 6))}`,
+    alt: '兄は「評価額」と書かれた書類を、妹は「査定」と書かれた書類を持って、首をかしげている様子のイラスト',
+    left: '相続税の評価額で考えればいいよね？',
+    right: '不動産会社の査定は、もっと高かったよ？',
+  },
+  {
+    scene: `<rect width="360" height="200" fill="#faf6ef"/><rect y="170" width="360" height="30" fill="#f3eadb"/>${brother(90, 'worry', drop(128, 56))}${sister(270, 'worry', drop(232, 58))}<text x="180" y="96" text-anchor="middle" font-size="40" font-weight="700" fill="#c9ab82">?</text>`,
+    alt: '兄と妹が困った表情で考え込んでいる様子のイラスト',
+    narration: '話し合いの論点は2つ。<strong>「どう分けるか」</strong>と<strong>「いくらと考えるか」</strong>です。',
+  },
+];
+---
+<figure class="manga">
+  <div class="manga__panels">
+    {panels.map((p, i) => (
+      <div class="manga__panel">
+        <span class="manga__num" aria-hidden="true">{i + 1}</span>
+        {p.narration ? (
+          <p class="manga__narration"><span set:html={p.narration} /></p>
+        ) : (
+          <div class="manga__bubbles">
+            <p class="bubble bubble--left"><span class="u-visually-hidden">兄：</span>{p.left}</p>
+            <p class="bubble bubble--right"><span class="u-visually-hidden">妹：</span>{p.right}</p>
+          </div>
+        )}
+        <svg class="manga__scene" viewBox="0 0 360 200" role="img" aria-label={p.alt} set:html={p.scene} />
+      </div>
+    ))}
+  </div>
+  <figcaption class="manga__caption">※説明用の架空の例です。登場人物・会話は、実際のご相談者や当社代表の発言ではありません。</figcaption>
+</figure>
+
+<style>
+  .manga { margin: 0; }
+  .manga__panels { display: grid; gap: 1rem; }
+  @media (min-width: 900px) { .manga__panels { grid-template-columns: repeat(3, 1fr); } }
+  .manga__panel { position: relative; display: flex; flex-direction: column; border: 2px solid #3a3330; border-radius: 6px; background: #fff; overflow: hidden; }
+  .manga__num { position: absolute; top: 6px; left: 8px; z-index: 1; font-size: .75rem; font-weight: 700; color: var(--c-muted); }
+  .manga__bubbles { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; padding: 1.4rem .75rem .9rem; flex: 1; align-items: end; }
+  .bubble { position: relative; margin: 0; padding: .55rem .7rem; border: 2px solid #3a3330; border-radius: 16px; background: #fff; font-size: .9375rem; font-weight: 500; line-height: 1.55; }
+  .bubble::after { content: ""; position: absolute; bottom: -11px; width: 14px; height: 14px; background: #fff; border-right: 2px solid #3a3330; border-bottom: 2px solid #3a3330; }
+  .bubble--left::after { left: 22%; transform: rotate(45deg) skew(8deg, 8deg); }
+  .bubble--right { align-self: start; }
+  .bubble--right::after { right: 22%; transform: rotate(45deg) skew(8deg, 8deg); }
+  .manga__narration { margin: 0; padding: 1.4rem 1rem .9rem; flex: 1; display: flex; align-items: center; font-size: 1rem; line-height: 1.7; background: #fff; }
+  .manga__narration :global(strong) { color: var(--c-primary); }
+  .manga__scene { display: block; width: 100%; height: auto; border-top: 2px solid #3a3330; }
+  .manga__caption { margin-top: .75rem; font-size: .8125rem; color: var(--c-muted); line-height: 1.7; }
+</style>
