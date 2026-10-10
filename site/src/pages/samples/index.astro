@@ -1,0 +1,54 @@
+---
+// 【提案用サンプル】商談でお見せするコンテンツマーケティングのサンプル一覧。既存ページからはリンクしない。
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import SampleNotice from '../../samples/SampleNotice.astro';
+import { u } from '../../lib/url';
+
+const samples = [
+  {
+    href: '/samples/column-inheritance-fair-division/',
+    type: 'SEO・AI検索向けコラム',
+    title: '相続した実家を兄弟で公平に分けるには？ 不動産鑑定士が解説する評価の考え方',
+    points: ['「実家 相続 兄弟」「遺産分割 不動産 評価」などで調べる方の疑問に、悩みから順に答える構成', '公的機関の資料・法令を根拠として明記し、税務・法律の個別判断は断定しない', 'よくあるご質問（構造化データ付き）と、相続・遺産分割のご相談ページへの導線'],
+  },
+  {
+    href: '/samples/case-suginami-rental-insight/',
+    type: '事例をもとにした解説コンテンツ',
+    title: '杉並区の空き家を賃貸住宅として再生した事例　専門家はどこを見て「貸す」を提案したのか',
+    points: ['現行サイトで公開している事例の事実だけを使用し、新しい相談内容や数値は加えない', '「事例の事実」と「一般的な解説」をラベルで区別', '既存の事例ページを複製せず、詳細は事例ページへリンク'],
+  },
+];
+---
+<BaseLayout
+  title="コンテンツのサンプル"
+  description="サイトリニューアルのご提案用に作成した、コラムと事例解説のサンプルです。"
+  path="/samples/"
+  breadcrumbs={[{ name: 'コンテンツのサンプル', path: '/samples/' }]}
+>
+  <SampleNotice text="このページと、ここからリンクしているページは、サイトリニューアルのご提案用に作成したサンプルです。代表者による内容の確認・監修を経ておらず、正式には公開していません。" />
+  <PageHeader eyebrow="Samples" title="コンテンツのサンプル" lead="不動産鑑定士・一級建築士の専門性を、検索やAIでの情報収集の場面で伝えるためのコンテンツのサンプルです。" />
+
+  <section class="section section--white">
+    <div class="container">
+      <ul class="sample-list">
+        {samples.map((s) => (
+          <li class="sample-card">
+            <p class="sample-card__type">{s.type}</p>
+            <h2 class="sample-card__title"><a href={u(s.href)}>{s.title}</a></h2>
+            <ul class="check-list">{s.points.map((p) => <li>{p}</li>)}</ul>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .sample-list { display: grid; gap: 1.5rem; }
+  @media (min-width: 900px) { .sample-list { grid-template-columns: 1fr 1fr; } }
+  .sample-card { padding: 1.75rem; border-radius: var(--radius); background: var(--c-surface); border: 1px solid var(--c-line); }
+  .sample-card__type { color: var(--c-sand-700); font-size: .875rem; font-weight: 700; margin-bottom: .5rem; }
+  .sample-card__title { font-size: 1.1875rem; line-height: 1.6; margin-bottom: 1rem; }
+  .sample-card .check-list li { font-size: .9375rem; }
+</style>

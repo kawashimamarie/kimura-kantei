@@ -1,0 +1,226 @@
+---
+// 【提案用サンプル】SEO・AI検索向けコラム（新規）。
+// - 原稿は src/samples/column-inheritance-fair-division.md。正式公開時は src/content/column/ へ移し、
+//   公開日・更新日・執筆者（木村修本人の確認が取れた場合のみ 'kimura'）を設定する。
+// - コラム一覧・トップ・関連欄には出さない（既存ページに影響させない）。
+// - 公開日はまだないため表示せず、構造化データにも datePublished / dateModified を入れない。
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import FaqList from '../../components/FaqList.astro';
+import CaseCard from '../../components/CaseCard.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import SampleNotice from '../../samples/SampleNotice.astro';
+import { Content, frontmatter as fm, getHeadings } from '../../samples/column-inheritance-fair-division.md';
+import { getEntry } from 'astro:content';
+import { getService } from '../../data/services';
+import { getFaqs, type Faq } from '../../data/faq';
+import { profile } from '../../data/profile';
+import { article, faqPage } from '../../lib/schema';
+import { u } from '../../lib/url';
+
+const path = '/samples/column-inheritance-fair-division/';
+const toc = getHeadings().filter((h) => h.depth === 2);
+const checkedOn = '2026年10月10日';
+
+// この記事のためのよくある質問（構造化データ FAQPage はこの4問だけに付ける）
+const articleFaqs: Faq[] = [
+  {
+    id: 'a-need-kantei', category: 'theme',
+    q: '実家を相続するとき、不動産鑑定は必ず必要ですか？',
+    a: [
+      'いいえ、必ず必要というわけではありません。相続人全員が、固定資産税評価額や路線価、不動産会社の査定額などを参考にした評価で納得していれば、それをもとに分けることもできます。',
+      '評価が食い違うとき、代償金の根拠を示したいとき、調停・裁判になったときなどに、不動産鑑定評価が判断の材料として役立ちます。',
+    ],
+  },
+  {
+    id: 'a-rosenka', category: 'theme',
+    q: '遺産分割では、路線価で評価すればよいのですか？',
+    a: [
+      '路線価は、相続税・贈与税を計算するための評価で、地価公示価格などをもとにした価格の80％程度を目途に定められています。',
+      '遺産分割では、相続人全員が合意すれば、路線価などを参考に評価することもできます。ただし、実際に取引される価格（時価）とは差が出ることがあります。どの評価額を使うかは、相続人の間で話し合って決めます。',
+    ],
+  },
+  {
+    id: 'a-live', category: 'theme',
+    q: '兄弟の一人が実家に住み続けたい場合、どう分ければよいですか？',
+    a: [
+      '実家を引き継ぐ人が、ほかの相続人にお金（代償金）を支払う「代償分割」が選択肢の一つです。代償金の額は実家の評価額をもとに決めるため、その評価に相続人の皆さんが納得できることが大切です。',
+      '代償金や分割の方法に関わる税金の扱いは、個別の事情によって異なるため、税理士にご確認ください。',
+    ],
+  },
+  {
+    id: 'a-deadline', category: 'theme',
+    q: '遺産分割の話し合いに期限はありますか？',
+    a: [
+      '遺産分割そのものに、いつまでに終えなければならないという期限は定められていません。ただし、相続開始から10年を経過すると、原則として特別受益や寄与分を考慮した分割を主張できなくなります。',
+      'また、相続登記の申請義務（取得を知った日から3年以内）や、相続税の申告期限（亡くなったことを知った日の翌日から10か月以内）があります。いずれも例外や経過措置があるため、具体的な期限は専門家にご確認ください。',
+    ],
+  },
+];
+// 既存のよくある質問（/faq/ と同じ文面）
+const sharedFaqs = getFaqs(['satei-vs-kantei', 'fee', 'consult-only']);
+
+const sources = [
+  { title: '民法（第906条・第904条の3）', publisher: 'e-Gov法令検索（デジタル庁）', url: 'https://laws.e-gov.go.jp/law/129AC0000000089' },
+  { title: '遺産分割調停', publisher: '裁判所', url: 'https://www.courts.go.jp/saiban/syurui/syurui_kazi/kazi_07_12/index.html' },
+  { title: '遺産分割調停について（説明）', publisher: '福岡家庭裁判所', url: 'https://www.courts.go.jp/fukuoka/vc-files/fukuoka/2022/R0407_FC_kaji/R0407_FC_kaji_tyoutei/48_54/R0407_fc_48-4setsumei_isanbunkatsu.pdf' },
+  { title: '令和8年分の路線価等について', publisher: '国税庁（札幌国税局）', url: 'https://www.nta.go.jp/about/organization/sapporo/release/r08/rosenka/index.htm' },
+  { title: '固定資産税の概要', publisher: '総務省', url: 'https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/149767_08.html' },
+  { title: '地価公示制度の概要', publisher: '国土交通省', url: 'https://www.mlit.go.jp/totikensangyo/totikensangyo_fr4_000132.html' },
+  { title: '不動産鑑定評価基準', publisher: '国土交通省', url: 'https://www.mlit.go.jp/common/001204083.pdf' },
+  { title: '不動産の鑑定評価に関する法律', publisher: 'e-Gov法令検索（デジタル庁）', url: 'https://laws.e-gov.go.jp/law/338AC0000000152' },
+  { title: '宅地建物取引業法（第34条の2）', publisher: 'e-Gov法令検索（デジタル庁）', url: 'https://laws.e-gov.go.jp/law/327AC1000000176' },
+  { title: '不動産登記法（第76条の2）', publisher: 'e-Gov法令検索（デジタル庁）', url: 'https://laws.e-gov.go.jp/law/416AC0000000123' },
+  { title: 'No.4205 相続税の申告と納税', publisher: '国税庁', url: 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/sozoku/4205.htm' },
+];
+
+const inheritance = getService('inheritance');
+const svcs = ['inheritance', 'appraisal', 'family-transaction'].map((s) => getService(s));
+const caseEntry = await getEntry('cases', 'suginami-rental');
+if (!caseEntry) throw new Error('suginami-rental が見つかりません');
+const beforeImg = caseEntry.data.gallery[0];
+---
+<BaseLayout
+  title={fm.title}
+  description={fm.description}
+  path={path}
+  ogType="article"
+  breadcrumbs={[{ name: 'コラム', path: '/column/' }, { name: fm.title, path }]}
+  jsonLd={[
+    {
+      ...article({ headline: fm.title, description: fm.description, path, author: 'organization', citations: sources }),
+      about: ['遺産分割', '相続した不動産の評価', '路線価', '不動産鑑定評価'],
+    },
+    faqPage(articleFaqs, path),
+  ]}
+>
+  <SampleNotice />
+
+  <article class="article">
+    <header class="page-header page-header--article">
+      <div class="container container--narrow">
+        <p class="page-header__eyebrow">{fm.category}</p>
+        <h1 class="page-header__title">{fm.title}</h1>
+        <p class="article__meta">
+          <span>制度・法令の確認日 {checkedOn}</span>
+          <span>株式会社木村不動産鑑定</span>
+        </p>
+      </div>
+    </header>
+
+    <div class="container container--narrow article__body">
+      <div class="summary-box">
+        <p class="summary-box__title">この記事の要点</p>
+        <ul class="check-list">{fm.points.map((p: string) => <li>{p}</li>)}</ul>
+      </div>
+
+      <nav class="toc toc--article" aria-label="目次">
+        <p class="toc__title">目次</p>
+        <ol class="toc__list toc__list--ol">
+          {toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+          <li><a href="#faq-title">よくあるご質問</a></li>
+        </ol>
+      </nav>
+
+      <div class="prose prose--article sample-prose"><Content /></div>
+
+      <aside class="svc-cta" aria-labelledby="svc-cta-title">
+        <p class="svc-cta__label">相続・遺産分割のご相談</p>
+        <h2 class="svc-cta__title" id="svc-cta-title">実家の評価や分け方で迷ったら、まずはご相談ください</h2>
+        <p>{inheritance.summary}初回のご相談は無料です。</p>
+        <div class="svc-cta__actions">
+          <a class="btn btn--primary" href={u(`/services/${inheritance.slug}/`)}>相続・遺産分割のご相談について</a>
+          <a class="btn btn--outline" href={u('/contact/')}>相談を申し込む</a>
+        </div>
+      </aside>
+
+      <section class="sources" aria-labelledby="src-title">
+        <h2 class="sources__title" id="src-title">参考資料</h2>
+        <ul class="sources__list">
+          {sources.map((s) => <li><a href={s.url} target="_blank" rel="noopener">{s.title}</a><span>（{s.publisher}）</span></li>)}
+        </ul>
+        <p class="note">制度・法令の内容は{checkedOn}に各機関の公表資料で確認したものです。税金や法律についての個別の判断は、税理士・弁護士などの専門家にご確認ください。</p>
+      </section>
+
+      <aside class="related-svc" aria-labelledby="rel-svc">
+        <h2 class="related-svc__title" id="rel-svc">このテーマのご相談</h2>
+        <ul class="related-svc__list">{svcs.map((s) => <li><a href={u(`/services/${s.slug}/`)}>{s.name}</a></li>)}</ul>
+      </aside>
+
+      <aside class="author-box" aria-labelledby="author-title">
+        <h2 class="author-box__title" id="author-title">この記事について</h2>
+        <div class="author-box__inner">
+          <img src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt={`${profile.name}の写真`} loading="lazy" decoding="async">
+          <div>
+            <p>当社が公開している業務内容と、公的機関の資料をもとに作成した記事です。</p>
+            <p>ご相談には、代表の{profile.name}（{profile.credentials.slice(0, 2).join('・')}）が対応します。</p>
+            <a href={u('/profile/')}>代表のプロフィールを見る</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </article>
+
+  <section class="section section--white" aria-labelledby="faq-title">
+    <div class="container container--narrow">
+      <SectionHead en="FAQ" title="よくあるご質問" id="faq-title" />
+      <FaqList items={[...articleFaqs, ...sharedFaqs]} />
+      <p class="more-link"><a href={u('/faq/')}>よくあるご質問の一覧を見る</a></p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="related-title">
+    <div class="container">
+      <SectionHead en="Related" title="関連する記事・事例" id="related-title" />
+      <div class="related-grid">
+        <a class="related-card" href={u('/samples/case-suginami-rental-insight/')}>
+          {beforeImg && <img class="related-card__img" src={u(beforeImg.src)} width={beforeImg.width} height={beforeImg.height} alt={beforeImg.alt} loading="lazy" decoding="async">}
+          <div class="related-card__body">
+          <p class="related-card__cat">事例解説</p>
+          <p class="related-card__title">杉並区の空き家を賃貸住宅として再生した事例　専門家はどこを見て「貸す」を提案したのか</p>
+          <p class="related-card__text">相続で空き家になった借地上の戸建てについて、借地権の価値、建物の状態、利回りの見方を解説します。</p>
+          </div>
+        </a>
+        <CaseCard entry={caseEntry} compact />
+      </div>
+    </div>
+  </section>
+
+  <ContactCta />
+</BaseLayout>
+
+<style>
+  .note { margin-top: .75rem; font-size: .9375rem; color: var(--c-muted); }
+  /* 本文の表：SP では横スクロールさせず、セルを縦に積む */
+  .sample-prose :global(table) { margin: 1.25rem 0; background: var(--c-surface); }
+  .sample-prose :global(td:first-child) { white-space: normal; }
+  .sample-prose :global(th:first-child), .sample-prose :global(td:first-child) { min-width: 7.5em; }
+  @media (max-width: 599px) {
+    .sample-prose :global(table), .sample-prose :global(thead), .sample-prose :global(tbody), .sample-prose :global(tr), .sample-prose :global(th), .sample-prose :global(td) { display: block; }
+    .sample-prose :global(thead) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .sample-prose :global(tr) { margin-bottom: 1rem; border: 1px solid var(--c-line); border-radius: var(--radius); overflow: hidden; }
+    .sample-prose :global(td) { border: 0; border-top: 1px solid var(--c-line); }
+    .sample-prose :global(td:first-child) { border-top: 0; background: var(--c-primary-50); }
+    .sample-prose :global(td:not(:first-child))::before { display: block; margin-bottom: .2rem; font-size: .8125rem; font-weight: 700; color: var(--c-muted); }
+    /* 1つ目の表：分け方／2つ目の表：価格の種類（列見出しを各セルに表示） */
+    .sample-prose :global(table:nth-of-type(1) td:nth-child(2))::before { content: "内容"; }
+    .sample-prose :global(table:nth-of-type(1) td:nth-child(3))::before { content: "主な注意点"; }
+    .sample-prose :global(table:nth-of-type(2) td:nth-child(2))::before { content: "誰が・何のために"; }
+    .sample-prose :global(table:nth-of-type(2) td:nth-child(3))::before { content: "特徴"; }
+  }
+  .svc-cta { margin-top: 3rem; padding: clamp(1.5rem, 1rem + 2vw, 2.25rem); border-radius: 16px; background: var(--c-sand-50); border: 1px solid var(--c-sand-100); }
+  .svc-cta__label { display: inline-block; margin-bottom: .75rem; padding: .15em .8em; border-radius: 999px; background: var(--c-primary); color: #fff; font-size: .8125rem; font-weight: 700; }
+  .svc-cta__title { font-size: var(--fs-h3, 1.375rem); line-height: 1.5; margin-bottom: .75rem; }
+  .svc-cta p { color: var(--c-ink-soft); line-height: 1.9; }
+  .svc-cta__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+  @media (max-width: 599px) { .svc-cta__actions .btn { width: 100%; } }
+  .related-grid { display: grid; gap: 1.25rem; }
+  @media (min-width: 768px) { .related-grid { grid-template-columns: 1fr 1fr; } }
+  .related-card { display: block; overflow: hidden; border-radius: var(--radius); background: var(--c-surface); border: 1px solid var(--c-line); color: inherit; text-decoration: none; }
+  .related-card:hover { border-color: var(--c-primary-100); box-shadow: 0 6px 20px rgba(0, 0, 0, .06); }
+  .related-card__img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+  .related-card__body { padding: 1.25rem 1.5rem 1.5rem; }
+  .related-card__cat { color: var(--c-sand-700); font-size: .8125rem; font-weight: 700; margin-bottom: .5rem; }
+  .related-card__title { font-weight: 700; color: var(--c-primary); line-height: 1.6; margin-bottom: .5rem; }
+  .related-card__text { color: var(--c-ink-soft); font-size: .9375rem; line-height: 1.8; }
+</style>

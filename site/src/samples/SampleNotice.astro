@@ -1,0 +1,17 @@
+---
+// 商談用サンプルページの冒頭に出す注記。正式な監修・公開承認前であることを明示する。
+// サンプルを正式ページへ移すときは、この注記を外す。
+interface Props { text?: string }
+const { text = 'このページは、サイトリニューアルのご提案用に作成したサンプル原稿です。代表者による内容の確認・監修を経ておらず、正式には公開していません。' } = Astro.props;
+---
+<div class="sample-notice" role="note">
+  <div class="container">
+    <p><span class="sample-notice__tag">提案用サンプル</span>{text}</p>
+  </div>
+</div>
+
+<style>
+  .sample-notice { background: var(--c-sand-50); border-bottom: 1px solid var(--c-sand-100); color: var(--c-ink-soft); font-size: .875rem; line-height: 1.7; }
+  .sample-notice p { padding: .75rem 0; }
+  .sample-notice__tag { display: inline-block; margin-right: .75em; padding: .1em .6em; border-radius: 4px; background: var(--c-sand-700); color: #fff; font-weight: 700; font-size: .8125rem; white-space: nowrap; }
+</style>

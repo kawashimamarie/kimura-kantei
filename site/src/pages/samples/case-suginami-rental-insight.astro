@@ -1,0 +1,219 @@
+---
+// 【提案用サンプル】既存事例（/cases/suginami-rental/）を補足する「専門家の考え方」ページ。
+// - 事例の事実は、現行公式サイト（https://www.kimurakantei.jp/業務内容/）の掲載内容だけを使う。
+// - それ以外は「一般的な解説」として区別し、この事例で実際に行った検討・結果としては書かない。
+// - 既存ページからはリンクしない（一覧・関連欄にも出さない）。正式公開時は URL・導線を改めて決める。
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import ProfileBox from '../../components/ProfileBox.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import SampleNotice from '../../samples/SampleNotice.astro';
+import { getEntry } from 'astro:content';
+import { getService } from '../../data/services';
+import { article } from '../../lib/schema';
+import { u, abs } from '../../lib/url';
+
+const caseEntry = await getEntry('cases', 'suginami-rental');
+if (!caseEntry) throw new Error('suginami-rental が見つかりません');
+const c = caseEntry.data;
+const casePath = '/cases/suginami-rental/';
+const path = '/samples/case-suginami-rental-insight/';
+const title = '杉並区の空き家を賃貸住宅として再生した事例　専門家はどこを見て「貸す」を提案したのか';
+const description = '相続で空き家になった杉並区の借地上の戸建てを、地主様へ返す前にリフォームして賃貸する計画をご提案した事例をもとに、不動産鑑定士・一級建築士が確かめるポイント（借地権の価値、建物の状態、利回りの見方）を、事実と一般的な解説に分けて紹介します。';
+const svcs = c.services.map((s) => getService(s));
+
+const sources = [
+  { title: '耐震リフォーム事例（杉並区 築48年戸建「空家から貸家に」）', publisher: '株式会社木村不動産鑑定（現行公式サイト）', url: 'https://www.kimurakantei.jp/業務内容/' },
+  { title: 'No.4611 借地権の評価', publisher: '国税庁', url: 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/hyoka/4611.htm' },
+  { title: '借地借家法（第17条・第19条、附則第6条）', publisher: 'e-Gov法令検索（デジタル庁）', url: 'https://laws.e-gov.go.jp/law/403AC0000000090' },
+];
+---
+<BaseLayout
+  title="杉並区の空き家を賃貸住宅として再生した事例の解説"
+  description={description}
+  path={path}
+  ogType="article"
+  ogImage={c.cover.src}
+  breadcrumbs={[{ name: '事例', path: '/cases/' }, { name: c.title, path: casePath }, { name: '専門家の考え方', path }]}
+  jsonLd={[{
+    ...article({ headline: title, description, path, image: c.cover.src, author: 'organization', citations: sources }),
+    isBasedOn: abs(casePath),
+    about: ['借地権', '空き家の活用', '相続した不動産', '賃貸住宅へのリフォーム'],
+  }]}
+>
+  <SampleNotice />
+
+  <article class="article">
+    <header class="page-header page-header--article">
+      <div class="container container--narrow">
+        <p class="page-header__eyebrow">事例解説</p>
+        <h1 class="page-header__title">杉並区の空き家を賃貸住宅として再生した事例<span class="sub">専門家はどこを見て「貸す」を提案したのか</span></h1>
+        <p class="article__meta">{c.meta}</p>
+        <ul class="case-card__tags">{c.tags.map((t) => <li>{t}</li>)}</ul>
+      </div>
+    </header>
+
+    <div class="container container--narrow article__body">
+      <p class="lead">相続で空き家になった借地上の戸建てを、地主様へ返す前に、リフォームして賃貸する計画をご提案した事例があります。このページでは、その事例をもとに、不動産鑑定士・一級建築士がどのような点を確かめながら選択肢を考えるのかをご紹介します。</p>
+
+      <div class="legend" role="note">
+        <p class="legend__title">このページの読み方</p>
+        <ul>
+          <li><span class="tag tag--fact">事例の事実</span>当社が公開している事例の内容です。</li>
+          <li><span class="tag tag--general">一般的な解説</span>同じような状況で一般に確かめることが多い点を整理したものです。この事例で実際に行った検討の内容や結果を示すものではありません。</li>
+        </ul>
+      </div>
+
+      <nav class="toc toc--article" aria-label="目次">
+        <p class="toc__title">目次</p>
+        <ol class="toc__list toc__list--ol">
+          <li><a href="#facts">この事例で公開している事実</a></li>
+          <li><a href="#options">「返す」か「活かす」か：3つの選択肢</a></li>
+          <li><a href="#appraiser">不動産鑑定士の視点：借地権も財産として考える</a></li>
+          <li><a href="#architect">一級建築士の視点：直して使える建物かを見極める</a></li>
+          <li><a href="#numbers">計画の数字の見方：表面利回りと実質利回り</a></li>
+          <li><a href="#inheritance">相続人が複数いる場合は</a></li>
+        </ol>
+      </nav>
+
+      <section class="block" aria-labelledby="facts">
+        <p class="tag tag--fact">事例の事実</p>
+        <h2 id="facts">この事例で公開している事実</h2>
+        <figure class="article__cover">
+          <img src={u(c.cover.src)} width={c.cover.width} height={c.cover.height} alt={c.cover.alt}>
+          <figcaption>リフォーム後の外観</figcaption>
+        </figure>
+        <dl class="case-summary">
+          <div><dt>経緯</dt><dd>ご両親が亡くなり、相続人であるご相談者様が引き継いだ戸建て（杉並区・築48年）が空き家になっていました。</dd></div>
+          <div><dt>土地の権利</dt><dd>借地権（旧借地法）。ご相談者様は当初、地主様へ土地を無償で返還するお気持ちでした。</dd></div>
+          <div><dt>ご提案</dt><dd>返還する前に、リフォームして賃貸する選択肢をご提案。フルリノベーションで建物の耐用年数を延ばす計画です。</dd></div>
+          <div><dt>計画の数字</dt><dd>リフォーム代金は約1,100万円、家賃は約18万円。表面利回りは約20％（実質約16％）で、約7年で投資を回収し、その後は純収益が得られる計画としました。</dd></div>
+          <div><dt>将来の選択肢</dt><dd>借地権付建物として売却する道も残っています。</dd></div>
+        </dl>
+        <p class="to-case"><a href={u(casePath)}>工事の内容と、リフォーム前後の写真は事例ページへ</a></p>
+      </section>
+
+      <section class="block" aria-labelledby="options">
+        <p class="tag tag--general">一般的な解説</p>
+        <h2 id="options">「返す」か「活かす」か：3つの選択肢</h2>
+        <p>相続した借地上の建物が空き家になったとき、考えられる道は大きく分けて次の3つです。この事例では、ご相談者様が当初お考えだった「返還」の前に、「貸す」という選択肢をご提案しました。</p>
+        <div class="table-wrap">
+          <table>
+            <caption class="u-visually-hidden">借地上の空き家の主な選択肢</caption>
+            <thead><tr><th scope="col">選択肢</th><th scope="col">一般的な特徴</th><th scope="col">事前に確かめたいこと</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">土地を返還する</th><td>建物の管理や、地代などの負担から離れられます。</td><td>借地権は財産としての価値を持つことがあり、無償で返還すると、その価値を手放すことになります。返還の条件は、契約の内容や地主様との話し合いによって決まります。</td></tr>
+              <tr><th scope="row">建物を直して貸す</th><td>借地権を持ち続けながら、賃料収入を得られます。</td><td>改修にかかる費用と回収の見通し、賃貸の需要、地代などの継続的な負担、借地契約に増改築を制限する取り決めがあるかどうか。</td></tr>
+              <tr><th scope="row">借地権付建物として売却する</th><td>まとまった資金に換えることができます。</td><td>土地の賃借権を譲渡するには、原則として地主様の承諾が必要です。承諾が得られない場合に、裁判所が承諾に代わる許可を与える制度もあります（借地借家法第19条）。</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">どの道が適しているかは、借地契約の内容、建物の状態、相続人の方々のご意向などによって異なります。</p>
+      </section>
+
+      <section class="block" aria-labelledby="appraiser">
+        <p class="tag tag--general">一般的な解説</p>
+        <h2 id="appraiser">不動産鑑定士の視点：借地権も財産として考える</h2>
+        <p>借地権とは、建物の所有を目的とする地上権または土地の賃借権のことです。土地は地主様のものでも、借地権そのものが財産としての価値を持つことがあります。</p>
+        <p>たとえば相続税の計算では、借地権も課税の対象となる財産で、一般に「その土地を更地とした場合の価額 × 借地権割合」で評価されます。借地権割合は地域ごとに定められ、国税庁の路線価図などに表示されています。</p>
+        <p>一方で、実際に取引されるときの借地権の価値は、契約の内容や地代の水準、残りの契約期間、地主様との関係などによって変わります。相続税の評価額と、市場で取引される価格は、必ずしも一致しません。「返す」と決める前に、手放そうとしているものの価値を一度確かめておくことが大切です。</p>
+        <p>なお、1992年（平成4年）8月1日の借地借家法の施行より前に設定された借地権では、契約の更新などについて、旧借地法の規定が引き続き適用されます（借地借家法附則第6条など）。どの規定が適用されるかによって、考え方が変わる点があります。</p>
+      </section>
+
+      <section class="block" aria-labelledby="architect">
+        <p class="tag tag--general">一般的な解説</p>
+        <h2 id="architect">一級建築士の視点：直して使える建物かを見極める</h2>
+        <p>「貸す」という選択肢が現実的かどうかは、建物を直して使い続けられるかにかかっています。古い木造住宅であれば、構造や劣化の状態、耐震性を確かめたうえで、どこまで手を入れるかを考えます。</p>
+        <p>この事例の工事には、耐震・断熱・窓の交換・間取り変更・設備更新などが含まれています<span class="inline-tag">事例の事実</span>。賃貸住宅として貸す場合、安全性と住み心地の両方が、賃料や入居者の決まりやすさに影響しうるためです。</p>
+        <p>また、借地契約に増改築を制限する取り決めがある場合は、大きなリフォームの前に地主様の承諾が必要になることがあります。話し合いがまとまらないときに、裁判所が承諾に代わる許可を与える制度もあります（借地借家法第17条第2項）。</p>
+        <p class="note">木造住宅の耐震基準の移り変わりについては、コラム「<a href={u('/column/seismic-standards-history/')}>能登半島地震から考える、木造住宅の耐震基準の変遷と課題</a>」で解説しています。</p>
+      </section>
+
+      <section class="block" aria-labelledby="numbers">
+        <p class="tag tag--general">一般的な解説</p>
+        <h2 id="numbers">計画の数字の見方：表面利回りと実質利回り</h2>
+        <p>賃貸の計画では、利回りという指標がよく使われます。</p>
+        <dl class="formula">
+          <div><dt>表面利回り</dt><dd>年間の賃料収入 ÷ 投資額</dd></div>
+          <div><dt>実質利回り</dt><dd>（年間の賃料収入 − 地代・建物の固定資産税・管理費・修繕費などの経費）÷ 投資額</dd></div>
+        </dl>
+        <p>この事例で公開している数字にあてはめると、家賃約18万円 × 12か月 ＝ 年間約216万円、これをリフォーム代金約1,100万円で割ると約19.6％となり、公開している「表面利回り約20％」と一致します。実質利回り（約16％）の計算に含めた経費の内訳は公開していません。</p>
+        <p>いずれも計画の段階の数字で、実際の収支は、空室の期間や修繕の発生などによって変わることがあります。</p>
+      </section>
+
+      <section class="block" aria-labelledby="inheritance">
+        <p class="tag tag--general">一般的な解説</p>
+        <h2 id="inheritance">相続人が複数いる場合は</h2>
+        <p>相続人が複数いる場合、借地権付きの建物を「返す」「貸す」「売る」のどれにするかは、遺産分割の話し合いとも関わります。誰が引き継ぐのか、ほかの財産とどう釣り合いをとるのかを考えるには、その不動産の価値を客観的に把握しておくことが役立ちます。</p>
+        <p class="note">相続した不動産を兄弟姉妹で公平に分けるための評価の考え方は、コラム「<a href={u('/samples/column-inheritance-fair-division/')}>相続した実家を兄弟で公平に分けるには？</a>」で解説しています。</p>
+      </section>
+
+      <section class="sources" aria-labelledby="src-title">
+        <h2 class="sources__title" id="src-title">参考資料</h2>
+        <ul class="sources__list">
+          {sources.map((s) => <li><a href={s.url} target="_blank" rel="noopener">{s.title}</a><span>（{s.publisher}）</span></li>)}
+        </ul>
+        <p class="note">法令・制度の内容は2026年10月10日に確認したものです。個別の事案への当てはめについては、契約内容などを確認したうえでの判断が必要です。</p>
+      </section>
+
+      <aside class="related-svc" aria-labelledby="rel-svc">
+        <h2 class="related-svc__title" id="rel-svc">この事例に関連するご相談</h2>
+        <ul class="related-svc__list">{svcs.map((s) => <li><a href={u(`/services/${s.slug}/`)}>{s.name}</a></li>)}</ul>
+      </aside>
+
+      <ProfileBox text="不動産鑑定士として借地権や地代の評価に携わり、東京地方裁判所（借地非訟事件）の鑑定専門委員を務めてきました。一級建築士として、建物の状態を確かめたうえでの活用方法もご提案します。" />
+
+      <div class="back-to-case">
+        <a class="btn btn--outline btn--block" href={u(casePath)}>事例ページに戻る：{c.title}</a>
+      </div>
+    </div>
+  </article>
+
+  <ContactCta />
+</BaseLayout>
+
+<style>
+  .page-header__title .sub { display: block; margin-top: .5rem; font-size: .62em; font-weight: 500; color: var(--c-ink-soft); }
+  .lead { font-size: 1.0625rem; line-height: 1.95; margin-bottom: 1.75rem; }
+  .legend { padding: 1.25rem 1.5rem; border: 1px solid var(--c-line); border-radius: var(--radius); background: var(--c-surface); margin-bottom: 2rem; }
+  .legend__title { font-weight: 700; margin-bottom: .5rem; }
+  .legend ul { display: grid; gap: .5rem; }
+  .legend li { line-height: 1.75; font-size: .9375rem; }
+  .legend .tag { margin-right: .6em; }
+  .tag { display: inline-block; padding: .15em .7em; border-radius: 999px; font-size: .8125rem; font-weight: 700; line-height: 1.6; white-space: nowrap; }
+  .tag--fact { background: var(--c-primary); color: #fff; }
+  .tag--general { background: var(--c-sand-100); color: var(--c-sand-700); }
+  .inline-tag { display: inline-block; margin-left: .35em; padding: 0 .5em; border-radius: 4px; font-size: .75rem; font-weight: 700; color: #fff; background: var(--c-primary); vertical-align: .1em; }
+  .block { margin-top: 3rem; }
+  .block > .tag { margin-bottom: .5rem; }
+  .block h2 { font-size: var(--fs-h3, 1.375rem); margin-bottom: 1rem; line-height: 1.5; }
+  .block p { line-height: 1.95; }
+  .block p + p { margin-top: 1rem; }
+  .block .case-summary { margin: 1.5rem 0 1rem; }
+  .article__cover figcaption { margin-top: .5rem; font-size: .875rem; color: var(--c-muted); }
+  .to-case a { font-weight: 700; }
+  .note { margin-top: 1rem; font-size: .9375rem; color: var(--c-muted); }
+  .table-wrap { margin-top: 1.25rem; overflow-x: auto; }
+  .table-wrap table { width: 100%; border-collapse: collapse; background: var(--c-surface); font-size: .9375rem; }
+  .table-wrap th, .table-wrap td { padding: .875rem; border: 1px solid var(--c-line); text-align: left; vertical-align: top; line-height: 1.75; }
+  .table-wrap thead th { background: var(--c-sand-50); white-space: nowrap; }
+  .table-wrap tbody th { color: var(--c-primary); background: var(--c-primary-50); min-width: 7em; }
+  .formula { display: grid; gap: 1px; margin: 1.25rem 0; border: 1px solid var(--c-line); border-radius: var(--radius); overflow: hidden; background: var(--c-line); }
+  .formula > div { display: grid; gap: .25rem; padding: 1rem 1.25rem; background: var(--c-surface); }
+  .formula dt { font-weight: 700; color: var(--c-primary); }
+  .sources .note { margin-top: .75rem; }
+  .back-to-case { margin-top: 2rem; }
+  @media (max-width: 599px) {
+    .table-wrap table, .table-wrap thead, .table-wrap tbody, .table-wrap tr, .table-wrap th, .table-wrap td { display: block; }
+    .table-wrap thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .table-wrap tr { margin-bottom: 1rem; border: 1px solid var(--c-line); border-radius: var(--radius); overflow: hidden; }
+    .table-wrap th, .table-wrap td { border: 0; border-top: 1px solid var(--c-line); }
+    .table-wrap tbody th { border-top: 0; }
+    .table-wrap td::before { display: block; margin-bottom: .25rem; font-size: .8125rem; font-weight: 700; color: var(--c-muted); }
+    .table-wrap td:nth-of-type(1)::before { content: "一般的な特徴"; }
+    .table-wrap td:nth-of-type(2)::before { content: "事前に確かめたいこと"; }
+  }
+  @media (min-width: 768px) {
+    .case-summary > div { grid-template-columns: 8em 1fr; gap: 1rem; }
+  }
+</style>
