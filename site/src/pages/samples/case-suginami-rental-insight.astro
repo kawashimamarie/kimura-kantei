@@ -195,32 +195,23 @@ const sources = [
         <div class="v-stats">
           <div class="v-stat"><p class="v-stat__label">リフォーム代金</p><p class="v-stat__num">約1,100<small>万円</small></p></div>
           <div class="v-stat"><p class="v-stat__label">家賃</p><p class="v-stat__num">約18<small>万円/月</small></p></div>
-          <div class="v-stat"><p class="v-stat__label">表面利回り</p><p class="v-stat__num">約20<small>％</small></p></div>
-          <div class="v-stat"><p class="v-stat__label">実質利回り</p><p class="v-stat__num">約16<small>％</small></p></div>
-          <div class="v-stat v-stat--wide"><p class="v-stat__label">投資回収の見込み（計画）</p><p class="v-stat__num">約7<small>年</small></p><p class="v-stat__sub">その後は純収益が得られる計画</p></div>
+          <div class="v-stat"><p class="v-stat__label">投資回収の見込み（計画）</p><p class="v-stat__num">約7<small>年</small></p><p class="v-stat__sub">その後は純収益が得られる計画</p></div>
+          <div class="v-stat v-stat--full"><p class="v-stat__label">現行サイトに記載している利回り</p><p class="v-stat__text">表面利回り約20％（実質約16％）</p><p class="v-stat__sub">計算の基礎となる金額（分母）や経費の内訳は記載していません。</p></div>
         </div>
 
         <figure class="v-figure">
-          <p class="v-figure__title">リフォーム代金と年間の家賃<span class="v-tag v-tag--general">公開値からの計算</span></p>
+          <p class="v-figure__title">改修費に対する年間賃料の単純比率<span class="v-tag v-tag--general">公開値からの計算</span></p>
           <div class="v-bars">
             <div class="v-bar"><div class="v-bar__label"><b>リフォーム代金</b><span class="v-bar__value">約{COST.toLocaleString()}万円</span></div><div class="v-bar__track"><div class="v-bar__fill v-bar__fill--sand" style="width:100%" title={`リフォーム代金：約${COST.toLocaleString()}万円`}></div></div></div>
             <div class="v-bar"><div class="v-bar__label"><b>年間の家賃（約18万円×12か月）</b><span class="v-bar__value">約{RENT_Y}万円</span></div><div class="v-bar__track"><div class="v-bar__fill" style={`width:${(RENT_Y / COST) * 100}%`} title={`年間の家賃：約${RENT_Y}万円`}></div></div></div>
           </div>
-          <figcaption>年間の家賃（約{RENT_Y}万円）は、リフォーム代金（約1,100万円）の約{ratio}％にあたり、公開している表面利回り（約20％）と同程度の水準です。この比率は、空室・経費・税金などを差し引く前のものです。</figcaption>
+          <figcaption>年間の家賃（約{RENT_Y}万円）をリフォーム代金（約1,100万円）で割った<strong>単純な比率は約{ratio}％</strong>です。物件の取得費、土地・建物（借地権を含む）の価値、空室、運営経費、税金などを考慮していないため、<strong>不動産投資の利回りではありません</strong>。</figcaption>
         </figure>
 
-        <figure class="v-figure">
-          <p class="v-figure__title">表面利回りと実質利回り<span class="v-tag v-tag--fact">事例の事実</span></p>
-          <div class="v-bars">
-            <div class="v-bar"><div class="v-bar__label"><b>表面利回り</b><span class="v-bar__value">約20％</span></div><div class="v-bar__track"><div class="v-bar__fill" style="width:80%" title="表面利回り：約20％"></div></div></div>
-            <div class="v-bar"><div class="v-bar__label"><b>実質利回り</b><span class="v-bar__value">約16％</span></div><div class="v-bar__track"><div class="v-bar__fill v-bar__fill--light" style="width:64%" title="実質利回り：約16％"></div></div></div>
-          </div>
-          <div class="v-grid v-grid--2" style="margin-top:1.25rem">
-            <div class="v-card v-card--tint"><p class="v-card__title">表面利回り</p><p>年間の賃料収入 ÷ 投資額</p></div>
-            <div class="v-card v-card--tint"><p class="v-card__title">実質利回り</p><p>（年間の賃料収入 − 地代・建物の固定資産税・管理費・修繕費などの経費）÷ 投資額</p></div>
-          </div>
-          <figcaption>グラフの目盛りは0〜25％です。実質利回りの計算に含めた経費の内訳は公開していません。</figcaption>
-        </figure>
+        <div class="v-callout">
+          <span class="v-callout__icon"><Icon name="doc" size={28} /></span>
+          <p>現行サイトの「表面利回り約20％（実質約16％）」は、計画時の数字としてそのまま掲載しているものです。何を分母として計算したかは記載していないため、上の単純比率と同じ計算であるとは限りません。不動産投資でいう利回りは、一般に物件の購入価格などの投資額全体を基礎として計算するもので、改修費だけを基礎にした比率とは意味が異なります。</p>
+        </div>
 
         <div class="v-callout v-callout--sand">
           <span class="v-callout__icon"><Icon name="alert" size={28} /></span>
@@ -313,8 +304,8 @@ const sources = [
   .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .5rem; }
   .chips li { padding: .2em .7em; border-radius: 999px; background: var(--c-primary-50); border: 1px solid var(--c-primary-100); font-size: .875rem; color: var(--c-primary); }
 
-  .v-stat--wide { grid-column: span 2; }
-  @media (min-width: 768px) { .v-stat--wide { grid-column: span 2; } }
+  .v-stat--full { grid-column: 1 / -1; }
+  .v-stat__text { margin-top: .25rem; font-size: 1.125rem; font-weight: 700; color: var(--c-ink); line-height: 1.5; }
 
   .chain { display: grid; gap: 1.75rem; margin-top: 1.25rem; counter-reset: chain; }
   @media (min-width: 900px) { .chain { grid-template-columns: repeat(4, 1fr); gap: 1.5rem; } }
