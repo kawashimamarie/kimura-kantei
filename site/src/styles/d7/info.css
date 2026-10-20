@@ -1,0 +1,98 @@
+/* お問い合わせ・会社案内・料金・FAQ */
+
+/* ---- お問い合わせ：電話とメールを同じ重さで並べる（カードにしない） ---- */
+.sec--reach { padding-top: 24px; }
+.reach { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--ink); }
+.reach__col { padding: 44px 56px 44px 0; }
+.reach__col + .reach__col { padding: 44px 0 44px 56px; border-left: 1px solid var(--line-2); }
+.reach__tel { display: inline-block; margin-top: 10px; font-family: var(--f-num); font-size: clamp(36px, 3vw + 14px, 56px); font-weight: 500; letter-spacing: .02em; line-height: 1.15; color: var(--green-d); }
+.reach__mail { display: inline-block; margin-top: 18px; font-family: var(--f-num); font-size: clamp(19px, 1.2vw + 10px, 26px); font-weight: 500; letter-spacing: .01em; line-height: 1.4; color: var(--green-d); word-break: break-all; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; text-decoration-color: rgba(31, 63, 66, .35); }
+.reach__hours { margin-top: 6px; font-size: 14px; color: var(--ink-2); }
+.reach__t { margin-top: 18px; max-width: 28em; font-size: 15.5px; line-height: 2; color: var(--ink-3); text-wrap: pretty; word-break: auto-phrase; }
+.reach .btn { margin-top: 26px; }
+.points { display: flex; flex-wrap: wrap; gap: 4px 32px; margin-top: 8px; padding-top: 22px; border-top: 1px solid var(--line-2); font-size: 14.5px; color: var(--ink-2); }
+.points li { position: relative; padding-left: 14px; white-space: nowrap; text-wrap: balance; }
+.points li::before { content: ""; position: absolute; left: 0; top: .95em; width: 6px; height: 1px; background: var(--accent); }
+
+/* アクセス（写真＋所在地） */
+.access { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+.access figure { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 2px; background: #e8e1d5; }
+.access img { width: 100%; height: 100%; object-fit: cover; }
+.access__a { font-family: var(--f-mincho); font-size: clamp(20px, .8vw + 15px, 26px); font-weight: 700; letter-spacing: .04em; line-height: 1.6; }
+.access__a small { display: block; margin-top: 4px; font-family: var(--f-sans); font-size: 14px; font-weight: 400; letter-spacing: .02em; color: var(--ink-2); }
+.access address { margin-top: 18px; font-style: normal; font-size: 15.5px; line-height: 2; color: var(--ink-3); }
+.access__hint { margin-top: 12px; font-size: 14.5px; line-height: 1.95; color: var(--ink-2); text-wrap: pretty; }
+.access .btn { margin-top: 24px; }
+
+/* ---- 会社案内 ---- */
+.greet { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 72px; align-items: start; }
+.greet figure { margin: 0; }
+.greet figure img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 2px; }
+.greet figcaption { margin-top: 10px; font-size: 12.5px; color: var(--ink-2); letter-spacing: .04em; }
+.sign7 { margin-top: 28px; font-family: var(--f-mincho); font-size: 20px; font-weight: 700; letter-spacing: .14em; }
+.ovw { width: 100%; border-top: 1px solid var(--ink); text-align: left; }
+.ovw th, .ovw td { vertical-align: top; padding: 20px 0; border-bottom: 1px solid var(--line-2); font-weight: 400; }
+.ovw th { width: 170px; padding-right: 24px; font-size: 14px; font-weight: 700; letter-spacing: .06em; color: var(--accent); }
+.ovw td { font-size: 15.5px; line-height: 1.95; color: var(--ink-3); }
+.ovw td a { color: var(--green); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: rgba(43, 83, 87, .4); }
+.ovw__sub { font-size: 13px; color: var(--ink-2); letter-spacing: .02em; }
+.nw2 { white-space: nowrap; }
+
+/* ---- 料金：名称 / 金額を罫線で対応させる ---- */
+.fee { width: 100%; border-top: 1px solid var(--ink); }
+.fee th, .fee td { padding: 22px 0; border-bottom: 1px solid var(--line-2); vertical-align: baseline; font-weight: 400; text-align: left; }
+.fee th { font-size: 16.5px; font-weight: 700; line-height: 1.7; word-break: auto-phrase; text-wrap: balance; }
+.fee th small { display: block; margin-top: 2px; font-size: 13.5px; font-weight: 400; color: var(--ink-2); }
+.fee td { width: 36%; padding-left: 24px; font-family: var(--f-num); font-size: clamp(19px, .8vw + 13px, 24px); font-weight: 600; letter-spacing: .01em; text-align: right; white-space: nowrap; color: var(--green-d); }
+.fee td.fee__text { font-family: var(--f-sans); font-size: 17px; font-weight: 700; }
+.foot { margin-top: 18px; font-size: 14.5px; }
+.free { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 32px; padding: 26px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line-2); }
+.free__p { font-family: var(--f-mincho); font-size: clamp(26px, 1.2vw + 18px, 34px); font-weight: 700; letter-spacing: .06em; color: var(--green-d); }
+.free__n { flex: 1 1 22em; font-size: 15.5px; line-height: 1.95; color: var(--ink-3); text-wrap: pretty; word-break: auto-phrase; }
+.notes { margin-top: 36px; }
+.notes li { position: relative; padding: 6px 0 6px 18px; font-size: 14.5px; line-height: 1.95; color: var(--ink-2); text-wrap: pretty; word-break: auto-phrase; }
+.notes li::before { content: ""; position: absolute; left: 0; top: 19px; width: 6px; height: 1px; background: var(--accent); }
+.panel2 { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; margin-top: 56px; padding: 26px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line-2); font-size: 15.5px; color: var(--ink-3); text-wrap: pretty; }
+.panel2 p { flex: 1 1 24em; }
+.panel2__acts { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* ---- FAQ ---- */
+.faqcat + .faqcat { margin-top: 72px; }
+.faqcat > .h2 { margin-bottom: 24px; }
+.pnav--sp { display: none; }
+@media (max-width: 1100px) { .pnav--sp { display: block; } }
+
+@media (min-width: 768px) and (max-width: 1100px) {
+  .reach__col { padding-right: 32px; } .reach__col + .reach__col { padding-left: 32px; }
+  .access { grid-template-columns: 1fr; gap: 32px; }
+  .greet { grid-template-columns: 1fr; gap: 36px; } .greet figure { max-width: 520px; }
+  .ovw th { width: 140px; }
+}
+@media (max-width: 767px) {
+  .reach { grid-template-columns: 1fr; }
+  .reach__col, .reach__col + .reach__col { padding: 30px 0; border-left: 0; }
+  .reach__col + .reach__col { border-top: 1px solid var(--line-2); }
+  .reach__t { font-size: 14.5px; }
+  .reach .btn { width: 100%; }
+  .points { gap: 4px 20px; font-size: 13.5px; }
+  .points li { white-space: normal; }
+  .access { grid-template-columns: 1fr; gap: 24px; }
+  .access address { font-size: 14.5px; } .access .btn { width: 100%; }
+  .greet { grid-template-columns: 1fr; gap: 28px; }
+  .sign7 { font-size: 18px; margin-top: 22px; }
+  .ovw, .ovw tbody, .ovw tr, .ovw th, .ovw td { display: block; width: auto; }
+  .ovw tr { padding: 16px 0; border-bottom: 1px solid var(--line-2); }
+  .ovw th, .ovw td { padding: 0; border: 0; }
+  .ovw th { margin-bottom: 4px; font-size: 12.5px; letter-spacing: .1em; }
+  .ovw td { font-size: 14.5px; }
+  .fee th { font-size: 15px; padding: 18px 0; } .fee td { width: auto; padding: 18px 0 18px 14px; font-size: 18px; }
+  .fee th small { font-size: 12.5px; }
+  .free { padding: 20px 0; }
+  .free__n { font-size: 14.5px; }
+  .notes li { font-size: 13.5px; }
+  .panel2 { margin-top: 40px; } .panel2__acts { width: 100%; } .panel2__acts .btn { flex: 1 1 100%; }
+  .faqcat + .faqcat { margin-top: 52px; }
+}
+@media (max-width: 360px) {
+  .fee th { font-size: 14px; } .fee td { padding-left: 10px; font-size: 17px; } .fee td.fee__text { font-size: 14.5px; }
+}

@@ -1,91 +1,88 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHeader from '../components/PageHeader.astro';
-import SectionHead from '../components/SectionHead.astro';
-import ContactCta from '../components/ContactCta.astro';
+import '../styles/d7/info.css';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageHero from '../components/d7/PageHero.astro';
+import CtaD7 from '../components/d7/CtaD7.astro';
 import { u } from '../lib/url';
 // 料金は現行公式サイトで記載が一致している項目のみ掲載する。
+const crumbs = [{ name: '料金の目安', path: '/fees/' }];
 ---
-<BaseLayout
+<SiteLayout
   title="料金の目安（不動産鑑定・耐震診断・インスペクション）"
   description="木村不動産鑑定の料金の目安です。初回のご相談は無料。不動産鑑定評価書は25万円〜、意見書・調査報告書は15万円〜。木造住宅の耐震診断、インスペクション、フラット35適合証明の料金の目安もご案内します。"
   path="/fees/"
   breadcrumbs={[{ name: '料金の目安', path: '/fees/' }]}
 >
-  <PageHeader eyebrow="Fees" title="料金の目安" lead="費用は、不動産の所在地・種類・規模・用途によって異なります。下記は目安としてご覧ください。" />
+  <PageHero title="料金の目安" lead="費用は、不動産の所在地・種類・規模・用途によって異なります。下記は目安としてご覧ください。" crumbs={crumbs} />
 
-  <section class="section section--white" aria-labelledby="consult-title">
-    <div class="container">
-      <div class="fees">
-        <div class="fee-card fee-card--free">
-          <h2 class="fee-card__title" id="consult-title">ご相談</h2>
-          <p class="fee-card__price"><strong>初回無料</strong></p>
-          <p class="fee-card__note">お電話またはメールでご予約ください。ご依頼を前提としたご相談でなくても構いません。</p>
-        </div>
-
-        <div class="fee-card">
-          <h2 class="fee-card__title">不動産鑑定</h2>
-          <table class="fee-table">
-            <caption class="u-visually-hidden">不動産鑑定の料金の目安</caption>
-            <tbody>
-              <tr><th scope="row">不動産鑑定評価書<small>不動産鑑定評価基準に則った正式な鑑定</small></th><td>25万円〜</td></tr>
-              <tr><th scope="row">意見書・調査報告書<small>不動産鑑定評価基準に則らない調査</small></th><td>15万円〜</td></tr>
-            </tbody>
-          </table>
-          <p class="fee-card__foot"><a href={u('/services/appraisal/')}>鑑定評価書と意見書の違いを見る</a></p>
-        </div>
-
-        <div class="fee-card">
-          <h2 class="fee-card__title">建物の調査・診断</h2>
-          <table class="fee-table">
-            <caption class="u-visually-hidden">建物の調査・診断の料金の目安</caption>
-            <tbody>
-              <tr><th scope="row">木造 簡易耐震診断</th><td>3万円〜</td></tr>
-              <tr><th scope="row">木造 精密耐震診断</th><td>16万円〜</td></tr>
-              <tr><th scope="row">既存住宅状況調査（インスペクション）</th><td>8万円〜</td></tr>
-              <tr><th scope="row">フラット35適合証明書の発行</th><td>8万円〜</td></tr>
-              <tr><th scope="row">耐震改修設計</th><td>別途お見積り</td></tr>
-              <tr><th scope="row">設計監理料</th><td>工事費の10％程度</td></tr>
-            </tbody>
-          </table>
-          <p class="fee-card__foot"><a href={u('/services/seismic/')}>耐震診断・インスペクションについて見る</a></p>
-        </div>
+  <section class="sec" aria-labelledby="consult-title">
+    <div class="wrap split">
+      <div class="split__head reveal"><h2 class="h2" id="consult-title">ご相談</h2></div>
+      <div class="free reveal" data-delay="1">
+        <p class="free__p">初回無料</p>
+        <p class="free__n">お電話またはメールでご予約ください。ご依頼を前提としたご相談でなくても構いません。</p>
       </div>
+    </div>
+  </section>
 
-      <ul class="note-list">
-        <li>複数の物件をまとめてご依頼いただく場合はお値引きします。</li>
-        <li>不動産鑑定から売買の仲介に進んだ場合は、セットでの割引を適用します。</li>
-        <li>補助金・助成金の代理申請も承ります。当社は東京都23区に登録しているため、各区の補助金の申請が可能です。</li>
-        <li>フラット35適合証明書は、発行できるかどうかを事前に書類（机上）で検討します。</li>
-        <li>売買・賃貸の仲介手数料は、宅地建物取引業法に準じます。土地分割案の作成は別途お見積りします。</li>
-        <li>事案によって、弁護士・税理士などの専門家と連携します。</li>
+  <section class="sec sec--paper" aria-labelledby="appraisal-fee-title">
+    <div class="wrap split">
+      <div class="split__head reveal"><h2 class="h2" id="appraisal-fee-title">不動産鑑定</h2></div>
+      <div class="reveal" data-delay="1">
+        <table class="fee">
+          <caption class="u-visually-hidden">不動産鑑定の料金の目安</caption>
+          <tbody>
+            <tr><th scope="row">不動産鑑定評価書<small>不動産鑑定評価基準に則った正式な鑑定</small></th><td>25万円〜</td></tr>
+            <tr><th scope="row">意見書・調査報告書<small>不動産鑑定評価基準に則らない調査</small></th><td>15万円〜</td></tr>
+          </tbody>
+        </table>
+        <p class="foot"><a class="u-link" href={u('/services/appraisal/')}>鑑定評価書と意見書の違いを見る</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="building-fee-title">
+    <div class="wrap split">
+      <div class="split__head reveal"><h2 class="h2" id="building-fee-title">建物の調査・診断</h2></div>
+      <div class="reveal" data-delay="1">
+        <table class="fee">
+          <caption class="u-visually-hidden">建物の調査・診断の料金の目安</caption>
+          <tbody>
+            <tr><th scope="row">木造 簡易耐震診断</th><td>3万円〜</td></tr>
+            <tr><th scope="row">木造 精密耐震診断</th><td>16万円〜</td></tr>
+            <tr><th scope="row">既存住宅状況調査（インスペクション）</th><td>8万円〜</td></tr>
+            <tr><th scope="row">フラット35適合証明書の発行</th><td>8万円〜</td></tr>
+            <tr><th scope="row">耐震改修設計</th><td class="fee__text">別途お見積り</td></tr>
+            <tr><th scope="row">設計監理料</th><td class="fee__text">工事費の10％程度</td></tr>
+          </tbody>
+        </table>
+        <p class="foot"><a class="u-link" href={u('/services/seismic/')}>耐震診断・インスペクションについて見る</a></p>
+        <ul class="notes">
+          <li>複数の物件をまとめてご依頼いただく場合はお値引きします。</li>
+          <li>不動産鑑定から売買の仲介に進んだ場合は、セットでの割引を適用します。</li>
+          <li>補助金・助成金の代理申請も承ります。当社は東京都23区に登録しているため、各区の補助金の申請が可能です。</li>
+          <li>フラット35適合証明書は、発行できるかどうかを事前に書類（机上）で検討します。</li>
+          <li>売買・賃貸の仲介手数料は、宅地建物取引業法に準じます。土地分割案の作成は別途お見積りします。</li>
+          <li>事案によって、弁護士・税理士などの専門家と連携します。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--paper" aria-labelledby="estimate-title">
+    <div class="wrap">
+      <div class="reveal sechead"><h2 class="h2" id="estimate-title">お見積りについて</h2></div>
+      <ul class="cols3 reveal">
+        <li><h3>ご依頼の前にお見積り</h3><p>ご相談の内容を伺ったうえで、必要な調査と費用をお伝えします。お見積りまでは費用はかかりません。</p></li>
+        <li><h3>概算の評価額もお伝えします</h3><p>不動産鑑定では、正式なご依頼の前に概算の評価額をお伝えします。正式な鑑定の結果とは差が出る場合があります。</p></li>
+        <li><h3>目的に合った書面を</h3><p>鑑定評価書と意見書・調査報告書のどちらが必要かは、書面を使う場面によって異なります。ご相談の際にご案内します。</p></li>
       </ul>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="estimate-title">
-    <div class="container">
-      <SectionHead en="Estimate" title="お見積りについて" id="estimate-title" />
-      <div class="point-grid point-grid--3">
-        <div class="point-card">
-          <h3 class="point-card__title">ご依頼の前にお見積り</h3>
-          <p>ご相談の内容を伺ったうえで、必要な調査と費用をお伝えします。お見積りまでは費用はかかりません。</p>
-        </div>
-        <div class="point-card">
-          <h3 class="point-card__title">概算の評価額もお伝えします</h3>
-          <p>不動産鑑定では、正式なご依頼の前に概算の評価額をお伝えします。正式な鑑定の結果とは差が出る場合があります。</p>
-        </div>
-        <div class="point-card">
-          <h3 class="point-card__title">目的に合った書面を</h3>
-          <p>鑑定評価書と意見書・調査報告書のどちらが必要かは、書面を使う場面によって異なります。ご相談の際にご案内します。</p>
-        </div>
-      </div>
-      <div class="link-panel link-panel--spaced">
+      <div class="panel2 reveal">
         <p>ご予約から、お見積り・ご依頼・ご報告までの流れは、お問い合わせのページでご案内しています。</p>
-        <a class="btn btn--outline" href={u('/contact/#flow')}>ご相談からご依頼までの流れを見る</a>
+        <div class="panel2__acts"><a class="btn btn--line" href={u('/contact/#flow')}>ご相談からご依頼までの流れを見る<i aria-hidden="true">→</i></a></div>
       </div>
     </div>
   </section>
 
-  <ContactCta />
-</BaseLayout>
+  <CtaD7 />
+</SiteLayout>

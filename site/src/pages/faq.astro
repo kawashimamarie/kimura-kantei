@@ -1,48 +1,56 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHeader from '../components/PageHeader.astro';
-import SectionHead from '../components/SectionHead.astro';
-import FaqList from '../components/FaqList.astro';
-import ContactCta from '../components/ContactCta.astro';
+import '../styles/d7/info.css';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageHero from '../components/d7/PageHero.astro';
+import PageNav from '../components/d7/PageNav.astro';
+import FaqD7 from '../components/d7/FaqD7.astro';
+import CtaD7 from '../components/d7/CtaD7.astro';
 import { faqs, faqCategories } from '../data/faq';
 import { faqPage } from '../lib/schema';
 import { u } from '../lib/url';
 
 const cats = Object.entries(faqCategories) as [keyof typeof faqCategories, string][];
+const crumbs = [{ name: 'よくあるご質問', path: '/faq/' }];
+const toc = cats.map(([k, v]) => ({ id: `cat-${k}`, label: v }));
 ---
-<BaseLayout
+<SiteLayout
   title="よくあるご質問"
   description="木村不動産鑑定によく寄せられるご質問をまとめました。相談だけでもよいか、費用の目安、不動産会社の査定と不動産鑑定の違い、相続・親族間売買・地代家賃・立退料・耐震診断のご相談についてお答えします。"
   path="/faq/"
   breadcrumbs={[{ name: 'よくあるご質問', path: '/faq/' }]}
   jsonLd={[faqPage(faqs, '/faq/')]}
 >
-  <PageHeader eyebrow="FAQ" title="よくあるご質問" lead="ご相談の前によくいただくご質問をまとめました。ここにないことも、お気軽にお問い合わせください。">
-    <nav class="toc" aria-label="質問の分類">
-      <ul class="toc__list">{cats.map(([k, v]) => <li><a href={`#cat-${k}`}>{v}</a></li>)}</ul>
-    </nav>
-  </PageHeader>
+  <PageHero title="よくあるご質問" lead="ご相談の前によくいただくご質問をまとめました。ここにないことも、お気軽にお問い合わせください。" crumbs={crumbs} />
+  <div class="pnav--sp"><PageNav items={toc} /></div>
 
-  {cats.map(([k, v], i) => (
-    <section class={`section ${i % 2 === 0 ? 'section--white' : ''}`} aria-labelledby={`cat-${k}`}>
-      <div class="container container--narrow">
-        <SectionHead title={v} id={`cat-${k}`} />
-        <FaqList items={faqs.filter((f) => f.category === k)} />
+  <section class="sec sec--paper" aria-label="質問の一覧">
+    <div class="wrap pgrid">
+      <nav class="ptoc" aria-label="質問の分類">
+        <h2>質問の分類</h2>
+        <ol>{toc.map((t) => <li><a href={`#${t.id}`}>{t.label}</a></li>)}</ol>
+      </nav>
+      <div>
+        {cats.map(([k, v]) => (
+          <div class="faqcat reveal">
+            <h2 class="h2" id={`cat-${k}`}>{v}</h2>
+            <FaqD7 items={faqs.filter((f) => f.category === k)} />
+          </div>
+        ))}
       </div>
-    </section>
-  ))}
+    </div>
+  </section>
 
-  <section class="section section--white" aria-label="関連ページ">
-    <div class="container container--narrow">
-      <div class="link-panel">
+  <section class="sec sec--tight" aria-label="関連ページ">
+    <div class="wrap">
+      <div class="panel2 reveal" style="margin-top:0">
         <p>費用の目安は料金ページで、ご相談の内容ごとの詳しい説明は各サービスのページでご案内しています。</p>
-        <div class="link-panel__actions">
-          <a class="btn btn--outline" href={u('/fees/')}>料金の目安</a>
-          <a class="btn btn--outline" href={u('/services/')}>ご相談内容</a>
+        <div class="panel2__acts">
+          <a class="btn btn--line" href={u('/fees/')}>料金の目安<i aria-hidden="true">→</i></a>
+          <a class="btn btn--line" href={u('/services/')}>ご相談内容<i aria-hidden="true">→</i></a>
         </div>
       </div>
     </div>
   </section>
 
-  <ContactCta />
-</BaseLayout>
+  <CtaD7 />
+</SiteLayout>
