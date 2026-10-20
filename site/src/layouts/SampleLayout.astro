@@ -1,0 +1,50 @@
+---
+// 提案用サンプル（/samples/ 以下）のレイアウト。
+// 本文・図解・サンプル独自のCSSは旧CSS（global.css・samples/visual.css）のまま保ち、
+// ヘッダー・フッター・SP固定ボタン・共通CTAだけをD7の共通部品に揃える。D7の base.css・parts.css は読み込まない
+// （名前が衝突するため）。必要な分は styles/d7/sample-bridge.css に持つ。
+import '../styles/global.css';
+import '../styles/d7/vars.css';
+import '../styles/d7/shell.css';
+import '../styles/d7/sample-bridge.css';
+import SeoHead from '../components/SeoHead.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import SiteHeader from '../components/d7/SiteHeader.astro';
+import SiteFooter from '../components/d7/SiteFooter.astro';
+import SpBar from '../components/d7/SpBar.astro';
+import ShellScript from '../components/d7/ShellScript.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogType?: 'website' | 'article';
+  ogImage?: string;
+  breadcrumbs?: { name: string; path: string }[];
+  jsonLd?: object[];
+}
+const { path, breadcrumbs = [], ...seo } = Astro.props;
+const crumbs = breadcrumbs.length ? [{ name: 'トップ', path: '/' }, ...breadcrumbs] : [];
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <SeoHead path={path} breadcrumbs={breadcrumbs} {...seo}>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@600;700;800&display=swap">
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </SeoHead>
+</head>
+<body>
+  <a class="skip-link" href="#main">本文へスキップ</a>
+  <SiteHeader path={path} />
+  <main id="main" tabindex="-1">
+    {crumbs.length > 0 && <Breadcrumbs items={crumbs} />}
+    <slot />
+  </main>
+  <SiteFooter />
+  <SpBar />
+  <ShellScript />
+</body>
+</html>

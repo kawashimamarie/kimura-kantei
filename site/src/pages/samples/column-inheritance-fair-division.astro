@@ -5,11 +5,11 @@
 // - 正式公開時は src/content/column/ へ移す。公開日・更新日・執筆者（木村修本人の確認が取れた場合のみ 'kimura'）を設定する。
 // - コラム一覧・トップ・関連欄には出さない（既存ページに影響させない）。
 // - 公開日はまだないため表示せず、構造化データにも datePublished / dateModified を入れない。
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import SampleLayout from '../../layouts/SampleLayout.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import FaqList from '../../components/FaqList.astro';
 import CaseCard from '../../components/CaseCard.astro';
-import ContactCta from '../../components/ContactCta.astro';
+import CtaD7 from '../../components/d7/CtaD7.astro';
 import SampleNotice from '../../samples/SampleNotice.astro';
 import Icon from '../../samples/PhIcon.astro';
 import '../../samples/visual.css';
@@ -130,7 +130,7 @@ const svcs = ['inheritance', 'appraisal', 'family-transaction'].map((s) => getSe
 const caseEntry = await getEntry('cases', 'suginami-rental');
 if (!caseEntry) throw new Error('suginami-rental が見つかりません');
 ---
-<BaseLayout
+<SampleLayout
   title={title}
   description={description}
   path={path}
@@ -430,8 +430,8 @@ if (!caseEntry) throw new Error('suginami-rental が見つかりません');
     </div>
   </section>
 
-  <ContactCta />
-</BaseLayout>
+  <CtaD7 />
+</SampleLayout>
 
 <style>
   /* ---- 本文の基本 ---- */

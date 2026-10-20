@@ -5,9 +5,9 @@
 // - それ以外は「一般的な解説」として区別し、この事例で実際に行った検討・結果としては書かない。
 // - 間取り・構造の図面は実物がないため作らない。独自の投資回収年数の計算もしない。
 // - 既存ページからはリンクしない（一覧・関連欄にも出さない）。
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import SampleLayout from '../../layouts/SampleLayout.astro';
 import ProfileBox from '../../components/ProfileBox.astro';
-import ContactCta from '../../components/ContactCta.astro';
+import CtaD7 from '../../components/d7/CtaD7.astro';
 import SampleNotice from '../../samples/SampleNotice.astro';
 import Icon from '../../samples/Icon.astro';
 import '../../samples/visual.css';
@@ -51,7 +51,7 @@ const sources = [
   { title: '不動産鑑定評価基準', publisher: '国土交通省', url: 'https://www.mlit.go.jp/common/001204083.pdf' },
 ];
 ---
-<BaseLayout
+<SampleLayout
   title="杉並区の空き家を賃貸住宅として再生した事例の解説"
   description={description}
   path={path}
@@ -257,8 +257,8 @@ const sources = [
     </div>
   </article>
 
-  <ContactCta />
-</BaseLayout>
+  <CtaD7 />
+</SampleLayout>
 
 <style>
   .page-header__title .sub { display: block; margin-top: .5rem; font-size: .62em; font-weight: 500; color: var(--c-ink-soft); }

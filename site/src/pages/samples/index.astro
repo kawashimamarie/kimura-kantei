@@ -1,6 +1,6 @@
 ---
 // 【提案用サンプル】商談でお見せするコンテンツマーケティングのサンプル一覧。既存ページからはリンクしない。
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import SampleLayout from '../../layouts/SampleLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import SampleNotice from '../../samples/SampleNotice.astro';
 import { u } from '../../lib/url';
@@ -20,7 +20,7 @@ const samples = [
   },
 ];
 ---
-<BaseLayout
+<SampleLayout
   title="コンテンツのサンプル"
   description="サイトリニューアルのご提案用に作成した、コラムと事例解説のサンプルです。"
   path="/samples/"
@@ -42,7 +42,7 @@ const samples = [
       </ul>
     </div>
   </section>
-</BaseLayout>
+</SampleLayout>
 
 <style>
   .sample-list { display: grid; gap: 1.5rem; }
