@@ -1,0 +1,167 @@
+---
+// お問い合わせフォーム。送信先が未設定（formConfig.enabled = false）の間は、確認用として表示だけを行い、送信しない。
+// 入力検証・エラー表示・送信完了画面は、送信先が接続されたときと同じ構造で動く。
+import { formConfig } from '../../data/form';
+import { contact } from '../../data/site';
+import '../../styles/d7/form.css';
+import { u } from '../../lib/url';
+const live = formConfig.enabled;
+---
+<div class="cform" data-live={live ? 'true' : 'false'} data-endpoint={live ? formConfig.endpoint : undefined} data-turnstile={live && formConfig.turnstileSiteKey ? formConfig.turnstileSiteKey : undefined}>
+  {!live && (
+    <p class="cform__pv" role="note"><strong>{formConfig.previewNotice}</strong>ご相談は、上のお電話またはメールでお願いします。</p>
+  )}
+
+  <div class="cform__err" id="cform-summary" role="alert" tabindex="-1" hidden>
+    <p class="cform__errt">入力内容をご確認ください。</p>
+    <ul id="cform-summary-list"></ul>
+  </div>
+
+  <form class="cform__form" id="cform" novalidate autocomplete="on">
+    <div class="fld">
+      <label for="cf-name">お名前<span class="req">必須</span></label>
+      <input id="cf-name" name="name" type="text" autocomplete="name" maxlength="100" required aria-describedby="cf-name-err">
+      <p class="fld__err" id="cf-name-err" hidden></p>
+    </div>
+    <div class="fld">
+      <label for="cf-email">メールアドレス<span class="req">必須</span></label>
+      <input id="cf-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="200" required aria-describedby="cf-email-hint cf-email-err">
+      <p class="fld__hint" id="cf-email-hint">ご返信先になります。</p>
+      <p class="fld__err" id="cf-email-err" hidden></p>
+    </div>
+    <div class="fld">
+      <label for="cf-tel">電話番号<span class="opt">任意</span></label>
+      <input id="cf-tel" name="tel" type="tel" inputmode="tel" autocomplete="tel" maxlength="30" aria-describedby="cf-tel-hint cf-tel-err">
+      <p class="fld__hint" id="cf-tel-hint">お電話でのご連絡をご希望の場合にご入力ください。</p>
+      <p class="fld__err" id="cf-tel-err" hidden></p>
+    </div>
+    <div class="fld">
+      <label for="cf-message">ご相談内容<span class="req">必須</span></label>
+      <textarea id="cf-message" name="message" rows="7" maxlength="2000" required aria-describedby="cf-message-hint cf-message-err"></textarea>
+      <p class="fld__hint" id="cf-message-hint">「相続した不動産のこと」「地代のこと」など、わかる範囲で構いません（2,000文字まで）。</p>
+      <p class="fld__err" id="cf-message-err" hidden></p>
+    </div>
+
+    <!-- 迷惑メール対策：人には見えない入力欄。ここに入力があった送信は、受け付けない -->
+    <div class="hp" aria-hidden="true"><label>ウェブサイト<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
+    <div class="fld fld--check">
+      <div class="chk">
+        <input id="cf-consent" name="consent" type="checkbox" required aria-describedby="cf-consent-err">
+        <label for="cf-consent"><a class="u-link" href={u('/privacy/')} target="_blank" rel="noopener">個人情報保護方針（プライバシーポリシー）<span class="u-visually-hidden">（新しいタブで開きます）</span></a>に同意します<span class="req">必須</span></label>
+      </div>
+      <p class="fld__err" id="cf-consent-err" hidden></p>
+    </div>
+
+    {live && formConfig.turnstileSiteKey && <div class="cform__ts" id="cform-turnstile"></div>}
+
+    <div class="cform__acts">
+      {live ? (
+        <button class="btn" type="submit" id="cform-submit">送信する<i aria-hidden="true">→</i></button>
+      ) : (
+        <>
+          <button class="btn" type="submit" id="cform-submit" disabled aria-disabled="true">送信する（確認用のため送信できません）</button>
+          <button class="btn btn--line" type="button" id="cform-check">入力内容を確認する（送信はされません）</button>
+        </>
+      )}
+    </div>
+    <p class="cform__status" id="cform-status" role="status" aria-live="polite" hidden></p>
+  </form>
+
+  <section class="cform__thanks" id="cform-thanks" tabindex="-1" aria-labelledby="cform-thanks-title" hidden>
+    <p class="kicker" id="cform-thanks-sample" hidden>送信完了画面の見本（実際には送信されていません）</p>
+    <h3 id="cform-thanks-title">お問い合わせを受け付けました</h3>
+    <p>ご入力のメールアドレス宛に、当社から折り返しご連絡します。お急ぎの場合は、お電話（<a href={contact.telHref}>{contact.tel}</a>、受付 {contact.hours}）でもお問い合わせください。</p>
+    <button class="btn btn--line" type="button" id="cform-again">入力画面に戻る</button>
+  </section>
+
+  {!live && <p class="cform__demo"><button class="u-link cform__linkbtn" type="button" id="cform-show-thanks">送信完了画面の見本を見る（確認用）</button></p>}
+
+  <p class="cform__fail" id="cform-fail" role="alert" hidden>送信できませんでした。お手数ですが、お電話（<a href={contact.telHref}>{contact.tel}</a>）またはメール（<a href={`mailto:${contact.email}`}>{contact.email}</a>）でご連絡ください。</p>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.cform');
+  if (root) {
+    const live = root.dataset.live === 'true';
+    const form = root.querySelector<HTMLFormElement>('#cform')!;
+    const $ = <T extends HTMLElement>(id: string) => root.querySelector<T>('#' + id)!;
+    const summary = $('cform-summary'), summaryList = $('cform-summary-list'), status = $('cform-status'), thanks = $('cform-thanks'), fail = $('cform-fail');
+    const names = { name: 'お名前', email: 'メールアドレス', tel: '電話番号', message: 'ご相談内容', consent: '個人情報保護方針への同意' } as const;
+    type Key = keyof typeof names;
+    const field = (k: Key) => form.elements.namedItem(k) as HTMLInputElement | HTMLTextAreaElement;
+    const full = (s: string) => s.replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0)).replace(/[－ー―]/g, '-').replace(/[（]/g, '(').replace(/[）]/g, ')').replace(/＋/g, '+').replace(/　/g, ' ');
+
+    const check = (k: Key): string => {
+      const el = field(k);
+      const v = el.value.trim();
+      if (k === 'name') return v ? '' : 'お名前をご入力ください。';
+      if (k === 'email') {
+        if (!v) return 'メールアドレスをご入力ください。';
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'メールアドレスの形式をご確認ください（例：example@example.com）。';
+      }
+      if (k === 'tel') {
+        if (!v) return '';
+        const t = full(v);
+        return /^[0-9+()\-\s]{8,20}$/.test(t) && /[0-9]{8,}/.test(t.replace(/[^0-9]/g, '')) ? '' : '電話番号は、数字とハイフンでご入力ください（例：03-1234-5678）。';
+      }
+      if (k === 'message') return v ? '' : 'ご相談内容をご入力ください。';
+      return (el as HTMLInputElement).checked ? '' : 'ご相談の前に、個人情報保護方針への同意が必要です。チェックをお願いします。';
+    };
+    const show = (k: Key, msg: string) => {
+      const el = field(k), err = $('cf-' + (k === 'consent' ? 'consent' : k) + '-err');
+      err.textContent = msg; err.hidden = !msg;
+      if (msg) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
+    };
+    const validateAll = () => {
+      const bad: { k: Key; msg: string }[] = [];
+      (Object.keys(names) as Key[]).forEach((k) => { const m = check(k); show(k, m); if (m) bad.push({ k, msg: m }); });
+      summaryList.replaceChildren(...bad.map(({ k, msg }) => {
+        const li = document.createElement('li'), a = document.createElement('a');
+        a.href = '#' + field(k).id; a.textContent = msg;
+        a.addEventListener('click', (e) => { e.preventDefault(); field(k).focus(); });
+        li.append(a); return li;
+      }));
+      summary.hidden = bad.length === 0;
+      return bad;
+    };
+    (Object.keys(names) as Key[]).forEach((k) => {
+      const el = field(k);
+      el.addEventListener('blur', () => { if (el.value !== '' || el.getAttribute('aria-invalid')) show(k, check(k)); });
+      el.addEventListener('input', () => { if (el.getAttribute('aria-invalid')) show(k, check(k)); });
+      el.addEventListener('change', () => { if (el.getAttribute('aria-invalid')) show(k, check(k)); });
+    });
+
+    const setStatus = (msg: string) => { status.textContent = msg; status.hidden = !msg; };
+    const run = async () => {
+      fail.hidden = true; setStatus('');
+      const bad = validateAll();
+      if (bad.length) { summary.focus(); return; }
+      if (!live) { setStatus('入力内容に不備はありません。確認用のため、送信はされません。'); return; }
+      if ((form.elements.namedItem('website') as HTMLInputElement).value) return; // 迷惑メール対策（人には見えない欄に入力があれば、何もしない）
+      const btn = $<HTMLButtonElement>('cform-submit'); btn.disabled = true; setStatus('送信しています…');
+      try {
+        const token = (form.querySelector('[name="cf-turnstile-response"]') as HTMLInputElement | null)?.value ?? '';
+        if (root.dataset.turnstile && !token) { setStatus('迷惑メール対策の確認が完了していません。しばらくしてから、もう一度お試しください。'); btn.disabled = false; return; }
+        const res = await fetch(root.dataset.endpoint!, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: field('name').value.trim(), email: field('email').value.trim(), tel: field('tel').value.trim(), message: field('message').value.trim(), consent: true, turnstileToken: token }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        setStatus(''); form.hidden = true; thanks.hidden = false; thanks.focus();
+      } catch {
+        setStatus(''); fail.hidden = false; fail.focus?.(); btn.disabled = false;
+      }
+    };
+    form.addEventListener('submit', (e) => { e.preventDefault(); if (live) run(); });
+    root.querySelector('#cform-check')?.addEventListener('click', run);
+    root.querySelector('#cform-show-thanks')?.addEventListener('click', () => { form.hidden = true; summary.hidden = true; $('cform-thanks-sample').hidden = false; thanks.hidden = false; thanks.focus(); });
+    $('cform-again').addEventListener('click', () => { thanks.hidden = true; form.hidden = false; field('name').focus(); });
+
+    if (live && root.dataset.turnstile) {
+      const s = document.createElement('script'); s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; s.async = true;
+      s.onload = () => (window as any).turnstile?.render('#cform-turnstile', { sitekey: root.dataset.turnstile });
+      document.head.append(s);
+    }
+  }
+</script>
