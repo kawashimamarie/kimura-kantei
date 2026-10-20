@@ -10,7 +10,7 @@
 site/                     サイトのソース
 ├── src/
 │   ├── pages/            ページ（URL と 1 対 1 で対応）
-│   ├── layouts/          共通レイアウト（BaseLayout：head・ヘッダー・フッター／ServiceLayout：サービスページ）
+│   ├── layouts/          レイアウト（BaseLayout：下層ページの head・ヘッダー・フッター／ServiceLayout：サービスページ／TopLayout：トップページ専用）
 │   ├── components/       共通部品（パンくず・問い合わせ案内・FAQ・カードなど）
 │   ├── content/
 │   │   ├── cases/        事例（Markdown）
@@ -18,7 +18,7 @@ site/                     サイトのソース
 │   ├── content.config.ts 事例・コラムの項目定義
 │   ├── data/             会社情報・サービス・FAQ・プロフィール
 │   ├── lib/              URL・構造化データ・日付の補助関数
-│   └── styles/global.css 共通スタイル
+│   └── styles/           global.css（下層ページ共通）・top.css（トップページ専用。下層ページには読み込まれない）
 ├── public/assets/        画像・JavaScript（そのまま配信）
 └── scripts/build-pages.mjs  確認用プレビュー（GitHub Pages）向けのビルド
 ```

@@ -1,0 +1,48 @@
+---
+// トップページ用フッター。連絡先・メニュー・登録/許認可・所属団体を、会社情報のデータから組み立てる。
+import { site, contact, company } from '../data/site';
+import { services } from '../data/services';
+import { u } from '../lib/url';
+
+const year = new Date().getFullYear(); // JS が動かない環境でもビルド時点の年を表示する
+---
+<footer class="ft6">
+  <div class="wrap ft6__top">
+    <div class="ft6__brand">
+      <img src={u('/assets/img/logo/kimura-logo.png')} width="230" height="168" alt="" loading="lazy" decoding="async">
+      <p class="ft6__name">{site.name}<small>{site.tagline}</small></p>
+    </div>
+    <div class="ft6__contact">
+      <p>〒{contact.postalCode} {contact.address.replace(' キリサワビル201号', '')} <span class="keep">キリサワビル201号</span><br>{contact.access}</p>
+      <p>TEL <a href={contact.telHref}><b>{contact.tel}</b></a>（受付 {contact.hours}）<br>FAX {contact.fax}　／　<a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+    </div>
+  </div>
+  <div class="wrap ft6__cols">
+    <nav aria-label="ご相談内容">
+      <h2>ご相談内容</h2>
+      <ul>
+        {services.map((s) => <li><a href={u(`/services/${s.slug}/`)}>{s.name}</a></li>)}
+        <li><a href={u('/services/')}>ご相談内容の一覧</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="木村不動産鑑定について">
+      <h2>木村不動産鑑定について</h2>
+      <ul>
+        <li><a href={u('/profile/')}>代表 木村修</a></li>
+        <li><a href={u('/about/')}>会社案内・アクセス</a></li>
+        <li><a href={u('/cases/')}>事例</a></li>
+        <li><a href={u('/column/')}>コラム</a></li>
+        <li><a href={u('/fees/')}>料金の目安</a></li>
+        <li><a href={u('/faq/')}>よくあるご質問</a></li>
+        <li><a href={u('/contact/')}>お問い合わせ</a></li>
+      </ul>
+    </nav>
+    <div>
+      <h2>登録・許認可</h2>
+      <ul class="fine">{company.licenses.map((l) => <li>{l}</li>)}</ul>
+      <h2>所属団体</h2>
+      <ul class="fine">{company.memberships.map((m) => <li>{m}</li>)}</ul>
+    </div>
+  </div>
+  <p class="ft6__copy">&copy; <span data-year>{year}</span> {site.nameEn}</p>
+</footer>
