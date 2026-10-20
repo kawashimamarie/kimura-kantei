@@ -20,8 +20,9 @@ interface Props {
   ogImage?: string;
   breadcrumbs?: { name: string; path: string }[];
   jsonLd?: object[];
+  spbarMain?: { label: string; href: string }; // SP固定ボタンの右側。お問い合わせページだけ宛先を変える
 }
-const { path, ...seo } = Astro.props;
+const { path, spbarMain, ...seo } = Astro.props;
 ---
 <!doctype html>
 <html lang="ja">
@@ -40,7 +41,7 @@ const { path, ...seo } = Astro.props;
     <slot />
   </main>
   <SiteFooter />
-  <SpBar />
+  <SpBar main={spbarMain} />
   <ShellScript />
 </body>
 </html>

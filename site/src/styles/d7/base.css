@@ -13,6 +13,7 @@ table { border-collapse: collapse; }
 .u-pc { display: none; }
 @media (min-width: 768px) { .u-pc { display: inline; } .u-sp { display: none; } }
 .keep { white-space: nowrap; }
+.u-visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 /* 見出し・リンク・小見出し（トップと共通） */
 .wrap { max-width: 1312px; margin: 0 auto; padding: 0 64px; }
