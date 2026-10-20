@@ -1,23 +1,63 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import CaseCard from '../../components/CaseCard.astro';
-import ContactCta from '../../components/ContactCta.astro';
+import '../../styles/d7/cases.css';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/d7/PageHero.astro';
+import CaseTags from '../../components/d7/CaseTags.astro';
+import CtaD7 from '../../components/d7/CtaD7.astro';
+import { u } from '../../lib/url';
 
+// 並び順は既存データの order のまま。先頭の1件を大きく、残りを下に並べる（トップと同じ）
 const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
+const [featured, ...rest] = cases;
+const crumbs = [{ name: '事例', path: '/cases/' }];
+const ratio = (c: { width: number; height: number }) => `aspect-ratio:${c.width}/${c.height}`;
 ---
-<BaseLayout
+<SiteLayout
   title="事例"
   description="木村不動産鑑定がお手伝いした事例をご紹介します。相続した借地上の空き家の賃貸活用、借地上のアパートの再生と土地の取得、助成金を使った耐震改修など。ご相談の内容・課題・専門家としての考え方・結果をまとめています。"
   path="/cases/"
-  breadcrumbs={[{ name: '事例', path: '/cases/' }]}
+  breadcrumbs={crumbs}
 >
-  <PageHeader eyebrow="Case studies" title="事例" lead="どのようなご相談に、専門家としてどう考え、どう解決に向かったのか。実際の事例をご紹介します。個人や物件が特定されないよう、地域は区までの表記にしています。" />
-  <section class="section section--white" aria-label="事例の一覧">
-    <div class="container">
-      <div class="case-grid">{cases.map((c) => <CaseCard entry={c} headingLevel={2} />)}</div>
+  <PageHero title="事例" lead="どのようなご相談に、専門家としてどう考え、どう解決に向かったのか。実際の事例をご紹介します。個人や物件が特定されないよう、地域は区までの表記にしています。" crumbs={crumbs} />
+
+  <section class="sec sec--paper" aria-label="事例の一覧">
+    <div class="wrap">
+      <article class="cfeat reveal">
+        <a class="cfig" style={ratio(featured.data.cover)} href={u(`/cases/${featured.id}/`)} tabindex="-1" aria-hidden="true"><img src={u(featured.data.cover.src)} width={featured.data.cover.width} height={featured.data.cover.height} alt="" decoding="async"></a>
+        <div>
+          <p class="cmeta">{featured.data.meta}</p>
+          <CaseTags tags={featured.data.tags} />
+          <h2><a href={u(`/cases/${featured.id}/`)}>{featured.data.title}</a></h2>
+          <dl class="cdl">
+            <div><dt>ご相談</dt><dd>{featured.data.summary.consult}</dd></div>
+            <div><dt>課題</dt><dd>{featured.data.summary.issue}</dd></div>
+            <div><dt>専門家の視点</dt><dd>{featured.data.summary.approach}</dd></div>
+            <div><dt>結果</dt><dd>{featured.data.summary.result}</dd></div>
+          </dl>
+          <a class="u-link" href={u(`/cases/${featured.id}/`)}>事例を読む</a>
+        </div>
+      </article>
+
+      <div class="crows">
+        {rest.map((c) => (
+          <article class="crow reveal">
+            <a class="cfig" style={ratio(c.data.cover)} href={u(`/cases/${c.id}/`)} tabindex="-1" aria-hidden="true"><img src={u(c.data.cover.src)} width={c.data.cover.width} height={c.data.cover.height} alt="" loading="lazy" decoding="async"></a>
+            <div>
+              <p class="cmeta">{c.data.meta}</p>
+              <CaseTags tags={c.data.tags} />
+              <h2><a href={u(`/cases/${c.id}/`)}>{c.data.title}</a></h2>
+              <dl class="cdl">
+                <div><dt>ご相談</dt><dd>{c.data.summary.consult}</dd></div>
+                <div><dt>結果</dt><dd>{c.data.summary.result}</dd></div>
+              </dl>
+              <a class="u-link" href={u(`/cases/${c.id}/`)}>事例を読む</a>
+            </div>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
-  <ContactCta />
-</BaseLayout>
+
+  <CtaD7 />
+</SiteLayout>
