@@ -1,0 +1,46 @@
+---
+// <head> 内の共通部分（title・meta・canonical・OGP・アイコン・構造化データ）。
+// BaseLayout（下層ページ）と TopLayout（トップページ）で共有する。
+// フォントやスクリプトなどレイアウトごとに異なるものはスロットで受け取り、構造化データの前に出力する。
+import { site } from '../data/site';
+import { u, abs } from '../lib/url';
+import { organization, breadcrumbList } from '../lib/schema';
+
+interface Props {
+  title: string; // <title>。「｜株式会社木村不動産鑑定」は自動で付く（トップは fullTitle を使う）
+  fullTitle?: string;
+  description: string;
+  path: string; // 例：'/services/rent/'
+  ogType?: 'website' | 'article';
+  ogImage?: string;
+  breadcrumbs?: { name: string; path: string }[]; // トップ以外。最後が現在のページ
+  jsonLd?: object[];
+}
+
+const { title, fullTitle, description, path, ogType = 'website', ogImage, breadcrumbs = [], jsonLd = [] } = Astro.props;
+const pageTitle = fullTitle ?? `${title}｜${site.name}`;
+const canonical = abs(path);
+const crumbs = breadcrumbs.length ? [{ name: 'トップ', path: '/' }, ...breadcrumbs] : [];
+const graph = [organization(), ...(crumbs.length ? [breadcrumbList(crumbs)] : []), ...jsonLd];
+const ldJson = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+---
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{pageTitle}</title>
+<meta name="description" content={description}>
+{site.noindex && <meta name="robots" content="noindex, nofollow">}
+<link rel="canonical" href={canonical}>
+
+<meta property="og:type" content={ogType}>
+<meta property="og:site_name" content={site.name}>
+<meta property="og:title" content={pageTitle}>
+<meta property="og:description" content={description}>
+<meta property="og:url" content={canonical}>
+{ogImage && <meta property="og:image" content={abs(ogImage)}>}
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'}>
+
+<link rel="icon" href={u('/assets/img/logo/favicon.png')} type="image/png">
+<meta name="theme-color" content="#2f5a5e">
+<slot />
+<script is:inline type="application/ld+json" set:html={ldJson}></script>

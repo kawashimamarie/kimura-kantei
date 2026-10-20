@@ -83,6 +83,12 @@ export const services: Service[] = [
   },
 ];
 
+/** ご相談内容のグループ（一覧ページ・トップページで共通） */
+export const serviceGroups = [
+  { key: 'price', title: '不動産鑑定・評価のご相談', desc: '相続や親族間の売買、地代・家賃、立退料など、不動産の価格や賃料が問題になる場面で、不動産鑑定士が客観的な根拠をお示しします。' },
+  { key: 'building', title: '建物の調査・耐震のご相談', desc: '一級建築士が建物の状態を調べ、耐震診断・耐震改修やインスペクション、フラット35適合証明に対応します。' },
+] as const;
+
 export const getService = (slug: string) => {
   const s = services.find((x) => x.slug === slug);
   if (!s) throw new Error(`Unknown service: ${slug}`);
