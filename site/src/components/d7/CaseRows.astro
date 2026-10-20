@@ -1,14 +1,16 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import CaseTags from './CaseTags.astro';
 import { u } from '../../lib/url';
-interface Props { items: CollectionEntry<'cases'>[] }
-const { items } = Astro.props;
+// tags: 既存のタグを小さな文字で添える（事例ページと同じ表示。使うページだけ cases.css を読み込む）
+interface Props { items: CollectionEntry<'cases'>[]; tags?: boolean }
+const { items, tags = false } = Astro.props;
 ---
 <div class="rel">
   {items.map((c, i) => (
     <a class="reveal" data-delay={i % 2 ? '1' : undefined} href={u(`/cases/${c.id}/`)}>
       <figure><img src={u(c.data.cover.src)} width={c.data.cover.width} height={c.data.cover.height} alt={c.data.cover.alt} loading="lazy" decoding="async"></figure>
-      <div><p class="rel__m">{c.data.meta}</p><h3>{c.data.title}</h3><p class="t">{c.data.teaser}</p></div>
+      <div><p class="rel__m">{c.data.meta}</p>{tags && <CaseTags tags={c.data.tags} />}<h3>{c.data.title}</h3><p class="t">{c.data.teaser}</p></div>
     </a>
   ))}
 </div>

@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import '../../styles/d7/column.css';
+import '../../styles/d7/cases.css';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import Crumbs from '../../components/d7/Crumbs.astro';
 import PageNav from '../../components/d7/PageNav.astro';
@@ -130,7 +131,7 @@ const authorText = d.author === 'kimura' ? `${profile.name}（${profile.credenti
     <section class={`sec ${toneCases}`} aria-labelledby="cases-title">
       <div class="wrap">
         <div class="reveal secrow"><h2 class="h2" id="cases-title">関連する事例</h2><a class="u-link" href={u('/cases/')}>事例の一覧を見る</a></div>
-        <CaseRows items={cases} />
+        <CaseRows items={cases} tags />
       </div>
     </section>
   )}
