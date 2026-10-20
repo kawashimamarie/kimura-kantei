@@ -9,6 +9,9 @@ export const site = {
   tagline: '不動産鑑定士・一級建築士事務所',
   // 確認用プレビューの間は検索エンジンに登録させない。本番公開時に false にする。
   noindex: true,
+  // 木村様の確認用プレビューの間は true。全ページの上部に「確認用プレビュー」の表示を出す。正式公開時に false にすると、すべて消える。
+  preview: true,
+  previewNotice: 'このサイトはリニューアル確認用のプレビューです。掲載内容は最終確認前のものです。',
 };
 
 export const contact = {

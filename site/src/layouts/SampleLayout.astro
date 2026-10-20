@@ -9,6 +9,7 @@ import '../styles/d7/shell.css';
 import '../styles/d7/sample-bridge.css';
 import SeoHead from '../components/SeoHead.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import PreviewBanner from '../components/d7/PreviewBanner.astro';
 import SiteHeader from '../components/d7/SiteHeader.astro';
 import SiteFooter from '../components/d7/SiteFooter.astro';
 import SpBar from '../components/d7/SpBar.astro';
@@ -38,6 +39,7 @@ const crumbs = breadcrumbs.length ? [{ name: 'トップ', path: '/' }, ...breadc
 </head>
 <body>
   <a class="skip-link" href="#main">本文へスキップ</a>
+  <PreviewBanner />
   <SiteHeader path={path} />
   <main id="main" tabindex="-1">
     {crumbs.length > 0 && <Breadcrumbs items={crumbs} />}
