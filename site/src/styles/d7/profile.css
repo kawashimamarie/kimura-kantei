@@ -11,13 +11,6 @@
 .phero__cred li:not(:last-child)::after { content: "／"; margin: 0 .5em; font-weight: 400; color: var(--ink-2); }
 .phero__lead { margin-top: 20px; max-width: 38em; font-size: 16.5px; line-height: 2.05; color: var(--ink-3); text-wrap: pretty; word-break: auto-phrase; }
 
-.pgrid { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 80px; align-items: start; }
-.ptoc { position: sticky; top: calc(var(--header-h) + 24px); }
-.ptoc h2 { font-size: 13px; font-weight: 700; letter-spacing: .1em; color: var(--accent); margin-bottom: 8px; }
-.ptoc ol { border-top: 1px solid var(--ink); }
-.ptoc a { display: block; padding: 11px 0; border-bottom: 1px solid var(--line-2); font-size: 14px; line-height: 1.6; color: var(--ink-2); }
-.ptoc a[aria-current="true"] { color: var(--green); font-weight: 700; }
-@media (hover: hover) { .ptoc a:hover { color: var(--green); } }
 .psec { padding-top: 8px; padding-bottom: 60px; }
 .psec + .psec { padding-top: 56px; border-top: 1px solid var(--line-2); }
 .psec:last-child { padding-bottom: 0; }
@@ -42,8 +35,6 @@
 .panel { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; padding: 26px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line-2); font-size: 15.5px; color: var(--ink-3); }
 
 @media (min-width: 768px) and (max-width: 1100px) {
-  .pgrid { grid-template-columns: 1fr; gap: 0; }
-  .ptoc { display: none; }
   .phero { gap: 40px; }
 }
 @media (max-width: 767px) {
@@ -53,7 +44,6 @@
   .phero__title { font-size: 13px; }
   .phero__rest { grid-column: 1 / -1; }
   .phero__lead { margin-top: 14px; font-size: 15px; line-height: 2; }
-  .pgrid { grid-template-columns: 1fr; gap: 0; } .ptoc { display: none; }
   .psec { padding-bottom: 52px; } .psec + .psec { padding-top: 44px; }
   .tl li { grid-template-columns: 72px minmax(0, 1fr); gap: 12px; font-size: 14.5px; }
   .lines li { font-size: 14.5px; } .lines--talks li { grid-template-columns: 1fr; gap: 2px; }
