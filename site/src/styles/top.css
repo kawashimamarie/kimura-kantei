@@ -177,6 +177,7 @@ body { background: var(--kinari); color: var(--ink); font-family: "Noto Sans JP"
 .case6__feature figure { margin: 0; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 2px; background: #e8e1d5; }
 .case6__feature img { width: 100%; height: 100%; object-fit: cover; }
 .case6__meta { font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--accent); }
+.case6__tag { margin-left: 10px; padding-left: 10px; border-left: 1px solid #c9c1b3; font-size: 12.5px; font-weight: 400; letter-spacing: .04em; color: var(--ink-2); white-space: nowrap; }
 .case6__feature h3 { margin-top: 12px; font-family: "Shippori Mincho B1", serif; font-size: 27px; font-weight: 700; line-height: 1.6; letter-spacing: .03em; }
 .case6__feature dl { margin-top: 24px; display: grid; gap: 14px; }
 .case6__feature dl div { display: grid; grid-template-columns: 6.5em 1fr; gap: 16px; padding-top: 14px; border-top: 1px solid var(--line); }

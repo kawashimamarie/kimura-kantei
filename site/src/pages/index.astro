@@ -137,7 +137,7 @@ const reasons = [
       <article class="case6__feature reveal">
         <figure><img src={u(featured.data.cover.src)} width={featured.data.cover.width} height={featured.data.cover.height} alt={featured.data.cover.alt} loading="lazy" decoding="async"></figure>
         <div>
-          <p class="case6__meta">{featured.data.meta}</p>
+          <p class="case6__meta">{featured.data.meta}<span class="case6__tag">{featured.data.tags[0]}</span></p>
           <h3>{featured.data.title}</h3>
           <dl>
             <div><dt>ご相談</dt><dd>{featured.data.summary.consult}</dd></div>
@@ -151,7 +151,7 @@ const reasons = [
         {otherCases.map((c, i) => (
           <a class="reveal" data-delay={i > 0 ? String(i) : undefined} href={u(`/cases/${c.id}/`)}>
             <figure><img src={u(c.data.cover.src)} width={c.data.cover.width} height={c.data.cover.height} alt={c.data.cover.alt} loading="lazy" decoding="async"></figure>
-            <div><p class="case6__meta">{c.data.meta}</p><h3>{c.data.title}</h3><p class="t">{c.data.teaser}</p></div>
+            <div><p class="case6__meta">{c.data.meta}<span class="case6__tag">{c.data.tags[0]}</span></p><h3>{c.data.title}</h3><p class="t">{c.data.teaser}</p></div>
           </a>
         ))}
       </div>
