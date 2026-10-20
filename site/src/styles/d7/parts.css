@@ -42,12 +42,12 @@
 .prose p { font-size: 16px; line-height: 2.1; color: var(--ink-3); text-wrap: pretty; word-break: auto-phrase; }
 .prose p + p { margin-top: 1.1em; }
 .note { margin-top: 28px; font-size: 14px; line-height: 1.95; color: var(--ink-2); text-wrap: pretty; }
-.more { margin-top: 28px; font-size: 15px; }
+.more { margin-top: 28px; font-size: 15px; text-wrap: balance; }
 
 /* 罫線の一覧（名称 / 説明 / 矢印）。カードにしない */
 .idx { border-top: 1px solid var(--ink); }
 .idx > li { position: relative; display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr) 24px; gap: 40px; align-items: baseline; padding: 22px 0; border-bottom: 1px solid var(--line-2); }
-.idx__n { font-family: var(--f-mincho); font-size: 19px; font-weight: 700; letter-spacing: .05em; line-height: 1.6; }
+.idx__n { font-family: var(--f-mincho); font-size: 19px; font-weight: 700; letter-spacing: .05em; line-height: 1.6; text-wrap: balance; word-break: auto-phrase; }
 .idx__t { font-size: 15.5px; line-height: 1.95; color: var(--ink-3); text-wrap: pretty; word-break: auto-phrase; }
 .idx i { justify-self: end; font-style: normal; color: var(--green); opacity: .35; transition: opacity .2s ease, transform .25s ease; }
 .idx a.idx__n::after { content: ""; position: absolute; inset: 0; }
@@ -87,7 +87,7 @@
 .rel a { display: grid; grid-template-columns: 168px minmax(0, 1fr); gap: 24px; align-items: start; }
 .rel figure { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 2px; background: #e8e1d5; }
 .rel img { width: 100%; height: 100%; object-fit: cover; transition: opacity .3s ease; }
-.rel__m { font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--accent); }
+.rel__m { font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--accent); text-wrap: balance; }
 .rel h3 { margin-top: 6px; font-size: 17px; line-height: 1.65; word-break: auto-phrase; text-wrap: pretty; transition: color .2s ease; }
 .rel p.t { margin-top: 8px; font-size: 14px; line-height: 1.9; color: var(--ink-2); text-wrap: pretty; }
 .rel--text a { grid-template-columns: 1fr; gap: 0; padding: 20px 0; border-top: 1px solid var(--line-2); }
