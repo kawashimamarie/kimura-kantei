@@ -2,6 +2,7 @@
 // 全ページ共通の問い合わせ案内
 import { contact } from '../data/site';
 import { u } from '../lib/url';
+import { ctaLead, ctaPoints } from '../data/cta';
 interface Props { title?: string }
 const { title } = Astro.props;
 ---
@@ -11,12 +12,8 @@ const { title } = Astro.props;
       <div class="contact__body">
         <p class="contact__eyebrow">ご相談・お問い合わせ</p>
         <h2 class="contact__title" id="cta-title">{title ?? <><span>「こんなことを相談していいのかな」</span><span>という段階から、どうぞ。</span></>}</h2>
-        <p class="contact__lead">まだ売るかどうか決めていない。家族で話し合う前に、目安だけ知っておきたい。何が問題なのか、自分でもよくわからない――。そうした段階のご相談も歓迎しています。お話を伺い、問題点を整理するところから始めます。</p>
-        <ul class="contact__points">
-          <li>初回のご相談は無料</li>
-          <li>ご来社・ご訪問・Zoomで対応</li>
-          <li>ご相談内容・個人情報は適切に取り扱います</li>
-        </ul>
+        <p class="contact__lead">{ctaLead}</p>
+        <ul class="contact__points">{ctaPoints.map((t) => <li>{t}</li>)}</ul>
       </div>
       <div class="contact__actions">
         <a class="contact-tel" href={contact.telHref}>

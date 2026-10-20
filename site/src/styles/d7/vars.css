@@ -1,0 +1,34 @@
+/* ==========================================================================
+   D7 共通基盤 ① デザイントークン（色・フォント・文字の大きさ）
+   トップページ（top.css）と下層ページ（base.css ほか）の両方が読み込む。
+   ========================================================================== */
+:root {
+  /* 色 */
+  --green: #2B5357;      /* 主要ボタン・リンク */
+  --green-d: #1F3F42;    /* 深緑（帯・ホバー） */
+  --green-50: #EEF3F2;
+  --kinari: #FBF9F5;     /* ページ背景 */
+  --paper: #FFFFFF;      /* 白い紙面 */
+  --sand-bg: #F1ECE2;    /* 落ち着いた区切り背景（プロフィール・専門家向けなど） */
+  --sand: #B89668;       /* 装飾の線 */
+  --sand-l: #E9DFCF;
+  --accent: #7A5D38;     /* 小見出しなど、文字に使う茶（生成り・白・薄砂のどれの上でも 4.5:1 以上） */
+  --ink: #1F2426;
+  --ink-2: #545B5E;      /* 補足文 */
+  --ink-3: #4A5154;      /* 本文（やや薄い） */
+  --line: #E4DED3;       /* 区切り線 */
+  --line-2: #DDD6CA;
+
+  /* フォント */
+  --f-sans: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic Medium", YuGothic, Meiryo, sans-serif;
+  --f-mincho: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", YuMincho, serif;
+  --f-num: "Inter", "Noto Sans JP", sans-serif;
+
+  /* 見出しの大きさ（SP → PC） */
+  --fs-h1: clamp(28px, 2.2vw + 14px, 42px);
+  --fs-h2: clamp(23px, 1vw + 17px, 30px);
+  --fs-h3: clamp(17px, .5vw + 14px, 19.5px);
+
+  --header-h: 72px;
+}
+@media (max-width: 767px) { :root { --header-h: 60px; } }

@@ -1,8 +1,8 @@
 ---
-// トップページ用フッター。連絡先・メニュー・登録/許認可・所属団体を、会社情報のデータから組み立てる。
-import { site, contact, company } from '../data/site';
-import { services } from '../data/services';
-import { u } from '../lib/url';
+// D7 共通フッター。連絡先・メニュー・登録/許認可・所属団体を、会社情報のデータから組み立てる。
+import { site, contact, company } from '../../data/site';
+import { services } from '../../data/services';
+import { u } from '../../lib/url';
 
 const year = new Date().getFullYear(); // JS が動かない環境でもビルド時点の年を表示する
 ---

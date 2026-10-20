@@ -1,0 +1,15 @@
+---
+import { profile } from '../../data/profile';
+import { u } from '../../lib/url';
+interface Props { label?: string; text?: string }
+const { label = 'ご相談を担当する専門家', text = '不動産鑑定士・一級建築士として、不動産の価格と建物の両面からご相談に応じています。' } = Astro.props;
+---
+<div class="expert" role="group" aria-label={label}>
+  <img src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt={`${profile.name}の写真`} loading="lazy" decoding="async">
+  <div>
+    <p class="expert__l">{label}</p>
+    <p class="expert__n">{profile.name}<span>{profile.credentials.slice(0, 2).join('・')}</span></p>
+    <p class="expert__t">{text}</p>
+    <a class="u-link" href={u('/profile/')}>プロフィールを見る</a>
+  </div>
+</div>

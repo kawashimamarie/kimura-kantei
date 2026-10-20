@@ -1,0 +1,20 @@
+---
+// 共通のお問い合わせ案内（D7）。文言は data/cta.ts を共有する。
+import { contact } from '../../data/site';
+import { ctaLead, ctaPoints } from '../../data/cta';
+import { u } from '../../lib/url';
+interface Props { title?: boolean }
+---
+<section class="cta6" aria-labelledby="cta-title">
+  <div class="wrap">
+    <div class="reveal">
+      <h2 class="h2" id="cta-title"><span class="nw">「こんなことを</span><span class="nw">相談していいのかな」</span><br>という段階から、どうぞ。</h2>
+      <p class="cta6__lead">{ctaLead}</p>
+      <ul class="cta6__how">{ctaPoints.map((t) => <li>{t}</li>)}</ul>
+    </div>
+    <div class="reveal" data-delay="1">
+      <p class="cta6__tel"><small>お電話でのご相談・ご予約（受付 {contact.hours}）</small><a href={contact.telHref}>{contact.tel}</a></p>
+      <div class="cta6__acts"><a class="cta6__btn" href={u('/contact/')}>相談の申し込み方法を見る<i aria-hidden="true">→</i></a><a class="cta6__mail" href={`mailto:${contact.email}`}>メールで問い合わせる</a></div>
+    </div>
+  </div>
+</section>

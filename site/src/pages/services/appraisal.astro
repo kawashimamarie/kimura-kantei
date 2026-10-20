@@ -1,6 +1,5 @@
 ---
-import ServiceLayout from '../../layouts/ServiceLayout.astro';
-import SectionHead from '../../components/SectionHead.astro';
+import ServiceLayoutD7 from '../../layouts/ServiceLayoutD7.astro';
 import { u } from '../../lib/url';
 
 const uses = [
@@ -15,7 +14,7 @@ const uses = [
   { name: '海外不動産', text: '中国・韓国・香港・台湾の鑑定事務所との業務提携を通じて対応します。' },
 ];
 ---
-<ServiceLayout
+<ServiceLayoutD7
   slug="appraisal"
   title="不動産鑑定・評価"
   metaTitle="不動産鑑定・評価｜鑑定評価書・意見書の作成（東京・阿佐ヶ谷／全国対応）"
@@ -23,18 +22,24 @@ const uses = [
   lead="不動産の「いくらが妥当か」を、不動産鑑定士が根拠とともにお示しします。ご家族の話し合いや交渉、税務・調停・裁判など、第三者に価格の根拠を説明する必要がある場面でお役立てください。"
   profileText="国土交通省の地価公示や東京都の地価調査など、公的な土地評価にも携わってきた不動産鑑定士です。建物の状態も、一級建築士の目で確かめて評価に反映します。"
   areaServed="日本"
+  toc={[
+    { id: 'about', label: '不動産鑑定とは' },
+    { id: 'types', label: '目的に応じた書面をご用意します' },
+    { id: 'uses', label: '鑑定評価が役立つ場面' },
+    { id: 'for-professionals', label: '弁護士・税理士の先生方、法人の皆様へ' },
+  ]}
 >
-  <section class="section section--white" aria-labelledby="about-title">
-    <div class="container">
-      <SectionHead en="About" title="不動産鑑定とは" id="about-title" />
-      <div class="two-col">
+  <section class="sec" id="about" aria-labelledby="about-title">
+    <div class="wrap split">
+      <div class="split__head reveal"><h2 class="h2" id="about-title">不動産鑑定とは</h2></div>
+      <div class="reveal" data-delay="1">
         <div class="prose">
           <p>不動産鑑定士は、国土交通省が所管する国家資格です。不動産の鑑定評価は、不動産鑑定士だけが行うことのできる業務です。</p>
           <p>鑑定評価では、不動産の権利関係や取引市場を調べ、その不動産の有効な活用方法を分析したうえで、経済的な価値を判断します。そのためには、民法や借地借家法、都市計画法、建築基準法などの法律、税制や経済環境の変化、土地の最適な活用方法、取引の相場観など、幅広い知識と経験が必要です。</p>
         </div>
-        <div class="note-box">
-          <p class="note-box__title">ご依頼の前にお伝えできること</p>
-          <ul class="check-list">
+        <div class="worry" style="margin-top:40px;max-width:40em">
+          <p class="worry__t">ご依頼の前にお伝えできること</p>
+          <ul>
             <li>正式なご依頼の前に、概算の評価額をお伝えします</li>
             <li>費用のお見積りをお出しします</li>
             <li>全国の不動産に対応します</li>
@@ -45,83 +50,81 @@ const uses = [
     </div>
   </section>
 
-  <section class="section" aria-labelledby="types-title">
-    <div class="container">
-      <SectionHead en="Reports" title="目的に応じた書面をご用意します" id="types-title" lead="使う場面や目的によって、必要な書面は異なります。どれが適しているかは、ご相談の際にご案内します。" />
-      <div class="point-grid point-grid--3">
-        <div class="point-card">
-          <h3 class="point-card__title">不動産鑑定評価書</h3>
-          <p>国が定めた不動産鑑定評価基準に則って行う、正式な鑑定の結果をまとめた書面です。</p>
-        </div>
-        <div class="point-card">
-          <h3 class="point-card__title">意見書・調査報告書</h3>
-          <p>不動産鑑定評価基準に則らない調査の結果をまとめた書面です。</p>
-        </div>
-        <div class="point-card">
-          <h3 class="point-card__title">机上での査定</h3>
-          <p>現地調査を伴わない、簡易な査定です。</p>
-        </div>
+  <section class="sec sec--paper" id="types" aria-labelledby="types-title">
+    <div class="wrap">
+      <div class="reveal">
+        <h2 class="h2" id="types-title">目的に応じた書面をご用意します</h2>
+        <p class="note" style="max-width:40em">使う場面や目的によって、必要な書面は異なります。どれが適しているかは、ご相談の際にご案内します。</p>
       </div>
-      <p class="section-note">このほか、価格や賃料を示さないコンサルティング（不動産に関する法律・経済指標・市場の情報・税制の知識を生かしたご相談）にも対応しています。</p>
-      <p class="more-link"><a href={u('/fees/')}>料金の目安を見る</a></p>
+      <ul class="cols3 reveal" style="margin-top:36px">
+        <li><h3>不動産鑑定評価書</h3><p>国が定めた不動産鑑定評価基準に則って行う、正式な鑑定の結果をまとめた書面です。</p></li>
+        <li><h3>意見書・調査報告書</h3><p>不動産鑑定評価基準に則らない調査の結果をまとめた書面です。</p></li>
+        <li><h3>机上での査定</h3><p>現地調査を伴わない、簡易な査定です。</p></li>
+      </ul>
+      <p class="note reveal" style="max-width:46em">このほか、価格や賃料を示さないコンサルティング（不動産に関する法律・経済指標・市場の情報・税制の知識を生かしたご相談）にも対応しています。</p>
+      <p class="more"><a class="u-link" href={u('/fees/')}>料金の目安を見る</a></p>
     </div>
   </section>
 
-  <section class="section section--white" aria-labelledby="uses-title">
-    <div class="container">
-      <SectionHead en="Use cases" title="鑑定評価が役立つ場面" id="uses-title" />
-      <ul class="use-grid">
+  <section class="sec" id="uses" aria-labelledby="uses-title">
+    <div class="wrap split">
+      <div class="split__head reveal"><h2 class="h2" id="uses-title">鑑定評価が役立つ場面</h2></div>
+      <ul class="idx reveal" data-delay="1">
         {uses.map((x) => (
-          <li class={`use-card${x.href ? ' use-card--link' : ''}`}>
-            <h3 class="use-card__title">{x.href ? <a href={u(x.href)}>{x.name}</a> : x.name}</h3>
-            <p>{x.text}</p>
+          <li>
+            {x.href ? <a class="idx__n" href={u(x.href)}>{x.name}</a> : <span class="idx__n">{x.name}</span>}
+            <p class="idx__t">{x.text}</p>
+            <i aria-hidden="true">→</i>
           </li>
         ))}
       </ul>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="pro-title" id="for-professionals">
-    <div class="container">
-      <SectionHead en="For professionals" title="弁護士・税理士の先生方、法人の皆様へ" id="pro-title" lead="先生方のクライアント様や一般企業様がお持ちの不動産について、さまざまな問題の解決を不動産鑑定士がサポートします。ご発注前に、机上での概算評価額をお伝えすることも可能です（正式な鑑定とは差が出る場合があります）。" />
-      <div class="point-grid point-grid--3">
-        <div class="point-card">
-          <h3 class="point-card__title">税理士の先生へ</h3>
-          <ul class="dot-list">
+  <section class="sec sec--sand" id="for-professionals" aria-labelledby="pro-title">
+    <div class="wrap">
+      <div class="reveal">
+        <h2 class="h2" id="pro-title">弁護士・税理士の先生方、法人の皆様へ</h2>
+        <p class="note" style="max-width:44em">先生方のクライアント様や一般企業様がお持ちの不動産について、さまざまな問題の解決を不動産鑑定士がサポートします。ご発注前に、机上での概算評価額をお伝えすることも可能です（正式な鑑定とは差が出る場合があります）。</p>
+      </div>
+      <ul class="cols3 reveal" style="margin-top:32px;border-top-color:var(--ink)">
+        <li>
+          <h3>税理士の先生へ</h3>
+          <ul class="dots">
             <li>相続の土地評価で、路線価方式による評価との違いを知りたいとき</li>
             <li>親族間・同族会社間で不動産を売買・交換するとき</li>
             <li>税務申告（節税対策、減価償却費の資料）</li>
             <li>不動産を現物出資するとき</li>
           </ul>
-        </div>
-        <div class="point-card">
-          <h3 class="point-card__title">弁護士の先生へ</h3>
-          <ul class="dot-list">
+        </li>
+        <li>
+          <h3>弁護士の先生へ</h3>
+          <ul class="dots">
             <li>賃料の鑑定評価</li>
             <li>立退料の鑑定評価</li>
             <li>借地権・底地・地代・借地権の更新料の鑑定評価</li>
             <li>遺留分や遺産分割の参考資料</li>
           </ul>
-        </div>
-        <div class="point-card">
-          <h3 class="point-card__title">法人の皆様へ</h3>
-          <ul class="dot-list">
+        </li>
+        <li>
+          <h3>法人の皆様へ</h3>
+          <ul class="dots">
             <li>オーナーとテナントの間の賃料の増減、立退料の交渉</li>
             <li>減損会計や賃貸等不動産の時価評価など、会計上の要請</li>
             <li>M&amp;A、株式上場の準備、事業承継における不動産の価値の把握</li>
           </ul>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   </section>
 
-  <section class="section section--white" aria-labelledby="relation-title">
-    <div class="container">
-      <div class="relation-box">
-        <p class="relation-box__label">不動産鑑定 × 建築</p>
-        <h2 class="relation-box__title" id="relation-title">建物も、建築の専門家の目で確かめて評価します</h2>
+  <section class="sec" aria-labelledby="relation-title">
+    <div class="wrap">
+      <div class="statement reveal">
+        <p class="kicker">不動産鑑定 × 建築</p>
+        <h2 class="h2" id="relation-title">建物も、建築の専門家の目で確かめて評価します</h2>
         <p>当社の代表は、不動産鑑定士と一級建築士の両方の資格をもっています。一級建築士による建物の精緻な調査と、不動産鑑定士による分析を組み合わせることで、土地だけでなく建物の状態まで踏まえた評価を行います。</p>
       </div>
     </div>
   </section>
-</ServiceLayout>
+</ServiceLayoutD7>

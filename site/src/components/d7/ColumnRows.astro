@@ -1,0 +1,17 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { u } from '../../lib/url';
+import { formatDate, isoDate } from '../../lib/date';
+interface Props { items: CollectionEntry<'column'>[] }
+const { items } = Astro.props;
+---
+<div class="rel rel--text">
+  {items.map((c, i) => (
+    <a class="reveal" data-delay={i % 2 ? '1' : undefined} href={u(`/column/${c.id}/`)}>
+      <p class="rel__m">{c.data.category}</p>
+      <h3>{c.data.title}</h3>
+      <p class="t">{c.data.description}</p>
+      <p class="t"><time datetime={isoDate(c.data.updatedAt)}>{formatDate(c.data.updatedAt)} 更新</time></p>
+    </a>
+  ))}
+</div>

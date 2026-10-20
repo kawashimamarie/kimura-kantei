@@ -1,0 +1,8 @@
+---
+// 長いページのページ内目次（横一列）。ラベルは各セクションの見出しの文言をそのまま使う。
+interface Props { items: { id: string; label: string }[] }
+const { items } = Astro.props;
+---
+<nav class="pnav" aria-label="このページの内容">
+  <ul>{items.map((i) => <li><a href={`#${i.id}`}>{i.label}</a></li>)}</ul>
+</nav>

@@ -1,10 +1,14 @@
 ---
-// トップページ専用のレイアウト。ヘッダー・フッター・SP固定ボタンも専用のものを使う。
-// 下層ページは BaseLayout（global.css）のまま。トップのスタイルは styles/top.css に分けてあり、下層ページには読み込まれない。
+// トップページ専用のレイアウト。ヘッダー・フッター・SP固定ボタン・スクリプトは、下層ページと同じ共通部品（components/d7）を使う。
+// トップのスタイル（ファーストビューや各セクション）は styles/top.css に分けてあり、下層ページには読み込まれない。
+import '../styles/d7/vars.css';
 import '../styles/top.css';
+import '../styles/d7/shell.css';
 import SeoHead from '../components/SeoHead.astro';
-import TopHeader from '../components/TopHeader.astro';
-import TopFooter from '../components/TopFooter.astro';
+import SiteHeader from '../components/d7/SiteHeader.astro';
+import SiteFooter from '../components/d7/SiteFooter.astro';
+import SpBar from '../components/d7/SpBar.astro';
+import ShellScript from '../components/d7/ShellScript.astro';
 import { u } from '../lib/url';
 
 interface Props {
@@ -33,54 +37,12 @@ const { path, ...seo } = Astro.props;
 </head>
 <body>
   <a class="skip-link" href="#main">本文へスキップ</a>
-  <TopHeader path={path} />
-  <main id="main">
+  <SiteHeader path={path} />
+  <main id="main" tabindex="-1">
     <slot />
   </main>
-  <TopFooter />
-  <nav class="spbar" aria-label="お問い合わせ">
-    <a class="spbar__tel" href="tel:0353569158"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>電話</a>
-    <a class="spbar__main" href={u('/contact/')}>相談を申し込む</a>
-  </nav>
-  <script is:inline>
-    (function () {
-      // スクロール表示：画面に入った要素に is-in を付けるだけ。対応していない環境・動きを減らす設定ではすべて表示する
-      var els = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        els.forEach(function (el) { el.classList.add('is-in'); });
-      } else {
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
-        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
-        els.forEach(function (el) { io.observe(el); });
-      }
-
-      // ヘッダーの MENU（1199px以下）：開閉・Esc で閉じる・リンク選択で閉じる・PC幅に戻ったらリセット
-      var btn = document.querySelector('.menu');
-      var panel = document.getElementById('global-nav');
-      if (btn && panel) {
-        var label = btn.querySelector('.menu__label');
-        var setOpen = function (open) {
-          btn.setAttribute('aria-expanded', String(open));
-          panel.classList.toggle('is-open', open);
-          if (label) label.textContent = open ? '閉じる' : 'MENU';
-        };
-        btn.addEventListener('click', function () { setOpen(btn.getAttribute('aria-expanded') !== 'true'); });
-        panel.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
-        document.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') { setOpen(false); btn.focus(); }
-        });
-        document.addEventListener('click', function (e) {
-          if (btn.getAttribute('aria-expanded') === 'true' && !e.target.closest('.hd')) setOpen(false);
-        });
-        var mq = matchMedia('(min-width: 1200px)');
-        if (mq.addEventListener) mq.addEventListener('change', function () { if (mq.matches) setOpen(false); });
-      }
-
-      // フッターの年
-      var y = document.querySelector('[data-year]');
-      if (y) y.textContent = String(new Date().getFullYear());
-    })();
-  </script>
+  <SiteFooter />
+  <SpBar />
+  <ShellScript />
 </body>
 </html>

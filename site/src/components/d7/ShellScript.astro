@@ -1,0 +1,66 @@
+---
+// 共通スクリプト（トップ・下層ページ共通）：スクロール表示、ヘッダーの MENU 開閉と「スマホだけ下スクロールで隠す」、フッターの年。
+// JS が動かない環境でも、メニュー・本文のすべてに到達できる（CSS 側で .js クラスが付いたときだけ隠す・固定する）。
+---
+<script is:inline>
+    (function () {
+      var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // スクロール表示：画面に入った要素に is-in を付けるだけ。非対応・動きを減らす設定ではすべて表示する
+      var els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window) || reduce) {
+        els.forEach(function (el) { el.classList.add('is-in'); });
+      } else {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+        els.forEach(function (el) { io.observe(el); });
+        // ページ内リンクで飛んだ先が、表示前の状態で残らないようにする
+        var reveal = function () { var h = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1))); if (h) h.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-in'); }); };
+        addEventListener('hashchange', reveal); reveal();
+      }
+
+      // ヘッダー
+      var hd = document.querySelector('.hd');
+      var btn = document.querySelector('.menu');
+      var panel = document.getElementById('global-nav');
+      var sp = matchMedia('(max-width: 767px)');
+      var showHd = function () { if (hd) hd.classList.remove('is-hidden'); };
+      if (btn && panel) {
+        var label = btn.querySelector('.menu__label');
+        var setOpen = function (open) {
+          btn.setAttribute('aria-expanded', String(open));
+          panel.classList.toggle('is-open', open);
+          if (label) label.textContent = open ? '閉じる' : 'MENU';
+          if (open) showHd();
+        };
+        btn.addEventListener('click', function () { setOpen(btn.getAttribute('aria-expanded') !== 'true'); });
+        panel.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') { setOpen(false); btn.focus(); }
+        });
+        document.addEventListener('click', function (e) {
+          if (btn.getAttribute('aria-expanded') === 'true' && !e.target.closest('.hd')) setOpen(false);
+        });
+        var mq = matchMedia('(min-width: 1200px)');
+        if (mq.addEventListener) mq.addEventListener('change', function () { if (mq.matches) setOpen(false); });
+      }
+      // スマホだけ：下へスクロールすると隠し、上へ戻すと出す（メニュー展開中・キーボード操作中は隠さない）
+      if (hd) {
+        var last = scrollY, tick = false;
+        var onScroll = function () {
+          var y = scrollY, open = btn && btn.getAttribute('aria-expanded') === 'true';
+          if (!sp.matches || open) showHd();
+          else if (y <= 40 || y < last - 6) showHd();
+          else if (y > last + 6 && y > 120) hd.classList.add('is-hidden');
+          last = y; tick = false;
+        };
+        addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(onScroll); } }, { passive: true });
+        hd.addEventListener('focusin', showHd);
+      }
+
+      // フッターの年
+      var y = document.querySelector('[data-year]');
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
+</script>
