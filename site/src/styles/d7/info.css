@@ -1,7 +1,7 @@
 /* お問い合わせ・会社案内・料金・FAQ */
 
 /* ---- お問い合わせ：電話とメールを同じ重さで並べる（カードにしない） ---- */
-.sec--reach { padding-top: 24px; }
+.sec.sec--reach { padding-top: 24px; }
 .reach { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--ink); }
 .reach__col { padding: 44px 56px 44px 0; }
 .reach__col + .reach__col { padding: 44px 0 44px 56px; border-left: 1px solid var(--line-2); }
