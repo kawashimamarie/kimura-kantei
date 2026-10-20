@@ -1,9 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import SectionHead from '../components/SectionHead.astro';
-import ColumnCard from '../components/ColumnCard.astro';
-import ContactCta from '../components/ContactCta.astro';
+import '../styles/d7/profile.css';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Crumbs from '../components/d7/Crumbs.astro';
+import ColumnRows from '../components/d7/ColumnRows.astro';
+import CtaD7 from '../components/d7/CtaD7.astro';
 import { profile } from '../data/profile';
 import { services } from '../data/services';
 import { person } from '../lib/schema';
@@ -17,108 +18,137 @@ const profilePage = {
   name: '代表 木村修 プロフィール',
   mainEntity: { '@id': `${abs('/profile/')}#kimura-osamu` },
 };
+const crumbs = [{ name: '代表 木村修', path: '/profile/' }];
+// ページ内目次：ラベルは各セクションの見出しの文言をそのまま使う
+const toc = [
+  { id: 'philosophy', label: '仕事に対する考え方' },
+  { id: 'expertise', label: '専門分野' },
+  { id: 'cred', label: '資格' },
+  { id: 'career', label: '経歴' },
+  { id: 'public', label: '公的評価・裁判所に関わる役割' },
+  { id: 'committee', label: '委員・相談員の実績（歴任を含む）' },
+  { id: 'talks', label: '主な講演・投稿' },
+  { id: 'vietnam', label: '海外での講演' },
+  ...(columns.length > 0 ? [{ id: 'articles', label: '当社のコラム' }] : []),
+];
 ---
-<BaseLayout
+<SiteLayout
   title="代表 木村修（不動産鑑定士・一級建築士）プロフィール"
   description="株式会社木村不動産鑑定 代表取締役 木村修のプロフィール。不動産鑑定士・一級建築士・技術士補（建設部門）。地価公示評価員、東京地方裁判所（借地非訟事件）鑑定専門委員などの公的な役割、委員歴、講演、仕事に対する考え方をご紹介します。"
   path="/profile/"
   ogType="article"
   ogImage={profile.photo}
-  breadcrumbs={[{ name: '代表 木村修', path: '/profile/' }]}
+  breadcrumbs={crumbs}
   jsonLd={[person(), profilePage]}
 >
-  <section class="page-header page-header--profile">
-    <div class="container profile-hero">
-      <img class="profile-hero__photo" src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt={`${profile.name}の写真`}>
-      <div class="profile-hero__body">
-        <p class="page-header__eyebrow">代表プロフィール</p>
-        <h1 class="profile-hero__name">{profile.name}<span class="profile-hero__kana">{profile.kana}</span></h1>
-        <p class="profile-hero__title">{profile.title}</p>
-        <ul class="profile__creds">{profile.credentials.map((c) => <li>{c}</li>)}</ul>
-        <p class="profile-hero__lead">大学院で工学を学び、建設コンサルティング会社で地震防災・構造（橋梁）の設計検討に従事。その後、不動産鑑定事務所と不動産会社で鑑定評価・バリュエーション・投資分析を経験し、2006年に阿佐ヶ谷で独立しました。建物の構造がわかる不動産鑑定士として、価格と建物の両面からご相談に向き合っています。</p>
+  <section class="lhero">
+    <div class="wrap">
+      <Crumbs items={[{ name: 'トップ', path: '/' }, ...crumbs]} />
+      <div class="phero">
+        <img class="phero__photo" src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt={`${profile.name}の写真`}>
+        <div>
+          <p class="kicker">代表プロフィール</p>
+          <h1 class="phero__name">{profile.name}<span class="phero__kana">{profile.kana}</span></h1>
+          <p class="phero__title">{profile.title}</p>
+        </div>
+        <div class="phero__rest">
+        <ul class="phero__cred">{profile.credentials.map((c) => <li>{c}</li>)}</ul>
+        <p class="phero__lead">大学院で工学を学び、建設コンサルティング会社で地震防災・構造（橋梁）の設計検討に従事。その後、不動産鑑定事務所と不動産会社で鑑定評価・バリュエーション・投資分析を経験し、2006年に阿佐ヶ谷で独立しました。建物の構造がわかる不動産鑑定士として、価格と建物の両面からご相談に向き合っています。</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section section--white" aria-labelledby="philosophy-title">
-    <div class="container container--narrow">
-      <SectionHead en="Philosophy" title="仕事に対する考え方" id="philosophy-title" />
-      <div class="motto motto--left">
-        <p class="motto__label">ご相談を受けるときのモットー</p>
-        <p class="motto__text">ご相談者を、できるだけ<em>揉めさせない</em>こと。</p>
-      </div>
-      <div class="prose">
-        <p>そのために、ご相談者のお話に親身になって耳を傾け、誠心誠意対応することを大切にしています。</p>
-        <p>悩みを伺って問題点を整理してみると、何に悩んでいたのかがはっきりし、考え方ひとつで解決してしまうことも少なくありません。お医者さんにたとえるなら、大切なのは問診です。よく診断しないまま、いきなり手術をするようなことはしません。不動産の専門家として良識をもって向き合い、その方に合った最善の方法をご提案します。そのために、日頃から不動産・建築・税務・法律の勉強を欠かさないようにしています。</p>
-        <p>安心して不動産のことを相談できる場所は、意外と多くありません。不動産に関する誠実な相談相手になることは、不動産鑑定士としての責任だと考えています。できるだけ、ご相談だけで解決できるよう心がけています。</p>
-      </div>
-    </div>
-  </section>
+  <div class="sec sec--paper">
+    <div class="wrap pgrid">
+      <nav class="ptoc" aria-label="このページの内容">
+        <h2>このページの内容</h2>
+        <ol>{toc.map((t) => <li><a href={`#${t.id}`}>{t.label}</a></li>)}</ol>
+      </nav>
 
-  <section class="section" aria-labelledby="expertise-title">
-    <div class="container">
-      <div class="profile-cols">
-        <section class="profile-block" aria-labelledby="expertise-title">
-          <h2 class="profile-block__title" id="expertise-title">専門分野</h2>
-          <ul class="profile-block__list">{profile.expertise.map((e) => <li>{e}</li>)}</ul>
-          <p class="profile-block__links">関連するご相談：{services.map((s, i) => <>{i > 0 && '／'}<a href={u(`/services/${s.slug}/`)}>{s.name}</a></>)}</p>
+      <div class="pbody">
+        <section class="psec reveal" id="philosophy" aria-labelledby="philosophy-title">
+          <h2 class="h2" id="philosophy-title">仕事に対する考え方</h2>
+          <div class="motto7">
+            <p class="motto7__l">ご相談を受けるときのモットー</p>
+            <p class="motto7__t">ご相談者を、できるだけ<em>揉めさせない</em>こと。</p>
+          </div>
+          <div class="prose">
+            <p>そのために、ご相談者のお話に親身になって耳を傾け、誠心誠意対応することを大切にしています。</p>
+            <p>悩みを伺って問題点を整理してみると、何に悩んでいたのかがはっきりし、考え方ひとつで解決してしまうことも少なくありません。お医者さんにたとえるなら、大切なのは問診です。よく診断しないまま、いきなり手術をするようなことはしません。不動産の専門家として良識をもって向き合い、その方に合った最善の方法をご提案します。そのために、日頃から不動産・建築・税務・法律の勉強を欠かさないようにしています。</p>
+            <p>安心して不動産のことを相談できる場所は、意外と多くありません。不動産に関する誠実な相談相手になることは、不動産鑑定士としての責任だと考えています。できるだけ、ご相談だけで解決できるよう心がけています。</p>
+          </div>
         </section>
-        <section class="profile-block" aria-labelledby="cred-title">
-          <h2 class="profile-block__title" id="cred-title">資格</h2>
-          <ul class="profile-block__list">{profile.credentials.map((c) => <li>{c}</li>)}</ul>
+
+        <section class="psec reveal" id="expertise" aria-labelledby="expertise-title">
+          <h2 class="h2" id="expertise-title">専門分野</h2>
+          <ul class="lines">{profile.expertise.map((e) => <li>{e}</li>)}</ul>
+          <p class="plinks">関連するご相談：{services.map((s, i) => <>{i > 0 && '／'}<a href={u(`/services/${s.slug}/`)}>{s.name}</a></>)}</p>
         </section>
-        <section class="profile-block" aria-labelledby="career-title">
-          <h2 class="profile-block__title" id="career-title">経歴</h2>
-          <ol class="profile-block__timeline">
-            {profile.career.map((c) => c.year ? <li><span>{c.year}</span>{c.text}</li> : <li class="is-undated">{c.text}</li>)}
+
+        <section class="psec reveal" id="cred" aria-labelledby="cred-title">
+          <h2 class="h2" id="cred-title">資格</h2>
+          <ul class="lines">{profile.credentials.map((c) => <li>{c}</li>)}</ul>
+        </section>
+
+        <section class="psec reveal" id="career" aria-labelledby="career-title">
+          <h2 class="h2" id="career-title">経歴</h2>
+          <ol class="tl">
+            {profile.career.map((c) => c.year ? <li><span class="y">{c.year}</span><span>{c.text}</span></li> : <li class="nodate">{c.text}</li>)}
           </ol>
         </section>
-        <section class="profile-block" aria-labelledby="public-title">
-          <h2 class="profile-block__title" id="public-title">公的評価・裁判所に関わる役割</h2>
-          <ul class="profile-block__list">{profile.publicRoles.map((r) => <li>{r}</li>)}</ul>
+
+        <section class="psec reveal" id="public" aria-labelledby="public-title">
+          <h2 class="h2" id="public-title">公的評価・裁判所に関わる役割</h2>
+          <ul class="lines">{profile.publicRoles.map((r) => <li>{r}</li>)}</ul>
         </section>
-        <section class="profile-block" aria-labelledby="committee-title">
-          <h2 class="profile-block__title" id="committee-title">委員・相談員の実績（歴任を含む）</h2>
-          <ul class="profile-block__list">{profile.committees.map((r) => <li>{r}</li>)}</ul>
+
+        <section class="psec reveal" id="committee" aria-labelledby="committee-title">
+          <h2 class="h2" id="committee-title">委員・相談員の実績（歴任を含む）</h2>
+          <ul class="lines">{profile.committees.map((r) => <li>{r}</li>)}</ul>
         </section>
-        <section class="profile-block" aria-labelledby="talks-title">
-          <h2 class="profile-block__title" id="talks-title">主な講演・投稿</h2>
-          <ul class="profile-block__list profile-block__list--talks">
-            {profile.talks.map((t) => <li>「{t.title}」<small>{t.date}／{t.host}</small></li>)}
-            <li>GMO不動産査定への投稿<small>2026年3月</small></li>
+
+        <section class="psec reveal" id="talks" aria-labelledby="talks-title">
+          <h2 class="h2" id="talks-title">主な講演・投稿</h2>
+          <ul class="lines lines--talks">
+            {profile.talks.map((t) => <li><span class="d">{t.date}</span><span>「{t.title}」<small>{t.host}</small></span></li>)}
+            <li><span class="d">2026年3月</span><span>GMO不動産査定への投稿</span></li>
           </ul>
         </section>
+
+        <section class="psec reveal" id="vietnam" aria-labelledby="vietnam-title">
+          <h2 class="h2" id="vietnam-title">海外での講演</h2>
+          <div class="prose">
+            <p>国土交通省とベトナム天然資源・環境省が主催した土地・不動産分野の法制度セミナー（ハノイ）で、公益社団法人日本不動産鑑定士協会連合会の国際委員会代表としてスピーカーを務めました。テーマは、経済発展が進むベトナムで課題となっている「土地収用に関する評価実務」です。</p>
+          </div>
+        </section>
+
+        {columns.length > 0 && (
+          <section class="psec" id="articles" aria-labelledby="articles-title">
+            <h2 class="h2 reveal" id="articles-title">当社のコラム</h2>
+            <p class="note reveal" style="margin:-12px 0 24px">木村不動産鑑定が、ご相談の多いテーマを実務の視点で解説しています。</p>
+            <ColumnRows items={columns} />
+            <p class="more"><a class="u-link" href={u('/column/')}>コラムの一覧を見る</a></p>
+          </section>
+        )}
+
+        <div class="panel reveal" aria-label="会社案内へ">
+          <p>会社の概要・許認可・所属団体・アクセスは、会社案内をご覧ください。</p>
+          <a class="btn btn--line" href={u('/about/')}>会社案内を見る<i aria-hidden="true">→</i></a>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section class="section section--white" aria-labelledby="vietnam-title">
-    <div class="container container--narrow">
-      <SectionHead en="Activities" title="海外での講演" id="vietnam-title" />
-      <div class="prose">
-        <p>国土交通省とベトナム天然資源・環境省が主催した土地・不動産分野の法制度セミナー（ハノイ）で、公益社団法人日本不動産鑑定士協会連合会の国際委員会代表としてスピーカーを務めました。テーマは、経済発展が進むベトナムで課題となっている「土地収用に関する評価実務」です。</p>
-      </div>
-    </div>
-  </section>
+  <CtaD7 />
 
-  {columns.length > 0 && (
-    <section class="section" aria-labelledby="articles-title">
-      <div class="container">
-        <SectionHead en="Column" title="当社のコラム" id="articles-title" lead="木村不動産鑑定が、ご相談の多いテーマを実務の視点で解説しています。" />
-        <div class="column-grid">{columns.map((c) => <ColumnCard entry={c} />)}</div>
-        <p class="more-link"><a href={u('/column/')}>コラムの一覧を見る</a></p>
-      </div>
-    </section>
-  )}
-
-  <section class="section section--white" aria-label="会社案内へ">
-    <div class="container container--narrow">
-      <div class="link-panel">
-        <p>会社の概要・許認可・所属団体・アクセスは、会社案内をご覧ください。</p>
-        <a class="btn btn--outline" href={u('/about/')}>会社案内を見る</a>
-      </div>
-    </div>
-  </section>
-
-  <ContactCta />
-</BaseLayout>
+  <script is:inline>
+    // 目次：いま読んでいるセクションを示す（なくても目次リンクは使える）
+    (function () {
+      var links = document.querySelectorAll('.ptoc a'); if (!links.length || !('IntersectionObserver' in window)) return;
+      var map = {}; links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { links.forEach(function (a) { a.removeAttribute('aria-current'); }); map[e.target.id].setAttribute('aria-current', 'true'); } }); }, { rootMargin: '-20% 0px -70% 0px' });
+      Object.keys(map).forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+    })();
+  </script>
+</SiteLayout>

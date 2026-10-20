@@ -1,0 +1,115 @@
+---
+// サービス詳細ページ共通（D7）。ページ固有の本文は <slot /> に書き、以下は slug から自動で組み立てる：
+//   見出し・お悩み・ページ内目次・相談の流れ・関連事例・関連コラム・関連FAQ・担当専門家・ほかのご相談内容・共通CTA
+// 6ページへは、ServiceLayout の代わりにこのレイアウトを使い、本文の部品を D7 のものに差し替えて展開する。
+import { getCollection } from 'astro:content';
+import '../styles/d7/services.css';
+import SiteLayout from './SiteLayout.astro';
+import PageHero from '../components/d7/PageHero.astro';
+import PageNav from '../components/d7/PageNav.astro';
+import FlowList from '../components/d7/FlowList.astro';
+import FaqD7 from '../components/d7/FaqD7.astro';
+import CaseRows from '../components/d7/CaseRows.astro';
+import ColumnRows from '../components/d7/ColumnRows.astro';
+import ExpertBox from '../components/d7/ExpertBox.astro';
+import CtaD7 from '../components/d7/CtaD7.astro';
+import { getService, services } from '../data/services';
+import { getFaqs } from '../data/faq';
+import { service as serviceLd } from '../lib/schema';
+import { u } from '../lib/url';
+
+interface Props {
+  slug: string;
+  title: string;
+  metaTitle: string;
+  description: string;
+  lead: string;
+  areaServed?: string;
+  profileText?: string;
+  toc?: { id: string; label: string }[]; // ページ内目次（本文側のセクション）。流れ以降は自動で追加する
+}
+const { slug, title, metaTitle, description, lead, areaServed, profileText, toc = [] } = Astro.props;
+const svc = getService(slug);
+const path = `/services/${slug}/`;
+const faqs = getFaqs(svc.relatedFaq);
+const cases = (await getCollection('cases')).filter((c) => c.data.services.includes(slug as never)).sort((a, b) => a.data.order - b.data.order);
+const columns = (await getCollection('column')).filter((c) => c.data.services.includes(slug as never));
+const others = services.filter((s) => s.slug !== slug);
+const crumbs = [{ name: 'ご相談内容', path: '/services/' }, { name: svc.name, path }];
+const nav = [
+  ...toc,
+  { id: 'flow', label: 'ご相談の流れ' },
+  ...(cases.length ? [{ id: 'cases', label: '関連する事例' }] : []),
+  ...(columns.length ? [{ id: 'columns', label: '関連するコラム' }] : []),
+  { id: 'faq', label: 'よくあるご質問' },
+];
+---
+<SiteLayout title={metaTitle} description={description} path={path} breadcrumbs={crumbs} jsonLd={[serviceLd({ name: svc.name, description, path, areaServed })]}>
+  <PageHero title={title} lead={lead} kicker="ご相談内容" crumbs={crumbs}>
+    <div slot="aside" class="worry">
+      <p class="worry__t">このようなお悩みはありませんか？</p>
+      <ul>{svc.concerns.map((c) => <li>{c}</li>)}</ul>
+    </div>
+  </PageHero>
+  <PageNav items={nav} />
+
+  <slot />
+
+  <section class="sec sec--paper" id="flow" aria-labelledby="flow-title">
+    <div class="wrap split">
+      <div class="split__head reveal">
+        <h2 class="h2" id="flow-title">ご相談の流れ</h2>
+        <p class="lead">ご依頼の前に、費用のお見積りをお伝えします。お見積りまでは費用はかかりません。</p>
+        <a class="u-link" href={u('/fees/')}>料金の目安を見る</a>
+      </div>
+      <FlowList example={svc.flowExample} />
+    </div>
+  </section>
+
+  {cases.length > 0 && (
+    <section class="sec" id="cases" aria-labelledby="cases-title">
+      <div class="wrap">
+        <div class="reveal" style="display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:36px">
+          <h2 class="h2" id="cases-title">関連する事例</h2><a class="u-link" href={u('/cases/')}>事例の一覧を見る</a>
+        </div>
+        <CaseRows items={cases} />
+      </div>
+    </section>
+  )}
+
+  {columns.length > 0 && (
+    <section class="sec sec--paper" id="columns" aria-labelledby="columns-title">
+      <div class="wrap">
+        <div class="reveal" style="display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:36px">
+          <h2 class="h2" id="columns-title">関連するコラム</h2><a class="u-link" href={u('/column/')}>コラムの一覧を見る</a>
+        </div>
+        <ColumnRows items={columns} />
+      </div>
+    </section>
+  )}
+
+  <section class="sec" id="faq" aria-labelledby="faq-title">
+    <div class="wrap split">
+      <div class="split__head reveal">
+        <h2 class="h2" id="faq-title">よくあるご質問</h2>
+        <a class="u-link" href={u('/faq/')}>よくあるご質問の一覧を見る</a>
+      </div>
+      <div class="reveal" data-delay="1"><FaqD7 items={faqs} /></div>
+    </div>
+  </section>
+
+  <section class="sec sec--paper sec--tight" aria-label="担当する専門家とほかのご相談内容">
+    <div class="wrap">
+      <ExpertBox text={profileText} />
+      <nav class="others" aria-labelledby="others-title">
+        <h2 id="others-title">ほかのご相談内容</h2>
+        <ul>
+          {others.map((s) => <li><a href={u(`/services/${s.slug}/`)}>{s.name}</a></li>)}
+          <li><a href={u('/services/')}>ご相談内容の一覧</a></li>
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  <CtaD7 />
+</SiteLayout>

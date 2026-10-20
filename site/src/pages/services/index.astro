@@ -1,74 +1,86 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import SectionHead from '../../components/SectionHead.astro';
-import ContactCta from '../../components/ContactCta.astro';
+import '../../styles/d7/services.css';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/d7/PageHero.astro';
+import CtaD7 from '../../components/d7/CtaD7.astro';
 import { services, otherServices, serviceGroups as groups } from '../../data/services';
 import { u } from '../../lib/url';
 
+const keep = (text: string, words: string[]) => words.reduce((t, w) => t.replaceAll(w, `<span class="keep">${w}</span>`), text);
+const crumbs = [{ name: 'ご相談内容', path: '/services/' }];
 ---
-<BaseLayout
+<SiteLayout
   title="ご相談内容"
   description="木村不動産鑑定にご相談いただける内容の一覧です。不動産鑑定・評価、相続・遺産分割、親族間売買、地代・家賃・借地、立退料、耐震診断・耐震改修・インスペクションなど、不動産の価格と建物の両面からご相談に応じます。"
   path="/services/"
-  breadcrumbs={[{ name: 'ご相談内容', path: '/services/' }]}
+  breadcrumbs={crumbs}
 >
-  <PageHeader eyebrow="Services" title="ご相談内容" lead="不動産の「価格」と「建物」のご相談に、不動産鑑定士・一級建築士がひとつの事務所で対応します。どれに当てはまるかわからない場合も、お気軽にご相談ください。" />
+  <PageHero title="ご相談内容" lead="不動産の「価格」と「建物」のご相談に、不動産鑑定士・一級建築士がひとつの事務所で対応します。どれに当てはまるかわからない場合も、お気軽にご相談ください。" crumbs={crumbs} />
 
-  {groups.map((g) => (
-    <section class="section section--white service-index" aria-labelledby={`g-${g.key}`}>
-      <div class="container">
-        <SectionHead title={g.title} lead={g.desc} id={`g-${g.key}`} />
-        <ul class="svc-grid">
-          {services.filter((s) => s.group === g.key).map((s) => (
-            <li class="svc-card">
-              <h3 class="svc-card__title"><a href={u(`/services/${s.slug}/`)}>{s.name}</a></h3>
-              <p class="svc-card__text">{s.summary}</p>
-              <ul class="svc-card__concerns">{s.concerns.slice(0, 2).map((c) => <li>{c}</li>)}</ul>
-              <span class="card-more" aria-hidden="true">詳しく見る</span>
-            </li>
-          ))}
-        </ul>
+  <section class="sec sec--paper" aria-label="ご相談内容の一覧">
+    <div class="wrap">
+      {groups.map((g) => (
+        <div class="sgroup reveal">
+          <div class="sgroup__head"><h2 class="h2" id={`g-${g.key}`}>{g.title}</h2><p set:html={keep(g.desc, ['フラット35適合証明'])} /></div>
+          <ul aria-labelledby={`g-${g.key}`}>
+            {services.filter((s) => s.group === g.key).map((s) => (
+              <li class="srow">
+                <a class="srow__n" href={u(`/services/${s.slug}/`)}>{s.name}</a>
+                <div>
+                  <p class="srow__t" set:html={keep(s.summary, ['フラット35適合証明'])} />
+                  <ul class="srow__q">{s.concerns.slice(0, 2).map((c) => <li>{c}</li>)}</ul>
+                </div>
+                <i aria-hidden="true">→</i>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="sec sec--sand" aria-labelledby="pro-title">
+    <div class="wrap split">
+      <div class="split__head reveal">
+        <h2 class="h2" id="pro-title">専門家・法人の皆様へ</h2>
+        <p class="lead">弁護士・税理士の先生方のクライアント様や、一般企業様がお持ちの不動産について、不動産鑑定士が評価の面からサポートします。ご発注の前に、机上での概算評価額をお伝えすることも可能です。</p>
       </div>
-    </section>
-  ))}
-
-  <section class="section section--tint" aria-labelledby="pro-title">
-    <div class="container">
-      <SectionHead en="For professionals" title="専門家・法人の皆様へ" id="pro-title" lead="弁護士・税理士の先生方のクライアント様や、一般企業様がお持ちの不動産について、不動産鑑定士が評価の面からサポートします。ご発注の前に、机上での概算評価額をお伝えすることも可能です。" />
-      <div class="pro-panel">
-        <ul class="pro-panel__list">
+      <div class="reveal" data-delay="1">
+        <ul class="prorows">
           <li><h3>弁護士の先生へ</h3><p>賃料・立退料・借地権・底地・更新料の鑑定評価、遺留分や遺産分割の参考資料など</p></li>
           <li><h3>税理士の先生へ</h3><p>相続の土地評価、親族間・同族会社間の売買や交換、税務申告、不動産の現物出資など</p></li>
           <li><h3>法人の皆様へ</h3><p>賃料の増減や立退料の交渉、減損会計・時価評価、M&amp;A・事業承継に伴う不動産の評価など</p></li>
         </ul>
-        <div class="pro-panel__side">
-          <p class="pro-panel__label">公的評価・裁判所に関わる経験</p>
-          <ul class="dot-list">
-            <li>国土交通省 地価公示 評価員</li>
-            <li>東京都 地価調査 評価員</li>
-            <li>東京地方裁判所（借地非訟事件）鑑定専門委員</li>
-          </ul>
-          <div class="pro-panel__links">
-            <a href={u('/services/appraisal/#for-professionals')}>ご依頼いただける内容</a>
-            <a href={u('/profile/')}>代表の経歴・公的な役割</a>
+        <div class="proside">
+          <div>
+            <p class="proside__l">公的評価・裁判所に関わる経験</p>
+            <ul class="dots">
+              <li>国土交通省 地価公示 評価員</li>
+              <li>東京都 地価調査 評価員</li>
+              <li>東京地方裁判所（借地非訟事件）鑑定専門委員</li>
+            </ul>
+            <div class="proside__links">
+              <a class="u-link" href={u('/services/appraisal/#for-professionals')}>ご依頼いただける内容</a>
+              <a class="u-link" href={u('/profile/')}>代表の経歴・公的な役割</a>
+            </div>
           </div>
-          <a class="btn btn--primary btn--block" href={u('/contact/')}>ご依頼・お見積りの相談</a>
+          <a class="btn" href={u('/contact/')}>ご依頼・お見積りの相談<i aria-hidden="true">→</i></a>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section section--white" aria-labelledby="others-title">
-    <div class="container">
-      <SectionHead title="そのほかのご相談" id="others-title" lead="次のようなご相談にも対応しています。詳しくはお問い合わせください。" />
-      <ul class="point-grid">
-        {otherServices.map((o) => (
-          <li class="point-card"><h3 class="point-card__title">{o.name}</h3><p>{o.text}</p></li>
-        ))}
+  <section class="sec" aria-labelledby="others-title">
+    <div class="wrap split">
+      <div class="split__head reveal">
+        <h2 class="h2" id="others-title">そのほかのご相談</h2>
+        <p class="lead">次のようなご相談にも対応しています。詳しくはお問い合わせください。</p>
+      </div>
+      <ul class="othrows reveal" data-delay="1">
+        {otherServices.map((o) => <li><h3>{o.name}</h3><p>{o.text}</p></li>)}
       </ul>
     </div>
   </section>
 
-  <ContactCta />
-</BaseLayout>
+  <CtaD7 />
+</SiteLayout>

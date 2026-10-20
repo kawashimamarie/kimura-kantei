@@ -1,0 +1,55 @@
+/* ご相談内容一覧・サービス詳細 */
+/* 一覧：2つの分類を目次型の行で並べる */
+.sgroup + .sgroup { margin-top: 72px; }
+.sgroup__head { display: grid; grid-template-columns: 340px minmax(0, 620px); gap: 96px; align-items: baseline; padding-bottom: 18px; border-bottom: 1px solid var(--ink); }
+.sgroup__head .h2 { font-size: clamp(21px, .6vw + 16px, 24px); letter-spacing: .02em; }
+.sgroup__head p { font-size: 15px; line-height: 2; color: var(--ink-2); text-wrap: pretty; word-break: auto-phrase; }
+.srow { position: relative; display: grid; grid-template-columns: 340px minmax(0, 620px) 1fr; gap: 0 96px; align-items: baseline; padding: 28px 0; border-bottom: 1px solid var(--line-2); }
+.srow__n { font-family: var(--f-mincho); font-size: 23px; font-weight: 700; letter-spacing: .06em; line-height: 1.5; transition: color .2s ease; }
+.srow__n::after { content: ""; position: absolute; inset: 0; }
+.srow__t { font-size: 15.5px; line-height: 1.95; color: var(--ink-3); text-wrap: pretty; word-break: auto-phrase; }
+.srow__q { margin-top: 10px; }
+.srow__q li { position: relative; padding: 2px 0 2px 16px; font-size: 14px; line-height: 1.8; color: var(--ink-2); text-wrap: balance; }
+.srow__q li::before { content: ""; position: absolute; left: 0; top: 13px; width: 5px; height: 1px; background: var(--accent); }
+.srow i { justify-self: end; font-style: normal; color: var(--green); opacity: .35; transition: opacity .2s ease, transform .25s ease; }
+@media (hover: hover) { .srow:hover .srow__n { color: var(--green); } .srow:hover i { opacity: 1; transform: translateX(4px); } }
+
+/* 専門家・法人向け */
+.prorows { border-top: 1px solid var(--ink); }
+.prorows li { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 28px; padding: 20px 0; border-bottom: 1px solid #d6cbb8; }
+.prorows h3 { font-size: 17px; font-weight: 700; line-height: 1.7; }
+.prorows p { font-size: 15.5px; line-height: 1.95; color: var(--ink-3); text-wrap: balance; }
+.proside { margin-top: 36px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 48px; align-items: end; }
+.proside__l { font-size: 13px; font-weight: 700; letter-spacing: .08em; color: var(--accent); }
+.proside .dots { margin-top: 6px; }
+.proside__links { display: flex; flex-wrap: wrap; gap: 6px 28px; margin-top: 14px; font-size: 14.5px; }
+.othrows { border-top: 1px solid var(--ink); }
+.othrows li { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 40px; padding: 24px 0; border-bottom: 1px solid var(--line-2); }
+.othrows h3 { font-family: var(--f-mincho); font-size: 20px; font-weight: 700; letter-spacing: .05em; line-height: 1.6; }
+.othrows p { font-size: 15.5px; line-height: 1.95; color: var(--ink-3); text-wrap: pretty; }
+
+/* サービス詳細：不動産鑑定×建築の見解 */
+.statement { max-width: 46em; padding-left: 28px; border-left: 3px solid var(--sand); }
+.statement .kicker { margin-bottom: 12px; }
+.statement h2 { font-size: clamp(21px, .8vw + 16px, 26px); line-height: 1.65; }
+.statement p { margin-top: 16px; font-size: 16px; line-height: 2.1; color: var(--ink-3); text-wrap: pretty; }
+
+@media (min-width: 768px) and (max-width: 1100px) {
+  .sgroup__head, .othrows li { grid-template-columns: 220px minmax(0, 1fr); gap: 28px; }
+  .srow { grid-template-columns: 220px minmax(0, 1fr) 32px; gap: 0 28px; }
+  .srow i { grid-column: 3; grid-row: 1; }
+  .prorows li { grid-template-columns: 140px minmax(0, 1fr); gap: 20px; }
+}
+@media (max-width: 767px) {
+  .sgroup + .sgroup { margin-top: 52px; }
+  .sgroup__head, .othrows li { grid-template-columns: 1fr; gap: 8px; }
+  .sgroup__head { padding-bottom: 14px; }
+  .sgroup__head p { font-size: 14px; line-height: 1.9; }
+  .srow { grid-template-columns: 1fr 20px; gap: 6px 12px; padding: 20px 0; }
+  .srow__n { grid-column: 1; font-size: 19px; } .srow i { grid-column: 2; grid-row: 1; opacity: .6; }
+  .srow__t, .srow__q { grid-column: 1 / -1; } .srow__t { font-size: 14px; line-height: 1.9; } .srow__q li { font-size: 13.5px; }
+  .prorows li { grid-template-columns: 1fr; gap: 4px; padding: 16px 0; } .prorows p { font-size: 14.5px; }
+  .proside { grid-template-columns: 1fr; margin-top: 28px; } .proside .btn { width: 100%; }
+  .othrows li { padding: 18px 0; } .othrows h3 { font-size: 18px; } .othrows p { font-size: 14.5px; }
+  .statement { padding-left: 18px; } .statement p { font-size: 15px; line-height: 2; }
+}
