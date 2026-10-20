@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "build:pages": "PREVIEW_BASE=/kimura-kantei node scripts/build-pages.mjs"
+    "build:pages": "PREVIEW_BASE=/kimura-kantei EXCLUDE_SAMPLES=1 node scripts/build-pages.mjs"
   },
   "dependencies": {
     "astro": "7.3.6"

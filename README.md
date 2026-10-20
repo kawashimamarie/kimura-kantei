@@ -35,6 +35,16 @@ npm run build        # 本番用ビルド（site/dist/）
 npm run build:pages  # 確認用プレビュー向けにビルドし、リポジトリ直下へ出力
 ```
 
+## 確認用プレビューの設定
+
+- 全ページの上部の「確認用プレビュー」の表示：`site/src/data/site.ts` の `site.preview`（正式公開時は `false`）。
+- 検索エンジンへの非公開（noindex）：同じく `site.noindex`（確認用の間は `true`。ここでは変更しない）。
+- 提案用サンプル（`/samples/`）：`EXCLUDE_SAMPLES=1` のビルドでは出力から外れる（`npm run build:pages` は既定で外す）。ソース・画像は残している。
+- お問い合わせフォーム：送信先が未設定の間は「確認用・送信できません」の表示で、送信しない。接続するときは、ビルド時の環境変数
+  `PUBLIC_CONTACT_FORM_ENDPOINT`（送信先URL）と `PUBLIC_TURNSTILE_SITE_KEY`（迷惑メール対策の公開サイトキー）を渡す。
+  秘密鍵・APIキーは、このリポジトリに含めず、送信を受けるサーバー側の環境変数に置く。
+- プライバシーポリシー：`site/src/data/privacy.ts` に、現行サイトの原文をそのまま置いている。変更は、木村様の承認と専門家の確認のあとだけ。
+
 ## コンテンツの追加
 
 - **コラム**：`site/src/content/column/{slug}.md` を追加します（項目は `content.config.ts` を参照）。
