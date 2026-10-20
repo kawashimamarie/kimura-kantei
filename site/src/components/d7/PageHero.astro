@@ -1,0 +1,21 @@
+---
+// 下層ページの見出しエリア（h1 はここで1つだけ出力する）。トップのファーストビューとは別構成。
+// aside スロットがあれば右側に置く（サービス詳細の「お悩み」など）。
+import Crumbs from './Crumbs.astro';
+interface Props { title: string; lead?: string; kicker?: string; crumbs: { name: string; path: string }[] }
+const { title, lead, kicker, crumbs } = Astro.props;
+const hasAside = Astro.slots.has('aside');
+---
+<section class="lhero">
+  <div class="wrap">
+    <Crumbs items={[{ name: 'トップ', path: '/' }, ...crumbs]} />
+    <div class:list={['lhero__grid', !hasAside && 'lhero__grid--single']}>
+      <div>
+        {kicker && <p class="kicker">{kicker}</p>}
+        <h1 class="h1">{title}</h1>
+        {lead && <p class="lhero__lead">{lead}</p>}
+      </div>
+      {hasAside && <div><slot name="aside" /></div>}
+    </div>
+  </div>
+</section>

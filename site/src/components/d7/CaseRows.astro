@@ -1,0 +1,14 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { u } from '../../lib/url';
+interface Props { items: CollectionEntry<'cases'>[] }
+const { items } = Astro.props;
+---
+<div class="rel">
+  {items.map((c, i) => (
+    <a class="reveal" data-delay={i % 2 ? '1' : undefined} href={u(`/cases/${c.id}/`)}>
+      <figure><img src={u(c.data.cover.src)} width={c.data.cover.width} height={c.data.cover.height} alt={c.data.cover.alt} loading="lazy" decoding="async"></figure>
+      <div><p class="rel__m">{c.data.meta}</p><h3>{c.data.title}</h3><p class="t">{c.data.teaser}</p></div>
+    </a>
+  ))}
+</div>

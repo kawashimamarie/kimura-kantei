@@ -1,0 +1,10 @@
+---
+import { flowSteps } from '../../data/flow';
+interface Props { example?: string }
+const { example } = Astro.props;
+---
+<ol class="flow7">
+  {flowSteps(example).map((s, i) => (
+    <li class="reveal"><span class="flow7__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><h3 class="flow7__h">{s.name}</h3><p class="flow7__t">{s.text}</p></li>
+  ))}
+</ol>

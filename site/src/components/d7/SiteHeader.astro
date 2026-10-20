@@ -1,7 +1,7 @@
 ---
-// トップページ用ヘッダー。1199px以下では MENU ボタンで nav・電話・申込ボタンのパネルを開閉する（開閉の処理は TopLayout のスクリプト）。
-import { nav, contact, site } from '../data/site';
-import { u } from '../lib/url';
+// D7 共通ヘッダー。上部に固定（SPは下スクロールで隠れ、上スクロールで現れる）。1199px以下は MENU ボタンで nav・電話・申込ボタンのパネルを開閉する（処理は SiteLayout のスクリプト）。
+import { nav, contact, site } from '../../data/site';
+import { u } from '../../lib/url';
 
 interface Props { path: string }
 const { path } = Astro.props;
@@ -15,7 +15,7 @@ const { path } = Astro.props;
     <button class="menu" type="button" aria-expanded="false" aria-controls="global-nav"><span class="menu__label">MENU</span></button>
     <div class="hd__panel" id="global-nav">
       <nav class="nav" aria-label="メインメニュー">
-        {nav.map((item) => <a href={u(item.href)} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a>)}
+        {nav.map((item) => <a href={u(item.href)} aria-current={path === item.href || path.startsWith(item.href) ? 'page' : undefined}>{item.label}</a>)}
       </nav>
       <a class="hd__tel" href={contact.telHref}><b>{contact.tel}</b><span>受付 {contact.hours}</span></a>
       <a class="hd__cta" href={u('/contact/')}>相談を申し込む</a>
