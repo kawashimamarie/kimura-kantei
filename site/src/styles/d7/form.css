@@ -1,0 +1,48 @@
+/* お問い合わせフォーム。罫線で区切り、角丸のカードは使わない */
+.cform { max-width: 720px; }
+.cform__pv { margin-bottom: 28px; padding: 14px 16px; border-left: 3px solid var(--accent); background: var(--sand-bg); font-size: 14.5px; line-height: 1.9; color: var(--ink-3); }
+.cform__pv strong { display: block; color: var(--ink); }
+.cform__err { margin-bottom: 28px; padding: 16px 18px; border: 1px solid #A3322B; background: #fff; }
+.cform__err:focus { outline: 3px solid #b89668; outline-offset: 3px; }
+.cform__errt { font-size: 15px; font-weight: 700; color: #A3322B; }
+.cform__err ul { margin-top: 6px; }
+.cform__err li { padding: 3px 0; font-size: 14.5px; line-height: 1.8; }
+.cform__err a { color: #A3322B; text-decoration: underline; text-underline-offset: 3px; }
+.fld { padding: 20px 0; border-top: 1px solid var(--line-2); }
+.fld:first-child { border-top: 1px solid var(--ink); }
+.fld > label, .chk label { display: block; margin-bottom: 8px; font-size: 15px; font-weight: 700; line-height: 1.7; }
+.req, .opt { margin-left: .6em; font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+.req { color: #A3322B; }
+.opt { color: var(--ink-2); font-weight: 400; }
+.fld input[type="text"], .fld input[type="email"], .fld input[type="tel"], .fld textarea { display: block; width: 100%; padding: 12px 14px; border: 1px solid #8a8f91; border-radius: 2px; background: #fff; font: inherit; font-size: 16px; line-height: 1.7; color: var(--ink); }
+.fld textarea { min-height: 11em; resize: vertical; }
+.fld input:focus-visible, .fld textarea:focus-visible, .chk input:focus-visible { outline: 3px solid #b89668; outline-offset: 2px; border-color: var(--green); }
+.fld [aria-invalid="true"] { border-color: #A3322B; box-shadow: inset 3px 0 0 #A3322B; }
+.fld__hint { margin-top: 6px; font-size: 13.5px; line-height: 1.8; color: var(--ink-2); }
+.fld__err { margin-top: 6px; font-size: 14px; font-weight: 700; line-height: 1.7; color: #A3322B; }
+.fld--check { border-bottom: 1px solid var(--line-2); }
+.chk { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; align-items: start; }
+.chk input { width: 22px; height: 22px; margin: 4px 0 0; accent-color: var(--green); }
+.chk label { margin: 0; font-weight: 500; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.cform__ts { margin-top: 20px; }
+.cform__acts { display: flex; flex-wrap: wrap; gap: 14px 16px; margin-top: 28px; }
+.cform .btn[disabled] { background: #9aa4a5; box-shadow: none; cursor: not-allowed; }
+.cform .btn[disabled] i { display: none; }
+.cform__status { margin-top: 18px; padding: 12px 14px; background: var(--green-50); font-size: 14.5px; line-height: 1.8; color: var(--green-d); }
+.cform__fail { margin-top: 18px; padding: 14px 16px; border: 1px solid #A3322B; background: #fff; font-size: 14.5px; line-height: 1.9; }
+.cform__fail a { color: #A3322B; text-decoration: underline; }
+.cform__thanks { padding: 28px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line-2); }
+.cform__thanks:focus { outline: none; }
+.cform__thanks h3 { margin-top: 8px; font-family: var(--f-mincho); font-size: clamp(21px, .7vw + 16px, 26px); font-weight: 700; line-height: 1.6; }
+.cform__thanks p { margin-top: 12px; font-size: 15.5px; line-height: 2; color: var(--ink-3); }
+.cform__thanks a { color: var(--green); text-decoration: underline; text-underline-offset: 4px; }
+.cform__thanks .btn { margin-top: 20px; }
+.cform__demo { margin-top: 28px; }
+.cform__linkbtn { padding: 8px 0; border: 0; background: none; font: inherit; font-size: 14.5px; cursor: pointer; }
+.cform__linkbtn:focus-visible { outline: 3px solid #b89668; outline-offset: 3px; }
+.cform [hidden] { display: none !important; }
+@media (max-width: 767px) {
+  .cform__acts { flex-direction: column; } .cform__acts .btn { width: 100%; text-align: center; }
+  .cform__thanks .btn { width: 100%; }
+}

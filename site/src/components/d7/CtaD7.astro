@@ -10,7 +10,7 @@ interface Props { title?: boolean }
     <div class="reveal">
       <h2 class="h2" id="cta-title"><span class="nw">「こんなことを</span><span class="nw">相談していいのかな」</span><br>という段階から、どうぞ。</h2>
       <p class="cta6__lead">{ctaLead}</p>
-      <ul class="cta6__how">{ctaPoints.map((t) => <li>{t}</li>)}</ul>
+      <ul class="cta6__how">{ctaPoints.map((t) => <li>{t.includes('個人情報') ? <a class="cta6__pv" href={u('/privacy/')}>{t}</a> : t}</li>)}</ul>
     </div>
     <div class="reveal" data-delay="1">
       <p class="cta6__tel"><small>お電話でのご相談・ご予約（受付 {contact.hours}）</small><a href={contact.telHref}>{contact.tel}</a></p>

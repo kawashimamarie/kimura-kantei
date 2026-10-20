@@ -1,0 +1,7 @@
+---
+// 確認用プレビューの表示（全ページの最上部。スクロールすると流れて消える）。
+// 表示のオン・オフは data/site.ts の site.preview だけで切り替える（正式公開時は false）。
+import { site } from '../../data/site';
+const sentences = site.previewNotice.split('。').filter(Boolean).map((t) => `${t}。`);
+---
+{site.preview && <aside class="pvbar" aria-label="確認用プレビューのお知らせ"><p>{sentences.map((t) => <span>{t}</span>)}</p></aside>}

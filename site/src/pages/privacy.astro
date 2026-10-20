@@ -1,0 +1,36 @@
+---
+import '../styles/d7/legal.css';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageHero from '../components/d7/PageHero.astro';
+import CtaD7 from '../components/d7/CtaD7.astro';
+import { privacyNodes, privacyTitle } from '../data/privacy';
+
+// 本文は data/privacy.ts（現行サイトの原文）をそのまま表示する。ここでは文言を持たない。
+const crumbs = [{ name: 'プライバシーポリシー', path: '/privacy/' }];
+---
+<SiteLayout
+  title="プライバシーポリシー（個人情報の保護に関する法律に基づく公表事項）"
+  description="株式会社木村不動産鑑定の、個人情報の保護に関する法律に基づく公表事項（プライバシーポリシー）です。"
+  path="/privacy/"
+  breadcrumbs={crumbs}
+>
+  <PageHero title={privacyTitle} crumbs={crumbs} />
+
+  <section class="sec sec--paper" aria-label="公表事項の本文">
+    <div class="wrap">
+      <div class="legal">
+        {privacyNodes.map((n) => {
+          if (n.k === 'h2') return <h2>{n.t}</h2>;
+          if (n.k === 'h3') return <h3>{n.t}</h3>;
+          if (n.k === 'h4') return <h4>{n.t}</h4>;
+          if (n.k === 'addr') return <address>{n.lines.map((l, i) => <>{i > 0 && <br />}{l}</>)}</address>;
+          if (n.k === 'list') return <ul>{n.items.map((t) => <li>{t}</li>)}</ul>;
+          if (n.k === 'table') return <div class="twrap" role="region" aria-label="表（横にスクロールできます）" tabindex="0"><table><tbody>{n.rows.map((r) => <tr>{r.map((c) => <td>{c}</td>)}</tr>)}</tbody></table></div>;
+          return <p>{n.t}</p>;
+        })}
+      </div>
+    </div>
+  </section>
+
+  <CtaD7 />
+</SiteLayout>
