@@ -1,0 +1,6 @@
+---
+// 事例タグ（既存の文言のまま）。色つきの角丸にせず、小さな文字＋細い罫線で並べる。
+interface Props { tags: string[]; label?: string }
+const { tags, label = '事例のタグ' } = Astro.props;
+---
+<ul class="ctags" aria-label={label}>{tags.map((t) => <li>{t}</li>)}</ul>
