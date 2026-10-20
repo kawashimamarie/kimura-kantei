@@ -10,6 +10,13 @@ html { scroll-padding-top: calc(var(--header-h) + 16px); scroll-padding-bottom: 
 a:focus-visible, summary:focus-visible, button:focus-visible { outline: 3px solid #b89668; outline-offset: 3px; }
 .skip-link { position: absolute; left: 12px; top: -100px; z-index: 1000; padding: .75rem 1rem; background: var(--ink); color: #fff; border-radius: 6px; }
 .skip-link:focus { top: 12px; }
+/* 確認用プレビューの表示（site.preview が true の間だけ出力される） */
+.pvbar { background: var(--sand-bg); border-bottom: 1px solid var(--line-2); }
+.pvbar span { display: inline-block; word-break: auto-phrase; }
+.pvbar span + span { margin-left: .5em; }
+.pvbar p { max-width: 1440px; margin: 0 auto; padding: 6px 64px; font-size: 12.5px; line-height: 1.6; letter-spacing: .02em; color: var(--ink-2); }
+@media (max-width: 1199px) { .pvbar p { padding-inline: 24px; } }
+@media (max-width: 767px) { .pvbar p { padding: 6px 20px; font-size: 12px; } }
 #main:focus { outline: none; }
 .hd { position: relative; z-index: 50; background: rgba(251, 249, 245, .96); border-bottom: 1px solid var(--line); }
 .js .hd { position: sticky; top: 0; backdrop-filter: saturate(1.1) blur(6px); transition: transform .3s ease; }
@@ -99,3 +106,8 @@ a:focus-visible, summary:focus-visible, button:focus-visible { outline: 3px soli
   .spbar__tel svg { width: 18px; height: 18px; }
   .spbar__main { background: var(--green); color: #fff; }
 }
+
+/* 個人情報の文言から、プライバシーポリシーへ */
+.cta6__pv, .points__pv { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: rgba(255, 255, 255, .45); }
+.points__pv { text-decoration-color: rgba(31, 36, 38, .35); }
+@media (hover: hover) { .cta6__pv:hover, .points__pv:hover { text-decoration-color: currentColor; } }
