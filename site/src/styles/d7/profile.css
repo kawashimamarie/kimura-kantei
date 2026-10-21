@@ -21,13 +21,13 @@
 .motto7__t { margin-top: 10px; font-family: var(--f-mincho); font-size: clamp(24px, 1.4vw + 17px, 34px); font-weight: 700; line-height: 1.6; letter-spacing: .05em; }
 .motto7__t em { font-style: normal; color: var(--green); box-shadow: inset 0 -.32em 0 rgba(184, 150, 104, .22); }
 .tl { border-top: 1px solid var(--line-2); }
-.tl li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--line-2); font-size: 15.5px; line-height: 1.85; color: var(--ink-3); text-wrap: balance; }
+.tl li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 20px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--line-2); font-size: 15.5px; line-height: 1.85; color: var(--ink-3); text-wrap: balance; }
 .tl li.nodate { grid-template-columns: 1fr; }
-.tl span.y { font-family: var(--f-num); font-weight: 600; font-size: 14px; color: var(--accent); }
+.tl span.y { font-family: var(--f-sans); font-weight: 700; font-size: 14px; color: var(--accent); }
 .lines { border-top: 1px solid var(--line-2); }
 .lines li { padding: 12px 0; border-bottom: 1px solid var(--line-2); font-size: 15.5px; line-height: 1.85; color: var(--ink-3); text-wrap: balance; }
-.lines--talks li { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 20px; }
-.lines--talks .d { font-size: 14px; color: var(--accent); font-family: var(--f-num); font-weight: 500; }
+.lines--talks li { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 20px; align-items: baseline; }
+.lines--talks .d { font-size: 14px; color: var(--accent); font-family: var(--f-sans); font-weight: 500; }
 .lines--talks small { display: block; margin-top: 2px; font-size: 13.5px; color: var(--ink-2); }
 .plinks { margin-top: 18px; font-size: 14.5px; line-height: 2; color: var(--ink-2); text-wrap: balance; }
 .plinks a { color: var(--green); text-decoration: underline; text-decoration-color: rgba(43, 83, 87, .35); text-underline-offset: 4px; }

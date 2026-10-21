@@ -36,7 +36,7 @@
 .atext table { width: 100%; border-top: 1px solid var(--ink); }
 .atext th, .atext td { padding: 14px 16px 14px 0; border-bottom: 1px solid var(--line-2); text-align: left; vertical-align: top; font-size: 15px; line-height: 1.85; color: var(--ink-3); }
 .atext th { font-weight: 700; color: var(--ink); white-space: nowrap; }
-.atext td:first-child { white-space: nowrap; font-family: var(--f-num); font-weight: 600; color: var(--green-d); }
+.atext td:first-child { white-space: nowrap; font-family: var(--f-sans); font-weight: 700; color: var(--green-d); }
 .asrc { margin-top: 64px; padding-top: 26px; border-top: 1px solid var(--ink); }
 .asrc h2, .aauthor h2 { font-size: 14px; font-weight: 700; letter-spacing: .04em; color: var(--accent); }
 .asrc li { padding: 8px 0; font-size: 14.5px; line-height: 1.9; color: var(--ink-2); word-break: auto-phrase; overflow-wrap: anywhere; }

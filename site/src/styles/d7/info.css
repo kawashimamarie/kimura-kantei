@@ -43,7 +43,7 @@
 .fee th, .fee td { padding: 22px 0; border-bottom: 1px solid var(--line-2); vertical-align: baseline; font-weight: 400; text-align: left; }
 .fee th { font-size: 16.5px; font-weight: 700; line-height: 1.7; word-break: auto-phrase; text-wrap: balance; }
 .fee th small { display: block; margin-top: 2px; font-size: 13.5px; font-weight: 400; color: var(--ink-2); }
-.fee td { width: 36%; padding-left: 24px; font-family: var(--f-num); font-size: clamp(19px, .8vw + 13px, 24px); font-weight: 600; letter-spacing: .01em; text-align: right; white-space: nowrap; color: var(--green-d); }
+.fee td { width: 36%; padding-left: 24px; font-family: var(--f-sans); font-size: clamp(19px, .8vw + 13px, 24px); font-weight: 700; letter-spacing: .01em; text-align: right; white-space: nowrap; color: var(--green-d); }
 .fee td.fee__text { font-family: var(--f-sans); font-size: 17px; font-weight: 700; }
 .foot { margin-top: 18px; font-size: 14.5px; }
 .free { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 32px; padding: 26px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line-2); }
