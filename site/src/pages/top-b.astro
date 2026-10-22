@@ -1,0 +1,142 @@
+---
+// トップページ B案「課題解決・集客重視」（比較用）。訪問者の悩みを起点に、対応する専門領域・事例・相談の流れへ進める。
+// 文言は data/ と content/ の既存の事実だけを使う。title・description・構造化データは公開中のトップと同じ。
+import { getCollection } from 'astro:content';
+import TopLayoutAB from '../layouts/TopLayoutAB.astro';
+import Ico from '../components/Ico.astro';
+import { site, contact } from '../data/site';
+import { services } from '../data/services';
+import { profile } from '../data/profile';
+import { flowSteps } from '../data/flow';
+import { getFaqs } from '../data/faq';
+import { website, person } from '../lib/schema';
+import { u } from '../lib/url';
+
+const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
+const columns = (await getCollection('column')).sort((a, b) => +new Date(b.data.updatedAt) - +new Date(a.data.updatedAt));
+const faqs = getFaqs(['consult-only', 'satei-vs-kantei', 'fee']);
+const steps = flowSteps();
+const [featured, ...others] = cases.slice(0, 3);
+
+// 悩みの言葉は、各サービスの「相談者の言葉」の先頭を使う（data/services.ts）。
+const tiles = services.map((s) => ({ slug: s.slug, name: s.name, concern: s.concerns[0] }));
+---
+<TopLayoutAB
+  variant="b"
+  fullTitle={`相続・親族間売買・地代家賃・立退料の不動産鑑定｜${site.name}（東京・阿佐ヶ谷）`}
+  title="トップ"
+  description="相続した不動産の分け方、親族間売買の価格、地代・家賃、立退料、建物の耐震やインスペクションまで。不動産鑑定士・一級建築士の木村修が、価格と建物の両面からご相談に応じます。JR阿佐ヶ谷駅徒歩1分。"
+  path="/top-b/"
+  jsonLd={[website(), person()]}
+>
+  <section class="b-fv" aria-labelledby="fv-title">
+    <div class="b-fv__body">
+      <p class="eyebrow"><span>不動産鑑定・不動産コンサルティング</span><span>東京・阿佐ヶ谷</span></p>
+      <h1 class="b-fv__title" id="fv-title">不動産の悩みを、<br><em>鑑定の根拠</em>で<br class="u-sp">解決する。</h1>
+      <p class="b-fv__lead">相続・地代家賃・立退料・耐震まで。不動産鑑定士・一級建築士が、価格と建物の両面から整理します。</p>
+      <div class="acts">
+        <a class="btn" href={u('/contact/')}>相談を申し込む<i aria-hidden="true">→</i></a>
+        <p class="tel"><small>お電話でのご相談予約（受付 {contact.hours}）</small><a href={contact.telHref}><b>{contact.tel}</b></a></p>
+      </div>
+      <p class="b-fv__note">相談だけでも大丈夫です。ご来社・ご訪問・Zoomで対応します。</p>
+    </div>
+
+    <div class="b-tiles">
+      <h2 class="b-tiles__h">こんなお悩みはありませんか？</h2>
+      <ul>
+        {tiles.map((t) => (
+          <li><a href={u(`/services/${t.slug}/`)}><Ico name={t.slug} /><span class="c">{t.concern}</span><span class="s">{t.name}<i aria-hidden="true">→</i></span></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="b-multi" aria-labelledby="multi-title">
+    <div class="wrap">
+      <div class="sec-head reveal"><p class="kicker">多角的な解決</p><h2 class="h2" id="multi-title">ひとつの悩みが、いくつもの課題にまたがるとき</h2></div>
+      <figure class="b-route reveal" data-delay="1">
+        <figcaption class="b-route__cap">事例：相続した借地上の空き家（杉並区・築48年の戸建て）</figcaption>
+        <ol>
+          <li><span class="n">1</span><Ico name="inheritance" /><b>相続</b><span>相続で空き家になった戸建て。当初は土地を返す考えだった</span></li>
+          <li><span class="n">2</span><Ico name="rent" /><b>借地権</b><span>旧借地法の借地権。返す前に、貸すという選択肢を検討</span></li>
+          <li><span class="n">3</span><Ico name="seismic" /><b>建物</b><span>フルリノベーションで耐用年数を延ばす計画を立案</span></li>
+          <li class="goal"><span class="n">✓</span><Ico name="deal" /><b>活用</b><span>賃貸で、約7年で改修費を回収する計画に</span></li>
+        </ol>
+        <p class="b-route__link"><a class="u-link" href={u(`/cases/${cases[0].id}/`)}>この事例を詳しく読む</a></p>
+      </figure>
+    </div>
+  </section>
+
+  <section class="b-cases paper" aria-labelledby="cases-title">
+    <div class="wrap">
+      <div class="sec-head sec-head--row reveal"><div><p class="kicker">事例</p><h2 class="h2" id="cases-title">ご相談・解決事例</h2></div><a class="u-link" href={u('/cases/')}>事例の一覧へ</a></div>
+      <div class="b-cases__grid">
+        {[featured, ...others].map((c, i) => (
+          <a class="reveal" data-delay={i > 0 ? String(i) : undefined} href={u(`/cases/${c.id}/`)}>
+            <figure><img src={u(c.data.cover.src)} width={c.data.cover.width} height={c.data.cover.height} alt={c.data.cover.alt} loading="lazy" decoding="async"></figure>
+            <p class="meta">{c.data.meta}<span class="tag">{c.data.tags[0]}</span></p>
+            <h3>{c.data.title}</h3>
+            <dl><div><dt>ご相談</dt><dd>{c.data.summary.consult}</dd></div><div><dt>結果</dt><dd>{c.data.summary.result}</dd></div></dl>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="b-why" aria-labelledby="why-title">
+    <div class="wrap b-why__wrap">
+      <div class="reveal">
+        <p class="kicker">安心の理由</p>
+        <h2 class="h2" id="why-title">任せられる専門家か、ご確認ください</h2>
+        <ul class="b-why__list">
+          <li><Ico name="badge" /><div><b>不動産鑑定士・一級建築士</b><span>土地の価格も、建物の状態も、一人の専門家が判断します。</span></div></li>
+          <li><Ico name="doc" /><div><b>公的評価・裁判所の実務</b><span>地価公示の評価員、東京地方裁判所（借地非訟事件）の鑑定専門委員などを務めてきました。</span></div></li>
+          <li><Ico name="deal" /><div><b>評価から売買・改修まで</b><span>鑑定業者・一級建築士事務所・宅建業者として、一つの窓口でご相談いただけます。</span></div></li>
+        </ul>
+        <a class="u-link" href={u('/profile/')}>代表プロフィールを見る</a>
+      </div>
+      <div class="b-why__id reveal" data-delay="1">
+        <img src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt="代表取締役 木村修" loading="lazy" decoding="async">
+        <p><small>株式会社木村不動産鑑定 代表取締役</small><b>{profile.name}</b></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="b-flow paper" aria-labelledby="flow-title">
+    <div class="wrap">
+      <div class="sec-head reveal"><p class="kicker">ご相談の流れ</p><h2 class="h2" id="flow-title">まずは相談から。調査・評価は、そのあとです</h2></div>
+      <ol class="b-flow__steps reveal" data-delay="1">
+        {steps.map((s, i) => <li class:list={[i < 3 && 'free']}><span class="n">{i + 1}</span><b>{s.name}</b><span class="d">{s.text.split('。')[0]}。</span></li>)}
+      </ol>
+      <p class="b-flow__note reveal">「お見積り」までは無料です。</p>
+    </div>
+  </section>
+
+  <section class="b-learn" aria-labelledby="learn-title">
+    <div class="wrap b-learn__wrap">
+      <div class="reveal">
+        <h2 class="h2" id="learn-title">よくあるご質問</h2>
+        <div class="faqs">{faqs.map((f) => <details><summary>{f.q}</summary><div class="faqs__a"><p>{f.a[0]}</p></div></details>)}</div>
+        <a class="u-link" href={u('/faq/')}>ご質問の一覧へ</a>
+      </div>
+      <div class="reveal" data-delay="1">
+        <h2 class="h2" id="column-title">専門家のコラム</h2>
+        <ul class="plain">{columns.map((c) => <li><a href={u(`/column/${c.id}/`)}>{c.data.title}</a></li>)}</ul>
+        <a class="u-link" href={u('/column/')}>コラムの一覧へ</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" aria-labelledby="cta-title">
+    <div class="wrap cta__wrap">
+      <div class="reveal">
+        <h2 class="h2" id="cta-title"><span class="nw">「こんなことを</span><span class="nw">相談していいのかな」</span><br>という段階から、どうぞ。</h2>
+        <p class="cta__lead">お話を伺い、問題点を整理するところから始めます。ご来社・ご訪問・Zoomで対応します。</p>
+      </div>
+      <div class="reveal" data-delay="1">
+        <p class="cta__tel"><small>お電話でのご相談・ご予約（受付 {contact.hours}）</small><a href={contact.telHref}>{contact.tel}</a></p>
+        <div class="cta__acts"><a class="cta__btn" href={u('/contact/')}>相談の申し込み方法を見る<i aria-hidden="true">→</i></a><a class="cta__mail" href={`mailto:${contact.email}`}>メールで問い合わせる</a></div>
+      </div>
+    </div>
+  </section>
+</TopLayoutAB>

@@ -1,0 +1,57 @@
+---
+// トップページ A案・B案の比較用レイアウト（確認用）。TopLayout と同じ共通部品（ヘッダー・フッター・SP固定ボタン）を使い、
+// スタイルだけ styles/top-ab.css に分けている。公開中のトップ（TopLayout・top.css）には影響しない。
+// title・description・構造化データは、公開中のトップと同じ内容を各案のページから渡している（変更なし）。
+import '../styles/d7/vars.css';
+import '../styles/top-ab.css';
+import '../styles/d7/shell.css';
+import SeoHead from '../components/SeoHead.astro';
+import PreviewBanner from '../components/d7/PreviewBanner.astro';
+import SiteHeader from '../components/d7/SiteHeader.astro';
+import SiteFooter from '../components/d7/SiteFooter.astro';
+import SpBar from '../components/d7/SpBar.astro';
+import ShellScript from '../components/d7/ShellScript.astro';
+import { u } from '../lib/url';
+
+interface Props {
+  title: string;
+  fullTitle?: string;
+  description: string;
+  path: string;
+  variant: 'a' | 'b';
+  jsonLd?: object[];
+}
+
+const { path, variant, ...seo } = Astro.props;
+const tabs = [
+  { key: 'now', label: '現行D7', href: '/' },
+  { key: 'a', label: 'A案', long: '専門性・信頼', href: '/top-a/' },
+  { key: 'b', label: 'B案', long: '課題解決・集客', href: '/top-b/' },
+];
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <SeoHead path={path} {...seo}>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@600;700;800&display=swap">
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </SeoHead>
+</head>
+<body class={`ab ab--${variant}`}>
+  <a class="skip-link" href="#main">本文へスキップ</a>
+  <PreviewBanner />
+  <nav class="abswitch" aria-label="トップページ案の切り替え（比較用）">
+    <span>比較用</span>
+    {tabs.map((t) => <a href={u(t.href)} aria-current={t.key === variant ? 'page' : undefined}>{t.label}{t.long && <span class="long">　{t.long}</span>}</a>)}
+  </nav>
+  <SiteHeader path={path} />
+  <main id="main" tabindex="-1">
+    <slot />
+  </main>
+  <SiteFooter />
+  <SpBar />
+  <ShellScript />
+</body>
+</html>
