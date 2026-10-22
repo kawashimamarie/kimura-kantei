@@ -6,6 +6,7 @@
 //   node scripts/fonts/cli.mjs check     最新のビルドの全文字が、いまのフォントに収録されているか検証する（ブラウザを使う）
 //   node scripts/fonts/cli.mjs guard     check の簡易版。ブラウザなしで「収録されていない文字」だけを見る（build:pages が実行する）
 //   node scripts/fonts/cli.mjs stats     フォントの容量を表示する（--base <git ref> でその時点との差分も表示）
+//   node scripts/fonts/cli.mjs doctor    再生成に必要な環境（Python・fonttools・Chromium・元フォント）を確認する
 // 共通オプション: --dist <dir>  すでにあるビルド結果を使う（省略時は .fonts-tmp/dist に公開用設定でビルドする）
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -119,6 +120,21 @@ function stringLiteralChars(code, isCss) {
   return chars;
 }
 
+// fonts/extra-chars.txt：ブラウザでは集められない文字（実行時に外部から届く文章など）を、手で足すための一覧。
+// 書式：1行に「書体ID: 文字」（書体IDは fonts.config.json の id。* は全書体）。# で始まる行はコメント。
+function extraChars() {
+  const p = join(SITE, 'fonts/extra-chars.txt');
+  const out = {};
+  if (!existsSync(p)) return out;
+  for (const line of readFileSync(p, 'utf8').split('\n')) {
+    const m = line.match(/^\s*([\w*-]+)\s*:\s*(.+?)\s*$/);
+    if (!m || line.trim().startsWith('#')) continue;
+    if (m[1] !== '*' && !cfg.faces.some((f) => f.id === m[1])) die(`fonts/extra-chars.txt の書体ID「${m[1]}」が fonts.config.json にありません`);
+    out[m[1]] = (out[m[1]] ?? '') + m[2].replace(/\s/g, '');
+  }
+  return out;
+}
+
 const faceFor = (faces, weight) => {
   const dist = (f) => (weight < f.range[0] ? f.range[0] - weight : weight > f.range[1] ? weight - f.range[1] : 0);
   return [...faces].sort((a, b) => dist(a) - dist(b) || b.range[1] - a.range[1])[0];
@@ -127,7 +143,7 @@ const faceFor = (faces, weight) => {
 async function collectChars(dist) {
   const { chromium } = await loadPlaywright();
   const { server, port } = await serve(dist);
-  const browser = await chromium.launch();
+  const browser = await chromium.launch(process.env.FONTS_CHROMIUM ? { executablePath: process.env.FONTS_CHROMIUM } : {});
   const sets = Object.fromEntries(cfg.faces.map((f) => [f.id, new Set()]));
   const usage = {};
   const other = new Set(); // 自前配信フォントを使わない要素の文字（例：font-family を引き継がない <button>。端末の既定フォントで表示される）
@@ -155,9 +171,11 @@ async function collectChars(dist) {
         if (t) out.push([cs.fontFamily, parseInt(cs.fontWeight, 10) || 400, t]);
       }
       if (el.placeholder) out.push([...style(el), el.placeholder]);
+      for (const a of el.attributes) if (a.name.startsWith('data-') && /[^\x00-\x7f]/.test(a.value)) out.push([...style(el), a.value]); // JS が表示に使う可能性がある
     }
     const scripts = [...document.querySelectorAll('script:not([type="application/ld+json"])')].map((s) => s.textContent).join('\n');
-    return { out, scripts };
+    const styles = [...document.querySelectorAll('style')].map((s) => s.textContent).join('\n'); // 小さなCSSはHTMLに埋め込まれる
+    return { out, scripts, styles };
   };
   const addText = (famList, weight, text) => {
     const fams = famList.split(',').map((s) => s.trim().replace(/^["']|["']$/g, ''));
@@ -178,9 +196,10 @@ async function collectChars(dist) {
     for (const f of htmlFiles) {
       const rel = f.slice(dist.length).replace(/index\.html$/, '');
       await page.goto(`http://127.0.0.1:${port}${rel}`, { waitUntil: 'load' });
-      const { out, scripts } = await page.evaluate(pageFn);
+      const { out, scripts, styles } = await page.evaluate(pageFn);
       for (const [fam, wt, t] of out) addText(fam, wt, t);
       for (const ch of stringLiteralChars(scripts, false)) scriptChars.add(ch);
+      for (const ch of stringLiteralChars(styles, true)) scriptChars.add(ch);
     }
     await ctx.close();
   }
@@ -191,6 +210,8 @@ async function collectChars(dist) {
     if (f.endsWith('.css')) for (const ch of stringLiteralChars(readFileSync(f, 'utf8'), true)) scriptChars.add(ch);
   }
   for (const ch of scriptChars) sets[cfg.scriptStringsFace].add(ch); // 画面表示用の文字列は本文の書体で表示される
+  const extra = extraChars();
+  for (const [face, chars] of Object.entries(extra)) for (const ch of chars) for (const f of face === '*' ? cfg.faces : cfg.faces.filter((x) => x.id === face)) sets[f.id].add(ch);
   return { sets, usage, other, pages: htmlFiles.length, scriptChars: scriptChars.size };
 }
 
@@ -287,20 +308,28 @@ function guard() {
   const dist = resolve(opt('--dist') ?? join(SITE, 'dist'));
   const cov = coverageByFace(manifest);
   const all = new Set(Object.values(cov).flatMap((s) => [...s]));
-  const unavailable = new Set(Object.values(unavailableOf(manifest)).flatMap((s) => [...s]));
+  const skip = new Set(Object.values(unavailableOf(manifest)).flatMap((s) => [...s]));
   const cs = readJson(join(SITE, 'fonts/charset.json'));
-  for (const ch of (cs.systemFontOnly?.chars ?? []).join('')) unavailable.add(ch); // 端末の既定フォントで表示している要素の文字は対象外
+  for (const ch of (cs.systemFontOnly?.chars ?? []).join('')) skip.add(ch); // 端末の既定フォントで表示している要素の文字は対象外
   const found = new Map();
-  for (const f of walk(dist).filter((x) => x.endsWith('.html'))) {
-    const html = readFileSync(f, 'utf8').replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<!--[\s\S]*?-->/g, '').replace(/<[^>]+>/g, ' ');
-    for (const ch of decodeEntities(html)) if (cp(ch) > 0x7f && !/\s/.test(ch) && !all.has(cp(ch)) && !unavailable.has(ch)) found.set(ch, f.slice(dist.length));
+  const check = (chars, where) => { for (const ch of chars) if (cp(ch) > 0x7f && !/\s/.test(ch) && !all.has(cp(ch)) && !skip.has(ch) && !found.has(ch)) found.set(ch, where); };
+  for (const f of walk(dist)) {
+    const rel = f.slice(dist.length);
+    if (f.endsWith('.html')) {
+      const raw = readFileSync(f, 'utf8');
+      check(decodeEntities(raw.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<!--[\s\S]*?-->/g, '').replace(/<[^>]+>/g, ' ')), `${rel}（本文）`);
+      for (const m of raw.matchAll(/\sdata-[\w-]+="([^"]*)"/g)) check(decodeEntities(m[1]), `${rel}（data-属性）`);
+      for (const m of raw.matchAll(/<script(?![^>]*ld\+json)[^>]*>([\s\S]*?)<\/script>/g)) check(stringLiteralChars(m[1], false), `${rel}（スクリプト内の文字列）`);
+      for (const m of raw.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) check(stringLiteralChars(m[1], true), `${rel}（CSSのcontent）`);
+    } else if (f.endsWith('.js')) check(stringLiteralChars(readFileSync(f, 'utf8'), false), `${rel}（スクリプト内の文字列）`);
+    else if (f.endsWith('.css')) check(stringLiteralChars(readFileSync(f, 'utf8'), true), `${rel}（CSSのcontent）`);
   }
   if (found.size) {
     console.error(`\n✗ 自前配信フォントに入っていない文字が ${found.size} 字あります（例: ${[...found.keys()].slice(0, 30).join('')}）`);
-    for (const [ch, page] of [...found].slice(0, 5)) console.error(`    「${ch}」 ${page}`);
+    for (const [ch, where] of [...found].slice(0, 5)) console.error(`    「${ch}」 ${where}`);
     die('npm run fonts:update を実行してフォントを再生成してから、もう一度ビルドしてください。');
   }
-  console.log('✓ フォントの収録確認 OK（ページ内の文字はすべて自前配信フォントに収録されています）');
+  console.log('✓ フォントの収録確認 OK（本文・data-属性・スクリプト内の文字列・CSSの content の文字は、すべて自前配信フォントに収録されています）');
 }
 
 // ---------- stats ----------
@@ -319,6 +348,29 @@ function stats() {
   console.log('合計'.padEnd(27) + String(m.totalBytes).padStart(10));
 }
 
+// ---------- doctor（再生成に必要な環境の確認） ----------
+async function doctor() {
+  const ok = (m) => console.log(`✓ ${m}`);
+  const ng = (m) => { console.error(`✗ ${m}`); bad = true; };
+  let bad = false;
+  ok(`Node.js ${process.version}（確認済み: v22）`);
+  const venv = join(SITE, '.venv-fonts/bin/python');
+  if (!existsSync(venv)) ng('Python 仮想環境がありません → npm run fonts:setup');
+  else {
+    const r = spawnSync(venv, ['-c', 'import fontTools,brotli,sys;print(sys.version.split()[0],fontTools.version,brotli.__version__)'], { encoding: 'utf8' });
+    const want = readFileSync(join(SITE, 'fonts/requirements.txt'), 'utf8');
+    r.status === 0 ? ok(`Python / fonttools / brotli = ${r.stdout.trim()}（要求: ${want.trim().split('\n').join(', ')}）`) : ng('fonttools が使えません → npm run fonts:setup');
+  }
+  try {
+    const { chromium } = await loadPlaywright();
+    const b = await chromium.launch(process.env.FONTS_CHROMIUM ? { executablePath: process.env.FONTS_CHROMIUM } : {});
+    ok(`Chromium を起動できました（${b.version()}）`);
+    await b.close();
+  } catch (e) { ng(`Chromium を起動できません（${String(e.message).split('\n')[0]}）→ npx playwright-core install chromium、または FONTS_CHROMIUM / PLAYWRIGHT_BROWSERS_PATH を指定`); }
+  existsSync(join(CACHE, sources.sources['noto-sans-jp'].file)) ? ok('元フォントを取得済み') : ng('元フォントが未取得 → npm run fonts:fetch（fonts:update でも取得されます）');
+  process.exit(bad ? 1 : 0);
+}
+
 // ---------- main ----------
 switch (cmd) {
   case 'fetch': await fetchSources(); break;
@@ -335,5 +387,6 @@ switch (cmd) {
   case 'check': await check(); break;
   case 'guard': guard(); break;
   case 'stats': stats(); break;
+  case 'doctor': await doctor(); break;
   default: console.log(readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').filter((l) => l.startsWith('//')).map((l) => l.slice(3)).join('\n'));
 }

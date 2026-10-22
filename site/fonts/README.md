@@ -18,16 +18,32 @@ Noto Sans JP・Shippori Mincho B1・Inter を、サイトのサーバーから�
 | `.fonts-tmp/` | 文字の収集用の一時ビルド | × |
 | `.venv-fonts/` | Python 仮想環境（fonttools） | × |
 
-## 初回セットアップ（フォントを再生成する人だけ。ふだんのビルドには不要）
+## 初回セットアップ（フォントを再生成する人だけ。ふだんのビルド・公開には不要）
+
+| 必要なもの | 確認済みのバージョン | 備考 |
+|---|---|---|
+| Node.js / npm | v22.22.0 / 10.9.4 | Astro と同じ環境 |
+| Python | 3.13（3.9 以上で動く想定） | フォントを作り直すときだけ |
+| fonttools / brotli | 4.67.0 / 1.2.0 | `fonts/requirements.txt` で固定。`fonts:setup` が専用の仮想環境 `.venv-fonts` に入れる |
+| playwright-core | 1.56.1 | `package.json` の devDependency。**ブラウザ本体は含まれない** |
+| Chromium | Playwright 1.56.1 付属のビルド（chromium-1194） | 下の「ブラウザ」参照 |
+| 元フォント（TTF 4 ファイル） | `fonts/sources.json` の sha256 のとおり | `fonts:fetch`（`fonts:update` に含まれる）が取得して sha256 を検証 |
 
 ```sh
 cd site
-npm install            # playwright-core（文字の収集に使う）
-npm run fonts:setup    # Python 仮想環境と fonttools / brotli（バージョン固定）
+npm install            # playwright-core を含む依存を、package-lock.json のとおりに入れる
+npm run fonts:setup    # Python 仮想環境（.venv-fonts）と fonttools / brotli
+npm run fonts:doctor   # Python・fonttools・Chromium・元フォントの準備状況を確認
+npm run fonts:update   # 初回は元フォントも取得される
 ```
 
-文字の収集にはブラウザ（Chromium）が必要です。Claude Code のクラウド環境には入っています。
-別の場所に入っている Playwright を使うときは、環境変数 `FONTS_PLAYWRIGHT` にそのパスを指定します。
+**ブラウザ（Chromium）**：文字の収集に使います。次のどれかで用意してください。
+1. すでに Playwright 用の Chromium がある環境（Claude Code のクラウド環境など）：そのまま使えます（`PLAYWRIGHT_BROWSERS_PATH` を参照）。
+2. 新しい環境：`npx playwright-core install chromium`（ダウンロードします）。
+3. 別に入っている Chromium を使う：環境変数 `FONTS_CHROMIUM` に実行ファイルのパスを指定。
+別の場所にある Playwright のモジュールを使うときは `FONTS_PLAYWRIGHT`（例：`/opt/node-tools/node_modules/playwright-core`）。
+
+**確認済みの再現手順**：まっさらな clone で、上の手順だけ（`npm install` → `fonts:setup` → `fonts:update`）を実行し、コミット済みの `charset.json`・`manifest.json`・WOFF2・`fonts.css`・公開用ビルド出力と**差分 0** になることを確認しています。`npm run build:pages` は Python・Chromium がなくても実行できます（収録確認はブラウザ不要）。
 
 ## ページ・コラムを追加した／文章を変えたとき
 
@@ -37,13 +53,30 @@ npm run fonts:update   # 取得 → 文字の収集 → サブセット生成 �
 git diff --stat        # charset.json に新しい文字、public/assets/fonts に新しい WOFF2 ができる
 ```
 
-- `fonts:update` は、公開用と同じ設定でサイトをビルドし、全ページを**ブラウザで開いて**、実際に使われる書体・太さごとに文字を集めます（スマホ幅・PC幅、JavaScript あり・なし、`::before`/`::after` の文字、プレースホルダー、スクリプト内の表示用文字列を含む）。Astro が生成する文章も、Markdown・JSON・データファイルの文章も、表示されるものはすべて対象です。
+- `fonts:update` は、公開用と同じ設定でサイトをビルドし、全ページを**ブラウザで開いて**、実際に使われる書体・太さごとに文字を集めます。Astro が生成する文章も、Markdown・JSON・データファイルの文章も、表示されるものはすべて対象です。
+
+### 文字を集める範囲（網羅性）
+
+| 文字の出どころ | 集め方 |
+|---|---|
+| 全22ページ（404 を含む）の本文 | 全ページを開き、文字ごとに「実際に適用される書体・太さ」を取得（継承・`font-family` の後ろの候補も反映） |
+| 開閉するもの（`<details>`、スマホのメニュー、`hidden` の送信完了画面、画面幅で隠れる要素） | 表示されていなくても、DOM の文字とスタイルから取得（スマホ幅・PC幅の2回） |
+| JavaScript で表示される文字（エラーメッセージなど） | ページ内・外部の JS の**文字列リテラル**（コメントは除く）を、本文の書体として追加 |
+| JavaScript オフのときだけ出る文字（`<noscript>`） | JavaScript オフでも全ページを開く |
+| 擬似要素（`::before`/`::after`/`::marker` の `content`） | 適用中のものを取得。`:hover` など状態でだけ出るものは、CSS の `content` の文字列リテラルから追加 |
+| プレースホルダー・`data-*` 属性 | 取得して追加（JS が表示に使う場合に備えて、日本語を含む `data-*` はすべて） |
+| Markdown・JSON・`src/data` の文章 | ビルド後の HTML に出る時点で上に含まれる |
+| **集められない文字**（実行時に外部から届く文章など） | `fonts/extra-chars.txt` に手で書く（書式は同ファイル）。`fonts:update` が取り込む |
+
+**表示されない状態の文字の見つけ方**：ブラウザで見えない文字は「表示」ではなく「DOM とスタイル」から集めるので、閉じた状態・隠れた状態でも漏れません。HTML・属性・スクリプト・CSS のどこにも書かれない文字（サーバーから届く文章など）は、構造上自動では分からないため、`extra-chars.txt` に書いてください。書き忘れた場合、その文字は端末の既定フォントで表示されます（文字化けや欠けにはなりません）。
+テンプレート文字列の `${}` の中身のような、実行しないと決まらない文字も同じ扱いです。
+
 - 容量の増減は `fonts:update` の最後と `npm run fonts:stats`（`-- --base <git ref>` でその時点との差分）で確認できます。
 - 生成結果は再現できます（同じ文字・同じ元フォント・同じ fonttools なら同じバイト列）。
 
 ### うっかり再生成を忘れても
 
-`npm run build:pages` の途中で「サブセットに入っていない文字」を自動で確認し、見つかるとビルドを止めて `npm run fonts:update` を促します（ブラウザ不要の簡易確認）。
+`npm run build:pages` の途中で「サブセットに入っていない文字」を自動で確認し、見つかるとビルドを止めて `npm run fonts:update` を促します（ブラウザ不要の簡易確認。本文・`data-*` 属性・スクリプトの文字列・CSS の `content` を見ます。「ある文字が、どの書体で表示されるか」までは見ないので、厳密な確認は `fonts:check`）。
 より厳密な確認（書体ごとの収録・Google Fonts への参照がないこと・ライセンス同梱）は `npm run fonts:check` です。
 
 ## 表示を以前（Google Fonts）と同じに保つ設定

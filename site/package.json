@@ -13,7 +13,8 @@
     "fonts:subset": "node scripts/fonts/cli.mjs subset",
     "fonts:update": "node scripts/fonts/cli.mjs update",
     "fonts:check": "node scripts/fonts/cli.mjs check",
-    "fonts:stats": "node scripts/fonts/cli.mjs stats"
+    "fonts:stats": "node scripts/fonts/cli.mjs stats",
+    "fonts:doctor": "node scripts/fonts/cli.mjs doctor"
   },
   "dependencies": {
     "astro": "7.3.6"
