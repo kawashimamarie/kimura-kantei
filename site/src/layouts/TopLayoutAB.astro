@@ -18,7 +18,7 @@ interface Props {
   fullTitle?: string;
   description: string;
   path: string;
-  variant: 'a' | 'b';
+  variant: 'a' | 'b' | 'c';
   jsonLd?: object[];
 }
 
@@ -27,6 +27,7 @@ const tabs = [
   { key: 'now', label: '現行D7', href: '/' },
   { key: 'a', label: 'A案', long: '専門性・信頼', href: '/top-a/' },
   { key: 'b', label: 'B案', long: '課題解決・集客', href: '/top-b/' },
+  { key: 'c', label: 'C案', long: '集客×専門性（統合）', href: '/top-c/' },
 ];
 ---
 <!doctype html>
