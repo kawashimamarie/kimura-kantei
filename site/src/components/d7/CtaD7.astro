@@ -8,7 +8,7 @@ interface Props { title?: boolean }
 <section class="cta6" aria-labelledby="cta-title">
   <div class="wrap">
     <div class="reveal">
-      <h2 class="h2" id="cta-title"><span class="nw">「こんなことを</span><span class="nw">相談していいのかな」</span><br>という段階から、どうぞ。</h2>
+      <h2 class="h2" id="cta-title"><span class="nw"><span class="kq-o">「</span>こんなことを</span><wbr><span class="nw">相談していいのかな<span class="kq-c">」</span></span><br>という段階から、どうぞ<span class="kq-c">。</span></h2>
       <p class="cta6__lead">{ctaLead}</p>
       <ul class="cta6__how">{ctaPoints.map((t) => <li>{t.includes('個人情報') ? <a class="cta6__pv" href={u('/privacy/')}>{t}</a> : t}</li>)}</ul>
     </div>

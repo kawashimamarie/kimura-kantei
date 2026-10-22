@@ -315,6 +315,7 @@ function guard() {
   const check = (chars, where) => { for (const ch of chars) if (cp(ch) > 0x7f && !/\s/.test(ch) && !all.has(cp(ch)) && !skip.has(ch) && !found.has(ch)) found.set(ch, where); };
   for (const f of walk(dist)) {
     const rel = f.slice(dist.length);
+    if (rel.startsWith('/dev-preview/')) continue; // 確認用ページ（端末の既定フォントで表示）は対象外
     if (f.endsWith('.html')) {
       const raw = readFileSync(f, 'utf8');
       check(decodeEntities(raw.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<!--[\s\S]*?-->/g, '').replace(/<[^>]+>/g, ' ')), `${rel}（本文）`);

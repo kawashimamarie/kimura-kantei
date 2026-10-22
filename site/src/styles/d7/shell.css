@@ -111,3 +111,24 @@ a:focus-visible, summary:focus-visible, button:focus-visible { outline: 3px soli
 .cta6__pv, .points__pv { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: rgba(255, 255, 255, .45); }
 .points__pv { text-decoration-color: rgba(31, 36, 38, .35); }
 @media (hover: hover) { .cta6__pv:hover, .points__pv:hover { text-decoration-color: currentColor; } }
+
+/* ===== 表示の動きの開始タイミング =====
+   Safari（WebKit）は、アニメーションの時計を「スタイルが決まった時点」で動かし始めるため、最初の描画が遅れると、
+   動きが画面に出る前に終わってしまう。JS が動く環境では、最初の描画のあとに html.anim-go を付けて動き始めるようにする
+   （付くまでは一時停止。JS が動かない環境・動きを減らす設定では、この規則は効かず従来どおり）。
+   一時停止中は、文字は「動き始める位置（8pxずれ・opacity .8 以上）」で常に読める状態。 */
+html.js:not(.anim-go) *, html.js:not(.anim-go) *::before, html.js:not(.anim-go) *::after { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) { html.js:not(.anim-go) *, html.js:not(.anim-go) *::before, html.js:not(.anim-go) *::after { animation-play-state: running !important; } }
+
+/* ===== 日本語の文節改行 =====
+   ビルド時に、文節の切れ目へ <wbr> を入れている（integrations/phrase-breaks.mjs・BudouX）。
+   ・auto-phrase に対応しないブラウザ（Safari・Firefox）：文節の切れ目（<wbr>）と句読点でだけ改行し、はみ出すときだけ語の途中で折る（overflow-wrap: anywhere。幅の最小値の計算にも効くので、flex・grid の中でもはみ出さない）
+   ・auto-phrase に対応するブラウザ（Chrome）：従来どおりブラウザ自身の判断で改行する（<wbr> は無視） */
+@supports not (word-break: auto-phrase) { body { word-break: keep-all; overflow-wrap: anywhere; } }
+@supports (word-break: auto-phrase) { wbr { display: none; } }
+
+/* ===== かぎ括弧の余白の補正 =====
+   「 の左半分・」 の右半分は空白なので、行頭・行末に来ると、文字が見た目より内側に寄って見える。
+   その半角ぶんを打ち消して、見出しの行頭をそろえ、中央揃えのときは見た目の中心をそろえる。 */
+.kq-o { margin-inline-start: -.5em; }
+.kq-c { margin-inline-end: -.5em; }

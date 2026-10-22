@@ -168,7 +168,7 @@ const roles = ['国土交通省 地価公示 評価員', '東京都税事務所 
         <p class="kicker">相談を受けるときのモットー</p>
         <h2 class="c2-rep__quote" id="rep-title">ご相談者を、<br class="u-sp"><span class="nw">できるだけ<em>揉めさせない</em>こと。</span></h2>
         <p class="c2-rep__body">そのために、まずはお話をよく伺い、問題点を整理するところから始めます。</p>
-        <dl class="c2-rep__dl">
+        <dl class="c2-rep__dl" data-no-wbr>
           <div><dt>公的な評価・裁判所に関わる役割</dt><dd>{roles.join('、')}など</dd></div>
           <div><dt>事務所の登録</dt><dd>{company.licenses.slice(0, 3).join('／')}</dd></div>
         </dl>
@@ -194,7 +194,7 @@ const roles = ['国土交通省 地価公示 評価員', '東京都税事務所 
 
   <section class="c2-cta" aria-labelledby="cta-title">
     <div class="wrap">
-      <h2 class="h2" id="cta-title"><span class="nw">「こんなことを</span><span class="nw">相談していいのかな」</span><br>という段階から、どうぞ。</h2>
+      <h2 class="h2" id="cta-title"><span class="nw"><span class="kq-o">「</span>こんなことを</span><wbr><span class="nw">相談していいのかな<span class="kq-c">」</span></span><br>という段階から、どうぞ<span class="kq-c">。</span></h2>
       <p class="c2-cta__lead">お話を伺い、問題点を整理するところから始めます。ご来社・ご訪問・Zoomで対応します。</p>
       <div class="c2-cta__btns">
         <a class="c2-cta__tel" href={contact.telHref}><small>お電話でのご相談・ご予約（受付 {contact.hours}）</small><b>{contact.tel}</b></a>

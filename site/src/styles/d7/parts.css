@@ -110,7 +110,8 @@
 /* 共通のお問い合わせ（トップの cta6 と同じ） */
 .cta6 { background: var(--green-d); color: #fff; padding: 104px 0 96px; }
 .cta6 .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 96px; align-items: end; }
-.cta6 h2 { font-size: 32px; line-height: 1.7; }
+.cta6 h2 { font-size: 32px; line-height: 1.7; letter-spacing: .02em; }
+.cta6 .nw { display: inline; white-space: nowrap; } /* かぎ括弧の余白の補正（.kq-o/.kq-c）が幅に反映されるよう inline のまま */
 .cta6__lead { margin-top: 22px; max-width: 34em; font-size: 15px; line-height: 2.05; color: #d4e0de; text-wrap: pretty; }
 .cta6__how { display: flex; flex-wrap: wrap; gap: 2px 28px; margin-top: 22px; font-size: 14px; color: #e3ebea; line-height: 1.9; }
 .cta6__how li { position: relative; padding-left: 14px; text-wrap: balance; }
@@ -126,11 +127,11 @@
 
 /* ===== 表示の動き（控えめ。JS が動く環境だけ。動きを減らす設定では止める） =====
    下層ページ：動かすのはページの見出し・導入文と、各セクションの見出しだけ（短い移動のみ。本文・表・FAQ・料金・フォーム・CTAは最初から表示）。 */
-@keyframes d7-rise { from { transform: translateY(8px); } to { transform: none; } }
-.lhero .kicker, .lhero .h1, .lhero__lead, .phero > *:first-child { animation: d7-rise .4s cubic-bezier(.22, .7, .2, 1) both; }
-.lhero .h1 { animation-delay: .04s; } .lhero__lead { animation-delay: .1s; }
+@keyframes d7-rise { from { transform: translateY(var(--an-dist)); } to { transform: none; } }
+.lhero .kicker, .lhero .h1, .lhero__lead, .phero > *:first-child { animation: d7-rise var(--an-dur) var(--an-ease) both; }
+.lhero .h1 { animation-delay: var(--an-step); } .lhero__lead { animation-delay: calc(var(--an-step) * 2); }
 .js .reveal { opacity: 1; transform: none; }
-.js .split__head.reveal { opacity: 1; transform: translateY(8px); transition: opacity .4s cubic-bezier(.22, .7, .2, 1), transform .4s cubic-bezier(.22, .7, .2, 1); }
+.js .split__head.reveal { opacity: 1; transform: translateY(var(--an-dist)); transition: opacity var(--an-dur) var(--an-ease), transform var(--an-dur) var(--an-ease); }
 .js .split__head.reveal.is-in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

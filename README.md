@@ -21,6 +21,8 @@ site/                     サイトのソース
 │   └── styles/           global.css（移行前の下層ページ共通）・top-ab.css（トップ＝C2案）・top.css（旧D7トップ。比較用）・compare.css（比較用の切り替えバー）・d7/（D7 共通基盤：vars＝色・フォント、shell＝ヘッダー/フッター/固定ボタン、base・parts＝下層ページの土台と部品）
 ├── public/assets/        画像・JavaScript・フォント（そのまま配信。fonts/ は自動生成）
 ├── fonts/                自前配信フォントの設定・文字一覧・manifest・手順書（fonts/README.md）
+├── integrations/         ビルド時の処理（phrase-breaks＝日本語の文節改行 <wbr>／preview-tools＝確認用ページを確認用サイトにだけ入れる）
+├── dev-tools/            確認用ページ（動きの比較・ローディングの比較）。確認用サイトにだけ出力され、本番には出ない
 └── scripts/              build-pages.mjs＝確認用プレビュー（GitHub Pages）向けのビルド／fonts/＝フォントのサブセット生成・検証
 ```
 
@@ -33,7 +35,8 @@ cd site
 npm install
 npm run dev          # 開発用サーバー（http://localhost:4321/）
 npm run build        # 本番用ビルド（site/dist/）
-npm run build:pages  # 確認用プレビュー向けにビルドし、リポジトリ直下へ出力
+npm run build:pages  # 確認用プレビュー向けにビルドし、リポジトリ直下へ出力（確認用ページ dev-preview/ を含む）
+npm run build:production # 本番用ビルド（確認用ページが混ざっていないか検査して、混ざっていれば失敗する）
 npm run fonts:update # ページ・コラムを追加したら実行：自前配信フォントのサブセットを作り直す（手順は site/fonts/README.md）
 ```
 
@@ -57,3 +60,18 @@ npm run fonts:update # ページ・コラムを追加したら実行：自前配
 - **FAQ**：`site/src/data/faq.ts` に追加し、関連するサービスの `relatedFaq` に id を加えます。
 
 関連サービス・関連事例・関連記事のリンクと構造化データは、各ファイルの項目から自動で作られます。
+
+## 日本語の改行（Safari 対応）
+
+CSS の `word-break: auto-phrase` は Chrome だけが対応しています。Safari・Firefox で「始めま／す。」のように語の途中で割れないよう、ビルド時に [BudouX](https://github.com/google/budoux)（Apache-2.0）で文節の切れ目に `<wbr>` を入れています（`site/integrations/phrase-breaks.mjs`。`PHRASE_BREAKS=0` で無効）。
+
+- 配信物に BudouX のコードは含まれません（ビルド時だけ）。`<wbr>` は表示・読み上げ・コピー・検索に影響しません。
+- Chrome では `<wbr>` を無効にして（`wbr { display: none }`）従来どおり auto-phrase で改行します。Safari・Firefox では `word-break: keep-all` ＋文節の切れ目（`<wbr>`）で改行します（`d7/shell.css`）。
+- 加工したくない場所には `data-no-wbr` を付けます（トップの資格・登録の一覧は、Chrome の約物の詰めを変えないために付けています）。
+
+## 表示の動きの確認ページ（確認用サイト限定）
+
+- `site/dev-tools/dev-preview/`：`/dev-preview/anim/`（動きの比較）・`/dev-preview/loading/`（ローディングの比較。本サイトには未実装）。
+- `PREVIEW_TOOLS=1` のときだけ出力に入ります（`npm run build:pages` のみ）。本番用の `npm run build:production` は、混入を検査して失敗させます。`noindex, nofollow`、サイトからはリンクしません。
+- 動きの速さ・移動量は `site/src/styles/d7/vars.css` の `--an-*` で決まり、確認用ページはこの変数を書き換えて「修正前」と比べます。
+- 動きは、最初の描画のあとに `html.anim-go` が付いてから始まります（Safari で、動きが画面に出る前に終わってしまうのを防ぐため。`d7/shell.css`・各レイアウトの先頭のスクリプト）。

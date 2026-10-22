@@ -30,7 +30,7 @@ const { path, spbarMain, ...seo } = Astro.props;
 <html lang="ja">
 <head>
   <SeoHead path={path} {...seo}>
-    <script is:inline>document.documentElement.classList.add('js');</script>
+    <script is:inline>(function(d){d.classList.add('js');var go=function(){d.classList.add('anim-go')},ready=function(){requestAnimationFrame(function(){requestAnimationFrame(go)})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();setTimeout(go,3000)})(document.documentElement);</script>
   </SeoHead>
 </head>
 <body>

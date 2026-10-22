@@ -43,27 +43,27 @@ h1, h2, h3, p, figure, dl, dd { margin: 0; }
 .sec-head--row { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; max-width: none; }
 
 
-/* ===== 表示の動き（控えめ）：CSSのみ・opacity と transform だけ・350〜450ms。JSが動く環境だけ。動きを減らす設定では止める =====
+/* ===== 表示の動き（控えめ）：CSSのみ・opacity と transform だけ・約0.65秒（速さ・移動量は d7/vars.css の --an-*）。JSが動く環境だけ。動きを減らす設定では止める =====
    方針：ファーストビューの文字は透明にせず、小さな移動だけで順に見せる（電話番号・相談ボタンも常時完全表示）。
    スクロールで現れる部分も、文字は透明にせず（コントラストを常に保つため）、短い移動だけで見せるにして、読めない時間を作らない。 */
-@keyframes an-rise { from { transform: translateY(8px); } to { transform: none; } }
-@keyframes an-rise-soft { from { opacity: .8; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-.c2-fv .eyebrow, .c2-fv__title, .c2-fv__lead, .c2-fv .acts { animation: an-rise .38s cubic-bezier(.22, .7, .2, 1) both; }
-.c2-fv__title { animation-delay: .05s; }
-.c2-fv__lead { animation-delay: .1s; }
-.c2-fv .acts { animation-delay: .15s; }
-.c2-sign { animation: an-rise-soft .38s cubic-bezier(.22, .7, .2, 1) .2s both; }
-.c2-pick li { animation: an-rise .36s cubic-bezier(.22, .7, .2, 1) both; animation-delay: calc(.12s + var(--i, 0) * .04s); }
-.c2-pick__img { animation: an-fade-in .4s ease-out .12s both; }
+@keyframes an-rise { from { transform: translateY(var(--an-dist)); } to { transform: none; } }
+@keyframes an-rise-soft { from { opacity: .8; transform: translateY(var(--an-dist)); } to { opacity: 1; transform: none; } }
+.c2-fv .eyebrow, .c2-fv__title, .c2-fv__lead, .c2-fv .acts { animation: an-rise var(--an-dur) var(--an-ease) both; }
+.c2-fv__title { animation-delay: var(--an-step); }
+.c2-fv__lead { animation-delay: calc(var(--an-step) * 2); }
+.c2-fv .acts { animation-delay: calc(var(--an-step) * 3); }
+.c2-sign { animation: an-rise-soft var(--an-dur) var(--an-ease) calc(var(--an-step) * 4) both; }
+.c2-pick li { animation: an-rise var(--an-dur) var(--an-ease) both; animation-delay: calc(var(--an-step) * 2 + var(--i, 0) * .05s); }
+.c2-pick__img { animation: an-fade-in .5s ease-out .12s both; }
 @keyframes an-fade-in { from { opacity: .8; } to { opacity: 1; } }
-.js .reveal { opacity: 1; transform: translateY(10px); transition: opacity .42s cubic-bezier(.22, .7, .2, 1), transform .42s cubic-bezier(.22, .7, .2, 1); }
+.js .reveal { opacity: 1; transform: translateY(var(--an-reveal-dist)); transition: opacity var(--an-dur) var(--an-ease), transform var(--an-dur) var(--an-ease); }
 .js .reveal.is-in { opacity: 1; transform: none; }
-.js .reveal[data-delay="1"] { transition-delay: .06s; }
-.js .reveal[data-delay="2"] { transition-delay: .12s; }
+.js .reveal[data-delay="1"] { transition-delay: .08s; }
+.js .reveal[data-delay="2"] { transition-delay: .16s; }
 /* 専門性（B2）：外枠は動かさず、不動産鑑定→補完→補完の順に、短い時間差で現れる */
 .js .hb.reveal { opacity: 1; transform: none; transition: none; }
-.js .hb:not(.is-in) li { opacity: 1; transform: translateY(10px); }
-.js .hb li { transition: opacity .42s cubic-bezier(.22, .7, .2, 1), transform .42s cubic-bezier(.22, .7, .2, 1); transition-delay: calc(var(--i, 0) * .08s); }
+.js .hb:not(.is-in) li { opacity: 1; transform: translateY(var(--an-reveal-dist)); }
+.js .hb li { transition: opacity var(--an-dur) var(--an-ease), transform var(--an-dur) var(--an-ease); transition-delay: calc(var(--i, 0) * .1s); }
 .js .hb.is-in li { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } .js .reveal, .js .hb li { opacity: 1; transform: none; } }
 
@@ -539,9 +539,9 @@ section.cta { padding: 88px 0; background: var(--green-d); color: #fff; }
 .c2-cta { position: relative; overflow: hidden; padding: 88px 0; background: var(--green-d); color: #fff; text-align: center; }
 .c2-cta::before { content: "Contact"; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-family: var(--f-mincho); font-weight: 700; font-size: clamp(120px, 20vw, 280px); letter-spacing: .04em; color: rgba(255, 255, 255, .04); pointer-events: none; white-space: nowrap; }
 .c2-cta .wrap { position: relative; }
-.c2-cta .h2 { color: #fff; }
-.c2-cta .nw { display: inline-block; }
-.c2-cta__lead { margin-top: 16px; font-size: 15px; line-height: 2; color: #d6e1df; }
+.c2-cta .h2 { color: #fff; letter-spacing: .02em; line-height: 1.6; }
+.c2-cta .nw { white-space: nowrap; } /* 「…」を1かたまりにする。inline-block だと、かぎ括弧の余白の補正（負のmargin）が幅に正しく反映されないため inline のまま */
+.c2-cta__lead { margin-top: 16px; font-size: 15px; line-height: 2; color: #d6e1df; text-wrap: balance; }
 .c2-cta__btns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 760px; margin: 32px auto 0; }
 .c2-cta__btns a { display: grid; gap: 4px; padding: 20px 24px; border-radius: 8px; text-align: center; }
 .c2-cta__btns small { font-size: 12.5px; }

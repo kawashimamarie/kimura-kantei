@@ -2,6 +2,8 @@
 import { defineConfig } from 'astro/config';
 import { readdirSync, readFileSync, rmSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import phraseBreaks from './integrations/phrase-breaks.mjs';
+import previewTools from './integrations/preview-tools.mjs';
 
 // 確認用プレビュー（GitHub Pages：/kimura-kantei/ 配下）では PREVIEW_BASE を指定してビルドする。
 // 本番（https://www.kimurakantei.jp/）では指定しない。
@@ -53,7 +55,7 @@ const excludeCompare = {
 };
 
 export default defineConfig({
-  integrations: [excludeSamples, excludeCompare],
+  integrations: [excludeSamples, excludeCompare, phraseBreaks(), previewTools()],
   site: 'https://www.kimurakantei.jp',
   base,
   trailingSlash: 'always',

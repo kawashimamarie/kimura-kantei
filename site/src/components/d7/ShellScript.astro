@@ -6,6 +6,15 @@
     (function () {
       var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+      // 文節改行用の <wbr>（ビルド時に挿入。integrations/phrase-breaks.mjs）は、auto-phrase に対応するブラウザ（Chrome）では不要。
+      // 文章を細かく分けたままだと、フォントが入れ替わって行が折り返し直すときに、Core Web Vitals の CLS が実際より大きく計測されるため、取り除く。
+      // （Safari・Firefox は <wbr> が必要なので、そのまま残す。JS が動かない環境でも、<wbr> は表示に影響しない。）
+      if (window.CSS && CSS.supports && CSS.supports('word-break', 'auto-phrase')) {
+        var ws = document.querySelectorAll('wbr');
+        for (var wi = 0; wi < ws.length; wi++) ws[wi].remove();
+        document.body.normalize();
+      }
+
       // スクロール表示：画面に入った要素に is-in を付けるだけ。非対応・動きを減らす設定ではすべて表示する
       var els = document.querySelectorAll('.reveal');
       if (!('IntersectionObserver' in window) || reduce) {
