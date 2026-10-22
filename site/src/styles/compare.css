@@ -9,3 +9,16 @@
   .abswitch a { padding: 4px 10px; font-size: 12px; }
   .abswitch .long { display: none; }
 }
+
+/* 比較用C2案のベン図（旧）。公開用トップでは使わない */
+.c2-venn { position: relative; width: 100%; max-width: 460px; aspect-ratio: 460 / 400; container-type: inline-size; }
+.c2-venn span { position: absolute; display: grid; place-items: center; border-radius: 50%; text-align: center; font-family: var(--f-mincho); font-weight: 700; letter-spacing: .05em; line-height: 1.4; }
+.c2-venn__a { left: 0; top: 17.5%; width: 54.3%; aspect-ratio: 1; background: var(--green); color: #fff; font-size: 6cqw; padding-right: 12%; z-index: 1; }
+.c2-venn__b, .c2-venn__c { left: 41.3%; width: 43.5%; aspect-ratio: 1; background: rgba(184, 150, 104, .16); border: 1.5px solid var(--sand); color: var(--accent); font-size: 3.7cqw; padding-left: 14%; }
+.c2-venn__b { top: 0; }
+.c2-venn__c { top: 50%; }
+@media (max-width: 767px) {
+  .c2-venn { max-width: 200px; margin: 0 auto; }
+  .c2-venn__a { font-size: 7cqw; }
+  .c2-venn__b, .c2-venn__c { font-size: 5cqw; }
+}

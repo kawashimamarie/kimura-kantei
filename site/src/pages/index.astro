@@ -77,11 +77,12 @@ const roles = ['国土交通省 地価公示 評価員', '東京都税事務所 
     <div class="wrap">
       <div class="sec-head reveal"><p class="kicker">専門性</p><h2 class="h2" id="hub-title">鑑定を軸に、不動産・建築の知見を組み合わせて解決します</h2></div>
       <div class="c2-hub__grid reveal" data-delay="1">
-        <div class="c2-venn" aria-hidden="true">
-          <span class="c2-venn__a">不動産鑑定</span>
-          <span class="c2-venn__b">不動産業務<br>コンサル</span>
-          <span class="c2-venn__c">建築</span>
-        </div>
+        <figure class="c2-expert">
+          <picture>
+            <source media="(max-width: 767px)" type="image/webp" srcset={`${u('/assets/img/expertise/expertise-sp-300.webp')} 300w, ${u('/assets/img/expertise/expertise-sp-470.webp')} 470w`} sizes="300px" width="470" height="744">
+            <img src={u('/assets/img/expertise/expertise-pc-1176.webp')} srcset={`${u('/assets/img/expertise/expertise-pc-720.webp')} 720w, ${u('/assets/img/expertise/expertise-pc-1176.webp')} 1176w`} sizes="640px" width="1176" height="506" alt="" loading="lazy" decoding="async">
+          </picture>
+        </figure>
         <ol class="c2-hub__list">
           <li><b>不動産鑑定</b><span>不動産鑑定士が、価格・賃料を評価し、根拠を書面にします。</span><a href={u('/services/appraisal/')}>不動産鑑定・評価</a></li>
           <li><b>不動産業務・コンサルティング</b><span>宅地建物取引業者として、売買・仲介・活用の助言までご相談いただけます。</span><a href={u('/about/')}>会社案内</a></li>
