@@ -1,0 +1,203 @@
+---
+// トップページ C2案（C案の改良版）。C案をベースに、ファーストビューを「短いキャッチ＋代表の顔＋相談内容の選択」に絞り、
+// 専門性の図解と「選ばれる理由」を統合、事例の文章を短縮、問い合わせCTAを電話・フォームの2つに整理した。
+// 文言は data/ と content/ の既存の事実だけを使う。title・description・構造化データは公開中のトップと同じ。
+import { getCollection } from 'astro:content';
+import TopLayoutAB from '../layouts/TopLayoutAB.astro';
+import Ico from '../components/Ico.astro';
+import { site, contact, company } from '../data/site';
+import { services, serviceGroups } from '../data/services';
+import { profile } from '../data/profile';
+import { flowSteps } from '../data/flow';
+import { getFaqs } from '../data/faq';
+import { website, person } from '../lib/schema';
+import { u } from '../lib/url';
+
+const allCases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
+const cases = allCases.slice(0, 3);
+const columns = (await getCollection('column')).sort((a, b) => +new Date(b.data.updatedAt) - +new Date(a.data.updatedAt));
+const faqs = getFaqs(['consult-only', 'satei-vs-kantei', 'fee']);
+const steps = flowSteps();
+const svcName = (slug: string) => services.find((s) => s.slug === slug)?.name ?? slug;
+
+// ファーストビューの相談タイル用の短い言い換え（各サービスの「相談者の言葉」を短くしたもの。事実は変えない）
+const short: Record<string, string> = {
+  appraisal: '価格の根拠がほしい',
+  inheritance: '相続した不動産を公平に分けたい',
+  'family-transaction': '親族間売買の価格を確かめたい',
+  rent: '地代・家賃の値上げ・値下げ',
+  eviction: '立退きの話が出ている',
+  seismic: '古い家の耐震性が心配',
+};
+// ご相談内容の一覧用（サービスの summary を一文に言い換えたもの）
+const oneLine: Record<string, string> = {
+  appraisal: '不動産の適正な価格・賃料を、根拠とともに書面に',
+  inheritance: '遺産分割の話し合いに、客観的な評価と助言を',
+  'family-transaction': '親族間・同族間の売買の時価を、鑑定評価書で',
+  rent: '地代・家賃の改定、借地権・底地の評価',
+  eviction: 'オーナー側・借家人側どちらの立場でも',
+  seismic: '耐震診断から改修設計・工事、インスペクションまで',
+};
+const roles = ['国土交通省 地価公示 評価員', '東京都税事務所 固定資産税路線価評価員', '東京地方裁判所（借地非訟事件）鑑定専門委員'];
+---
+<TopLayoutAB
+  variant="c2"
+  fullTitle={`相続・親族間売買・地代家賃・立退料の不動産鑑定｜${site.name}（東京・阿佐ヶ谷）`}
+  title="トップ"
+  description="相続した不動産の分け方、親族間売買の価格、地代・家賃、立退料、建物の耐震やインスペクションまで。不動産鑑定士・一級建築士の木村修が、価格と建物の両面からご相談に応じます。JR阿佐ヶ谷駅徒歩1分。"
+  path="/top-c2/"
+  jsonLd={[website(), person()]}
+>
+  <section class="c2-fv" aria-labelledby="fv-title">
+    <div class="c2-fv__body">
+      <p class="eyebrow"><span>不動産鑑定事務所</span><span>東京・阿佐ヶ谷</span></p>
+      <h1 class="c2-fv__title" id="fv-title">不動産の悩みに、<br><span class="nw"><em>鑑定を軸にした</em><br class="u-sp">専門力を。</span></h1>
+      <p class="c2-fv__lead">不動産鑑定士・一級建築士が、価格と建物の両面から整理します。</p>
+      <div class="acts">
+        <a class="btn" href={u('/contact/')}>相談を申し込む<i aria-hidden="true">→</i></a>
+        <p class="tel"><small>お電話でのご相談予約（受付 {contact.hours}）</small><a href={contact.telHref}><b>{contact.tel}</b></a></p>
+      </div>
+      <div class="c2-sign">
+        <img src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt="代表取締役 木村修">
+        <p><b>{profile.name}</b><span>代表取締役｜{profile.credentials.slice(0, 2).join('・')}</span><small>2006年創業　JR阿佐ヶ谷駅 徒歩1分　来社・訪問・Zoom</small></p>
+      </div>
+    </div>
+
+    <div class="c2-pick">
+      <h2 class="c2-pick__h">ご相談内容から選ぶ</h2>
+      <ul>
+        {services.map((s) => (
+          <li><a href={u(`/services/${s.slug}/`)}><Ico name={s.slug} /><b>{s.name}</b><span>{short[s.slug]}</span></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="c2-hub" aria-labelledby="hub-title">
+    <div class="wrap">
+      <div class="sec-head reveal"><p class="kicker">専門性</p><h2 class="h2" id="hub-title">鑑定を軸に、不動産・建築の知見を組み合わせて解決します</h2></div>
+      <div class="c2-hub__grid reveal" data-delay="1">
+        <div class="c2-venn" aria-hidden="true">
+          <span class="c2-venn__a">不動産鑑定</span>
+          <span class="c2-venn__b">不動産業務<br>コンサル</span>
+          <span class="c2-venn__c">建築</span>
+        </div>
+        <ol class="c2-hub__list">
+          <li><b>不動産鑑定</b><span>不動産鑑定士が、価格・賃料を評価し、根拠を書面にします。</span><a href={u('/services/appraisal/')}>不動産鑑定・評価</a></li>
+          <li><b>不動産業務・コンサルティング</b><span>宅地建物取引業者として、売買・仲介・活用の助言までご相談いただけます。</span><a href={u('/about/')}>会社案内</a></li>
+          <li><b>建築</b><span>一級建築士が、建物の状態や耐震性を調べ、改修までご案内します。</span><a href={u('/services/seismic/')}>耐震診断・耐震改修</a></li>
+        </ol>
+      </div>
+      <figure class="c2-route reveal">
+        <figcaption>複数の課題が絡む例｜相続した借地上の空き家（杉並区・築48年の戸建て）</figcaption>
+        <ol>
+          <li><b>相続</b>空き家になった戸建て</li>
+          <li><b>借地権</b>返す前に「貸す」を検討</li>
+          <li><b>建物</b>改修で耐用年数を延ばす</li>
+          <li class="goal"><b>活用</b>賃貸で約7年で改修費を回収する計画</li>
+        </ol>
+        <a class="u-link" href={u(`/cases/${allCases[0].id}/`)}>この事例を詳しく読む</a>
+      </figure>
+    </div>
+  </section>
+
+  <section class="c2-svc paper" aria-labelledby="svc-title">
+    <div class="wrap c2-svc__wrap">
+      <div class="sec-head reveal"><p class="kicker">ご相談内容</p><h2 class="h2" id="svc-title">対応サービス</h2><a class="u-link" href={u('/services/')}>ご相談内容の一覧へ</a></div>
+      <div class="c2-svc__groups">
+        {serviceGroups.map((g, gi) => (
+          <div class="reveal" data-delay={gi ? '1' : undefined}>
+            <h3>{g.title}</h3>
+            <ul>
+              {services.filter((s) => s.group === g.key).map((s) => (
+                <li>
+                  <a class="main" href={u(`/services/${s.slug}/`)}><Ico name={s.slug} /><span class="nm"><b>{s.name}</b><small>{oneLine[s.slug]}</small></span><i aria-hidden="true">→</i></a>
+                  {(s.relatedCases.length > 0 || s.relatedColumns.length > 0) && (
+                    <p class="rel">{s.relatedCases.length > 0 && <a href={u(`/cases/${s.relatedCases[0]}/`)}>関連事例：{allCases.find((c) => c.id === s.relatedCases[0])?.data.meta}</a>}{s.relatedColumns.length > 0 && <a href={u(`/column/${s.relatedColumns[0]}/`)}>関連コラム</a>}</p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="c2-cases" aria-labelledby="cases-title">
+    <div class="wrap">
+      <div class="sec-head sec-head--row reveal"><div><p class="kicker">事例</p><h2 class="h2" id="cases-title">ご相談・解決事例</h2></div><a class="u-link" href={u('/cases/')}>事例の一覧へ</a></div>
+      <p class="c2-swipe" aria-hidden="true">横にスワイプして3件を見る<span>→</span></p>
+      <div class="c2-cases__grid" role="region" aria-label="事例（横にスクロールできます）" tabindex="0">
+        {cases.map((c, i) => (
+          <article class="reveal" data-delay={i > 0 ? String(i) : undefined}>
+            <a class="c2-cases__img" href={u(`/cases/${c.id}/`)}><figure><img src={u(c.data.cover.src)} width={c.data.cover.width} height={c.data.cover.height} alt={c.data.cover.alt} loading="lazy" decoding="async"></figure></a>
+            <p class="meta">{c.data.meta}<span class="tag">{c.data.tags[0]}</span></p>
+            <h3><a href={u(`/cases/${c.id}/`)}>{c.data.title}</a></h3>
+            <dl>
+              <div><dt>ご相談</dt><dd>{c.data.summary.consult}</dd></div>
+              <div><dt>結果</dt><dd>{c.data.summary.result}</dd></div>
+            </dl>
+            <p class="c2-cases__rel">{c.data.services.map((s) => <a href={u(`/services/${s}/`)}>{svcName(s)}</a>)}</p>
+          </article>
+        ))}
+      </div>
+      <p class="c2-cases__cta reveal"><a class="btn" href={u('/contact/')}>似たお悩みを相談する<i aria-hidden="true">→</i></a></p>
+    </div>
+  </section>
+
+  <section class="c2-flow paper" aria-labelledby="flow-title">
+    <div class="wrap">
+      <div class="sec-head reveal"><p class="kicker">ご相談の流れ</p><h2 class="h2" id="flow-title">お電話かメールで、まずご予約ください</h2></div>
+      <ol class="c2-flow__steps reveal" data-delay="1">
+        {steps.map((s, i) => <li><span class="n">{i + 1}</span><b>{s.name}</b><span class="d">{s.text.split('。')[0]}。</span></li>)}
+      </ol>
+    </div>
+  </section>
+
+  <section class="c2-rep" aria-labelledby="rep-title">
+    <div class="wrap c2-rep__wrap">
+      <div class="c2-rep__id reveal">
+        <img src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt="代表取締役 木村修" loading="lazy" decoding="async">
+        <p><small>株式会社木村不動産鑑定 代表取締役</small><b>{profile.name}</b><span>{profile.credentials.join('／')}</span></p>
+      </div>
+      <div class="reveal" data-delay="1">
+        <p class="kicker">相談を受けるときのモットー</p>
+        <h2 class="c2-rep__quote" id="rep-title">ご相談者を、<br class="u-sp"><span class="nw">できるだけ<em>揉めさせない</em>こと。</span></h2>
+        <p class="c2-rep__body">そのために、まずはお話をよく伺い、問題点を整理するところから始めます。</p>
+        <dl class="c2-rep__dl">
+          <div><dt>公的な評価・裁判所に関わる役割</dt><dd>{roles.join('、')}など</dd></div>
+          <div><dt>事務所の登録</dt><dd>{company.licenses.slice(0, 3).join('／')}</dd></div>
+        </dl>
+        <a class="u-link" href={u('/profile/')}>代表プロフィールと経歴を見る</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="c2-learn paper" aria-labelledby="learn-title">
+    <div class="wrap c2-learn__wrap">
+      <div class="reveal">
+        <h2 class="h2" id="learn-title">専門家のコラム</h2>
+        <ul class="plain">{columns.map((c) => <li><a href={u(`/column/${c.id}/`)}>{c.data.title}</a></li>)}</ul>
+        <a class="u-link" href={u('/column/')}>コラムの一覧へ</a>
+      </div>
+      <div class="reveal" data-delay="1">
+        <h2 class="h2" id="faq-title">よくあるご質問</h2>
+        <ul class="plain">{faqs.map((f) => <li><a href={u(`/faq/#faq-${f.id}`)}>{f.q}</a></li>)}</ul>
+        <a class="u-link" href={u('/faq/')}>ご質問の一覧へ</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="c2-cta" aria-labelledby="cta-title">
+    <div class="wrap">
+      <h2 class="h2" id="cta-title"><span class="nw">「こんなことを</span><span class="nw">相談していいのかな」</span><br>という段階から、どうぞ。</h2>
+      <p class="c2-cta__lead">お話を伺い、問題点を整理するところから始めます。ご来社・ご訪問・Zoomで対応します。</p>
+      <div class="c2-cta__btns">
+        <a class="c2-cta__tel" href={contact.telHref}><small>お電話でのご相談・ご予約（受付 {contact.hours}）</small><b>{contact.tel}</b></a>
+        <a class="c2-cta__form" href={u('/contact/')}><small>ご相談の申し込み方法</small><b>お問い合わせ<i aria-hidden="true">→</i></b></a>
+      </div>
+      <p class="c2-cta__mail"><a href={`mailto:${contact.email}`}>メールで問い合わせる（{contact.email}）</a></p>
+    </div>
+  </section>
+</TopLayoutAB>
