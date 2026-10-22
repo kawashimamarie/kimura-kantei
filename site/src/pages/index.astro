@@ -67,7 +67,7 @@ const roles = ['国土交通省 地価公示 評価員', '東京都税事務所 
       <h2 class="c2-pick__h">ご相談内容から選ぶ</h2>
       <ul>
         {services.map((s) => (
-          <li><a href={u(`/services/${s.slug}/`)}><Ico name={s.slug} /><b>{s.name}</b><span>{short[s.slug]}</span></a></li>
+          <li><a href={u(`/services/${s.slug}/`)}><img class="c2-pick__img" src={u(`/assets/img/service-icons/${s.slug}-120.webp`)} srcset={`${u(`/assets/img/service-icons/${s.slug}-120.webp`)} 120w, ${u(`/assets/img/service-icons/${s.slug}-240.webp`)} 240w`} sizes="(max-width: 767px) 56px, 72px" width="72" height="72" alt="" decoding="async"><b>{s.name}</b><span>{short[s.slug]}</span></a></li>
         ))}
       </ul>
     </div>

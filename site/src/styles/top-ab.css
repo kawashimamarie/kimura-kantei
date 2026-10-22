@@ -609,3 +609,7 @@ section.cta { padding: 88px 0; background: var(--green-d); color: #fff; }
   .c2-hub__grid { gap: 16px; }
   .c2-cases dd { -webkit-line-clamp: 3; }
 }
+
+/* トップ「ご相談内容から選ぶ」のサービスアイコン（画像）。6種類とも同じ枠（72px／スマホ56px）に、縦横比を保って収める */
+.c2-pick__img { display: block; width: 72px; height: 72px; margin: 0 0 6px -2px; object-fit: contain; object-position: left center; }
+@media (max-width: 767px) { .c2-pick__img { width: 56px; height: 56px; margin-bottom: 4px; } }
