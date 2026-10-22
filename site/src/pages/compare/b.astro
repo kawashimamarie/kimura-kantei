@@ -2,15 +2,15 @@
 // トップページ B案「課題解決・集客重視」（比較用）。訪問者の悩みを起点に、対応する専門領域・事例・相談の流れへ進める。
 // 文言は data/ と content/ の既存の事実だけを使う。title・description・構造化データは公開中のトップと同じ。
 import { getCollection } from 'astro:content';
-import TopLayoutAB from '../layouts/TopLayoutAB.astro';
-import Ico from '../components/Ico.astro';
-import { site, contact } from '../data/site';
-import { services } from '../data/services';
-import { profile } from '../data/profile';
-import { flowSteps } from '../data/flow';
-import { getFaqs } from '../data/faq';
-import { website, person } from '../lib/schema';
-import { u } from '../lib/url';
+import CompareLayout from '../../layouts/CompareLayout.astro';
+import Ico from '../../components/Ico.astro';
+import { site, contact } from '../../data/site';
+import { services } from '../../data/services';
+import { profile } from '../../data/profile';
+import { flowSteps } from '../../data/flow';
+import { getFaqs } from '../../data/faq';
+import { website, person } from '../../lib/schema';
+import { u } from '../../lib/url';
 
 const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
 const columns = (await getCollection('column')).sort((a, b) => +new Date(b.data.updatedAt) - +new Date(a.data.updatedAt));
@@ -21,12 +21,12 @@ const [featured, ...others] = cases.slice(0, 3);
 // 悩みの言葉は、各サービスの「相談者の言葉」の先頭を使う（data/services.ts）。
 const tiles = services.map((s) => ({ slug: s.slug, name: s.name, concern: s.concerns[0] }));
 ---
-<TopLayoutAB
+<CompareLayout
   variant="b"
   fullTitle={`相続・親族間売買・地代家賃・立退料の不動産鑑定｜${site.name}（東京・阿佐ヶ谷）`}
   title="トップ"
   description="相続した不動産の分け方、親族間売買の価格、地代・家賃、立退料、建物の耐震やインスペクションまで。不動産鑑定士・一級建築士の木村修が、価格と建物の両面からご相談に応じます。JR阿佐ヶ谷駅徒歩1分。"
-  path="/top-b/"
+  path="/compare/b/"
   jsonLd={[website(), person()]}
 >
   <section class="b-fv" aria-labelledby="fv-title">
@@ -139,4 +139,4 @@ const tiles = services.map((s) => ({ slug: s.slug, name: s.name, concern: s.conc
       </div>
     </div>
   </section>
-</TopLayoutAB>
+</CompareLayout>

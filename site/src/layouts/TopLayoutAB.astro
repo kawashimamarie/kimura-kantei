@@ -1,5 +1,6 @@
 ---
-// トップページ A案・B案の比較用レイアウト（確認用）。TopLayout と同じ共通部品（ヘッダー・フッター・SP固定ボタン）を使い、
+// トップページ（C2案の本体）と、比較用ページ（pages/compare/）の共通レイアウト。
+// 比較用ページの切り替えバーは、CompareLayout が slot="before" で差し込む（本体のトップには出ない）。TopLayout と同じ共通部品（ヘッダー・フッター・SP固定ボタン）を使い、
 // スタイルだけ styles/top-ab.css に分けている。公開中のトップ（TopLayout・top.css）には影響しない。
 // title・description・構造化データは、公開中のトップと同じ内容を各案のページから渡している（変更なし）。
 import '../styles/d7/vars.css';
@@ -23,13 +24,6 @@ interface Props {
 }
 
 const { path, variant, ...seo } = Astro.props;
-const tabs = [
-  { key: 'now', label: '現行D7', href: '/' },
-  { key: 'a', label: 'A案', long: '専門性・信頼', href: '/top-a/' },
-  { key: 'b', label: 'B案', long: '課題解決・集客', href: '/top-b/' },
-  { key: 'c', label: 'C案', long: '集客×専門性（統合）', href: '/top-c/' },
-  { key: 'c2', label: 'C2案', long: 'C案の改良版', href: '/top-c2/' },
-];
 ---
 <!doctype html>
 <html lang="ja">
@@ -44,10 +38,7 @@ const tabs = [
 <body class={`ab ab--${variant}`}>
   <a class="skip-link" href="#main">本文へスキップ</a>
   <PreviewBanner />
-  <nav class="abswitch" aria-label="トップページ案の切り替え（比較用）">
-    <span>比較用</span>
-    {tabs.map((t) => <a href={u(t.href)} aria-current={t.key === variant ? 'page' : undefined}>{t.label}{t.long && <span class="long">　{t.long}</span>}</a>)}
-  </nav>
+  <slot name="before" />
   <SiteHeader path={path} />
   <main id="main" tabindex="-1">
     <slot />

@@ -1,0 +1,32 @@
+---
+// トップページ比較用ページ（pages/compare/）専用のレイアウト。TopLayoutAB に、案の切り替えバーを差し込む。
+// 確認用ビルド（build:pages）では pages/compare/ ごと出力から外れ、このレイアウトの CSS も公開物に含まれない。
+import '../styles/compare.css';
+import TopLayoutAB from './TopLayoutAB.astro';
+import { u } from '../lib/url';
+
+interface Props {
+  title: string;
+  fullTitle?: string;
+  description: string;
+  path: string;
+  variant: 'a' | 'b' | 'c' | 'c2';
+  jsonLd?: object[];
+}
+
+const props = Astro.props;
+const tabs = [
+  { key: 'now', label: '旧D7', href: '/compare/now/' },
+  { key: 'a', label: 'A案', long: '専門性・信頼', href: '/compare/a/' },
+  { key: 'b', label: 'B案', long: '課題解決・集客', href: '/compare/b/' },
+  { key: 'c', label: 'C案', long: '集客×専門性（統合）', href: '/compare/c/' },
+  { key: 'c2', label: 'C2案', long: '採用案（トップ本体は / ）', href: '/compare/c2/' },
+];
+---
+<TopLayoutAB {...props}>
+  <nav slot="before" class="abswitch" aria-label="トップページ案の切り替え（比較用）">
+    <span>比較用</span>
+    {tabs.map((t) => <a href={u(t.href)} aria-current={t.key === props.variant ? 'page' : undefined}>{t.label}{t.long && <span class="long">　{t.long}</span>}</a>)}
+  </nav>
+  <slot />
+</TopLayoutAB>

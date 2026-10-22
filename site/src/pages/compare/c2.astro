@@ -1,17 +1,17 @@
 ---
-// トップページ C2案（C案の改良版）。C案をベースに、ファーストビューを「短いキャッチ＋代表の顔＋相談内容の選択」に絞り、
+// 【比較用・公開しない】C2案の比較用コピー（採用後の本体は pages/index.astro）。C案をベースに、ファーストビューを「短いキャッチ＋代表の顔＋相談内容の選択」に絞り、
 // 専門性の図解と「選ばれる理由」を統合、事例の文章を短縮、問い合わせCTAを電話・フォームの2つに整理した。
 // 文言は data/ と content/ の既存の事実だけを使う。title・description・構造化データは公開中のトップと同じ。
 import { getCollection } from 'astro:content';
-import TopLayoutAB from '../layouts/TopLayoutAB.astro';
-import Ico from '../components/Ico.astro';
-import { site, contact, company } from '../data/site';
-import { services, serviceGroups } from '../data/services';
-import { profile } from '../data/profile';
-import { flowSteps } from '../data/flow';
-import { getFaqs } from '../data/faq';
-import { website, person } from '../lib/schema';
-import { u } from '../lib/url';
+import CompareLayout from '../../layouts/CompareLayout.astro';
+import Ico from '../../components/Ico.astro';
+import { site, contact, company } from '../../data/site';
+import { services, serviceGroups } from '../../data/services';
+import { profile } from '../../data/profile';
+import { flowSteps } from '../../data/flow';
+import { getFaqs } from '../../data/faq';
+import { website, person } from '../../lib/schema';
+import { u } from '../../lib/url';
 
 const allCases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
 const cases = allCases.slice(0, 3);
@@ -40,12 +40,12 @@ const oneLine: Record<string, string> = {
 };
 const roles = ['国土交通省 地価公示 評価員', '東京都税事務所 固定資産税路線価評価員', '東京地方裁判所（借地非訟事件）鑑定専門委員'];
 ---
-<TopLayoutAB
+<CompareLayout
   variant="c2"
   fullTitle={`相続・親族間売買・地代家賃・立退料の不動産鑑定｜${site.name}（東京・阿佐ヶ谷）`}
   title="トップ"
   description="相続した不動産の分け方、親族間売買の価格、地代・家賃、立退料、建物の耐震やインスペクションまで。不動産鑑定士・一級建築士の木村修が、価格と建物の両面からご相談に応じます。JR阿佐ヶ谷駅徒歩1分。"
-  path="/top-c2/"
+  path="/compare/c2/"
   jsonLd={[website(), person()]}
 >
   <section class="c2-fv" aria-labelledby="fv-title">
@@ -200,4 +200,4 @@ const roles = ['国土交通省 地価公示 評価員', '東京都税事務所 
       <p class="c2-cta__mail"><a href={`mailto:${contact.email}`}>メールで問い合わせる（{contact.email}）</a></p>
     </div>
   </section>
-</TopLayoutAB>
+</CompareLayout>

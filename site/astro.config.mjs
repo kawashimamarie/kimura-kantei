@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import { readdirSync, rmSync } from 'node:fs';
+import { readdirSync, readFileSync, rmSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 // 確認用プレビュー（GitHub Pages：/kimura-kantei/ 配下）では PREVIEW_BASE を指定してビルドする。
@@ -25,8 +25,35 @@ const excludeSamples = {
   },
 };
 
+// EXCLUDE_COMPARE=1 のビルドでは、トップページの比較用ページ（/compare/ 以下）を出力から外す（確認用プレビュー用）。
+// 外したあと、どのHTMLからも参照されなくなった assets/build のCSS・JSと、assets/img/top の画像も削除する。
+const excludeCompare = {
+  name: 'exclude-compare',
+  hooks: {
+    'astro:build:done': ({ dir }) => {
+      if (process.env.EXCLUDE_COMPARE !== '1') return;
+      const out = fileURLToPath(dir);
+      rmSync(`${out}compare`, { recursive: true, force: true });
+      const listHtml = (d) => readdirSync(d).flatMap((n) => {
+        const p = `${d}${n}`;
+        return statSync(p).isDirectory() ? listHtml(`${p}/`) : p.endsWith('.html') ? [p] : [];
+      });
+      const html = listHtml(out).map((f) => readFileSync(f, 'utf8')).join('\n');
+      const chunks = `${out}assets/build`;
+      for (const f of readdirSync(chunks)) {
+        if (/\.(css|js)$/.test(f) && !html.includes(f)) rmSync(`${chunks}/${f}`, { force: true });
+      }
+      // 旧トップのメイン画像（AI生成）は、トップが使わなくなったため、参照されていなければ公開物から外す
+      const topImg = `${out}assets/img/top`;
+      for (const f of readdirSync(topImg)) {
+        if (!html.includes(f)) rmSync(`${topImg}/${f}`, { force: true });
+      }
+    },
+  },
+};
+
 export default defineConfig({
-  integrations: [excludeSamples],
+  integrations: [excludeSamples, excludeCompare],
   site: 'https://www.kimurakantei.jp',
   base,
   trailingSlash: 'always',
