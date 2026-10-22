@@ -43,12 +43,29 @@ h1, h2, h3, p, figure, dl, dd { margin: 0; }
 .sec-head--row { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; max-width: none; }
 
 
-/* スクロール表示（JSが動く環境だけ。動きを減らす設定では止める） */
-.js .reveal { opacity: 0; transform: translateY(12px); transition: opacity .7s ease-out, transform .7s cubic-bezier(.2, .7, .2, 1); }
+/* ===== 表示の動き（控えめ）：CSSのみ・opacity と transform だけ・350〜450ms。JSが動く環境だけ。動きを減らす設定では止める =====
+   方針：ファーストビューの文字は透明にせず、小さな移動だけで順に見せる（電話番号・相談ボタンも常時完全表示）。
+   スクロールで現れる部分も、文字は透明にせず（コントラストを常に保つため）、短い移動だけで見せるにして、読めない時間を作らない。 */
+@keyframes an-rise { from { transform: translateY(8px); } to { transform: none; } }
+@keyframes an-rise-soft { from { opacity: .8; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.c2-fv .eyebrow, .c2-fv__title, .c2-fv__lead, .c2-fv .acts { animation: an-rise .38s cubic-bezier(.22, .7, .2, 1) both; }
+.c2-fv__title { animation-delay: .05s; }
+.c2-fv__lead { animation-delay: .1s; }
+.c2-fv .acts { animation-delay: .15s; }
+.c2-sign { animation: an-rise-soft .38s cubic-bezier(.22, .7, .2, 1) .2s both; }
+.c2-pick li { animation: an-rise .36s cubic-bezier(.22, .7, .2, 1) both; animation-delay: calc(.12s + var(--i, 0) * .04s); }
+.c2-pick__img { animation: an-fade-in .4s ease-out .12s both; }
+@keyframes an-fade-in { from { opacity: .8; } to { opacity: 1; } }
+.js .reveal { opacity: 1; transform: translateY(10px); transition: opacity .42s cubic-bezier(.22, .7, .2, 1), transform .42s cubic-bezier(.22, .7, .2, 1); }
 .js .reveal.is-in { opacity: 1; transform: none; }
-.js .reveal[data-delay="1"] { transition-delay: .08s; }
-.js .reveal[data-delay="2"] { transition-delay: .16s; }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } .js .reveal { opacity: 1; transform: none; } }
+.js .reveal[data-delay="1"] { transition-delay: .06s; }
+.js .reveal[data-delay="2"] { transition-delay: .12s; }
+/* 専門性（B2）：外枠は動かさず、不動産鑑定→補完→補完の順に、短い時間差で現れる */
+.js .hb.reveal { opacity: 1; transform: none; transition: none; }
+.js .hb:not(.is-in) li { opacity: 1; transform: translateY(10px); }
+.js .hb li { transition: opacity .42s cubic-bezier(.22, .7, .2, 1), transform .42s cubic-bezier(.22, .7, .2, 1); transition-delay: calc(var(--i, 0) * .08s); }
+.js .hb.is-in li { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } .js .reveal, .js .hb li { opacity: 1; transform: none; } }
 
 :where(section[aria-labelledby]) { padding: 88px 0; }
 

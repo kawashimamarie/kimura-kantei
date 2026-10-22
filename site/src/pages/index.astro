@@ -133,7 +133,7 @@ const roles = ['国土交通省 地価公示 評価員', '東京都税事務所 
       <p class="c2-swipe" aria-hidden="true">横にスワイプして3件を見る<span>→</span></p>
       <div class="c2-cases__grid" role="region" aria-label="事例（横にスクロールできます）" tabindex="0">
         {cases.map((c, i) => (
-          <article class="reveal" data-delay={i > 0 ? String(i) : undefined}>
+          <article>
             <a class="c2-cases__img" href={u(`/cases/${c.id}/`)}><figure><img src={u(c.data.cover.src)} width={c.data.cover.width} height={c.data.cover.height} alt={c.data.cover.alt} loading="lazy" decoding="async"></figure></a>
             <p class="meta">{c.data.meta}<span class="tag">{c.data.tags[0]}</span></p>
             <h3><a href={u(`/cases/${c.id}/`)}>{c.data.title}</a></h3>
@@ -145,7 +145,7 @@ const roles = ['国土交通省 地価公示 評価員', '東京都税事務所 
           </article>
         ))}
       </div>
-      <p class="c2-cases__cta reveal"><a class="btn" href={u('/contact/')}>似たお悩みを相談する<i aria-hidden="true">→</i></a></p>
+      <p class="c2-cases__cta"><a class="btn" href={u('/contact/')}>似たお悩みを相談する<i aria-hidden="true">→</i></a></p>
     </div>
   </section>
 
