@@ -609,3 +609,13 @@ section.cta { padding: 88px 0; background: var(--green-d); color: #fff; }
   .c2-venn__b, .c2-venn__c { font-size: 5cqw; }
 }
 .c2-rep__quote .nw { display: inline-block; }
+
+/* C2 最終調整：代表写真は元画像（192×256px）の解像度に合う大きさに抑える／スマホのベン図を小さく／導入文の改行／事例の結果が途中で切れにくいように */
+.c2-rep__id img { width: 112px; height: 149px; }
+.c2-fv__lead { text-wrap: balance; }
+@media (max-width: 767px) {
+  .c2-venn { max-width: 200px; }
+  .c2-rep__id img { width: 80px; height: 107px; }
+  .c2-hub__grid { gap: 16px; }
+  .c2-cases dd { -webkit-line-clamp: 3; }
+}
