@@ -2,15 +2,15 @@
 // トップページ A案「専門性・信頼重視」（比較用）。不動産鑑定を主役にし、鑑定・建築・不動産業務の複合的な対応力を、資格・公的な役割・事例で裏づける。
 // 文言は data/ と content/ の既存の事実だけを使う。title・description・構造化データは公開中のトップと同じ。
 import { getCollection } from 'astro:content';
-import TopLayoutAB from '../layouts/TopLayoutAB.astro';
-import Ico from '../components/Ico.astro';
-import { site, contact, company } from '../data/site';
-import { services, serviceGroups, otherServices } from '../data/services';
-import { profile } from '../data/profile';
-import { flowSteps } from '../data/flow';
-import { getFaqs } from '../data/faq';
-import { website, person } from '../lib/schema';
-import { u } from '../lib/url';
+import CompareLayout from '../../layouts/CompareLayout.astro';
+import Ico from '../../components/Ico.astro';
+import { site, contact, company } from '../../data/site';
+import { services, serviceGroups, otherServices } from '../../data/services';
+import { profile } from '../../data/profile';
+import { flowSteps } from '../../data/flow';
+import { getFaqs } from '../../data/faq';
+import { website, person } from '../../lib/schema';
+import { u } from '../../lib/url';
 
 const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
 const columns = (await getCollection('column')).sort((a, b) => +new Date(b.data.updatedAt) - +new Date(a.data.updatedAt));
@@ -28,12 +28,12 @@ const oneLine: Record<string, string> = {
 };
 const roles = ['国土交通省 地価公示 評価員', '東京都税事務所 固定資産税路線価評価員', '東京地方裁判所（借地非訟事件）鑑定専門委員'];
 ---
-<TopLayoutAB
+<CompareLayout
   variant="a"
   fullTitle={`相続・親族間売買・地代家賃・立退料の不動産鑑定｜${site.name}（東京・阿佐ヶ谷）`}
   title="トップ"
   description="相続した不動産の分け方、親族間売買の価格、地代・家賃、立退料、建物の耐震やインスペクションまで。不動産鑑定士・一級建築士の木村修が、価格と建物の両面からご相談に応じます。JR阿佐ヶ谷駅徒歩1分。"
-  path="/top-a/"
+  path="/compare/a/"
   jsonLd={[website(), person()]}
 >
   <section class="a-fv" aria-labelledby="fv-title">
@@ -144,4 +144,4 @@ const roles = ['国土交通省 地価公示 評価員', '東京都税事務所 
       </div>
     </div>
   </section>
-</TopLayoutAB>
+</CompareLayout>

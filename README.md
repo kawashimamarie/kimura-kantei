@@ -10,7 +10,7 @@
 site/                     サイトのソース
 ├── src/
 │   ├── pages/            ページ（URL と 1 対 1 で対応）
-│   ├── layouts/          レイアウト（TopLayout：トップ／SiteLayout・ServiceLayoutD7：D7デザインに移行済みの下層ページ／BaseLayout・ServiceLayout：移行前の下層ページ）
+│   ├── layouts/          レイアウト（TopLayoutAB：トップ（C2案）／CompareLayout・TopLayout：トップ比較用／SiteLayout・ServiceLayoutD7：D7デザインに移行済みの下層ページ／BaseLayout・ServiceLayout：移行前の下層ページ）
 │   ├── components/       共通部品（パンくず・問い合わせ案内・FAQ・カードなど）。components/d7/ は D7 デザインの共通部品（ヘッダー・フッター・固定ボタン・見出し・FAQ など）
 │   ├── content/
 │   │   ├── cases/        事例（Markdown）
@@ -18,7 +18,7 @@ site/                     サイトのソース
 │   ├── content.config.ts 事例・コラムの項目定義
 │   ├── data/             会社情報・サービス・FAQ・プロフィール
 │   ├── lib/              URL・構造化データ・日付の補助関数
-│   └── styles/           global.css（移行前の下層ページ共通）・top.css（トップ専用）・d7/（D7 共通基盤：vars＝色・フォント、shell＝ヘッダー/フッター/固定ボタン、base・parts＝下層ページの土台と部品）
+│   └── styles/           global.css（移行前の下層ページ共通）・top-ab.css（トップ＝C2案）・top.css（旧D7トップ。比較用）・compare.css（比較用の切り替えバー）・d7/（D7 共通基盤：vars＝色・フォント、shell＝ヘッダー/フッター/固定ボタン、base・parts＝下層ページの土台と部品）
 ├── public/assets/        画像・JavaScript（そのまま配信）
 └── scripts/build-pages.mjs  確認用プレビュー（GitHub Pages）向けのビルド
 ```
@@ -39,6 +39,7 @@ npm run build:pages  # 確認用プレビュー向けにビルドし、リポジ
 
 - 全ページの上部の「確認用プレビュー」の表示：`site/src/data/site.ts` の `site.preview`（正式公開時は `false`）。
 - 検索エンジンへの非公開（noindex）：同じく `site.noindex`（確認用の間は `true`。ここでは変更しない）。
+- トップページの比較用ページ（`/compare/` 以下：旧D7・A案・B案・C案・C2案）：`EXCLUDE_COMPARE=1` のビルドでは出力から外れる（`npm run build:pages` は既定で外す）。トップ（`/`）はC2案。ソースは `src/pages/compare/` に残している（開発用ビルドで確認できる）。
 - 提案用サンプル（`/samples/`）：`EXCLUDE_SAMPLES=1` のビルドでは出力から外れる（`npm run build:pages` は既定で外す）。ソース・画像は残している。
 - お問い合わせフォーム：送信先が未設定の間は「確認用・送信できません」の表示で、送信しない。接続するときは、ビルド時の環境変数
   `PUBLIC_CONTACT_FORM_ENDPOINT`（送信先URL）と `PUBLIC_TURNSTILE_SITE_KEY`（迷惑メール対策の公開サイトキー）を渡す。

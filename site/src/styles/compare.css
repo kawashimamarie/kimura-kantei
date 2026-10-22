@@ -1,0 +1,11 @@
+/* トップページの比較用ページ（pages/compare/）専用：案の切り替えバー。公開用ビルドには含まれない。 */
+.abswitch { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; padding: 8px 12px; background: var(--sand-bg); border-bottom: 1px solid var(--line-2); font-size: 13px; }
+.abswitch span { font-weight: 700; color: var(--accent); margin-right: 4px; }
+.abswitch a { padding: 5px 14px; border-radius: 999px; border: 1px solid var(--line-2); background: #fff; color: var(--ink-3); }
+.abswitch a[aria-current="page"] { background: var(--green); border-color: var(--green); color: #fff; font-weight: 700; }
+.abswitch a .long { margin: 0; color: inherit; font-weight: inherit; }
+@media (max-width: 767px) {
+  .abswitch { padding: 6px 8px; gap: 6px; }
+  .abswitch a { padding: 4px 10px; font-size: 12px; }
+  .abswitch .long { display: none; }
+}
