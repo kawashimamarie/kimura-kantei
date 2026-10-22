@@ -9,3 +9,31 @@
   .abswitch a { padding: 4px 10px; font-size: 12px; }
   .abswitch .long { display: none; }
 }
+
+/* 旧ベン図＋説明リスト（比較用C2案・現状表示用）。公開用トップでは使わない（B2案に置き換え済み） */
+.c2-hub__grid { display: grid; grid-template-columns: 460px minmax(0, 1fr); gap: 72px; align-items: center; margin-top: 36px; }
+.c2-venn { position: relative; width: 100%; max-width: 460px; aspect-ratio: 460 / 400; container-type: inline-size; }
+.c2-venn span { position: absolute; display: grid; place-items: center; border-radius: 50%; text-align: center; font-family: var(--f-mincho); font-weight: 700; letter-spacing: .05em; line-height: 1.4; }
+.c2-venn__a { left: 0; top: 17.5%; width: 54.3%; aspect-ratio: 1; background: var(--green); color: #fff; font-size: 6cqw; padding-right: 12%; z-index: 1; }
+.c2-venn__b, .c2-venn__c { left: 41.3%; width: 43.5%; aspect-ratio: 1; background: rgba(184, 150, 104, .16); border: 1.5px solid var(--sand); color: var(--accent); font-size: 3.7cqw; padding-left: 14%; }
+.c2-venn__b { top: 0; }
+.c2-venn__c { top: 50%; }
+.c2-hub__list li { padding: 18px 0; border-top: 1px solid var(--line-2); display: grid; gap: 3px; }
+.c2-hub__list li:last-child { border-bottom: 1px solid var(--line-2); }
+.c2-hub__list b { font-size: 17px; letter-spacing: .03em; }
+.c2-hub__list span { font-size: 14px; line-height: 1.75; color: var(--ink-3); }
+.c2-hub__list a { font-size: 13px; font-weight: 700; color: var(--green); text-decoration: underline; text-underline-offset: 4px; }
+.c2-hub__list a::after { content: " →"; }
+@media (max-width: 1100px) {
+  .c2-hub__grid { grid-template-columns: 1fr; gap: 28px; }
+}
+@media (max-width: 767px) {
+  .c2-hub__grid { margin-top: 24px; }
+  .c2-venn { max-width: 250px; margin: 0 auto; }
+  .c2-hub__list li { padding: 12px 0; }
+  .c2-hub__list span { font-size: 13px; line-height: 1.7; }
+  .c2-venn__a { font-size: 7cqw; }
+  .c2-venn__b, .c2-venn__c { font-size: 5cqw; }
+  .c2-venn { max-width: 200px; }
+  .c2-hub__grid { gap: 16px; }
+}

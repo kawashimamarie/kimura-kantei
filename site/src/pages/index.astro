@@ -38,6 +38,12 @@ const oneLine: Record<string, string> = {
   eviction: 'オーナー側・借家人側どちらの立場でも',
   seismic: '耐震診断から改修設計・工事、インスペクションまで',
 };
+// 「専門性」セクション：中心＝不動産鑑定、補完＝不動産業務・コンサルティング／建築（文言は従来のセクションと同一）
+const expertise = [
+  { role: '中心', title: '不動産鑑定', text: '不動産鑑定士が、価格・賃料を評価し、根拠を書面にします。', href: '/services/appraisal/', link: '不動産鑑定・評価' },
+  { role: '補完', title: '不動産業務・コンサルティング', text: '宅地建物取引業者として、売買・仲介・活用の助言までご相談いただけます。', href: '/about/', link: '会社案内' },
+  { role: '補完', title: '建築', text: '一級建築士が、建物の状態や耐震性を調べ、改修までご案内します。', href: '/services/seismic/', link: '耐震診断・耐震改修' },
+];
 const roles = ['国土交通省 地価公示 評価員', '東京都税事務所 固定資産税路線価評価員', '東京地方裁判所（借地非訟事件）鑑定専門委員'];
 ---
 <TopLayoutAB
@@ -76,18 +82,15 @@ const roles = ['国土交通省 地価公示 評価員', '東京都税事務所 
   <section class="c2-hub" aria-labelledby="hub-title">
     <div class="wrap">
       <div class="sec-head reveal"><p class="kicker">専門性</p><h2 class="h2" id="hub-title">鑑定を軸に、不動産・建築の知見を組み合わせて解決します</h2></div>
-      <div class="c2-hub__grid reveal" data-delay="1">
-        <div class="c2-venn" aria-hidden="true">
-          <span class="c2-venn__a">不動産鑑定</span>
-          <span class="c2-venn__b">不動産業務<br>コンサル</span>
-          <span class="c2-venn__c">建築</span>
-        </div>
-        <ol class="c2-hub__list">
-          <li><b>不動産鑑定</b><span>不動産鑑定士が、価格・賃料を評価し、根拠を書面にします。</span><a href={u('/services/appraisal/')}>不動産鑑定・評価</a></li>
-          <li><b>不動産業務・コンサルティング</b><span>宅地建物取引業者として、売買・仲介・活用の助言までご相談いただけます。</span><a href={u('/about/')}>会社案内</a></li>
-          <li><b>建築</b><span>一級建築士が、建物の状態や耐震性を調べ、改修までご案内します。</span><a href={u('/services/seismic/')}>耐震診断・耐震改修</a></li>
-        </ol>
-      </div>
+      <ol class="hb reveal" data-delay="1">
+        {expertise.map((x, i) => (
+          <li class:list={[i === 0 && 'is-main']}>
+            <p class="hb__role">{x.role}</p>
+            <h3>{x.title}</h3>
+            <div class="hb__body"><p class="hb__text">{x.text}</p><a href={u(x.href)}>{x.link}</a></div>
+          </li>
+        ))}
+      </ol>
       <figure class="c2-route reveal">
         <figcaption>複数の課題が絡む例｜相続した借地上の空き家（杉並区・築48年の戸建て）</figcaption>
         <ol>
