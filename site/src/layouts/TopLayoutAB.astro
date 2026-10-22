@@ -4,6 +4,7 @@
 // スタイルだけ styles/top-ab.css に分けている。公開中のトップ（TopLayout・top.css）には影響しない。
 // title・description・構造化データは、公開中のトップと同じ内容を各案のページから渡している（変更なし）。
 import '../styles/d7/vars.css';
+import '../styles/d7/fonts.css';
 import '../styles/top-ab.css';
 import '../styles/d7/shell.css';
 import SeoHead from '../components/SeoHead.astro';
@@ -29,9 +30,6 @@ const { path, variant, ...seo } = Astro.props;
 <html lang="ja">
 <head>
   <SeoHead path={path} {...seo}>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@600;700;800&display=swap">
     <script is:inline>document.documentElement.classList.add('js');</script>
   </SeoHead>
 </head>

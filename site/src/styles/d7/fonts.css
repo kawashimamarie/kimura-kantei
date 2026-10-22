@@ -1,0 +1,7 @@
+/* このファイルは scripts/fonts/subset.py が生成します。手で編集しないでください（npm run fonts:update で再生成）。
+   自前配信フォント。ライセンスは SIL Open Font License 1.1（public/assets/fonts/licenses/）。
+   font-display: swap … 文字は最初は端末の既定フォントで表示し、フォントが届き次第入れ替える。 */
+@font-face { font-family: "Noto Sans JP"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("/assets/fonts/noto-sans-jp.c7cf2422.woff2") format("woff2"); }
+@font-face { font-family: "Shippori Mincho B1"; font-style: normal; font-weight: 700; font-display: swap; src: url("/assets/fonts/shippori-mincho-b1-700.7be49833.woff2") format("woff2"); }
+@font-face { font-family: "Shippori Mincho B1"; font-style: normal; font-weight: 800; font-display: swap; src: url("/assets/fonts/shippori-mincho-b1-800.4fc0bc91.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 500 600; font-display: swap; src: url("/assets/fonts/inter.64107015.woff2") format("woff2"); }

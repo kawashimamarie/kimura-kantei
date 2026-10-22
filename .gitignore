@@ -2,5 +2,9 @@
 site/node_modules/
 site/dist/
 site/.astro/
+# フォント生成の作業用（元フォント・一時ビルド・Python仮想環境）
+site/.font-cache/
+site/.fonts-tmp/
+site/.venv-fonts/
 # 社内用メモ（Publicリポジトリに含めない）
 .private/

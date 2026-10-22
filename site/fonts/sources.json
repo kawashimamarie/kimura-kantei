@@ -1,0 +1,61 @@
+{
+  "_note": "元フォント（開発時のみ使用・リポジトリには含めない）。取得元は google/fonts の固定コミット。sha256 が一致しないファイルは使わない。",
+  "googleFontsCommit": "45e3d5269e4a17d823f6d84470bc084dc5ae46f6",
+  "retrievedOn": "2026-10-22",
+  "sources": {
+    "noto-sans-jp": {
+      "file": "NotoSansJP[wght].ttf",
+      "url": "https://raw.githubusercontent.com/google/fonts/45e3d5269e4a17d823f6d84470bc084dc5ae46f6/ofl/notosansjp/NotoSansJP%5Bwght%5D.ttf",
+      "sha256": "c2f3b4d463500a2ddcd3849cded1fceeb9fd6d1c32e6cbecd568453ba50fc68f",
+      "version": "Version 2.004-H2",
+      "upstream": "https://github.com/notofonts/noto-cjk",
+      "license": "SIL Open Font License 1.1",
+      "licenseFile": "OFL-NotoSansJP.txt",
+      "copyright": "(c) 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'"
+    },
+    "shippori-mincho-b1-bold": {
+      "file": "ShipporiMinchoB1-Bold.ttf",
+      "url": "https://raw.githubusercontent.com/google/fonts/45e3d5269e4a17d823f6d84470bc084dc5ae46f6/ofl/shipporiminchob1/ShipporiMinchoB1-Bold.ttf",
+      "sha256": "d20f3981afb8bceda5fdf8f0fb29ba51eb21518644612ccd8a183e5bd433e25a",
+      "version": "Version 3.110",
+      "upstream": "https://github.com/fontdasu/ShipporiMincho",
+      "license": "SIL Open Font License 1.1",
+      "licenseFile": "OFL-ShipporiMinchoB1.txt",
+      "copyright": "Copyright 2021 The Shippori Mincho Project Authors"
+    },
+    "shippori-mincho-b1-extrabold": {
+      "file": "ShipporiMinchoB1-ExtraBold.ttf",
+      "url": "https://raw.githubusercontent.com/google/fonts/45e3d5269e4a17d823f6d84470bc084dc5ae46f6/ofl/shipporiminchob1/ShipporiMinchoB1-ExtraBold.ttf",
+      "sha256": "bee99a242f32128e8d6a4acff2b3f1742cd42ea90748758e6e10456871887e76",
+      "version": "Version 3.110",
+      "upstream": "https://github.com/fontdasu/ShipporiMincho",
+      "license": "SIL Open Font License 1.1",
+      "licenseFile": "OFL-ShipporiMinchoB1.txt",
+      "copyright": "Copyright 2021 The Shippori Mincho Project Authors"
+    },
+    "inter": {
+      "file": "Inter[opsz,wght].ttf",
+      "url": "https://raw.githubusercontent.com/google/fonts/45e3d5269e4a17d823f6d84470bc084dc5ae46f6/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf",
+      "sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
+      "version": "Version 4.001",
+      "upstream": "https://github.com/rsms/inter",
+      "license": "SIL Open Font License 1.1",
+      "licenseFile": "OFL-Inter.txt",
+      "copyright": "Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter)"
+    }
+  },
+  "licenses": {
+    "OFL-NotoSansJP.txt": {
+      "url": "https://raw.githubusercontent.com/google/fonts/45e3d5269e4a17d823f6d84470bc084dc5ae46f6/ofl/notosansjp/OFL.txt",
+      "sha256": "1c05c68c34f9708415aada51f17e1b0092d2cea709bf4a94cd38114f9e73d7d9"
+    },
+    "OFL-ShipporiMinchoB1.txt": {
+      "url": "https://raw.githubusercontent.com/google/fonts/45e3d5269e4a17d823f6d84470bc084dc5ae46f6/ofl/shipporiminchob1/OFL.txt",
+      "sha256": "41fba056279be5f45ff9a99e44b7b53897b42732f5806d8e666e0ab49ac6bd38"
+    },
+    "OFL-Inter.txt": {
+      "url": "https://raw.githubusercontent.com/google/fonts/45e3d5269e4a17d823f6d84470bc084dc5ae46f6/ofl/inter/OFL.txt",
+      "sha256": "5b9321a4298cfeb6b34354164a1c3afc3db114569984c502b9b35d988fd58c57"
+    }
+  }
+}

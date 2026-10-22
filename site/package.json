@@ -6,9 +6,19 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "build:pages": "PREVIEW_BASE=/kimura-kantei EXCLUDE_SAMPLES=1 EXCLUDE_COMPARE=1 node scripts/build-pages.mjs"
+    "build:pages": "PREVIEW_BASE=/kimura-kantei EXCLUDE_SAMPLES=1 EXCLUDE_COMPARE=1 node scripts/build-pages.mjs",
+    "fonts:setup": "python3 -m venv .venv-fonts && .venv-fonts/bin/pip install -q -r fonts/requirements.txt",
+    "fonts:fetch": "node scripts/fonts/cli.mjs fetch",
+    "fonts:collect": "node scripts/fonts/cli.mjs collect",
+    "fonts:subset": "node scripts/fonts/cli.mjs subset",
+    "fonts:update": "node scripts/fonts/cli.mjs update",
+    "fonts:check": "node scripts/fonts/cli.mjs check",
+    "fonts:stats": "node scripts/fonts/cli.mjs stats"
   },
   "dependencies": {
     "astro": "7.3.6"
+  },
+  "devDependencies": {
+    "playwright-core": "1.56.1"
   }
 }

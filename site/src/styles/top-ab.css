@@ -490,8 +490,10 @@ section.cta { padding: 88px 0; background: var(--green-d); color: #fff; }
 .c2-svc .nm b { display: block; font-size: 16.5px; letter-spacing: .03em; }
 .c2-svc .nm small { display: block; font-size: 13px; line-height: 1.6; color: var(--ink-2); }
 .c2-svc li i { font-style: normal; color: var(--green); }
-.c2-svc .rel { display: flex; flex-wrap: wrap; gap: 2px 16px; padding: 0 4px 12px 40px; font-size: 12.5px; }
-.c2-svc .rel a { color: var(--green); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(43, 83, 87, .4); }
+/* 関連事例・関連コラムのリンク：見た目はほぼそのまま、押せる範囲を高さ44pxにする（WCAG 2.2 AA の対象サイズ。上のサービスリンクの下余白と、この行の下余白を詰めて全体の高さ増を抑える） */
+.c2-svc .rel { display: flex; flex-wrap: wrap; gap: 0 16px; padding: 0 4px 0 40px; font-size: 12.5px; }
+.c2-svc .rel a { display: inline-flex; align-items: center; min-height: 44px; color: var(--green); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(43, 83, 87, .4); }
+.c2-svc li:has(.rel) .main { padding-bottom: 0; }
 .c2-svc li:not(:has(.rel)) .main { padding-bottom: 16px; }
 @media (hover: hover) { .c2-svc li .main:hover { background: var(--green-50); } }
 

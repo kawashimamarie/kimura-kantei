@@ -19,8 +19,9 @@ site/                     サイトのソース
 │   ├── data/             会社情報・サービス・FAQ・プロフィール
 │   ├── lib/              URL・構造化データ・日付の補助関数
 │   └── styles/           global.css（移行前の下層ページ共通）・top-ab.css（トップ＝C2案）・top.css（旧D7トップ。比較用）・compare.css（比較用の切り替えバー）・d7/（D7 共通基盤：vars＝色・フォント、shell＝ヘッダー/フッター/固定ボタン、base・parts＝下層ページの土台と部品）
-├── public/assets/        画像・JavaScript（そのまま配信）
-└── scripts/build-pages.mjs  確認用プレビュー（GitHub Pages）向けのビルド
+├── public/assets/        画像・JavaScript・フォント（そのまま配信。fonts/ は自動生成）
+├── fonts/                自前配信フォントの設定・文字一覧・manifest・手順書（fonts/README.md）
+└── scripts/              build-pages.mjs＝確認用プレビュー（GitHub Pages）向けのビルド／fonts/＝フォントのサブセット生成・検証
 ```
 
 リポジトリ直下の HTML（`index.html`・`services/` など）は、`site/` からビルドした確認用の出力です。直接編集しないでください。
@@ -33,6 +34,7 @@ npm install
 npm run dev          # 開発用サーバー（http://localhost:4321/）
 npm run build        # 本番用ビルド（site/dist/）
 npm run build:pages  # 確認用プレビュー向けにビルドし、リポジトリ直下へ出力
+npm run fonts:update # ページ・コラムを追加したら実行：自前配信フォントのサブセットを作り直す（手順は site/fonts/README.md）
 ```
 
 ## 確認用プレビューの設定
@@ -47,6 +49,8 @@ npm run build:pages  # 確認用プレビュー向けにビルドし、リポジ
 - プライバシーポリシー：`site/src/data/privacy.ts` に、現行サイトの原文をそのまま置いている。変更は、木村様の承認と専門家の確認のあとだけ。
 
 ## コンテンツの追加
+
+**ページ・コラム・事例を追加したり、文章を変えたりしたら、`cd site && npm run fonts:update` を実行してください。** 新しい漢字などが自前配信フォントに入っていないと、`npm run build:pages` が止まって知らせます（そのまま公開すると、その文字だけ端末の既定フォントで表示されます）。
 
 - **コラム**：`site/src/content/column/{slug}.md` を追加します（項目は `content.config.ts` を参照）。
 - **事例**：`site/src/content/cases/{slug}.md` を追加します。

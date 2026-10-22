@@ -23,6 +23,9 @@ if (!process.env.PREVIEW_BASE) {
 
 execSync('npx astro build', { cwd: siteDir, stdio: 'inherit' });
 
+// 自前配信フォントに入っていない文字（新しい漢字など）がページに増えていないか確認する。あれば npm run fonts:update を促して止める。
+execSync('node scripts/fonts/cli.mjs guard --dist dist', { cwd: siteDir, stdio: 'inherit' });
+
 const listFiles = (dir) =>
   readdirSync(dir).flatMap((name) => {
     const p = join(dir, name);

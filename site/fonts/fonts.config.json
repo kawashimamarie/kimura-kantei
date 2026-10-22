@@ -1,0 +1,127 @@
+{
+  "_note": "自前配信フォントの定義。ウェイトを増やす・書体を足すときはここを編集して npm run fonts:update を実行する。",
+  "outDir": "public/assets/fonts",
+  "publicPath": "/assets/fonts/",
+  "cssFile": "src/styles/d7/fonts.css",
+  "licensesDir": "public/assets/fonts/licenses",
+  "scriptStringsFace": "noto-sans-jp",
+  "faces": [
+    {
+      "id": "noto-sans-jp",
+      "family": "Noto Sans JP",
+      "source": "noto-sans-jp",
+      "weight": "400 700",
+      "range": [
+        400,
+        700
+      ],
+      "instance": {
+        "wght": [
+          400,
+          700
+        ]
+      },
+      "baseSets": [
+        "ascii",
+        "kana",
+        "jis-symbols"
+      ],
+      "layoutFeatures": [
+        "ccmp",
+        "halt",
+        "kern",
+        "liga",
+        "locl",
+        "palt",
+        "vert",
+        "vhal",
+        "vpal",
+        "vrt2"
+      ]
+    },
+    {
+      "id": "shippori-mincho-b1-700",
+      "family": "Shippori Mincho B1",
+      "source": "shippori-mincho-b1-bold",
+      "weight": "700",
+      "range": [
+        700,
+        700
+      ],
+      "baseSets": [
+        "ascii",
+        "kana",
+        "jis-symbols"
+      ],
+      "layoutFeatures": [
+        "frac",
+        "liga",
+        "mark",
+        "mkmk",
+        "vert",
+        "vpal",
+        "vrt2"
+      ]
+    },
+    {
+      "id": "shippori-mincho-b1-800",
+      "family": "Shippori Mincho B1",
+      "source": "shippori-mincho-b1-extrabold",
+      "weight": "800",
+      "range": [
+        800,
+        800
+      ],
+      "baseSets": [
+        "ascii",
+        "kana",
+        "jis-symbols"
+      ],
+      "layoutFeatures": [
+        "frac",
+        "liga",
+        "mark",
+        "mkmk",
+        "vert",
+        "vpal",
+        "vrt2"
+      ]
+    },
+    {
+      "id": "inter",
+      "family": "Inter",
+      "source": "inter",
+      "weight": "500 600",
+      "range": [
+        500,
+        600
+      ],
+      "instance": {
+        "opsz": 14,
+        "wght": [
+          500,
+          600
+        ]
+      },
+      "baseSets": [
+        "ascii",
+        "latin-punct"
+      ],
+      "_note": "以前の配信（Google Fonts）は Inter の 500・600 だけ。400・700 は近い太さで表示されていたので、同じ見た目になるよう 500〜600 に絞る",
+      "layoutFeatures": [
+        "calt",
+        "ccmp",
+        "dnom",
+        "frac",
+        "kern",
+        "locl",
+        "mark",
+        "mkmk",
+        "numr",
+        "pnum",
+        "tnum"
+      ]
+    }
+  ],
+  "_featuresNote": "layoutFeatures は書体ごと。以前の配信（Google Fonts）が持っていた機能に合わせている（見た目を変えないため）。Noto Sans JP は halt（約物の詰め：全角括弧が並ぶときの字間）・palt を持つが、Shippori Mincho B1 の日本語部分は vert/vpal/vrt2 だけで palt・halt・kern を持たなかった。機能を増やすと字間・約物の詰めが変わって表示が変わる。"
+}
