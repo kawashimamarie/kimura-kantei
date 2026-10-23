@@ -38,6 +38,7 @@ const sentences = site.previewNotice.split('。').filter(Boolean).map((t) => `${
   {site.preview && <aside class="ra-pv" aria-label="確認用プレビューのお知らせ"><p>{sentences.map((t) => <span>{t}</span>)}</p></aside>}
   {!standalone && <aside class="ra-cmp" aria-label="比較用の表示（公開しない）"><span>比較用</span><a {...pend} href={u('/compare/c2/')}>C2案</a><a {...pend} href={u('/compare/ref-a/')} aria-current="page">参考サイト重視案（R-A）</a></aside>}
 
+  <div class="ra-scrim" aria-hidden="true"></div>
   <header class="ra-hd" id="top">
     <div class="ra-hd__in">
       <a class="ra-brand" href={standalone ? '#top' : baseU('/compare/ref-a/')} aria-label={`${site.name} トップ`}>
@@ -90,11 +91,33 @@ const sentences = site.previewNotice.split('。').filter(Boolean).map((t) => `${
   <script is:inline>
   (function(){
     if (window.CSS && CSS.supports && CSS.supports('word-break','auto-phrase')) { document.querySelectorAll('wbr').forEach(function(w){w.remove()}); document.body.normalize(); }
-    var b=document.querySelector('.ra-burger'),n=document.getElementById('ra-nav');
-    if(b&&n){b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',o);document.documentElement.classList.toggle('ra-open',o)});
-      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&b.getAttribute('aria-expanded')==='true'){b.click();b.focus()}});
-      n.addEventListener('click',function(e){if(e.target.closest('a')&&b.getAttribute('aria-expanded')==='true')b.click()});}
-    if(/[?&]cards=tri/.test(location.search)){var cc=document.getElementById('ra-cards');if(cc)cc.classList.add('tri')}
+    /* メニュー：開閉とも CSS の transition。ここでは状態（aria-expanded・html.ra-open）とフォーカスだけを扱う */
+    var html=document.documentElement,b=document.querySelector('.ra-burger'),n=document.getElementById('ra-nav'),sc=document.querySelector('.ra-scrim'),lbl=b&&b.querySelector('.ra-sr');
+    if(b&&n){
+      var wide=window.matchMedia('(min-width: 1024px)'),isOpen=false;
+      var setMenu=function(o,returnFocus,focusIn){
+        if(o===isOpen)return;isOpen=o;
+        b.setAttribute('aria-expanded',o?'true':'false');html.classList.toggle('ra-open',o);
+        if(lbl)lbl.textContent=o?'メニューを閉じる':'メニュー';
+        if(o&&focusIn){var f=n.querySelector('a');if(f)requestAnimationFrame(function(){if(isOpen)f.focus({preventScroll:true})})}
+        else if(returnFocus){b.focus({preventScroll:true})}
+      };
+      b.addEventListener('click',function(e){setMenu(!isOpen,true,e.detail===0)}); /* キーボードで開いたときだけ、先頭のリンクへフォーカスを移す（タップ・クリックではフォーカス枠を出さない） */
+      if(sc)sc.addEventListener('click',function(){setMenu(false,true)});
+      n.addEventListener('click',function(e){if(e.target.closest('a'))setMenu(false,false)});
+      document.addEventListener('keydown',function(e){
+        if(!isOpen)return;
+        if(e.key==='Escape'){setMenu(false,true);return}
+        if(e.key==='Tab'){ /* 開いている間は、メニューのリンクと開閉ボタンの間でフォーカスを回す */
+          var list=[].slice.call(n.querySelectorAll('a')).concat(b),k=list.indexOf(document.activeElement);
+          if(e.shiftKey){if(k<=0){e.preventDefault();list[list.length-1].focus()}}
+          else if(k===-1||k===list.length-1){e.preventDefault();list[0].focus()}
+        }
+      });
+      var onWide=function(){if(wide.matches)setMenu(false,false)};
+      if(wide.addEventListener)wide.addEventListener('change',onWide);else if(wide.addListener)wide.addListener(onWide);
+      window.addEventListener('pageshow',function(e){if(e.persisted)setMenu(false,false)});
+    }
     var pend=document.querySelectorAll('a[data-pending]'),dlg=document.getElementById('preview-note');
     if(dlg&&pend.length&&typeof HTMLDialogElement==='function'){var d=document.createElement('dialog');d.className='ra-dialog';d.setAttribute('aria-labelledby','ra-note-h2');
       d.innerHTML='<div>'+dlg.innerHTML.replace('id="ra-note-h"','id="ra-note-h2"').replace(/<p><a class="ra-note__back"[^>]*>.*?<\/a><\/p>/,'')+'<p><button type="button" class="ra-dialog__close">閉じる</button></p></div>';
@@ -102,10 +125,16 @@ const sentences = site.previewNotice.split('。').filter(Boolean).map((t) => `${
       [].forEach.call(pend,function(a){a.addEventListener('click',function(e){e.preventDefault();last=a;if(typeof d.showModal==='function')d.showModal();else location.hash='preview-note'})});
       d.addEventListener('click',function(e){if(e.target===d||e.target.closest('.ra-dialog__close'))d.close()});
       d.addEventListener('close',function(){if(last)last.focus()});}
-    var rv=[].slice.call(document.querySelectorAll('.rv'));
-    if(!('IntersectionObserver' in window)){rv.forEach(function(e){e.classList.add('in')});return}
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
-    rv.forEach(function(e){io.observe(e)});
+    /* スクロールで現れる動き：IntersectionObserver が使え、動きを減らす設定でないときだけ有効にする（html.ra-anim）。
+       すでに画面内・画面より上にある要素は動かさずに表示し、画面の下にある要素だけを、近づいたときに表示する。 */
+    var items=[].slice.call(document.querySelectorAll('.rv,.rv-img,.rv-bg'));
+    if(!items.length||!('IntersectionObserver' in window)||(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches))return;
+    var vh=window.innerHeight||html.clientHeight,below=[];
+    items.forEach(function(e){if(e.getBoundingClientRect().top<vh*0.92)e.classList.add('in');else below.push(e)});
+    html.classList.add('ra-anim');
+    var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{rootMargin:'0px 0px -8% 0px'});
+    below.forEach(function(e){io.observe(e)});
+    setTimeout(function(){below.forEach(function(e){e.classList.add('in')})},12000); /* 念のため：何らかの理由で監視が働かなくても、内容は必ず表示する */
   })();
   </script>
 </body>

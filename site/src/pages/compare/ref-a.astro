@@ -43,7 +43,7 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
     </div>
   </section>
 
-  <div class="ra-band" role="img" aria-label="鑑定評価書の作成と住宅の模型">
+  <div class="ra-band rv-img" role="img" aria-label="鑑定評価書の作成と住宅の模型">
     <picture>
       <source media="(max-width: 700px)" srcset={u('/assets/img/top/mv-sp-780.webp')}>
       <img src={u('/assets/img/top/mv-pc-1080.webp')} width="1080" height="1118" alt="" fetchpriority="high">
@@ -52,7 +52,7 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
 
   <section class="ra-about" aria-labelledby="ra-about-h">
     <div class="ra-about__in">
-      <figure class="ra-about__fig"><span class="frame" aria-hidden="true"></span><img src={u('/assets/img/office/office-meeting.jpg')} width="1200" height="900" alt="事務所の打ち合わせスペース" loading="lazy"></figure>
+      <figure class="ra-about__fig rv"><span class="frame" aria-hidden="true"></span><img src={u('/assets/img/office/office-meeting.jpg')} width="1200" height="900" alt="事務所の打ち合わせスペース" loading="lazy"></figure>
       <div class="ra-about__txt rv">
         <i class="ra-tri" aria-hidden="true"></i>
         <h2 class="ra-eh" id="ra-about-h"><span class="en">About us</span><b>木村不動産鑑定とは</b></h2>
@@ -109,7 +109,7 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
       <h2 class="ra-eh2 rv" id="ra-case-h"><span class="en">Cases</span><b>ご相談事例</b></h2>
       <ul class="ra-rows">
         {cases.map((c) => (
-          <li class="rv"><a {...pend} href={u(`/cases/${c.id}/`)}><img class="th" src={u(c.data.cover.src)} width="128" height="72" alt="" loading="lazy"><span class="tag">{c.data.tags[0]}</span><span class="meta">{c.data.meta}</span><span class="ttl">{c.data.title}</span><i aria-hidden="true"></i></a></li>
+          <li class="rv"><a {...pend} href={u(`/cases/${c.id}/`)}><span class="thw"><img class="th" src={baseU(c.data.cover.src)} width="128" height="72" alt="" loading="lazy"></span><span class="tag">{c.data.tags[0]}</span><span class="meta">{c.data.meta}</span><span class="ttl">{c.data.title}</span><i aria-hidden="true"></i></a></li>
         ))}
       </ul>
       <p class="ra-list__more"><a class="ra-more" {...pend} href={u('/cases/')}><span>事例一覧</span><i aria-hidden="true">→</i></a></p>
@@ -125,7 +125,7 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
     </div>
   </section>
 
-  <section class="ra-company" aria-labelledby="ra-co-h">
+  <section class="ra-company rv-bg" aria-labelledby="ra-co-h">
     <img src={u('/assets/img/office/office-reception.jpg')} width="1200" height="900" alt="" loading="lazy">
     <div class="ra-company__in rv">
       <p class="ra-eyebrow">Company</p>
@@ -136,7 +136,7 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
   </section>
 
   <section class="ra-contact" aria-labelledby="ra-ct-h">
-    <div class="ra-contact__in">
+    <div class="ra-contact__in rv">
       <h2 id="ra-ct-h"><span class="nw">ご相談・お問い合わせは</span><wbr><span class="nw">こちらから</span></h2>
       <p class="lead">不動産の価格や建物のことで迷われたら、まずはお気軽にご相談ください。<br class="u-pc">来社・訪問・Zoomに対応しています。</p>
       <div class="ra-contact__btns">
