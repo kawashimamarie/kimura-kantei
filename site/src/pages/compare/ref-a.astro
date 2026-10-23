@@ -140,12 +140,11 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
   <section class="ra-contact" aria-labelledby="ra-ct-h">
     <div class="ra-contact__in rv">
       <h2 id="ra-ct-h"><span class="nw">ご相談・お問い合わせは</span><wbr><span class="nw">こちらから</span></h2>
-      <p class="lead">不動産の価格や建物のことで迷われたら、まずはお気軽にご相談ください。<br class="u-pc">来社・訪問・Zoomに対応しています。</p>
+      <p class="lead">不動産の価格や建物のことで迷われたら、まずはお気軽にご相談ください。</p>
       <div class="ra-contact__btns">
         <a class="tel" href={contact.telHref}><span class="tel__num"><Ico name="phone" /><b>{contact.tel}</b></span><small>営業時間 {contact.hours}</small></a>
         <Lk {...lk('/contact/','mail')}><b>相談を申し込む</b><small>フォームからのご予約</small></Lk>
       </div>
-      <p class="ra-contact__acc">{contact.access}　／　来社・訪問・Zoom</p>
     </div>
   </section>
 </RefALayout>
