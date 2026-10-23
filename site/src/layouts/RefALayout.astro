@@ -42,7 +42,7 @@ const sentences = site.previewNotice.split('。').filter(Boolean).map((t) => `${
   <header class="ra-hd" id="top">
     <div class="ra-hd__in">
       <a class="ra-brand" href={standalone ? '#top' : baseU('/compare/ref-a/')} aria-label={`${site.name} トップ`}>
-        <img src={baseU('/assets/img/logo/kimura-logo.png')} width="230" height="168" alt="">
+        <img src={baseU('/assets/img/logo/kimura-logo-transparent.png')} width="230" height="168" alt="">
         <span class="ra-brand__t"><b>{site.name}</b><small>{site.tagline}</small></span>
       </a>
       <nav class="ra-nav" id="ra-nav" aria-label="メインメニュー">
@@ -66,7 +66,7 @@ const sentences = site.previewNotice.split('。').filter(Boolean).map((t) => `${
 
   <footer class="ra-ft">
     <div class="ra-ft__in">
-      <p class="ra-ft__brand"><img src={baseU('/assets/img/logo/kimura-logo.png')} width="230" height="168" alt="" loading="lazy"><b>{site.name}</b><small>{site.tagline}</small></p>
+      <p class="ra-ft__brand"><img src={baseU('/assets/img/logo/kimura-logo-transparent.png')} width="230" height="168" alt="" loading="lazy"><b>{site.name}</b><small>{site.tagline}</small></p>
       <div class="ra-ft__cols">
         <ul><li><a {...pend} href={u('/compare/ref-a/')}>TOP</a></li><li><a {...pend} href={u('/cases/')}>事例</a></li><li><a {...pend} href={u('/column/')}>コラム</a></li></ul>
         <ul><li class="h">ご相談内容</li>{services.map((s) => <li class="sub"><a {...pend} href={u(`/services/${s.slug}/`)}>{s.name}</a></li>)}</ul>
