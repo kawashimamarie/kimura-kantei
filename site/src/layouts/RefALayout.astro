@@ -16,6 +16,19 @@ const standalone = process.env.RA_PREVIEW === '1';
 const Lk = standalone ? 'span' : 'a';
 const lk = (path: string, cls?: string) => (standalone ? { class: [cls, 'nl'].filter(Boolean).join(' ') } : { href: baseU(path), class: cls });
 const u = baseU;
+// メニュー（スマホのハンバーガー内・スマホ幅のフッター）の項目。下層ページを作ったら、path に対応するページが出来た項目は
+// standalone（公開用の確認ビルド）の判定に関係なく <a href> になる（lk() が path から href を作る）。項目の追加・順序の変更は、ここだけ直せばよい。
+const topHref = standalone ? '#top' : baseU('/compare/ref-a/');
+const menuItems = [
+  { top: true, label: 'TOP' },
+  { label: 'ご相談内容', children: services.map((sv) => ({ label: sv.name, path: `/services/${sv.slug}/` })) },
+  { label: '会社案内', children: [
+    { label: '代表紹介', path: '/profile/' }, { label: '会社概要', path: '/about/' }, { label: '料金の目安', path: '/fees/' }, { label: 'よくある質問', path: '/faq/' },
+  ] },
+  { label: '事例', path: '/cases/' },
+  { label: 'コラム', path: '/column/' },
+  { label: 'お問い合わせ', path: '/contact/' },
+];
 
 interface Props {
   title: string;
@@ -47,15 +60,28 @@ const { path, ...seo } = Astro.props;
       <nav class="ra-nav" id="ra-nav" aria-label="メインメニュー">
         <ul>
           {nav.slice(0, 5).map((n) => <li><Lk {...lk(n.href)}>{n.label}</Lk></li>)}
-          <li class="ra-nav__only-sp"><Lk {...lk('/fees/')}>料金</Lk></li>
-          <li class="ra-nav__only-sp"><Lk {...lk('/faq/')}>よくある質問</Lk></li>
         </ul>
         <div class="ra-nav__cta">
           <a class="ra-nav__tel" href={contact.telHref}><small>お電話</small><b>{contact.tel}</b></a>
           <Lk {...lk('/contact/','ra-nav__mail')}><b>ご相談の予約</b></Lk>
         </div>
       </nav>
-      <button class="ra-burger" type="button" aria-expanded="false" aria-controls="ra-nav"><span class="ra-burger__bars" aria-hidden="true"></span><span class="ra-sr">メニュー</span></button>
+      <nav class="ra-menu" id="ra-menu" aria-label="メインメニュー">
+        <ul class="ra-mlist">
+          {menuItems.map((it) => it.children ? (
+            <li class="ra-mlist__g"><p class="ra-mlist__h">{it.label}</p><ul>{it.children.map((c) => <li><Lk {...lk(c.path, 'ra-mi ra-mi--c')}>{c.label}</Lk></li>)}</ul></li>
+          ) : it.top ? (
+            <li><a class="ra-mi ra-mi--p" href={topHref}>{it.label}</a></li>
+          ) : (
+            <li><Lk {...lk(it.path, 'ra-mi ra-mi--p')}>{it.label}</Lk></li>
+          ))}
+        </ul>
+        <div class="ra-menu__foot">
+          <a class="ra-nav__tel" href={contact.telHref}><small>お電話</small><b>{contact.tel}</b></a>
+          <p class="ra-menu__brand"><b>{site.name}</b><small>{site.tagline}</small></p>
+        </div>
+      </nav>
+      <button class="ra-burger" type="button" aria-expanded="false" aria-controls="ra-menu"><span class="ra-burger__bars" aria-hidden="true"></span><span class="ra-sr">メニュー</span></button>
     </div>
   </header>
 
@@ -66,6 +92,18 @@ const { path, ...seo } = Astro.props;
   <footer class="ra-ft">
     <div class="ra-ft__in">
       <p class="ra-ft__brand"><img src={baseU('/assets/img/logo/kimura-logo-transparent.png')} width="230" height="168" alt="" loading="lazy"><b>{site.name}</b><small>{site.tagline}</small></p>
+      <nav class="ra-ft__nav" aria-label="フッターメニュー">
+        <ul class="ra-mlist">
+          {menuItems.map((it) => it.children ? (
+            <li class="ra-mlist__g"><p class="ra-mlist__h">{it.label}</p><ul>{it.children.map((c) => <li><Lk {...lk(c.path, 'ra-mi ra-mi--c')}>{c.label}</Lk></li>)}</ul></li>
+          ) : it.top ? (
+            <li><a class="ra-mi ra-mi--p" href={topHref}>{it.label}</a></li>
+          ) : (
+            <li><Lk {...lk(it.path, 'ra-mi ra-mi--p')}>{it.label}</Lk></li>
+          ))}
+        </ul>
+        <p class="ra-ft__priv"><Lk {...lk('/privacy/', 'ra-mi ra-mi--c')}>個人情報保護方針</Lk></p>
+      </nav>
       <div class="ra-ft__cols">
         <ul><li><a href={standalone ? '#top' : baseU('/compare/ref-a/')}>TOP</a></li><li><Lk {...lk('/cases/')}>事例</Lk></li><li><Lk {...lk('/column/')}>コラム</Lk></li></ul>
         <ul><li class="h">ご相談内容</li>{services.map((s) => <li class="sub"><Lk {...lk(`/services/${s.slug}/`)}>{s.name}</Lk></li>)}</ul>
@@ -83,11 +121,12 @@ const { path, ...seo } = Astro.props;
   (function(){
     if (window.CSS && CSS.supports && CSS.supports('word-break','auto-phrase')) { document.querySelectorAll('wbr').forEach(function(w){w.remove()}); document.body.normalize(); }
     /* メニュー：開閉とも CSS の transition。ここでは状態（aria-expanded・html.ra-open）とフォーカスだけを扱う */
-    var html=document.documentElement,b=document.querySelector('.ra-burger'),n=document.getElementById('ra-nav'),sc=document.querySelector('.ra-scrim'),lbl=b&&b.querySelector('.ra-sr');
+    var html=document.documentElement,b=document.querySelector('.ra-burger'),n=document.getElementById('ra-menu'),sc=document.querySelector('.ra-scrim'),lbl=b&&b.querySelector('.ra-sr');
     if(b&&n){
       var wide=window.matchMedia('(min-width: 1024px)'),isOpen=false;
       var setMenu=function(o,returnFocus,focusIn){
         if(o===isOpen)return;isOpen=o;
+        if(o){var hd=document.querySelector('.ra-hd');html.style.setProperty('--ra-hd-bottom',Math.max(0,Math.round(hd.getBoundingClientRect().bottom))+'px')}
         b.setAttribute('aria-expanded',o?'true':'false');html.classList.toggle('ra-open',o);
         if(lbl)lbl.textContent=o?'メニューを閉じる':'メニュー';
         if(o&&focusIn){var f=n.querySelector('a');if(f)requestAnimationFrame(function(){if(isOpen)f.focus({preventScroll:true})})}
