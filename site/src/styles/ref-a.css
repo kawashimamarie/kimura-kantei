@@ -260,6 +260,14 @@
 .ra-contact__btns :is(a, .nl) { display: grid; gap: 2px; place-items: center; padding: 20px 16px; font-family: var(--serif); min-height: 88px; transition: filter .25s; }
 .ra-contact__btns b { font-size: 26px; letter-spacing: .06em; line-height: 1.4; }
 .ra-contact__btns small { font-size: 12px; font-family: var(--sans); letter-spacing: .04em; }
+/* 電話パネル：線画の電話アイコン（落ち着いたゴールド）＋番号を横に並べ、その下に営業時間 */
+.ra-contact .tel { gap: 6px; }
+.tel__num { display: inline-flex; align-items: center; justify-content: center; gap: 12px; white-space: nowrap; }
+.tel__num .ico { width: 26px; height: 26px; flex: none; color: #9a8150; stroke-width: 1.5; }
+.ra-contact .tel b { line-height: 1.2; }
+.ra-contact .tel small { color: var(--mute); font-size: 13px; letter-spacing: .06em; }
+@media (min-width: 768px) { .tel__num { gap: 14px; } .tel__num .ico { width: 30px; height: 30px; } .ra-contact .tel small { font-size: 14px; } }
+@media (max-width: 359px) { .ra-contact .tel { min-height: 104px; } .tel__num { gap: 8px; } .tel__num .ico { width: 22px; height: 22px; } .ra-contact__btns .tel b { font-size: 23px; } }
 .ra-contact .tel { background: #fff; color: var(--navy); }
 .ra-contact .mail { background: #e0cda4; color: var(--navy-d); }
 .ra-contact__acc { margin-top: 24px; font-size: 13px; color: rgba(255,255,255,.8); }

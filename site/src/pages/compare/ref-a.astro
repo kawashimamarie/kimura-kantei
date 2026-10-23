@@ -4,6 +4,7 @@
 // 文章・写真・ロゴは参考サイトのものを使わない。会社情報・サービス内容・実績は data/ と content/ の既存の事実だけを使う。
 import { getCollection } from 'astro:content';
 import RefALayout from '../../layouts/RefALayout.astro';
+import Ico from '../../components/Ico.astro';
 import { site, contact, company } from '../../data/site';
 import { services } from '../../data/services';
 import { profile } from '../../data/profile';
@@ -141,7 +142,7 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
       <h2 id="ra-ct-h"><span class="nw">ご相談・お問い合わせは</span><wbr><span class="nw">こちらから</span></h2>
       <p class="lead">不動産の価格や建物のことで迷われたら、まずはお気軽にご相談ください。<br class="u-pc">来社・訪問・Zoomに対応しています。</p>
       <div class="ra-contact__btns">
-        <a class="tel" href={contact.telHref}><b>{contact.tel}</b><small>受付 {contact.hours}</small></a>
+        <a class="tel" href={contact.telHref}><span class="tel__num"><Ico name="phone" /><b>{contact.tel}</b></span><small>営業時間 {contact.hours}</small></a>
         <Lk {...lk('/contact/','mail')}><b>相談を申し込む</b><small>フォームからのご予約</small></Lk>
       </div>
       <p class="ra-contact__acc">{contact.access}　／　来社・訪問・Zoom</p>
