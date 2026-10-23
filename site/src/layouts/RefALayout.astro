@@ -7,7 +7,14 @@ import '../styles/ref-a.css';
 import SeoHead from '../components/SeoHead.astro';
 import { site, contact, nav, company } from '../data/site';
 import { services } from '../data/services';
-import { u } from '../lib/url';
+import { u as baseU } from '../lib/url';
+
+// R-A確認用プレビューを単独で公開するビルド（RA_PREVIEW=1）では、比較用バーを出さず、まだ作っていない下層ページへのリンクを
+// 「確認用プレビューです」の案内に置き換える（仮のページは作らない）。
+const standalone = process.env.RA_PREVIEW === '1';
+const PENDING = '#preview-note';
+const u = (path: string) => (standalone && !path.startsWith('/assets/') ? PENDING : baseU(path));
+const pend = standalone ? { 'data-pending': '' } : {};
 
 interface Props {
   title: string;
@@ -29,23 +36,23 @@ const sentences = site.previewNotice.split('。').filter(Boolean).map((t) => `${
 <body class="ra">
   <a class="ra-skip" href="#main">本文へスキップ</a>
   {site.preview && <aside class="ra-pv" aria-label="確認用プレビューのお知らせ"><p>{sentences.map((t) => <span>{t}</span>)}</p></aside>}
-  <aside class="ra-cmp" aria-label="比較用の表示（公開しない）"><span>比較用</span><a href={u('/compare/c2/')}>C2案</a><a href={u('/compare/ref-a/')} aria-current="page">参考サイト重視案（R-A）</a></aside>
+  {!standalone && <aside class="ra-cmp" aria-label="比較用の表示（公開しない）"><span>比較用</span><a {...pend} href={u('/compare/c2/')}>C2案</a><a {...pend} href={u('/compare/ref-a/')} aria-current="page">参考サイト重視案（R-A）</a></aside>}
 
   <header class="ra-hd" id="top">
     <div class="ra-hd__in">
-      <a class="ra-brand" href={u('/compare/ref-a/')} aria-label={`${site.name} トップ`}>
-        <img src={u('/assets/img/logo/kimura-logo.png')} width="230" height="168" alt="">
+      <a class="ra-brand" href={standalone ? '#top' : baseU('/compare/ref-a/')} aria-label={`${site.name} トップ`}>
+        <img src={baseU('/assets/img/logo/kimura-logo.png')} width="230" height="168" alt="">
         <span class="ra-brand__t"><b>{site.name}</b><small>{site.tagline}</small></span>
       </a>
       <nav class="ra-nav" id="ra-nav" aria-label="メインメニュー">
         <ul>
-          {nav.slice(0, 5).map((n) => <li><a href={u(n.href)}>{n.label}</a></li>)}
-          <li class="ra-nav__only-sp"><a href={u('/fees/')}>料金</a></li>
-          <li class="ra-nav__only-sp"><a href={u('/faq/')}>よくある質問</a></li>
+          {nav.slice(0, 5).map((n) => <li><a {...pend} href={u(n.href)}>{n.label}</a></li>)}
+          <li class="ra-nav__only-sp"><a {...pend} href={u('/fees/')}>料金</a></li>
+          <li class="ra-nav__only-sp"><a {...pend} href={u('/faq/')}>よくある質問</a></li>
         </ul>
         <div class="ra-nav__cta">
           <a class="ra-nav__tel" href={contact.telHref}><small>お電話</small><b>{contact.tel}</b></a>
-          <a class="ra-nav__mail" href={u('/contact/')}><b>ご相談の予約</b></a>
+          <a class="ra-nav__mail" {...pend} href={u('/contact/')}><b>ご相談の予約</b></a>
         </div>
       </nav>
       <button class="ra-burger" type="button" aria-expanded="false" aria-controls="ra-nav"><span class="ra-burger__bars" aria-hidden="true"></span><span class="ra-sr">メニュー</span></button>
@@ -58,19 +65,27 @@ const sentences = site.previewNotice.split('。').filter(Boolean).map((t) => `${
 
   <footer class="ra-ft">
     <div class="ra-ft__in">
-      <p class="ra-ft__brand"><img src={u('/assets/img/logo/kimura-logo.png')} width="230" height="168" alt="" loading="lazy"><b>{site.name}</b><small>{site.tagline}</small></p>
+      <p class="ra-ft__brand"><img src={baseU('/assets/img/logo/kimura-logo.png')} width="230" height="168" alt="" loading="lazy"><b>{site.name}</b><small>{site.tagline}</small></p>
       <div class="ra-ft__cols">
-        <ul><li><a href={u('/compare/ref-a/')}>TOP</a></li><li><a href={u('/cases/')}>事例</a></li><li><a href={u('/column/')}>コラム</a></li></ul>
-        <ul><li class="h">ご相談内容</li>{services.map((s) => <li class="sub"><a href={u(`/services/${s.slug}/`)}>{s.name}</a></li>)}</ul>
-        <ul><li class="h">会社案内</li><li class="sub"><a href={u('/profile/')}>代表紹介</a></li><li class="sub"><a href={u('/about/')}>会社概要</a></li><li class="sub"><a href={u('/fees/')}>料金の目安</a></li><li class="sub"><a href={u('/faq/')}>よくある質問</a></li></ul>
-        <ul><li><a href={u('/contact/')}>お問い合わせ</a></li><li><a href={u('/privacy/')}>個人情報保護方針</a></li></ul>
+        <ul><li><a {...pend} href={u('/compare/ref-a/')}>TOP</a></li><li><a {...pend} href={u('/cases/')}>事例</a></li><li><a {...pend} href={u('/column/')}>コラム</a></li></ul>
+        <ul><li class="h">ご相談内容</li>{services.map((s) => <li class="sub"><a {...pend} href={u(`/services/${s.slug}/`)}>{s.name}</a></li>)}</ul>
+        <ul><li class="h">会社案内</li><li class="sub"><a {...pend} href={u('/profile/')}>代表紹介</a></li><li class="sub"><a {...pend} href={u('/about/')}>会社概要</a></li><li class="sub"><a {...pend} href={u('/fees/')}>料金の目安</a></li><li class="sub"><a {...pend} href={u('/faq/')}>よくある質問</a></li></ul>
+        <ul><li><a {...pend} href={u('/contact/')}>お問い合わせ</a></li><li><a {...pend} href={u('/privacy/')}>個人情報保護方針</a></li></ul>
       </div>
       <address><b>{site.name}</b><br>〒{contact.postalCode}<br>{contact.address}<br>TEL：{contact.tel}　FAX：{contact.fax}<br>{contact.access}</address>
     </div>
     <p class="ra-ft__copy"><small>© {site.name}</small><small>{company.licenses[0]}</small></p>
   </footer>
 
-  <nav class="ra-bar" aria-label="お問い合わせ"><a class="t" href={contact.telHref}>電話で相談</a><a class="m" href={u('/contact/')}>相談を予約</a></nav>
+  {standalone && (
+    <aside class="ra-note" id="preview-note" aria-labelledby="ra-note-h" tabindex="-1">
+      <h2 id="ra-note-h">確認用プレビューです</h2>
+      <p>このページは、トップページのデザインを確認していただくための試作です。下層ページ（ご相談内容・事例・コラム・会社案内・お問い合わせなど）はまだ制作しておらず、お問い合わせフォームもありません。</p>
+      <p>お急ぎのご相談は、お電話（<a href={contact.telHref}>{contact.tel}</a>、受付 {contact.hours}）へお願いします。</p>
+      <p><a class="ra-note__back" href="#top">ページの先頭へ戻る</a></p>
+    </aside>
+  )}
+  <nav class="ra-bar" aria-label="お問い合わせ"><a class="t" href={contact.telHref}>電話で相談</a><a class="m" {...pend} href={u('/contact/')}>相談を予約</a></nav>
 
   <script is:inline>
   (function(){
@@ -80,6 +95,13 @@ const sentences = site.previewNotice.split('。').filter(Boolean).map((t) => `${
       document.addEventListener('keydown',function(e){if(e.key==='Escape'&&b.getAttribute('aria-expanded')==='true'){b.click();b.focus()}});
       n.addEventListener('click',function(e){if(e.target.closest('a')&&b.getAttribute('aria-expanded')==='true')b.click()});}
     if(/[?&]cards=tri/.test(location.search)){var cc=document.getElementById('ra-cards');if(cc)cc.classList.add('tri')}
+    var pend=document.querySelectorAll('a[data-pending]'),dlg=document.getElementById('preview-note');
+    if(dlg&&pend.length&&typeof HTMLDialogElement==='function'){var d=document.createElement('dialog');d.className='ra-dialog';d.setAttribute('aria-labelledby','ra-note-h2');
+      d.innerHTML='<div>'+dlg.innerHTML.replace('id="ra-note-h"','id="ra-note-h2"').replace(/<p><a class="ra-note__back"[^>]*>.*?<\/a><\/p>/,'')+'<p><button type="button" class="ra-dialog__close">閉じる</button></p></div>';
+      document.body.appendChild(d);var last=null;
+      [].forEach.call(pend,function(a){a.addEventListener('click',function(e){e.preventDefault();last=a;if(typeof d.showModal==='function')d.showModal();else location.hash='preview-note'})});
+      d.addEventListener('click',function(e){if(e.target===d||e.target.closest('.ra-dialog__close'))d.close()});
+      d.addEventListener('close',function(){if(last)last.focus()});}
     var rv=[].slice.call(document.querySelectorAll('.rv'));
     if(!('IntersectionObserver' in window)){rv.forEach(function(e){e.classList.add('in')});return}
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});

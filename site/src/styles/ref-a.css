@@ -292,7 +292,22 @@ html:not(.js) .ra-burger { display: none; }
 .js .rv { transform: translateY(var(--an-dist)); transition: transform var(--an-dur) var(--an-ease); transition-delay: calc(var(--i, 0) * .08s); }
 .js .rv.in { transform: none; }
 @media (prefers-reduced-motion: reduce) {
-  .ra-hero h1 span, .ra-hero__sub { animation: none; }
+  .ra-hero h1 .l1, .ra-hero h1 .l2, .ra-hero__sub { animation: none; }
   .js .rv { transform: none; transition: none; }
   .rt img, .ra-burger__bars, .ra-burger__bars::before, .ra-burger__bars::after { transition: none; }
 }
+
+/* 単独公開の確認用プレビュー：未制作ページへのリンクの案内 */
+.ra-note { display: none; background: #fff8e1; color: #3b3320; padding: 40px 16px; text-align: center; font-size: 14px; line-height: 2; }
+.ra-note:target { display: block; }
+.ra-note h2 { font-family: var(--serif); font-size: 20px; letter-spacing: .08em; color: var(--navy); margin-bottom: 8px; }
+.ra-note p { max-width: 640px; margin: 0 auto 8px; text-align: left; }
+.ra-note a { text-decoration: underline; text-underline-offset: 3px; }
+.ra-dialog { border: 0; padding: 0; max-width: min(560px, calc(100vw - 32px)); background: #fff; color: var(--ink); box-shadow: 0 16px 48px rgba(0,0,0,.3); font-family: var(--sans); }
+.ra-dialog::backdrop { background: rgba(18,41,74,.6); }
+.ra-dialog > div { padding: 32px 24px; font-size: 14px; line-height: 2; }
+.ra-dialog h2 { font-family: var(--serif); font-size: 20px; letter-spacing: .08em; color: var(--navy); margin: 0 0 8px; }
+.ra-dialog p { margin: 0 0 8px; }
+.ra-dialog a { text-decoration: underline; }
+.ra-dialog__close { min-height: 48px; min-width: 120px; background: var(--navy); color: #fff; border: 0; font-family: var(--serif); font-weight: 700; letter-spacing: .08em; cursor: pointer; }
+html:has(.ra-note:target) { scroll-padding-top: 16px; }

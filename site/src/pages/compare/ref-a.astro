@@ -8,7 +8,11 @@ import { site, contact, company } from '../../data/site';
 import { services } from '../../data/services';
 import { profile } from '../../data/profile';
 import { website, person } from '../../lib/schema';
-import { u } from '../../lib/url';
+import { u as baseU } from '../../lib/url';
+
+const standalone = process.env.RA_PREVIEW === '1';
+const u = (path: string) => (standalone && !path.startsWith('/assets/') ? '#preview-note' : baseU(path));
+const pend = standalone ? { 'data-pending': '' } : {};
 
 const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
 const columns = (await getCollection('column')).sort((a, b) => +new Date(b.data.updatedAt) - +new Date(a.data.updatedAt));
@@ -26,7 +30,7 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
   fullTitle={`相続・親族間売買・地代家賃・立退料の不動産鑑定｜${site.name}（東京・阿佐ヶ谷）`}
   title="トップ（参考サイト重視案）"
   description="相続した不動産の分け方、親族間売買の価格、地代・家賃、立退料、建物の耐震やインスペクションまで。不動産鑑定士・一級建築士の木村修が、価格と建物の両面からご相談に応じます。JR阿佐ヶ谷駅徒歩1分。"
-  path="/compare/ref-a/"
+  path={standalone ? '/' : '/compare/ref-a/'}
   jsonLd={[website(), person()]}
 >
   <section class="ra-hero" aria-labelledby="ra-h1">
@@ -54,7 +58,7 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
         <h2 class="ra-eh" id="ra-about-h"><span class="en">About us</span><b>木村不動産鑑定とは</b></h2>
         <p>2006年の創業以来、東京・阿佐ヶ谷で、不動産の価格と建物の両面からご相談に応じてきました。不動産鑑定士・一級建築士の木村修が、相続、親族間売買、地代・家賃、立退料、耐震診断まで、第三者にも説明できる根拠をそえて整理します。</p>
         <p>はじめてのご相談でも、まずは状況をうかがうところから。必要なときだけ鑑定評価や調査をご案内します。</p>
-        <a class="ra-more" href={u('/about/')}><span>会社案内</span><i aria-hidden="true">→</i></a>
+        <a class="ra-more" {...pend} href={u('/about/')}><span>会社案内</span><i aria-hidden="true">→</i></a>
       </div>
     </div>
   </section>
@@ -65,7 +69,7 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
       <ul class="ra-cards" id="ra-cards">
         {services.map((s, i) => (
           <li class="rv" style={`--i:${i % 3}`}>
-            <a href={u(`/services/${s.slug}/`)}>
+            <a {...pend} href={u(`/services/${s.slug}/`)}>
               <em class="no" aria-hidden="true">{String(i + 1).padStart(2, '0')}</em>
               <b>{s.name}</b>
               <span>{oneLine[s.slug]}</span>
@@ -94,7 +98,7 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
         <p class="ra-eyebrow">Representative</p>
         <h2 id="ra-rep-h">価格と建物の両方を、<br>ひとりの専門家が見ます。</h2>
         <p><span class="nw">{profile.title.replace('株式会社木村不動産鑑定 ', '')}　{profile.name}</span>。{profile.credentials.slice(0, 2).join('・')}の資格をもち、国土交通省の地価公示の評価員などを務めてきました。</p>
-        <a class="ra-more" href={u('/profile/')}><span>代表紹介を見る</span><i aria-hidden="true">→</i></a>
+        <a class="ra-more" {...pend} href={u('/profile/')}><span>代表紹介を見る</span><i aria-hidden="true">→</i></a>
       </div>
       <figure class="ra-rep__fig rv" style="--i:1"><img src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt={`代表取締役 ${profile.name}`} loading="lazy"></figure>
     </div>
@@ -105,19 +109,19 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
       <h2 class="ra-eh2 rv" id="ra-case-h"><span class="en">Cases</span><b>ご相談事例</b></h2>
       <ul class="ra-rows">
         {cases.map((c) => (
-          <li class="rv"><a href={u(`/cases/${c.id}/`)}><img class="th" src={u(c.data.cover.src)} width="128" height="72" alt="" loading="lazy"><span class="tag">{c.data.tags[0]}</span><span class="meta">{c.data.meta}</span><span class="ttl">{c.data.title}</span><i aria-hidden="true"></i></a></li>
+          <li class="rv"><a {...pend} href={u(`/cases/${c.id}/`)}><img class="th" src={u(c.data.cover.src)} width="128" height="72" alt="" loading="lazy"><span class="tag">{c.data.tags[0]}</span><span class="meta">{c.data.meta}</span><span class="ttl">{c.data.title}</span><i aria-hidden="true"></i></a></li>
         ))}
       </ul>
-      <p class="ra-list__more"><a class="ra-more" href={u('/cases/')}><span>事例一覧</span><i aria-hidden="true">→</i></a></p>
+      <p class="ra-list__more"><a class="ra-more" {...pend} href={u('/cases/')}><span>事例一覧</span><i aria-hidden="true">→</i></a></p>
     </div>
     <div class="ra-list__in">
       <h2 class="ra-eh2 rv"><span class="en">Column</span><b>コラム</b></h2>
       <ul class="ra-rows gold nothumb">
         {columns.map((c) => (
-          <li class="rv"><a href={u(`/column/${c.id}/`)}><span class="tag">コラム</span><span class="meta">{fmt(c.data.updatedAt)}</span><span class="ttl">{c.data.title}</span><i aria-hidden="true"></i></a></li>
+          <li class="rv"><a {...pend} href={u(`/column/${c.id}/`)}><span class="tag">コラム</span><span class="meta">{fmt(c.data.updatedAt)}</span><span class="ttl">{c.data.title}</span><i aria-hidden="true"></i></a></li>
         ))}
       </ul>
-      <p class="ra-list__more"><a class="ra-more" href={u('/column/')}><span>コラム一覧</span><i aria-hidden="true">→</i></a></p>
+      <p class="ra-list__more"><a class="ra-more" {...pend} href={u('/column/')}><span>コラム一覧</span><i aria-hidden="true">→</i></a></p>
     </div>
   </section>
 
@@ -127,7 +131,7 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
       <p class="ra-eyebrow">Company</p>
       <h2 id="ra-co-h">会社案内</h2>
       <p>会社概要・所在地・資格・所属団体などを<wbr>ご案内します。</p>
-      <a class="ra-more" href={u('/about/')}><span>会社案内を見る</span><i aria-hidden="true">→</i></a>
+      <a class="ra-more" {...pend} href={u('/about/')}><span>会社案内を見る</span><i aria-hidden="true">→</i></a>
     </div>
   </section>
 
@@ -137,7 +141,7 @@ const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYe
       <p class="lead">不動産の価格や建物のことで迷われたら、まずはお気軽にご相談ください。<br class="u-pc">来社・訪問・Zoomに対応しています。</p>
       <div class="ra-contact__btns">
         <a class="tel" href={contact.telHref}><b>{contact.tel}</b><small>受付 {contact.hours}</small></a>
-        <a class="mail" href={u('/contact/')}><b>相談を申し込む</b><small>フォームからのご予約</small></a>
+        <a class="mail" {...pend} href={u('/contact/')}><b>相談を申し込む</b><small>フォームからのご予約</small></a>
       </div>
       <p class="ra-contact__acc">{contact.access}　／　来社・訪問・Zoom</p>
     </div>

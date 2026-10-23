@@ -15,7 +15,8 @@
     "fonts:check": "node scripts/fonts/cli.mjs check",
     "fonts:stats": "node scripts/fonts/cli.mjs stats",
     "fonts:doctor": "node scripts/fonts/cli.mjs doctor",
-    "build:production": "astro build && node scripts/check-production.mjs"
+    "build:production": "astro build && node scripts/check-production.mjs",
+    "build:ra-preview": "node scripts/build-ra-preview.mjs"
   },
   "dependencies": {
     "astro": "7.3.6"
