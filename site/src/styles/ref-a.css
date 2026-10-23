@@ -26,8 +26,6 @@
 .ra-skip:focus { top: 8px; }
 
 /* 確認用のお知らせ・比較用バー */
-.ra-pv { background: #fff8e1; color: #5b4a12; font-size: 12px; line-height: 1.7; padding: 6px 16px; text-align: center; }
-.ra-pv span { display: inline-block; margin: 0 4px; }
 .ra-cmp { background: #12294a; color: #fff; font-size: 12px; line-height: 1; padding: 8px 16px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .ra-cmp span { opacity: .7; margin-right: 4px; }
 .ra-cmp a { padding: 14px 12px; min-height: 44px; display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,.35); border-radius: 2px; }

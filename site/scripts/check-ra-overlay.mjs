@@ -30,7 +30,7 @@ ok(local.length > 0 && local.every((r) => r.startsWith('/kimura-kantei/ra/')), `
 ok(local.every((r) => existsSync(join(repo, r.replace('/kimura-kantei/', '').split(/[?#]/)[0]))), '参照先のファイルがすべて存在する');
 ok(!/ra-cmp|dev-preview|compare\/c2/.test(html), '比較用バー・開発ツールの痕跡がない');
 ok(/<meta name="robots" content="noindex, nofollow">/.test(html), 'noindex がある');
-ok(/ra-pv/.test(html) && /確認用のプレビュー/.test(html.replace(/<wbr>/g, '')), 'プレビューバナーがある');
+ok(!/ra-pv/.test(html) && !/このサイトは/.test(html.replace(/<wbr>/g, '')), 'サイト説明文「このサイトは〜」（バナー）がない');
 ok(!/<form|<input|<textarea/.test(html), 'フォームがない（送信できない）');
 ok(!/class="ra-cards tri"/.test(html), 'サービスカードは三角装飾なし（標準）');
 if (fails.length) { console.error(`\n✗ ${fails.length} 項目が不合格です。公開しないでください。`); process.exit(1); }
