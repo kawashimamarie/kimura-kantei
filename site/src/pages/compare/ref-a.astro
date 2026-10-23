@@ -1,0 +1,144 @@
+---
+// 【比較用・公開しない】参考サイト重視案（R-A）。参考サイト（総合鑑定調査）の「白地＋紺＋シャンパンゴールド、明朝の大きな見出し、
+// 全幅の写真帯、細い罫線と角の三角モチーフ、一覧は紺のタグ付き行」という構成・雰囲気を参考に、木村不動産鑑定の内容で組み直した試作。
+// 文章・写真・ロゴは参考サイトのものを使わない。会社情報・サービス内容・実績は data/ と content/ の既存の事実だけを使う。
+import { getCollection } from 'astro:content';
+import RefALayout from '../../layouts/RefALayout.astro';
+import { site, contact, company } from '../../data/site';
+import { services } from '../../data/services';
+import { profile } from '../../data/profile';
+import { website, person } from '../../lib/schema';
+import { u } from '../../lib/url';
+
+const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
+const columns = (await getCollection('column')).sort((a, b) => +new Date(b.data.updatedAt) - +new Date(a.data.updatedAt));
+const oneLine: Record<string, string> = {
+  appraisal: '不動産の適正な価格・賃料を、根拠とともに書面に',
+  inheritance: '遺産分割の話し合いに、客観的な評価と助言を',
+  'family-transaction': '親族間・同族間の売買の時価を、鑑定評価書で',
+  rent: '地代・家賃の改定、借地権・底地の評価',
+  eviction: 'オーナー側・借家人側どちらの立場でも',
+  seismic: '耐震診断から改修設計・工事、インスペクションまで',
+};
+const fmt = (d: string | Date) => { const x = new Date(d); return `${x.getFullYear()}.${String(x.getMonth() + 1).padStart(2, '0')}.${String(x.getDate()).padStart(2, '0')}`; };
+---
+<RefALayout
+  fullTitle={`相続・親族間売買・地代家賃・立退料の不動産鑑定｜${site.name}（東京・阿佐ヶ谷）`}
+  title="トップ（参考サイト重視案）"
+  description="相続した不動産の分け方、親族間売買の価格、地代・家賃、立退料、建物の耐震やインスペクションまで。不動産鑑定士・一級建築士の木村修が、価格と建物の両面からご相談に応じます。JR阿佐ヶ谷駅徒歩1分。"
+  path="/compare/ref-a/"
+  jsonLd={[website(), person()]}
+>
+  <section class="ra-hero" aria-labelledby="ra-h1">
+    <div class="ra-hero__in">
+      <div class="ra-hero__txt">
+        <h1 id="ra-h1"><span class="l1">不動産の価値を、</span><span class="l2">根拠とともに。</span></h1>
+        <p class="ra-hero__sub"><span class="s1">{site.name}</span><i aria-hidden="true"></i><span class="s2">不動産鑑定士・一級建築士事務所</span></p>
+      </div>
+      <svg class="ra-hero__ring" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+        <path class="a" d="M205 62A104 104 0 1 0 214 150" />
+        <path class="b" d="M214 150A104 104 0 0 0 205 62" />
+        <text x="120" y="112" text-anchor="middle">SINCE</text>
+        <text x="120" y="152" text-anchor="middle">2006</text>
+      </svg>
+    </div>
+  </section>
+
+  <div class="ra-band" role="img" aria-label="鑑定評価書の作成と住宅の模型">
+    <picture>
+      <source media="(max-width: 700px)" srcset={u('/assets/img/top/mv-sp-780.webp')}>
+      <img src={u('/assets/img/top/mv-pc-1080.webp')} width="1080" height="1118" alt="" fetchpriority="high">
+    </picture>
+  </div>
+
+  <section class="ra-about" aria-labelledby="ra-about-h">
+    <div class="ra-about__in">
+      <figure class="ra-about__fig"><span class="frame" aria-hidden="true"></span><img src={u('/assets/img/office/office-meeting.jpg')} width="1200" height="900" alt="事務所の打ち合わせスペース" loading="lazy"></figure>
+      <div class="ra-about__txt rv">
+        <i class="ra-tri" aria-hidden="true"></i>
+        <h2 class="ra-eh" id="ra-about-h"><span class="en">About us</span><b>木村不動産鑑定とは</b></h2>
+        <p>2006年の創業以来、東京・阿佐ヶ谷で、不動産の価格と建物の両面からご相談に応じてきました。不動産鑑定士・一級建築士の木村修が、相続、親族間売買、地代・家賃、立退料、耐震診断まで、第三者にも説明できる根拠をそえて整理します。</p>
+        <p>はじめてのご相談でも、まずは状況をうかがうところから。必要なときだけ鑑定評価や調査をご案内します。</p>
+        <a class="ra-more" href={u('/about/')}><span>会社案内</span><i aria-hidden="true">→</i></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ra-biz" aria-labelledby="ra-biz-h">
+    <div class="ra-in">
+      <h2 class="ra-sh rv" id="ra-biz-h"><b>ご相談内容</b><small>Consultation</small></h2>
+      <ul class="ra-cards">
+        {services.map((s, i) => (
+          <li class="rv" style={`--i:${i % 3}`}>
+            <a href={u(`/services/${s.slug}/`)}>
+              <img src={u(`/assets/img/service-icons/${s.slug}-240.webp`)} width="64" height="64" alt="" loading="lazy">
+              <b>{s.name}</b>
+              <span>{oneLine[s.slug]}</span>
+              <i aria-hidden="true">→</i>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="ra-strength" aria-labelledby="ra-str-h">
+    <div class="ra-in">
+      <h2 class="ra-sh rv" id="ra-str-h"><b>専門性</b><small>Expertise</small></h2>
+      <ol class="ra-str">
+        <li class="rv"><span class="n">01</span><b>不動産鑑定</b><p>不動産鑑定士が、価格・賃料を評価し、その根拠を書面にします。</p></li>
+        <li class="rv" style="--i:1"><span class="n">02</span><b><span class="nw">不動産業務・</span><wbr><span class="nw">コンサルティング</span></b><p>宅地建物取引業者として、売買・仲介・活用の助言までご相談いただけます。</p></li>
+        <li class="rv" style="--i:2"><span class="n">03</span><b>建築</b><p>一級建築士が、建物の状態や耐震性を調べ、改修までご案内します。</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="ra-rep" aria-labelledby="ra-rep-h">
+    <div class="ra-rep__in">
+      <div class="ra-rep__txt rv">
+        <p class="ra-eyebrow">Representative</p>
+        <h2 id="ra-rep-h">価格と建物の両方を、<br>ひとりの専門家が見ます。</h2>
+        <p>{profile.title.replace('株式会社木村不動産鑑定 ', '')}　{profile.name}。{profile.credentials.slice(0, 2).join('・')}の資格をもち、国土交通省の地価公示の評価員などを務めてきました。</p>
+        <a class="ra-more" href={u('/profile/')}><span>代表紹介を見る</span><i aria-hidden="true">→</i></a>
+      </div>
+      <figure class="ra-rep__fig rv" style="--i:1"><img src={u(profile.photo)} width={profile.photoWidth} height={profile.photoHeight} alt={`代表取締役 ${profile.name}`} loading="lazy"></figure>
+    </div>
+  </section>
+
+  <section class="ra-list" aria-labelledby="ra-case-h">
+    <div class="ra-list__in">
+      <h2 class="ra-eh2 rv" id="ra-case-h"><span class="en">Cases</span><b>ご相談事例</b></h2>
+      <ul class="ra-rows">
+        {cases.map((c) => (
+          <li class="rv"><a href={u(`/cases/${c.id}/`)}><span class="tag">{c.data.tags[0]}</span><span class="meta">{c.data.meta}</span><span class="ttl">{c.data.title}</span><i aria-hidden="true"></i></a></li>
+        ))}
+      </ul>
+      <p class="ra-list__more"><a class="ra-more" href={u('/cases/')}><span>事例一覧</span><i aria-hidden="true">→</i></a></p>
+    </div>
+    <div class="ra-list__in">
+      <h2 class="ra-eh2 rv"><span class="en">Column</span><b>コラム</b></h2>
+      <ul class="ra-rows gold">
+        {columns.map((c) => (
+          <li class="rv"><a href={u(`/column/${c.id}/`)}><span class="tag">コラム</span><span class="meta">{fmt(c.data.updatedAt)}</span><span class="ttl">{c.data.title}</span><i aria-hidden="true"></i></a></li>
+        ))}
+      </ul>
+      <p class="ra-list__more"><a class="ra-more" href={u('/column/')}><span>コラム一覧</span><i aria-hidden="true">→</i></a></p>
+    </div>
+  </section>
+
+  <section class="ra-tiles" aria-label="会社案内・代表紹介">
+    <a class="rt" href={u('/about/')}><img src={u('/assets/img/office/office-reception.jpg')} width="1200" height="900" alt="" loading="lazy"><span class="rt__t"><b class="en">Company</b><i></i><b class="jp">会社案内</b><span>会社概要・所在地・資格・所属団体などをご案内します。</span></span></a>
+    <a class="rt" href={u('/profile/')}><img src={u('/assets/img/cases/suginami-house-rental-after.jpg')} width="960" height="540" alt="" loading="lazy"><span class="rt__t"><b class="en">Profile</b><i></i><b class="jp">代表紹介</b><span>代表のこれまでの経歴と、取り組んでいる分野です。</span></span></a>
+  </section>
+
+  <section class="ra-contact" aria-labelledby="ra-ct-h">
+    <div class="ra-contact__in">
+      <h2 id="ra-ct-h">ご相談・お問い合わせはこちらから</h2>
+      <p class="lead">不動産の価格や建物のことで迷われたら、まずはお気軽にご相談ください。<br class="u-pc">来社・訪問・Zoomに対応しています。</p>
+      <div class="ra-contact__btns">
+        <a class="tel" href={contact.telHref}><b>{contact.tel}</b><small>受付 {contact.hours}</small></a>
+        <a class="mail" href={u('/contact/')}><b>相談を申し込む</b><small>フォームからのご予約</small></a>
+      </div>
+    </div>
+  </section>
+</RefALayout>

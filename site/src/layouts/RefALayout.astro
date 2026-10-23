@@ -1,0 +1,89 @@
+---
+// 【比較用・公開しない】参考サイト重視案（R-A）専用レイアウト。C2案（TopLayoutAB・top-ab.css・d7/shell.css）とは共通部品も CSS も共有しない。
+// pages/compare/ 配下から使い、確認用ビルド（build:pages）では pages/compare/ ごと出力から外れる。
+import '../styles/d7/vars.css';
+import '../styles/d7/fonts.css';
+import '../styles/ref-a.css';
+import SeoHead from '../components/SeoHead.astro';
+import { site, contact, nav, company } from '../data/site';
+import { services } from '../data/services';
+import { u } from '../lib/url';
+
+interface Props {
+  title: string;
+  fullTitle?: string;
+  description: string;
+  path: string;
+  jsonLd?: object[];
+}
+const { path, ...seo } = Astro.props;
+const sentences = site.previewNotice.split('。').filter(Boolean).map((t) => `${t}。`);
+---
+<!doctype html>
+<html lang="ja">
+<head>
+  <SeoHead path={path} {...seo}>
+    <script is:inline>(function(d){d.classList.add('js');var go=function(){d.classList.add('anim-go')},ready=function(){requestAnimationFrame(function(){requestAnimationFrame(go)})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();setTimeout(go,3000)})(document.documentElement);</script>
+  </SeoHead>
+</head>
+<body class="ra">
+  <a class="ra-skip" href="#main">本文へスキップ</a>
+  {site.preview && <aside class="ra-pv" aria-label="確認用プレビューのお知らせ"><p>{sentences.map((t) => <span>{t}</span>)}</p></aside>}
+  <aside class="ra-cmp" aria-label="比較用の表示（公開しない）"><span>比較用</span><a href={u('/compare/c2/')}>C2案</a><a href={u('/compare/ref-a/')} aria-current="page">参考サイト重視案（R-A）</a></aside>
+
+  <header class="ra-hd" id="top">
+    <div class="ra-hd__in">
+      <a class="ra-brand" href={u('/compare/ref-a/')} aria-label={`${site.name} トップ`}>
+        <span class="ra-brand__mark" aria-hidden="true"></span>
+        <span class="ra-brand__t"><b>{site.nameShort}</b><small>Kimura Real Estate Appraisal</small></span>
+      </a>
+      <nav class="ra-nav" id="ra-nav" aria-label="メインメニュー">
+        <ul>
+          {nav.slice(0, 5).map((n) => <li><a href={u(n.href)}>{n.label}</a></li>)}
+          <li class="ra-nav__only-sp"><a href={u('/fees/')}>料金</a></li>
+          <li class="ra-nav__only-sp"><a href={u('/faq/')}>よくある質問</a></li>
+        </ul>
+        <div class="ra-nav__cta">
+          <a class="ra-nav__tel" href={contact.telHref}><small>お電話</small><b>{contact.tel}</b></a>
+          <a class="ra-nav__mail" href={u('/contact/')}><b>ご相談の予約</b></a>
+        </div>
+      </nav>
+      <button class="ra-burger" type="button" aria-expanded="false" aria-controls="ra-nav"><span class="ra-burger__bars" aria-hidden="true"></span><span class="ra-sr">メニュー</span></button>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <slot />
+  </main>
+
+  <footer class="ra-ft">
+    <div class="ra-ft__in">
+      <p class="ra-ft__brand"><b>{site.name}</b><small>{site.tagline}</small></p>
+      <div class="ra-ft__cols">
+        <ul><li><a href={u('/compare/ref-a/')}>TOP</a></li><li><a href={u('/cases/')}>事例</a></li><li><a href={u('/column/')}>コラム</a></li></ul>
+        <ul><li class="h">ご相談内容</li>{services.map((s) => <li class="sub"><a href={u(`/services/${s.slug}/`)}>{s.name}</a></li>)}</ul>
+        <ul><li class="h">会社案内</li><li class="sub"><a href={u('/profile/')}>代表紹介</a></li><li class="sub"><a href={u('/about/')}>会社概要</a></li><li class="sub"><a href={u('/fees/')}>料金の目安</a></li><li class="sub"><a href={u('/faq/')}>よくある質問</a></li></ul>
+        <ul><li><a href={u('/contact/')}>お問い合わせ</a></li><li><a href={u('/privacy/')}>個人情報保護方針</a></li></ul>
+      </div>
+      <address><b>{site.name}</b><br>〒{contact.postalCode}<br>{contact.address}<br>TEL：{contact.tel}　FAX：{contact.fax}<br>{contact.access}</address>
+    </div>
+    <p class="ra-ft__copy"><small>© {site.name}</small><small>{company.licenses[0]}</small></p>
+  </footer>
+
+  <nav class="ra-bar" aria-label="お問い合わせ"><a class="t" href={contact.telHref}>電話で相談</a><a class="m" href={u('/contact/')}>相談を予約</a></nav>
+
+  <script is:inline>
+  (function(){
+    if (window.CSS && CSS.supports && CSS.supports('word-break','auto-phrase')) { document.querySelectorAll('wbr').forEach(function(w){w.remove()}); document.body.normalize(); }
+    var b=document.querySelector('.ra-burger'),n=document.getElementById('ra-nav');
+    if(b&&n){b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',o);document.documentElement.classList.toggle('ra-open',o)});
+      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&b.getAttribute('aria-expanded')==='true'){b.click();b.focus()}});
+      n.addEventListener('click',function(e){if(e.target.closest('a')&&b.getAttribute('aria-expanded')==='true')b.click()});}
+    var rv=[].slice.call(document.querySelectorAll('.rv'));
+    if(!('IntersectionObserver' in window)){rv.forEach(function(e){e.classList.add('in')});return}
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
+    rv.forEach(function(e){io.observe(e)});
+  })();
+  </script>
+</body>
+</html>
