@@ -33,5 +33,9 @@ ok(/<meta name="robots" content="noindex, nofollow">/.test(html), 'noindex が�
 ok(!/ra-pv/.test(html) && !/このサイトは/.test(html.replace(/<wbr>/g, '')), 'サイト説明文「このサイトは〜」（バナー）がない');
 ok(!/<form|<input|<textarea/.test(html), 'フォームがない（送信できない）');
 ok(!/class="ra-cards tri"/.test(html), 'サービスカードは三角装飾なし（標準）');
+const text = html.replace(/<wbr>/g, '');
+ok(!/data-pending|preview-note|<dialog|ra-dialog|ra-note|確認用プレビューです/.test(text), '説明ダイアログ（HTML・文言・JS）が残っていない');
+const hrefs = [...html.matchAll(/<a [^>]*href="([^"]*)"/g)].map((m) => m[1]);
+ok(hrefs.every((h) => /^(#top|#main|tel:)/.test(h)), `リンクは tel:・#top・#main だけ（未制作ページへのリンクなし）：${[...new Set(hrefs)].join(' ')}`);
 if (fails.length) { console.error(`\n✗ ${fails.length} 項目が不合格です。公開しないでください。`); process.exit(1); }
 console.log('\n✓ すべて合格');

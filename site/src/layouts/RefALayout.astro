@@ -12,9 +12,10 @@ import { u as baseU } from '../lib/url';
 // R-A確認用プレビューを単独で公開するビルド（RA_PREVIEW=1）では、比較用バーを出さず、まだ作っていない下層ページへのリンクを
 // 「確認用プレビューです」の案内に置き換える（仮のページは作らない）。
 const standalone = process.env.RA_PREVIEW === '1';
-const PENDING = '#preview-note';
-const u = (path: string) => (standalone && !path.startsWith('/assets/') ? PENDING : baseU(path));
-const pend = standalone ? { 'data-pending': '' } : {};
+// 未制作の下層ページへの項目は、リンクにしない（<span class="nl">）。クリック・タップ・キーボードのどれでも何も起きない。
+const Lk = standalone ? 'span' : 'a';
+const lk = (path: string, cls?: string) => (standalone ? { class: [cls, 'nl'].filter(Boolean).join(' ') } : { href: baseU(path), class: cls });
+const u = baseU;
 
 interface Props {
   title: string;
@@ -34,7 +35,7 @@ const { path, ...seo } = Astro.props;
 </head>
 <body class="ra">
   <a class="ra-skip" href="#main">本文へスキップ</a>
-  {!standalone && <aside class="ra-cmp" aria-label="比較用の表示（公開しない）"><span>比較用</span><a {...pend} href={u('/compare/c2/')}>C2案</a><a {...pend} href={u('/compare/ref-a/')} aria-current="page">参考サイト重視案（R-A）</a></aside>}
+  {!standalone && <aside class="ra-cmp" aria-label="比較用の表示（公開しない）"><span>比較用</span><Lk {...lk('/compare/c2/')}>C2案</Lk><Lk {...lk('/compare/ref-a/')} aria-current="page">参考サイト重視案（R-A）</Lk></aside>}
 
   <div class="ra-scrim" aria-hidden="true"></div>
   <header class="ra-hd" id="top">
@@ -45,13 +46,13 @@ const { path, ...seo } = Astro.props;
       </a>
       <nav class="ra-nav" id="ra-nav" aria-label="メインメニュー">
         <ul>
-          {nav.slice(0, 5).map((n) => <li><a {...pend} href={u(n.href)}>{n.label}</a></li>)}
-          <li class="ra-nav__only-sp"><a {...pend} href={u('/fees/')}>料金</a></li>
-          <li class="ra-nav__only-sp"><a {...pend} href={u('/faq/')}>よくある質問</a></li>
+          {nav.slice(0, 5).map((n) => <li><Lk {...lk(n.href)}>{n.label}</Lk></li>)}
+          <li class="ra-nav__only-sp"><Lk {...lk('/fees/')}>料金</Lk></li>
+          <li class="ra-nav__only-sp"><Lk {...lk('/faq/')}>よくある質問</Lk></li>
         </ul>
         <div class="ra-nav__cta">
           <a class="ra-nav__tel" href={contact.telHref}><small>お電話</small><b>{contact.tel}</b></a>
-          <a class="ra-nav__mail" {...pend} href={u('/contact/')}><b>ご相談の予約</b></a>
+          <Lk {...lk('/contact/','ra-nav__mail')}><b>ご相談の予約</b></Lk>
         </div>
       </nav>
       <button class="ra-burger" type="button" aria-expanded="false" aria-controls="ra-nav"><span class="ra-burger__bars" aria-hidden="true"></span><span class="ra-sr">メニュー</span></button>
@@ -66,25 +67,17 @@ const { path, ...seo } = Astro.props;
     <div class="ra-ft__in">
       <p class="ra-ft__brand"><img src={baseU('/assets/img/logo/kimura-logo-transparent.png')} width="230" height="168" alt="" loading="lazy"><b>{site.name}</b><small>{site.tagline}</small></p>
       <div class="ra-ft__cols">
-        <ul><li><a {...pend} href={u('/compare/ref-a/')}>TOP</a></li><li><a {...pend} href={u('/cases/')}>事例</a></li><li><a {...pend} href={u('/column/')}>コラム</a></li></ul>
-        <ul><li class="h">ご相談内容</li>{services.map((s) => <li class="sub"><a {...pend} href={u(`/services/${s.slug}/`)}>{s.name}</a></li>)}</ul>
-        <ul><li class="h">会社案内</li><li class="sub"><a {...pend} href={u('/profile/')}>代表紹介</a></li><li class="sub"><a {...pend} href={u('/about/')}>会社概要</a></li><li class="sub"><a {...pend} href={u('/fees/')}>料金の目安</a></li><li class="sub"><a {...pend} href={u('/faq/')}>よくある質問</a></li></ul>
-        <ul><li><a {...pend} href={u('/contact/')}>お問い合わせ</a></li><li><a {...pend} href={u('/privacy/')}>個人情報保護方針</a></li></ul>
+        <ul><li><a href={standalone ? '#top' : baseU('/compare/ref-a/')}>TOP</a></li><li><Lk {...lk('/cases/')}>事例</Lk></li><li><Lk {...lk('/column/')}>コラム</Lk></li></ul>
+        <ul><li class="h">ご相談内容</li>{services.map((s) => <li class="sub"><Lk {...lk(`/services/${s.slug}/`)}>{s.name}</Lk></li>)}</ul>
+        <ul><li class="h">会社案内</li><li class="sub"><Lk {...lk('/profile/')}>代表紹介</Lk></li><li class="sub"><Lk {...lk('/about/')}>会社概要</Lk></li><li class="sub"><Lk {...lk('/fees/')}>料金の目安</Lk></li><li class="sub"><Lk {...lk('/faq/')}>よくある質問</Lk></li></ul>
+        <ul><li><Lk {...lk('/contact/')}>お問い合わせ</Lk></li><li><Lk {...lk('/privacy/')}>個人情報保護方針</Lk></li></ul>
       </div>
       <address><b>{site.name}</b><br>〒{contact.postalCode}<br>{contact.address}<br>TEL：{contact.tel}　FAX：{contact.fax}<br>{contact.access}</address>
     </div>
     <p class="ra-ft__copy"><small>© {site.name}</small><small>{company.licenses[0]}</small></p>
   </footer>
 
-  {standalone && (
-    <aside class="ra-note" id="preview-note" aria-labelledby="ra-note-h" tabindex="-1">
-      <h2 id="ra-note-h">確認用プレビューです</h2>
-      <p>このページは、トップページのデザインを確認していただくための試作です。下層ページ（ご相談内容・事例・コラム・会社案内・お問い合わせなど）はまだ制作しておらず、お問い合わせフォームもありません。</p>
-      <p>お急ぎのご相談は、お電話（<a href={contact.telHref}>{contact.tel}</a>、受付 {contact.hours}）へお願いします。</p>
-      <p><a class="ra-note__back" href="#top">ページの先頭へ戻る</a></p>
-    </aside>
-  )}
-  <nav class="ra-bar" aria-label="お問い合わせ"><a class="t" href={contact.telHref}>電話で相談</a><a class="m" {...pend} href={u('/contact/')}>相談を予約</a></nav>
+  <nav class="ra-bar" aria-label="お問い合わせ"><a class="t" href={contact.telHref}>電話で相談</a><Lk {...lk('/contact/','m')}>相談を予約</Lk></nav>
 
   <script is:inline>
   (function(){
@@ -116,13 +109,6 @@ const { path, ...seo } = Astro.props;
       if(wide.addEventListener)wide.addEventListener('change',onWide);else if(wide.addListener)wide.addListener(onWide);
       window.addEventListener('pageshow',function(e){if(e.persisted)setMenu(false,false)});
     }
-    var pend=document.querySelectorAll('a[data-pending]'),dlg=document.getElementById('preview-note');
-    if(dlg&&pend.length&&typeof HTMLDialogElement==='function'){var d=document.createElement('dialog');d.className='ra-dialog';d.setAttribute('aria-labelledby','ra-note-h2');
-      d.innerHTML='<div>'+dlg.innerHTML.replace('id="ra-note-h"','id="ra-note-h2"').replace(/<p><a class="ra-note__back"[^>]*>.*?<\/a><\/p>/,'')+'<p><button type="button" class="ra-dialog__close">閉じる</button></p></div>';
-      document.body.appendChild(d);var last=null;
-      [].forEach.call(pend,function(a){a.addEventListener('click',function(e){e.preventDefault();last=a;if(typeof d.showModal==='function')d.showModal();else location.hash='preview-note'})});
-      d.addEventListener('click',function(e){if(e.target===d||e.target.closest('.ra-dialog__close'))d.close()});
-      d.addEventListener('close',function(){if(last)last.focus()});}
     /* スクロールで現れる動き：IntersectionObserver が使え、動きを減らす設定でないときだけ有効にする（html.ra-anim）。
        すでに画面内・画面より上にある要素は動かさずに表示し、画面の下にある要素だけを、近づいたときに表示する。 */
     var items=[].slice.call(document.querySelectorAll('.rv,.rv-img,.rv-bg'));
