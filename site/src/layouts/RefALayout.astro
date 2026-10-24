@@ -79,7 +79,7 @@ const { path, ...seo } = Astro.props;
         </ul>
         <div class="ra-menu__foot">
           <div class="ra-nav__cta">
-            <a class="ra-nav__tel" href={contact.telHref}><small>お電話</small><span class="tel__num"><Ico name="phone" /><b>{contact.tel}</b></span></a>
+            <a class="ra-nav__tel" href={contact.telHref}><span class="tel__num"><Ico name="phone" /><b>{contact.tel}</b></span><small>営業時間 {contact.hours}</small></a>
             <Lk {...lk('/contact/','ra-nav__mail')}><b>ご相談の予約</b></Lk>
           </div>
           <p class="ra-menu__brand"><b>{site.name}</b><small>{site.tagline}</small></p>
