@@ -127,11 +127,12 @@
   .ra-hero__since { display: grid; }
 }
 @media (min-width: 1280px) { .ra-hero { padding-top: 88px; padding-bottom: 72px; } }
-.js:not(.anim-go) .ra-hero h1 span, .js:not(.anim-go) .ra-hero__sub { animation-play-state: paused; }
-.ra-hero h1 .l1 { animation: ra-rise var(--an-dur) var(--an-ease) both; }
-.ra-hero h1 .l2 { animation: ra-rise var(--an-dur) var(--an-ease) .08s both; }
+.js:not(.anim-go) .ra-hero h1, .js:not(.anim-go) .ra-hero__sub { animation-play-state: paused; }
+/* キャッチコピー：1.5秒でゆっくりフェードイン＋下から10pxだけ上がる（1回のみ。JS無効時は最初から表示） */
+.js .ra-hero h1 { animation: ra-copy 1.5s cubic-bezier(.22, .61, .36, 1) both; }
 .ra-hero__sub { animation: ra-rise var(--an-dur) var(--an-ease) .16s both; }
 @keyframes ra-rise { from { transform: translateY(var(--an-dist)); } to { transform: none; } }
+@keyframes ra-copy { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
 /* 全幅の写真帯 */
 .ra-band { position: relative; height: 200px; overflow: hidden; background: var(--navy-d); }
@@ -348,7 +349,7 @@ html:not(.js) .ra-burger { display: none; }
 .ra-anim .rv-bg > img { transform: scale(1.06); transition: transform 1.2s var(--ease-out); }
 .ra-anim .rv-bg.in > img { transform: none; }
 @media (prefers-reduced-motion: reduce) {
-  .ra-hero h1 .l1, .ra-hero h1 .l2, .ra-hero__sub { animation: none; }
+  .js .ra-hero h1, .ra-hero h1, .ra-hero__sub { animation: none; }
   .ra *, .ra *::before, .ra *::after { transition-duration: 0s !important; transition-delay: 0s !important; }
   .ra-anim .rv, .ra-anim .rv-img, .ra-anim .ra-cards li.rv :is(a, .nl) { opacity: 1; transform: none; }
   .ra-anim .rv-img img, .ra-anim .rv-bg > img { transform: none; }
