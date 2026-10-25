@@ -1,0 +1,5 @@
+R-B 確認用プレビューのフォント（自前配信・サブセット）。いずれも SIL Open Font License 1.1。ライセンス全文を同じフォルダに同梱。
+- Zen Kaku Gothic New 700（見出し）: Copyright 2022 The Zen Kaku Gothic Project Authors (https://github.com/googlefonts/zen-kakugothic)  → OFL-ZenKakuGothicNew.txt
+- Shippori Mincho 700（FVの見出し）: Copyright 2021 The Shippori Mincho Project Authors (https://github.com/fontdasu/ShipporiMincho)  → OFL-ShipporiMincho.txt
+- Noto Sans JP 400/500/700（本文）: Copyright 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'  → OFL-NotoSansJP.txt
+- 取得: Google Fonts（このページで使う文字のみのサブセット）。フォントファイル内の著作権表示は保持している。
