@@ -90,7 +90,7 @@ p,li,dd,summary,address{text-wrap:pretty}
 .view{width:100%}
 
 /* 街並み */
-.town{position:relative;height:112px;background:#161e35;overflow:hidden;flex:none}
+.town{position:relative;height:112px;min-height:14.8vw;background:#161e35;overflow:hidden;flex:none}
 .town-svg{position:absolute;inset:0;width:100%;height:100%}
 .t-far{fill:#1b2440}
 .t-wire{fill:none;stroke:#2d3959;stroke-width:1}
@@ -159,10 +159,10 @@ p,li,dd,summary,address{text-wrap:pretty}
 .peek figcaption{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:8px 14px;border-bottom:1px solid var(--line);font-size:12px;line-height:1.5}
 .peek figcaption b{font-weight:800}
 .peek figcaption small{margin-left:8px;font-size:12px;font-weight:500;color:var(--ink3)}
-.peek figcaption span{font-size:12px;font-weight:700;color:var(--ink2);border:1px dashed var(--ink2);padding:0 6px}
+.peek figcaption span{white-space:nowrap;font-size:12px;font-weight:700;color:var(--ink2);border:1px dashed var(--ink2);padding:0 6px}
 .peek-b{padding:12px 14px 14px}
 .peek-l{font-size:12px;font-weight:700;color:var(--ink3);line-height:1.5}
-.peek-v{font-size:13px;font-weight:700;line-height:1.3;margin-top:2px}
+.peek-v{font-size:13px;font-weight:700;line-height:1.3;margin-top:2px;white-space:nowrap}
 .peek-v b{font-size:24px;font-weight:800;letter-spacing:-.01em;margin-right:1px}
 .peek-v i{font-style:normal;margin:0 4px;color:var(--ink3)}
 .peek-m{position:relative;height:8px;margin:8px 0 12px;background:var(--up-l);border-radius:4px}
@@ -410,8 +410,7 @@ p,li,dd,summary,address{text-wrap:pretty}
 .exp-who b{font-size:24px;font-weight:800;letter-spacing:.12em;margin:2px 0 4px}
 .exp-who span{font-size:13px;color:var(--ink2)}
 .exp{counter-reset:ex;margin-top:22px}
-.exp li{counter-increment:ex;display:grid;grid-template-columns:auto 1fr;column-gap:14px;padding:16px 0 18px;border-bottom:1px solid var(--line)}
-.exp li::before{content:counter(ex);grid-row:1/3;display:grid;place-items:center;width:30px;height:30px;background:var(--night);color:var(--lit);font-size:16px;font-weight:800;line-height:1}
+.exp li{padding:16px 16px 18px 18px;border-left:4px solid var(--lit);margin-top:12px;background:var(--bg)}
 .exp b{font-size:18px;font-weight:800;line-height:1.6}
 .exp p{margin-top:4px;font-size:14.5px;line-height:1.85;color:var(--ink2)}
 .exp-a{margin-top:24px}
@@ -436,6 +435,8 @@ p,li,dd,summary,address{text-wrap:pretty}
 .f-err b{display:block;color:var(--err)}
 .f-err a{color:var(--err);text-underline-offset:4px}
 .form-btn{width:100%;margin-top:26px}
+.cta-hold{margin-top:4px}
+.cta-f{scroll-margin-top:calc(var(--hd) + 12px)}
 .form-n{margin-top:12px;font-size:12.5px;line-height:1.75;color:var(--ink3)}
 .done h3{margin-top:14px;font-size:19px;font-weight:800;line-height:1.6}
 .done p:not(.demo-tag){margin-top:10px;font-size:14.5px;color:var(--ink2)}
@@ -489,8 +490,12 @@ p,li,dd,summary,address{text-wrap:pretty}
   .logo{gap:7px}
   .logo-t b{font-size:13.5px}
   .hd-cta{padding:0 8px;font-size:12px}
-  .type b{font-size:14px}
-  .type small{font-size:12px;letter-spacing:-.02em}
+  .start{padding-left:12px;padding-right:12px}
+  .types{gap:6px}
+  .type b{font-size:13.5px;letter-spacing:-.03em;white-space:nowrap}
+  .type small{font-size:12px;letter-spacing:-.05em}
+  .peek-v b{font-size:20px}
+  .peek-v i{margin:0 2px}
   .num input[type="text"]{width:112px}
   .hero-v b{font-size:38px}
 }
@@ -509,6 +514,7 @@ p,li,dd,summary,address{text-wrap:pretty}
   .eyebrow{display:flex;gap:0 10px;font-size:13px}
   .eyebrow span{padding-left:10px;border-left:1px solid var(--ink3)}
   .fld input[type="text"]:not(.num input),.fld>.sel{max-width:420px}
+  .form .fld input[type="text"],.form .fld>.sel{max-width:none}
   .town{height:170px}
   .app:not([data-view="intro"]) .town{height:120px}
   .intro{max-width:720px;gap:28px;padding-top:40px;padding-bottom:56px}
@@ -557,7 +563,7 @@ p,li,dd,summary,address{text-wrap:pretty}
   .hd-nav a:hover{border-bottom-color:var(--lit)}
   .app{min-height:calc(100svh - var(--hd) - 31px)}
   .app .view{order:1}
-  .app .town{order:2;flex:1 0 auto;height:auto;min-height:clamp(170px,24vh,250px)}
+  .app .town{order:2;flex:1 0 auto;height:auto;min-height:max(clamp(170px,24vh,250px),14.8vw)}
   .app:not([data-view="intro"]) .town{height:150px}
   .app[data-view="res"] .town{order:0;height:170px}
   .app[data-view="res"] .town-cap{order:0}
@@ -704,8 +710,8 @@ p,li,dd,summary,address{text-wrap:pretty}
   .exp-who img{width:128px;height:171px}
   .exp-who b{font-size:30px}
   .exp-who span{font-size:14px}
-  .exp{margin-top:36px;border-top:1px solid var(--night)}
-  .exp li{padding:22px 0 24px}
+  .exp{margin-top:30px}
+  .exp li{padding:22px 28px 24px 26px;margin-top:14px}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -722,5 +728,5 @@ p,li,dd,summary,address{text-wrap:pretty}
   .start{padding:22px 28px 18px}
   .type{min-height:124px;padding-top:12px}
   .facts{margin-top:12px}
-  .app .town{min-height:150px}
+  .app .town{min-height:14.8vw}
 }

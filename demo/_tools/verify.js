@@ -8,7 +8,7 @@ const axeSrc = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 
 const BASE = process.argv[2] || 'http://localhost:8810/';
 const OUT = process.argv[3] || 'verify.json';
-const WIDTHS = [[320, 640], [375, 667], [390, 844], [768, 1024], [1024, 768], [1440, 900]];
+const WIDTHS = [[320, 640], [360, 740], [375, 667], [390, 844], [700, 900], [768, 1024], [1024, 768], [1080, 800], [1100, 800], [1280, 720], [1366, 768], [1440, 900], [1920, 1080]];
 const PAGES = { index: '', A: 'a-rikon/', B: 'b-kachi-check/' };
 const R = { base: BASE, date: new Date().toISOString(), checks: [] };
 const add = (id, name, ok, detail) => { R.checks.push({ id, name, status: ok === null ? '未確認' : ok ? '合格' : '不合格', detail }); console.log((ok === null ? '[未確認] ' : ok ? '[合格]   ' : '[不合格] ') + id + ' ' + name + (detail && (!ok || typeof detail === 'string') ? ' :: ' + (typeof detail === 'string' ? detail : JSON.stringify(detail).slice(0, 700)) : '')); };
@@ -84,7 +84,7 @@ async function runB(page, type, opts = {}) {
     log.console.forEach(c => cons.push(key + '@' + w + ' ' + c)); log.failed.forEach(c => fails.push(key + '@' + w + ' ' + c)); log.external.forEach(c => ext.push(key + '@' + w + ' ' + c));
     await ctx.close();
   }
-  add('T-03', '横スクロールなし（320・375・390・768・1024・1440px。B案は入力〜結果の各画面も）', hs.length === 0, hs.length ? hs : '全ページ・全状態で scrollWidth ≦ clientWidth');
+  add('T-03', '横スクロールなし（320・360・375・390・700・768・1024・1080・1100・1280・1366・1440・1920px。B案は入力〜結果の各画面も）', hs.length === 0, hs.length ? hs : '全ページ・全状態で scrollWidth ≦ clientWidth');
   const errs = cons.filter(c => !/ warning: /.test(c)), warns = cons.filter(c => / warning: /.test(c));
   add('T-02a', 'コンソールのエラー 0（ページエラーを含む）', errs.length === 0, errs.length ? errs : '0件');
   add('T-02a-w', 'コンソールの警告', warns.length === 0 ? true : null, warns.length ? { 件数: warns.length, 内容: [...new Set(warns.map(w => w.replace(/^\S+ /, '').slice(0, 150)))], 注: '自動検査の高速な連続遷移でのみ発生。通常の読み込み・再読み込みでは0件（別途確認）' } : '0件');
@@ -237,7 +237,7 @@ async function runB(page, type, opts = {}) {
     await page.waitForSelector('.view.res:not([hidden])', { timeout: 9000 }); await page.waitForTimeout(500);
     k.resFocus = await page.evaluate(() => document.activeElement.id);
     k.facText = await page.$$eval('.fac-r', n => n.length >= 3 && n.every(r => !!r.querySelector('.fac-v').textContent && !!r.querySelector('.fac-w').textContent));
-    k.cta = await tabTo('.sheet-ft .btn[href="#consult"]'); k.ctaRing = await focusRing();
+    k.cta = await tabTo('.sheet-ft .btn[href="#reserve"]'); k.ctaRing = await focusRing();
     add('KB-B', 'B案：キーボードだけで種別選択→入力→結果→相談への移動まで操作でき、フォーカスが見える（結果の図の内容は、文字でも読める）', Object.values(k).every(v => v !== false && v !== undefined && v !== ''), k);
     // A案：フォーカスの順序と表示
     await open(page, PAGES.A);
