@@ -49,7 +49,7 @@ h2,h3,summary,legend,.fv-note li,.flow-doc li,.fee-n li,.cta-pt li,.cmp td{word-
 .skip:focus{top:8px}
 
 /* ---- 打ち合わせ用の表示 ---- */
-.demo-bar{display:flex;gap:.9em;align-items:baseline;justify-content:center;background:var(--ink);color:#e9e2d6;font-size:11.5px;line-height:1.6;letter-spacing:.06em;padding:6px var(--gut)}
+.demo-bar{display:flex;gap:.9em;align-items:baseline;justify-content:center;background:var(--ink);color:#e9e2d6;font-size:12px;line-height:1.6;letter-spacing:.06em;padding:6px var(--gut)}
 .demo-bar b{font-weight:700;color:#fff;white-space:nowrap}
 .demo-bar span{display:none}
 
@@ -59,7 +59,7 @@ h2,h3,summary,legend,.fv-note li,.flow-doc li,.fee-n li,.cta-pt li,.cmp td{word-
 .hd-brand{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto;min-height:44px}
 .hd-brand img{width:58px;height:auto;flex:none}
 .hd-name b{display:block;font-family:var(--f-min);font-weight:700;font-size:15.5px;line-height:1.35;letter-spacing:.1em;white-space:nowrap}
-.hd-name small{display:block;font-size:10.5px;line-height:1.4;color:var(--ink3);letter-spacing:.04em;white-space:nowrap}
+.hd-name small{display:block;font-size:12px;line-height:1.4;color:var(--ink3);letter-spacing:0;white-space:nowrap}
 .hd-nav,.hd-tel,.hd-cta{display:none}
 .hd-menu{display:flex;align-items:center;gap:9px;min-height:44px;padding:0 14px;background:none;border:1px solid var(--ink);font-size:13px;font-weight:700;letter-spacing:.14em;cursor:pointer}
 .hd-menu__i{position:relative;width:16px;height:9px;border-top:1.500px solid var(--ink);border-bottom:1.500px solid var(--ink);transition:transform .2s}
@@ -219,7 +219,7 @@ h3{font-family:var(--f-min);font-weight:500;letter-spacing:.06em}
 .doc-l b{font-family:var(--f-min);font-weight:500;font-size:15px;letter-spacing:.06em;color:var(--ink)}
 .doc-l li:first-child span{font-weight:700;color:var(--ai)}
 .doc-l li:first-child b{font-size:19px;font-weight:700;color:var(--ai)}
-.doc-m{position:absolute;right:16px;top:14px;font-size:11px;font-weight:700;letter-spacing:.3em;color:var(--ink3);border:1px solid var(--ink3);padding:1px 5px 1px 8px;line-height:1.5;background:#fffdf9}
+.doc-m{position:absolute;right:16px;top:14px;font-size:12px;font-weight:700;letter-spacing:.3em;color:var(--ink3);border:1px solid var(--ink3);padding:1px 5px 1px 8px;line-height:1.5;background:#fffdf9}
 .doc-cap h3{font-size:20px;line-height:1.7}
 .doc-cap p{margin-top:10px;font-size:15.5px;color:var(--ink2)}
 
@@ -263,6 +263,9 @@ h3{font-family:var(--f-min);font-weight:500;letter-spacing:.06em}
 .who-p>div{display:contents}
 .who-n,.who-c{grid-column:2}
 .who-n{align-self:end}
+.who-c{align-self:start}
+.who-p img{grid-row:1/3}
+.who-p .hold{grid-column:1/-1}
 .who-f{margin-top:30px;border-top:1px solid var(--ink)}
 .who-f>div{padding:18px 0 20px;border-bottom:1px solid var(--rule)}
 .who-f dt{font-size:13px;font-weight:700;letter-spacing:.1em;color:var(--ink3)}
@@ -296,7 +299,11 @@ h3{font-family:var(--f-min);font-weight:500;letter-spacing:.06em}
 .fee-l dt small{display:block;font-family:var(--f-got);font-size:13px;color:var(--ink3);letter-spacing:.02em;margin-top:2px}
 .fee-l dd{font-family:var(--f-min);font-size:17px;letter-spacing:.06em;line-height:1.4;display:flex;align-items:baseline;flex-wrap:wrap;gap:0 4px}
 .fee-l dd b{font-weight:500;font-size:40px;letter-spacing:.02em;line-height:1.25}
-.chk{margin-left:10px;font-family:var(--f-got);font-size:11px;font-weight:700;line-height:1.5;letter-spacing:.04em;color:var(--ink3);border:1px dashed var(--ink3);padding:0 6px;align-self:center;white-space:nowrap}
+.fee-l dd.fee-q{display:grid;gap:0;justify-items:start}
+.fee-l dd.fee-q b{font-size:26px;letter-spacing:.14em;line-height:1.5}
+.fee-l dd.fee-q small{font-family:var(--f-got);font-size:13px;letter-spacing:.02em;color:var(--ink3)}
+.hold{margin-top:16px;font-size:13px;line-height:1.7;color:var(--ink2)}
+.hold b{display:inline-block;margin-right:8px;font-size:12px;font-weight:700;border:1px dashed var(--ink2);padding:0 6px;line-height:1.5}
 .fee-n{margin-top:22px;font-size:14.5px;line-height:1.9;color:var(--ink2)}
 .fee-n li{position:relative;padding-left:16px;margin-top:6px}
 .fee-n li::before{content:"";position:absolute;left:1px;top:.9em;width:7px;height:1px;background:var(--ink2)}
@@ -328,10 +335,10 @@ h3{font-family:var(--f-min);font-weight:500;letter-spacing:.06em}
 .form,.done{background:var(--paper);color:var(--ink);padding:26px 20px 28px}
 .form :focus-visible,.done :focus-visible{outline-color:var(--ai)}
 .form-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font-size:20px;line-height:1.5;letter-spacing:.1em}
-.form-demo{font-family:var(--f-got);font-size:11.5px;font-weight:700;line-height:1.5;letter-spacing:.04em;color:var(--ink2);border:1px dashed var(--ink2);padding:1px 8px;white-space:nowrap}
+.form-demo{font-family:var(--f-got);font-size:12px;font-weight:700;line-height:1.5;letter-spacing:.04em;color:var(--ink2);border:1px dashed var(--ink2);padding:1px 8px;white-space:nowrap}
 .f-row{margin-top:22px}
 .f-row>label,.f-row>legend{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;line-height:1.5;margin-bottom:8px}
-.req,.opt{font-size:11px;font-weight:700;line-height:1.5;padding:0 6px;letter-spacing:.06em}
+.req,.opt{font-size:12px;font-weight:700;line-height:1.5;padding:0 6px;letter-spacing:.06em}
 .req{background:var(--ink);color:var(--paper)}
 .opt{border:1px solid var(--rule);color:var(--ink3)}
 .form input[type="text"],.form input[type="tel"],.form input[type="email"],.form textarea{display:block;width:100%;min-height:52px;padding:12px 14px;background:#fff;border:1px solid var(--ink3);border-radius:0;font-size:16px;line-height:1.6;appearance:none}
@@ -356,7 +363,7 @@ h3{font-family:var(--f-min);font-weight:500;letter-spacing:.06em}
 .form-btn{width:100%;margin-top:28px}
 .form-n{margin-top:12px;font-size:13px;line-height:1.75;color:var(--ink3)}
 .form-n--demo{padding-top:10px;border-top:1px dashed var(--rule)}
-.form-n--demo b{display:inline-block;margin-right:8px;font-size:11.5px;border:1px dashed var(--ink2);color:var(--ink2);padding:0 6px;line-height:1.5}
+.form-n--demo b{display:inline-block;margin-right:8px;font-size:12px;border:1px dashed var(--ink2);color:var(--ink2);padding:0 6px;line-height:1.5}
 .f-seg span{padding:0 2px;text-align:center;line-height:1.3}
 .mid{display:none}
 .done h3{margin-top:14px;font-size:20px;line-height:1.7}
@@ -376,6 +383,7 @@ h3{font-family:var(--f-min);font-weight:500;letter-spacing:.06em}
 .ft-ad a{text-underline-offset:4px;white-space:nowrap}
 .ft-dis{font-size:12.5px;line-height:1.9;color:#cfc6b8;padding-top:18px;border-top:1px solid rgba(250,247,241,.25)}
 .ft-c{display:grid;gap:4px;font-size:12px;color:#cfc6b8}
+.ft-c small{font-size:12px}
 .ft :focus-visible{outline-color:#fff}
 
 /* 高さの小さいスマホ：鑑定評価額までが最初の画面に入るように詰める */
@@ -400,7 +408,7 @@ h3{font-family:var(--f-min);font-weight:500;letter-spacing:.06em}
   .fix-tel span i{display:none}
   .fix-cta{justify-content:center!important;padding:0 8px;white-space:nowrap}
   .fix-cta .arr{display:none}
-  .mk-n{font-size:11px}.mk-v b{font-size:16px}
+  .mk-n{font-size:12px}.mk-v b{font-size:16px}
   .cmp td{font-size:13.5px}
 }
 
@@ -412,7 +420,7 @@ h3{font-family:var(--f-min);font-weight:500;letter-spacing:.06em}
   .demo-bar span{display:inline}
   .hd-brand img{width:78px}
   .hd-name b{font-size:18px}
-  .hd-name small{font-size:11.5px}
+  .hd-name small{font-size:12.5px;letter-spacing:.04em}
   .hd-cta{display:inline-flex;align-items:center;min-height:46px;padding:0 22px;background:var(--ai);color:#fff;font-size:14px;font-weight:700;line-height:1;letter-spacing:.1em;text-decoration:none;white-space:nowrap;transition:background .2s}
   .hd-cta:hover{background:var(--ai-d)}
 
@@ -463,6 +471,7 @@ h3{font-family:var(--f-min);font-weight:500;letter-spacing:.06em}
   .who-p{grid-template-columns:136px 1fr;gap:26px}
   .who-p img{width:136px;height:180px}
   .who-p>div{display:block;align-self:center}
+  .who-p img{grid-row:auto}
   .who-t{margin-top:12px;font-size:15px}
   .who-n b{font-size:29px}
   .who-c{font-size:14px}
@@ -470,6 +479,8 @@ h3{font-family:var(--f-min);font-weight:500;letter-spacing:.06em}
   .fee-l>div{grid-template-columns:1fr auto;align-items:center;gap:20px;padding:24px 0 22px}
   .fee-l dt{font-size:21px}
   .fee-l dd b{font-size:50px}
+  .fee-l dd.fee-q{justify-items:end;text-align:right}
+  .fee-l dd.fee-q b{font-size:30px}
   .fee-n{font-size:14.5px}
   .faq summary{font-size:18px;padding:23px 48px 23px 4px}
   .faq details>div{padding:0 48px 28px 4px;font-size:15.5px}
@@ -503,7 +514,7 @@ h3{font-family:var(--f-min);font-weight:500;letter-spacing:.06em}
   .hd-nav a::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .25s}
   .hd-nav a:hover::after{transform:scaleX(1)}
   .hd-tel{display:block;text-decoration:none;text-align:right;line-height:1.2}
-  .hd-tel small{display:block;font-size:10.5px;color:var(--ink3);letter-spacing:.06em}
+  .hd-tel small{display:block;font-size:12px;color:var(--ink3);letter-spacing:.06em}
   .hd-tel b{font-family:var(--f-min);font-weight:500;font-size:20px;letter-spacing:.06em}
 
   .fv-in{position:relative;max-width:calc(var(--w) + var(--gut)*2);grid-template-columns:minmax(0,1fr) 336px auto;grid-template-areas:"leada leadb head" "house act head" "fig sig head";grid-template-rows:auto auto auto;column-gap:0;align-content:center;padding-top:clamp(22px,4.4vh,56px);padding-bottom:clamp(24px,4.4vh,52px);min-height:min(calc(100svh - var(--hd) - 31px),840px)}
@@ -596,6 +607,7 @@ h3{font-family:var(--f-min);font-weight:500;letter-spacing:.06em}
   .flow-doc li{white-space:nowrap}
   .fee-l dt{font-size:23px}
   .fee-l dd b{font-size:60px}
+  .fee-l dd.fee-q b{font-size:34px}
   .fee-l>div{padding:28px 0 26px}
   .cta-in{max-width:calc(var(--w) + var(--gut)*2);grid-template-columns:minmax(0,5fr) minmax(0,6fr);column-gap:84px;align-items:start;padding-top:112px;padding-bottom:120px}
   .cta-h{font-size:40px}

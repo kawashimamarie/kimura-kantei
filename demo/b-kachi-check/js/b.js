@@ -1,7 +1,7 @@
 /* B案｜AI不動産価値チェック（打ち合わせ用コンセプトデモ）
    ・入力内容は、ページを表示している間だけメモリ上に持つ。
      保存（Cookie・localStorage・sessionStorage・IndexedDB）も、送信（fetch・XHR・フォーム送信・画像ビーコン）もしない。
-   ・価格の計算はしない。結果画面の数値は、下の SAMPLE に書いた架空の固定値で、入力内容とは連動しない。
+   ・価格の計算はしない。結果画面の数値は、下の SAMPLE に書いた架空の固定値（ひとつだけ）で、入力内容とは連動しない。
    ・AI・外部APIには接続しない。 */
 (function () {
   'use strict';
@@ -17,48 +17,21 @@
      架空の見本データ（種別ごとに固定。入力内容からは作らない）
      ==================================================================== */
   var YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
-  /* 要因は、構想中のサービスが入力（種別・市区町村・広さ・築年）と公開データから言える範囲に限る。
+  /* 見本はひとつだけ。入力した種別・エリア・広さ・築年のどれを変えても、同じ見本を表示する。
+     要因は、構想中のサービスが入力と公開データから言える範囲に限る（道路・法令上の制限・階数などは扱わない）。
      影響の大きさは 2＝大きく、1＝やや（＋は押し上げ、−は押し下げ）。細かい％は出さない。 */
   var SAMPLE = {
-    mansion: {
-      kind: '架空のマンション', spec: '専有面積 68m²／築16年',
-      low: 3480, mid: 3960, high: 4440, min: 3000, max: 5000, digits: '3960',
-      unit: 'まんなかの価格を面積で割ると、1m²あたり約58万円',
-      why: '同じ広さ・同じ築年でも、階数や向き、室内の状態などで価格は変わります。このチェックではそこまで見ていないため、ひとつの数字ではなく幅で示します。',
-      factors: [
-        ['この地域の取引の動き', 2, 'この1年、同じ市区町村で取引されたマンションの価格が上がっている'],
-        ['広さ', 1, '68m²は、この地域で取引の多い広さ'],
-        ['取引の件数', 1, '同じ市区町村で、似た条件の取引が多い'],
-        ['築年数', -2, '築16年。この地域で取引された物件の平均より古い']
-      ],
-      trend: [100, 102, 105, 107, 108, 112, 118, 124, 129, 133]
-    },
-    kodate: {
-      kind: '架空の一戸建て', spec: '土地 165m²／建物 128m²／築9年',
-      low: 4560, mid: 5180, high: 5800, min: 4000, max: 6400, digits: '5180',
-      unit: 'まんなかの価格の内訳は、土地 3,560万円、建物 1,620万円',
-      why: '同じ広さ・同じ築年でも、土地の形や道路との関係、建物の状態などで価格は変わります。このチェックではそこまで見ていないため、ひとつの数字ではなく幅で示します。',
-      split: [['土地', 3560], ['建物', 1620]],
-      factors: [
-        ['築年数', 2, '築9年。この地域で取引された物件の平均より新しい'],
-        ['この地域の取引の動き', 1, 'この1年、同じ市区町村で取引された土地の価格が上がっている'],
-        ['建物の広さ', 1, '128m²は、この地域の平均より広い'],
-        ['土地の広さ', -1, '165m²は、この地域では買い手が限られる広さ']
-      ],
-      trend: [100, 101, 103, 104, 105, 108, 113, 118, 122, 125]
-    },
-    tochi: {
-      kind: '架空の土地', spec: '土地 148m²',
-      low: 4820, mid: 5480, high: 6140, min: 4200, max: 6800, digits: '5480',
-      unit: 'まんなかの価格を面積で割ると、1m²あたり約37万円',
-      why: '同じ広さでも、土地の形や道路との関係、建てられる建物の大きさなどで価格は変わります。このチェックではそこまで見ていないため、ひとつの数字ではなく幅で示します。',
-      factors: [
-        ['この地域の取引の動き', 2, 'この1年、同じ市区町村で取引された土地の価格が上がっている'],
-        ['取引の件数', 1, '同じ市区町村で、似た広さの土地の取引が多い'],
-        ['広さ', -1, '148m²は、この地域では買い手が限られる広さ']
-      ],
-      trend: [100, 101, 103, 105, 106, 109, 114, 119, 123, 127]
-    }
+    kind: '架空のマンション', spec: '専有面積 68m²／築16年',
+    low: 3480, mid: 3960, high: 4440, min: 3000, max: 5000, digits: '3960',
+    unit: 'まんなかの価格を面積で割ると、1m²あたり約58万円',
+    why: '同じ広さ・同じ築年でも、階数や向き、室内の状態などで価格は変わります。このチェックではそこまで見ていないため、ひとつの数字ではなく幅で示します。',
+    factors: [
+      ['この地域の取引の動き', 2, 'この1年、同じ市区町村で取引されたマンションの価格が上がっている'],
+      ['広さ', 1, '68m²は、この地域で取引の多い広さ'],
+      ['取引の件数', 1, '同じ市区町村で、似た条件の取引が多い'],
+      ['築年数', -2, '築16年。この地域で取引された物件の平均より古い']
+    ],
+    trend: [100, 102, 105, 107, 108, 112, 118, 124, 129, 133]
   };
   var TYPE_LABEL = { mansion: 'マンション', kodate: '一戸建て', tochi: '土地' };
   var STEP_LABEL = { 2: '所在エリア', 3: '広さ・築年', 4: '知りたい理由' };
@@ -193,6 +166,14 @@
     });
   });
   all('[data-go="intro"]').forEach(function (b) { b.addEventListener('click', toIntro); });
+  var again = $('start-again');
+  if (again) again.addEventListener('click', function (e) {
+    e.preventDefault();
+    if (app.getAttribute('data-view') !== 'intro') toIntro();
+    window.scrollTo(0, 0);
+    var first = document.querySelector('.type');
+    if (first) { try { first.focus({ preventScroll: true }); } catch (err) { first.focus(); } }
+  });
   function toIntro() {
     town.removeAttribute('data-sel');
     townSet('???');
@@ -437,7 +418,7 @@
 
   function result() {
     runTimers.forEach(clearTimeout); runTimers = [];
-    var d = SAMPLE[state.type] || SAMPLE.mansion;
+    var d = SAMPLE; // 入力内容にかかわらず、同じ見本
     renderTicket();
 
     $('s-spec').textContent = d.kind + '｜' + d.spec;
@@ -461,27 +442,6 @@
     $('meter-min').textContent = fmt(d.min) + '万円';
     $('meter-max').textContent = fmt(d.max) + '万円';
     $('meter-t').textContent = '参考価格帯は' + fmt(d.low) + '万円から' + fmt(d.high) + '万円、まんなかは' + fmt(d.mid) + '万円（架空の見本）';
-
-    /* 土地と建物の内訳（一戸建ての見本のみ） */
-    var split = $('split');
-    split.hidden = !d.split;
-    if (d.split) {
-      var seg = $('seg'), lg = $('seg-lg'), total = d.split[0][1] + d.split[1][1];
-      seg.textContent = ''; lg.textContent = '';
-      seg.setAttribute('aria-label', d.split.map(function (s) { return s[0] + ' ' + fmt(s[1]) + '万円（' + Math.round(s[1] / total * 100) + '％）'; }).join('、'));
-      d.split.forEach(function (s, i) {
-        var b = el('i', 's' + (i + 1));
-        var lab = el('span', null, fmt(s[1]) + '万円');
-        b.appendChild(lab);
-        b.style.flex = s[1] + ' 1 0';
-        seg.appendChild(b);
-        var li = el('li');
-        li.appendChild(el('i', 's' + (i + 1)));
-        li.appendChild(document.createTextNode(s[0] + ' ' + fmt(s[1]) + '万円（' + Math.round(s[1] / total * 100) + '％）'));
-        lg.appendChild(li);
-      });
-      split.setAttribute('data-fit', '1'); // 表示後に、棒に入りきらないラベルを隠す（fitSeg）
-    }
 
     /* 価格を左右するポイント */
     var fac = $('fac'), ftb = $('fac-t').tBodies[0];
@@ -515,21 +475,13 @@
     townSet(d.digits);
     show('res', $('res-h'));
     drawTrend(d.trend); // 表示してから描く（表示幅に合わせるため）
-    fitSeg();
     if (!reduce) townShuffle(d.digits);
-  }
-  /* 内訳の棒：金額のラベルが棒に入りきらないときは隠す（金額は凡例にも出している） */
-  function fitSeg() {
-    all('#seg i').forEach(function (b) {
-      var lab = b.firstChild;
-      if (lab && lab.style) { lab.style.visibility = ''; lab.style.visibility = lab.offsetWidth + 16 > b.clientWidth ? 'hidden' : ''; }
-    });
   }
   var rz;
   window.addEventListener('resize', function () {
     clearTimeout(rz);
     rz = setTimeout(function () {
-      if (app.getAttribute('data-view') === 'res' && SAMPLE[state.type]) { hideTip(); drawTrend(SAMPLE[state.type].trend); fitSeg(); }
+      if (app.getAttribute('data-view') === 'res') { hideTip(); drawTrend(SAMPLE.trend); }
     }, 150);
   });
 

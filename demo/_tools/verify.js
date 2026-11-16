@@ -166,24 +166,26 @@ async function runB(page, type, opts = {}) {
       await page.waitForSelector('.step[data-step="4"]:not([hidden])');
       await page.click('#next'); // 理由は選ばずに進む
       await page.waitForSelector('.view.res:not([hidden])', { timeout: 9000 }); await page.waitForTimeout(800);
-      const r = await page.evaluate(() => ({ view: document.getElementById('app').dataset.view, low: document.getElementById('s-low').textContent, high: document.getElementById('s-high').textContent, warn: !!document.querySelector('.sheet-warn') && getComputedStyle(document.querySelector('.sheet-warn')).display !== 'none' && document.querySelector('.sheet-warn').textContent.includes('計算していません'), stamp: document.querySelector('.sheet-warn b').textContent, bars: document.querySelectorAll('.fac-r').length, spec: document.getElementById('s-spec').textContent, trend: !!document.querySelector('#trend svg path.tr-line'), split: !document.getElementById('split').hidden, ticket: [...document.querySelectorAll('#tk2 dd')].map(d => d.textContent), digits: document.querySelectorAll('#mwin .mw.on').length }));
+      const r = await page.evaluate(() => ({ view: document.getElementById('app').dataset.view, low: document.getElementById('s-low').textContent, high: document.getElementById('s-high').textContent, warn: !!document.querySelector('.sheet-warn') && getComputedStyle(document.querySelector('.sheet-warn')).display !== 'none' && document.querySelector('.sheet-warn').textContent.includes('計算していません'), stamp: document.querySelector('.sheet-warn b').textContent, bars: document.querySelectorAll('.fac-r').length, spec: document.getElementById('s-spec').textContent, trend: !!document.querySelector('#trend svg path.tr-line'), smp: document.querySelectorAll('.sheet .smp').length, ticket: [...document.querySelectorAll('#tk2 dd')].map(d => d.textContent), digits: document.querySelectorAll('#mwin .mw.on').length }));
       const storage = await page.evaluate(async () => ({ ls: localStorage.length, ss: sessionStorage.length, cookie: document.cookie, idb: (indexedDB.databases ? (await indexedDB.databases()).length : 'n/a') }));
       const req = log.requests.length - before; const reqUrls = log.requests.slice(before);
       await page.locator('[data-restart]:visible').first().click(); const backIntro = await page.getAttribute('#app', 'data-view'); const cleared = await page.inputValue('#city');
-      const good = e2 === 2 && e2b && e3 >= 1 && e3b && e3c && backTo2 && kept === '吹田市' && r.view === 'res' && r.warn && r.stamp.includes('見本') && r.spec.includes('架空') && r.bars >= 3 && r.trend && r.split === (t === 'kodate') && r.ticket[2].includes('75.5') && req === 0 && storage.ls === 0 && storage.ss === 0 && storage.cookie === '' && backIntro === 'intro' && cleared === '';
+      const good = e2 === 2 && e2b && e3 >= 1 && e3b && e3c && backTo2 && kept === '吹田市' && r.view === 'res' && r.warn && r.stamp.includes('見本') && r.spec.includes('架空') && r.bars >= 3 && r.trend && r.smp === 3 && r.ticket[2].includes('75.5') && req === 0 && storage.ls === 0 && storage.ss === 0 && storage.cookie === '' && backIntro === 'intro' && cleared === '';
       ok = ok && good; out[t + '@' + w] = { good, reqUrls, e2, e2b, e3, e3b, e3c, backTo2, kept, r, req, storage, backIntro, cleared, console: log.console };
       await ctx.close();
     }
     add('B-OP', 'B案の操作：3種別×PC・スマホで、入力→エラー表示→戻る→結果表示→やり直し', ok, ok ? '6通りすべて通過（結果に「見本｜架空の物件の数値です。ご入力の物件については計算していません」の帯を常時表示。全角数字の入力も処理）' : out);
     const reqs = Object.values(out).map(o => o.req), st = Object.values(out).map(o => o.storage);
     add('B-SEND', 'B案：入力内容の送信・保存なし（操作中の通信 0、Cookie・Storage・IndexedDB 空）', reqs.every(n => n === 0) && st.every(s => s.ls === 0 && s.ss === 0 && s.cookie === ''), { requestsDuringFlow: reqs, storage: st[0] });
-    // 同じ種別なら入力が違っても結果は同じ（＝計算していない）
+    // 種別・エリア・広さ・築年をどう変えても、表示される見本は同じ（＝計算していない）
     const { ctx, page } = await newPage(browser, 1440, 900); const vals = [];
-    for (const [pref, city, sen] of [['東京都', '港区', '120'], ['北海道', '稚内市', '25']]) {
-      await open(page, PAGES.B); await page.click('.type[data-type="mansion"]'); await page.selectOption('#pref', { label: pref }); await page.fill('#city', city); await page.click('#next'); await page.fill('#a-sen', sen); await page.selectOption('#year', '1975'); await page.click('#next'); await page.click('#next'); await page.waitForSelector('.view.res:not([hidden])', { timeout: 9000 });
-      vals.push(await page.textContent('#s-low') + '-' + await page.textContent('#s-high'));
+    for (const [type, pref, city, a1, a2, year] of [['mansion', '東京都', '港区', '120', null, '2024'], ['mansion', '北海道', '稚内市', '25', null, '1975'], ['kodate', '大阪府', '吹田市', '300', '200', '1990'], ['tochi', '沖縄県', '那覇市', '2000', null, null]]) {
+      await open(page, PAGES.B); await page.click(`.type[data-type="${type}"]`); await page.selectOption('#pref', { label: pref }); await page.fill('#city', city); await page.click('#next');
+      await page.fill(type === 'mansion' ? '#a-sen' : '#a-tochi', a1); if (a2) await page.fill('#a-tate', a2); if (year) await page.selectOption('#year', year);
+      await page.click('#next'); await page.click('#next'); await page.waitForSelector('.view.res:not([hidden])', { timeout: 9000 }); await page.waitForTimeout(1500); // 窓の数字の切り替え演出（約0.6秒）が終わってから読む
+      vals.push([await page.textContent('#s-low'), await page.textContent('#s-high'), await page.textContent('#s-spec'), (await page.$$eval('.fac-v', n => n.map(x => x.textContent))).join('/'), await page.$eval('#trend svg', e => e.getAttribute('aria-label')), await page.$$eval('#mwin .mw.on', n => n.length)].join('|'));
     }
-    add('B-CALC', 'B案：実際の価格を計算していない（入力を大きく変えても、表示されるサンプル値は同じ）', vals[0] === vals[1], vals);
+    add('B-CALC', 'B案：実際の価格を計算していない（種別・エリア・広さ・築年を大きく変えた4通りで、見本の金額・要因・推移・窓の表示がすべて同じ）', new Set(vals).size === 1, new Set(vals).size === 1 ? '4通りとも同一：' + vals[0].slice(0, 60) : vals);
     // 対象外・相談フォーム
     await open(page, PAGES.B); await page.click('.textbtn[data-type="other"]'); const other = await page.isVisible('.view.other'); await page.click('[data-go="intro"]'); const back = await page.getAttribute('#app', 'data-view');
     await page.locator('#form').scrollIntoViewIfNeeded(); await page.click('.form-btn'); const fe = await page.$$eval('#form [aria-invalid="true"]', n => n.length);
@@ -271,7 +273,20 @@ async function runB(page, type, opts = {}) {
       await ctx.close();
     }
     add('A-04', '操作対象 24×24px以上（スマホ390px。文中リンクは規格の例外）', small.length === 0, small.length ? [...new Set(small)] : 'すべて24px以上');
-    add('A-04b', '操作対象 44px以上（推奨）に満たないもの', null, [...new Set(under44)].length ? [...new Set(under44)] : 'なし');
+    add('A-04b', '操作対象 44px以上（推奨。スマホ390px）', [...new Set(under44)].length ? null : true, [...new Set(under44)].length ? [...new Set(under44)] : '44px未満の操作対象なし');
+  }
+
+  /* ---- 7b. 文字の大きさ ---- */
+  {
+    const small = [];
+    for (const [key, path] of [['A', PAGES.A], ['B', PAGES.B]]) for (const [w, h] of [[390, 844], [375, 667], [1440, 900]]) {
+      const { ctx, page } = await newPage(browser, w, h); await open(page, path);
+      const audit = () => page.evaluate(() => { const out = []; const tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); let n; while ((n = tw.nextNode())) { const t = n.textContent.trim(); if (!t) continue; const e = n.parentElement; if (!e || e.closest('script,style,noscript,svg,.vh,.skip,[hidden]')) continue; const r = e.getBoundingClientRect(); if (!r.width || !r.height) continue; const fs = parseFloat(getComputedStyle(e).fontSize); if (fs < 12) out.push(fs + 'px ' + e.tagName + '.' + String(e.className).split(' ')[0] + ' "' + t.slice(0, 12) + '"'); } return [...new Set(out)]; });
+      (await audit()).forEach(x => small.push(key + '@' + w + ' ' + x));
+      if (key === 'B') { await runB(page, 'kodate', { eachStep: async () => { (await audit()).forEach(x => small.push(key + '@' + w + ' ' + x)); } }); }
+      await ctx.close();
+    }
+    add('D-04b', '本文・補助文字に12px未満の文字なし（PC1440・スマホ390・375。B案は入力〜結果の各画面も。図の中の文字は除く）', small.length === 0, small.length ? [...new Set(small)] : '最小12px');
   }
 
   /* ---- 8. reduced-motion ---- */
