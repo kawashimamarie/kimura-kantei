@@ -1,4 +1,4 @@
-/* B案｜AI不動産価値チェック（打ち合わせ用コンセプトデモ）
+/* B案｜不動産価値チェック（仮称。打ち合わせ用コンセプトデモ）
    既存のC2・R-A・R-B、およびA案のCSSは読み込まない。独立したスタイル。
    配色：夜の紺（文字・街並み）／窓の灯りの黄（押せるもの・選んだもの）／白と淡い灰
    形の規則：押せるものは角丸4px＋紺の1.5px枠。情報の器は直角＋細い罫。
@@ -44,6 +44,7 @@ ul,ol{list-style:none}
 address{font-style:normal}
 [hidden]{display:none!important}
 .nb{display:inline-block}
+p,li,dd,summary,address{text-wrap:pretty}
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 :focus-visible{outline:3px solid var(--up);outline-offset:3px}
 [tabindex="-1"]:focus{outline:none}
@@ -51,9 +52,9 @@ address{font-style:normal}
 .skip:focus{top:8px}
 
 /* ---- 打ち合わせ用の表示 ---- */
-.demo-bar{display:flex;gap:.9em;align-items:baseline;justify-content:center;background:var(--night);color:#d5d9e4;font-size:12px;line-height:1.6;letter-spacing:.04em;padding:6px var(--gut)}
+.demo-bar{display:flex;flex-wrap:wrap;gap:0 .9em;align-items:baseline;justify-content:center;background:var(--night);color:#d5d9e4;font-size:12px;line-height:1.6;letter-spacing:.04em;padding:6px var(--gut)}
 .demo-bar b{font-weight:700;color:var(--lit);white-space:nowrap}
-.demo-bar span{display:none}
+.demo-bar .db-l{display:none}
 
 /* ---- ヘッダー ---- */
 .hd{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
@@ -146,6 +147,7 @@ address{font-style:normal}
 .type b{font-size:15px;font-weight:800;line-height:1.3}
 .type small{font-size:12px;line-height:1.4;color:var(--ink3);letter-spacing:0}
 .type:hover,.type:focus-visible{background:var(--lit-l)}
+.type[aria-pressed="true"]{background:var(--lit-l);box-shadow:inset 0 0 0 1.5px var(--night)}
 .type:active{background:var(--lit);transform:translateY(1px)}
 .i-b{fill:var(--night)}.i-w{fill:#46527a}.i-on{fill:var(--lit)}
 .start-other{margin-top:6px}
@@ -251,6 +253,7 @@ address{font-style:normal}
 .tk--res{display:none}
 .sheet{position:relative;background:var(--white)}
 .sheet-warn{position:sticky;top:var(--hd);z-index:5;display:flex;align-items:baseline;gap:12px;padding:10px var(--gut);background:var(--lit);border-bottom:1.500px solid var(--night);font-size:13px;font-weight:500;line-height:1.55}
+.sheet-warn .w-l{display:none}
 .sheet-warn b{flex:none;padding:0 8px 0 11px;border:1.500px solid var(--night);background:var(--white);font-size:13.5px;font-weight:800;letter-spacing:.24em;line-height:1.6}
 .sheet-hd{padding:20px var(--gut) 16px;border-bottom:1px solid var(--line)}
 .sheet-hd h2{font-size:22px;font-weight:800;line-height:1.4}
@@ -260,9 +263,9 @@ address{font-style:normal}
 .sheet-in{margin-top:6px;color:var(--ink2)}
 .blk{padding:22px var(--gut) 24px;border-bottom:1px solid var(--line)}
 .blk h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;font-size:16px;font-weight:800;line-height:1.5}
-.blk h3 small{font-size:12px;font-weight:500;color:var(--ink3)}
-.blk-p{margin-top:12px;font-size:13.5px;line-height:1.8;color:var(--ink2)}
-.blk-n{margin-top:14px;font-size:13.5px;font-weight:700;line-height:1.6}
+.blk h3 small{font-size:13px;font-weight:500;color:var(--ink3)}
+.blk-p{margin-top:12px;font-size:14px;line-height:1.8;color:var(--ink2)}
+.blk-n{margin-top:14px;font-size:14px;font-weight:700;line-height:1.6}
 .hero-v{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 8px;margin-top:6px;font-size:16px;font-weight:700;line-height:1.2}
 .hero-v .hv{white-space:nowrap}
 .hero-v b{font-size:clamp(40px,12vw,56px);font-weight:800;letter-spacing:-.02em;margin-right:2px}
@@ -274,46 +277,25 @@ address{font-style:normal}
 .meter-c{position:absolute;top:-5px;bottom:-5px;width:3px;margin-left:-1.500px;background:var(--night);box-shadow:0 0 0 2px var(--white)}
 .meter-ct{position:relative;margin-top:9px;height:1.6em;font-size:13px;font-weight:700;line-height:1.6;white-space:nowrap}
 .meter-ct span{position:absolute;transform:translateX(-50%)}
-.meter-ax{display:flex;justify-content:space-between;margin-top:2px;font-size:12px;color:var(--ink3);line-height:1.5;font-variant-numeric:tabular-nums}
+.meter-ax{display:flex;justify-content:space-between;margin-top:2px;font-size:12.5px;color:var(--ink3);line-height:1.5;font-variant-numeric:tabular-nums}
 /* 土地と建物の内訳 */
-.lg{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:10px;font-size:12.5px;line-height:1.5;color:var(--ink2)}
+.lg{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:12px;font-size:13px;line-height:1.5;color:var(--ink2)}
 .lg li{display:flex;align-items:center;gap:7px}
 .lg i{width:16px;height:9px}
 .lg-up{background:var(--up);border-radius:0 3px 3px 0}
 .lg-dn{background:var(--dn);border-radius:3px 0 0 3px}
 /* ポイント（基準線から左右に伸びる棒） */
-.fac{margin-top:10px}
-.fac-r{display:grid;grid-template-columns:minmax(0,7.4em) minmax(0,1fr) 7.2em;align-items:center;gap:8px;min-height:44px;padding:2px 4px;margin:0 -4px;border-radius:var(--r);cursor:default}
-.fac-r:hover,.fac-r:focus-visible{background:var(--bg)}
+.fac{margin-top:12px;border-top:1px solid var(--line-l)}
+.fac-r{display:grid;grid-template-columns:minmax(0,7.4em) minmax(0,1fr) 7.2em;align-items:center;column-gap:8px;padding:12px 0 13px;border-bottom:1px solid var(--line-l)}
+.fac-w{grid-column:1/-1;margin-top:5px;font-size:13px;line-height:1.65;color:var(--ink2)}
 .fac-n{font-size:13.5px;font-weight:500;line-height:1.35}
 .fac-b{position:relative;height:16px}
-.fac-b::before{content:"";position:absolute;left:50%;top:-10px;bottom:-10px;width:1px;background:var(--line)}
+.fac-b::before{content:"";position:absolute;left:50%;top:-8px;bottom:-8px;width:1px;background:var(--ink3)}
 .fac-b i{position:absolute;top:1px;height:14px}
 .fac-b .up{left:calc(50% + 1px);background:var(--up);border-radius:0 4px 4px 0}
 .fac-b .dn{right:calc(50% + 1px);background:var(--dn);border-radius:4px 0 0 4px}
 .fac-v{font-size:13px;font-weight:700;text-align:right;white-space:nowrap}
 /* 推移（折れ線） */
-.trend{position:relative;margin-top:10px;border-radius:var(--r)}
-.trend svg{display:block;width:100%;height:auto;overflow:visible}
-.tr-g{stroke:var(--line-l);stroke-width:1}
-.tr-ax{font-size:12px;fill:var(--ink3);font-family:var(--f);font-variant-numeric:tabular-nums}
-.tr-area{fill:var(--up);opacity:.1}
-.tr-line{fill:none;stroke:var(--up);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
-.tr-dot{fill:var(--up);stroke:var(--white);stroke-width:2}
-.tr-end{font-size:14px;font-weight:700;fill:var(--night);font-family:var(--f)}
-.tr-x{stroke:var(--ink3);stroke-width:1;opacity:0}
-.tr-xd{fill:var(--white);stroke:var(--up);stroke-width:2;opacity:0}
-.trend.is-on .tr-x,.trend.is-on .tr-xd{opacity:1}
-.tbl{margin-top:12px}
-.tbl summary{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:4px;list-style:none}
-.tbl summary::-webkit-details-marker{display:none}
-.tbl summary::after{content:"";width:6px;height:6px;border-right:1.500px solid currentColor;border-bottom:1.500px solid currentColor;transform:rotate(45deg) translate(-2px,-2px);transition:transform .15s}
-.tbl[open] summary::after{transform:rotate(225deg) translate(-2px,-2px)}
-.tbl-w{overflow-x:auto;margin-top:4px}
-.tbl table{width:100%;border-collapse:collapse;font-size:13px;line-height:1.6}
-.tbl th,.tbl td{padding:7px 10px 7px 0;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-.tbl thead th{font-size:12px;color:var(--ink3);border-bottom-color:var(--night)}
-.tbl td:nth-child(2){font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:700}
 .not{margin-top:10px;display:grid;gap:0;font-size:14px;line-height:1.6}
 .not li{position:relative;padding:8px 0 8px 22px;border-bottom:1px solid var(--line-l)}
 .not li::before{content:"";position:absolute;left:2px;top:1.05em;width:11px;height:2px;background:var(--night)}
@@ -323,8 +305,6 @@ address{font-style:normal}
 .sheet-ft .nav{flex-direction:column;margin-top:18px}
 .sheet-re{margin-top:10px}
 .tk-cta{width:100%}
-.tip{position:fixed;z-index:60;max-width:260px;padding:8px 12px;background:var(--night);color:#fff;font-size:12.5px;line-height:1.6;border-radius:var(--r);pointer-events:none}
-.tip b{display:block;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
 .nojs{padding:20px var(--gut);font-size:14px;background:var(--lit-l)}
 
 /* ============ 下のセクション ============ */
@@ -345,20 +325,18 @@ address{font-style:normal}
 .cmp-r>.cmp-k::before{color:var(--night)}
 .three{margin:44px calc(var(--gut) * -1) 0;padding:36px var(--gut) 38px;background:var(--night);color:#fff}
 .three h3{font-size:21px;font-weight:800;line-height:1.5}
-.three-fig{width:100%;max-width:300px;height:auto;margin-top:18px}
-.tf-l{fill:none;stroke:#7d89ad;stroke-width:1.500}
-.tf-n{fill:var(--night);stroke:#7d89ad;stroke-width:1.500}
-.tf-k{fill:var(--lit)}
-.tf-t{fill:#fff;font-size:15px;font-weight:800;font-family:var(--f)}
-.tf-c{fill:#b9c1d6;font-size:13.5px;font-weight:500;font-family:var(--f)}
-.tf-c--k{fill:#fff;font-weight:700}
-.three ol{margin-top:20px;counter-reset:th}
+.three-b{margin-top:22px}
+.three ol{counter-reset:th;border-bottom:1px solid #3a4468}
 .three li{counter-increment:th;display:grid;grid-template-columns:auto 1fr;column-gap:14px;padding:18px 0;border-top:1px solid #3a4468}
 .three li::before{content:counter(th);grid-row:1/3;display:grid;place-items:center;width:34px;height:34px;background:var(--lit);color:var(--night);font-size:18px;font-weight:800;line-height:1}
 .three li b{font-size:18px;font-weight:800;line-height:1.4}
-.three li span{font-size:12px;font-weight:500;color:#b9c1d6;line-height:1.5}
+.three li span{font-size:13px;font-weight:500;color:#b9c1d6;line-height:1.5}
 .three li p{grid-column:1/-1;margin-top:10px;font-size:14px;line-height:1.85;color:#dfe3ee}
-.three-n{margin-top:6px;padding-top:18px;border-top:1px solid #3a4468;font-size:13px;line-height:1.85;color:#b9c1d6}
+.three-k{position:relative;display:grid;gap:0;margin-top:16px;padding:14px 18px 16px;background:var(--lit);color:var(--night);line-height:1.5}
+.three-k::before{content:"";position:absolute;left:16px;top:-16px;width:1.5px;height:16px;background:#7d89ad}
+.three-k span{font-size:13px;font-weight:700}
+.three-k b{font-size:22px;font-weight:800;letter-spacing:.06em}
+.three-n{margin-top:20px;font-size:13.5px;line-height:1.85;color:#b9c1d6}
 .three :focus-visible{outline-color:var(--lit)}
 
 /* 「見本・架空データ」の札（価格・グラフの見出しの横に常に出す） */
@@ -367,9 +345,9 @@ address{font-style:normal}
 .mkr{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;background:var(--night);color:var(--lit);font-style:normal;font-size:13px;font-weight:800;line-height:1}
 
 /* こんなときに */
-.wor{margin-top:26px;border-top:1px solid var(--night)}
-.wor li{display:grid;grid-template-columns:auto 1fr;column-gap:14px;row-gap:4px;padding:18px 0 20px;border-bottom:1px solid var(--line)}
-.wor li::before{content:"";grid-row:1/3;width:12px;height:12px;margin-top:.62em;background:var(--lit);outline:1.500px solid var(--night)}
+.wor{margin-top:26px;border:1.5px solid var(--night);background:var(--white)}
+.wor li{display:grid;gap:6px;align-content:start;padding:20px 18px 22px;border-bottom:1.5px solid var(--night)}
+.wor li:last-child{border-bottom:0}
 .wor b{font-size:19px;font-weight:800;line-height:1.5}
 .wor span{font-size:14.5px;line-height:1.8;color:var(--ink2)}
 .wor b span{font:inherit;color:inherit}
@@ -403,10 +381,9 @@ address{font-style:normal}
 /* 利用するメリット */
 .sec--mer{background:var(--night);color:#fff}
 .mer{margin-top:28px;border-top:1px solid #3a4468}
-.mer li{display:grid;grid-template-columns:auto 1fr;column-gap:14px;padding:20px 0 22px;border-bottom:1px solid #3a4468}
-.mer li::before{content:"";grid-row:1/3;width:12px;height:12px;margin-top:.7em;background:var(--lit)}
-.mer b{font-size:19px;font-weight:800;line-height:1.6}
-.mer p{margin-top:4px;font-size:14.5px;line-height:1.9;color:#dfe3ee}
+.mer li{padding:22px 0 24px;border-bottom:1px solid #3a4468}
+.mer b{display:block;font-size:19px;font-weight:800;line-height:1.5;color:var(--lit)}
+.mer p{margin-top:8px;font-size:14.5px;line-height:1.9;color:#dfe3ee}
 .sec--mer :focus-visible{outline-color:var(--lit)}
 
 /* 利用の流れ */
@@ -417,16 +394,19 @@ address{font-style:normal}
 .stp-p i.on{background:var(--lit);border-color:var(--night)}
 .stp b{font-size:18px;font-weight:800;line-height:1.5}
 .stp p{margin-top:2px;font-size:14.5px;line-height:1.8;color:var(--ink2)}
-.stp small{display:block;font-size:12.5px;color:var(--ink3)}
+.stp small{display:block;font-size:13px;color:var(--ink3)}
 .stp-a{display:grid;gap:12px;margin-top:26px}
 .stp-a p{font-size:14px;line-height:1.7;color:var(--ink2)}
 
 /* 専門家に相談するメリット */
 .exp-g{display:grid;gap:28px}
-.exp-who{display:grid;grid-template-columns:112px 1fr;gap:18px;align-items:end;padding-bottom:22px;border-bottom:1px solid var(--night)}
-.exp-who img{width:112px;height:149px;object-fit:cover;border:1px solid var(--line)}
+.exp-who{display:grid;grid-template-columns:96px 1fr;gap:18px;align-items:end;padding-bottom:22px;border-bottom:1px solid var(--night)}
+.exp-who img{width:96px;height:128px;object-fit:cover;border:1px solid var(--line)}
+.hold{font-size:13px;line-height:1.7;color:var(--ink2)}
+.hold b,.exp-who .hold b{display:inline-block;margin:0 8px 0 0;font-size:12px;font-weight:700;letter-spacing:0;border:1px dashed currentColor;padding:0 6px;line-height:1.6}
+.exp-who .hold{grid-column:1/-1;display:block}
 .exp-who p{display:grid;line-height:1.5}
-.exp-who small{font-size:12px;font-weight:700;color:var(--ink3);letter-spacing:.04em}
+.exp-who small{font-size:12.5px;font-weight:700;color:var(--ink3);letter-spacing:.04em}
 .exp-who b{font-size:24px;font-weight:800;letter-spacing:.12em;margin:2px 0 4px}
 .exp-who span{font-size:13px;color:var(--ink2)}
 .exp{counter-reset:ex;margin-top:22px}
@@ -480,11 +460,13 @@ address{font-style:normal}
 .ft-co b{display:block;font-size:16px;font-weight:800;color:var(--night)}
 .ft-co span{font-size:12.5px}
 .ft a{text-underline-offset:4px;white-space:nowrap}
-.ft-dis{font-size:12.5px;line-height:1.9;padding-top:18px;border-top:1px solid var(--line)}
-.ft-c{font-size:12px}
+.ft-dis{font-size:13px;line-height:1.9;padding-top:18px;border-top:1px solid var(--line)}
+.ft-c{font-size:12.5px}
+.ft-tel{display:inline-block;padding:10px 0;font-weight:700}
 
-/* 結果画面：窓の数字が見本であることを添える */
-.app[data-view="res"] .town::after{content:"窓の数字は見本です（万円）";position:absolute;left:var(--gut);bottom:6px;font-size:12px;font-weight:500;line-height:1.5;color:#c9d0e2;background:rgba(15,22,41,.78);padding:1px 8px}
+/* 結果画面：窓の数字が見本であることを、街並みのすぐ下に添える */
+.town-cap{display:none}
+.app[data-view="res"] .town-cap{display:block;flex:none;padding:5px var(--gut) 6px;background:#0f1629;color:#c9d0e2;font-size:12px;font-weight:500;line-height:1.5}
 
 /* 画面の切り替え（短いフェード） */
 @media (prefers-reduced-motion:no-preference){
@@ -499,7 +481,6 @@ address{font-style:normal}
   .hero-h{font-size:clamp(30px,8.8vw,40px);margin-top:6px}
   .sub{margin-top:8px;font-size:15px}
   .lead{display:none}
-  .eyebrow span{display:none}
 }
 
 /* 幅の狭いスマホ（320px台） */
@@ -517,7 +498,8 @@ address{font-style:normal}
 /* ============ タブレット以上 ============ */
 @media (min-width:700px){
   :root{--gut:40px;--hd:68px}
-  .demo-bar span{display:inline}
+  .demo-bar .db-l{display:inline}
+  .demo-bar .db-s{display:none}
   .logo-mark{width:32px;height:32px}
   .logo-t b{font-size:18px}
   .logo-t small{font-size:12px}
@@ -550,9 +532,11 @@ address{font-style:normal}
   .res-g{max-width:720px;padding-top:32px;padding-bottom:64px}
   .sheet-hd,.blk,.sheet-ft,.sheet-warn{padding-left:36px;padding-right:36px}
   .sheet-warn{font-size:14px}
+  .sheet-warn .w-l{display:inline}
   .sheet-hd h2{font-size:26px}
   .blk h3{font-size:18px}
-  .fac-r{grid-template-columns:minmax(0,9.5em) minmax(0,1fr) 7.6em;gap:14px}
+  .fac-r{grid-template-columns:minmax(0,9.5em) minmax(0,1fr) 7.6em;column-gap:14px}
+  .fac-w{font-size:13.5px}
   .fac-n{font-size:14.5px}.fac-v{font-size:13.5px}
   .not{grid-template-columns:1fr 1fr;column-gap:32px}
   .sec{padding:96px 0 100px}
@@ -576,6 +560,7 @@ address{font-style:normal}
   .app .town{order:2;flex:1 0 auto;height:auto;min-height:clamp(170px,24vh,250px)}
   .app:not([data-view="intro"]) .town{height:150px}
   .app[data-view="res"] .town{order:0;height:170px}
+  .app[data-view="res"] .town-cap{order:0}
 
   .intro{flex:1;max-width:calc(var(--w) + var(--gut)*2);grid-template-columns:minmax(0,1fr) 500px;grid-template-areas:"copy start" "peek start";grid-template-rows:auto 1fr;column-gap:72px;row-gap:24px;align-content:center;padding-top:clamp(24px,4.6vh,56px);padding-bottom:clamp(24px,4.6vh,52px)}
   .intro-copy{grid-area:copy}
@@ -616,15 +601,14 @@ address{font-style:normal}
   .sheet-hd{padding-top:26px}
   .sheet-hd h2{font-size:30px}
   .blk--hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,340px);column-gap:52px;align-items:start}
+  .fac-r{grid-template-columns:9.5em minmax(160px,1fr) 7.8em minmax(0,1.6fr);column-gap:22px;padding:15px 0}
+  .fac-w{grid-column:auto;margin-top:0;font-size:14px}
   .hero-r{margin-top:34px}
   .hero-r .blk-n{margin-top:0}
   .hero-v b{font-size:66px}
   .hero-v{font-size:20px}
   .hero-v i{font-size:26px}
   .blk{padding-top:28px;padding-bottom:30px}
-  .blk-2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-bottom:1px solid var(--line)}
-  .blk-2>.blk{border-bottom:0}
-  .blk-2>.blk+.blk{border-left:1px solid var(--line)}
   .not{grid-template-columns:1fr 1fr 1fr}
 
   .sec{padding:120px 0 124px}
@@ -644,14 +628,21 @@ address{font-style:normal}
   .cmp-r>[role="rowheader"]{font-size:14px;margin:0;padding:18px 0;line-height:1.7}
   .cmp-r>[role="cell"]{display:block;padding:18px 22px;font-size:15px;border-top:0;border-left:1px solid var(--line-l)}
   .cmp-r>[role="cell"]::before{content:none}
-  .three{margin-top:88px;padding:56px 60px 54px;display:grid;grid-template-columns:330px 1fr;column-gap:56px;align-items:start}
-  .three-fig{margin-top:26px}
+  .three{margin-top:88px;padding:56px 60px 54px;display:grid;grid-template-columns:280px minmax(0,1fr);column-gap:56px;align-items:start}
   .three h3{font-size:28px;line-height:1.6}
-  .three ol{margin-top:0;display:grid;grid-template-columns:repeat(3,1fr);column-gap:36px}
-  .three li{display:block;padding:0;border-top:0}
-  .three li::before{width:40px;height:40px;font-size:21px;margin-bottom:16px}
-  .three li b{display:block;font-size:21px}
-  .three li p{margin-top:12px}
+  .three-b{margin-top:6px;display:grid;grid-template-columns:minmax(0,1fr) 200px;align-items:stretch}
+  .three ol{border-bottom:0;border-right:1.5px solid #7d89ad;padding-right:30px}
+  .three li{position:relative;grid-template-columns:40px 9em minmax(0,1fr);column-gap:18px;align-items:start;padding:22px 0}
+  .three li:first-child{border-top:0;padding-top:4px}
+  .three li:last-child{padding-bottom:4px}
+  .three li::before{width:40px;height:40px;font-size:21px}
+  .three li::after{content:"";position:absolute;right:-30px;top:50%;width:30px;height:1.5px;background:#7d89ad}
+  .three li b{grid-column:2;font-size:20px}
+  .three li span{grid-column:2}
+  .three li p{grid-column:3;grid-row:1/3;margin-top:0}
+  .three-k{align-self:center;margin:0 0 0 30px;padding:20px 20px 22px}
+  .three-k::before{left:-30px;top:50%;width:30px;height:1.5px}
+  .three-k b{font-size:24px}
   .three-n{grid-column:2;margin-top:28px;max-width:46em}
   .cta-g{grid-template-columns:minmax(0,5fr) minmax(0,5fr);column-gap:88px;align-items:start}
   .cta-tel b{font-size:46px}
@@ -666,7 +657,11 @@ address{font-style:normal}
 
 /* ---- 追加した章：タブレット以上 ---- */
 @media (min-width:700px){
-  .wor b{font-size:23px}
+  .wor{display:grid;grid-template-columns:1fr 1fr}
+  .wor li{padding:26px 24px 28px}
+  .wor li:nth-child(odd){border-right:1.5px solid var(--night)}
+  .wor li:nth-child(n+3){border-bottom:0}
+  .wor b{font-size:21px}
   .wor span{font-size:15.5px}
   .shot-w,.shot-b{padding-left:26px;padding-right:26px}
   .shot-v b{font-size:38px}
@@ -677,26 +672,25 @@ address{font-style:normal}
   .stp-a{grid-template-columns:auto 1fr;align-items:center;gap:22px}
   .stp-a .btn{min-width:280px}
   .exp-a .btn{width:auto;min-width:300px}
-  .exp-who{grid-template-columns:140px 1fr}
-  .exp-who img{width:140px;height:187px}
+  .exp-who{grid-template-columns:112px 1fr}
+  .exp-who img{width:112px;height:149px}
 }
 /* ---- 追加した章：PC ---- */
 @media (min-width:1080px){
   .wor-g{display:grid;grid-template-columns:400px minmax(0,1fr);column-gap:80px;align-items:start}
   .wor{margin-top:10px}
-  .wor li{padding:24px 0 26px}
-  .wor b{font-size:27px}
-  .wor li:nth-child(2){padding-left:48px}
-  .wor li:nth-child(3){padding-left:96px}
-  .wor li:nth-child(4){padding-left:144px}
+  .wor li{padding:30px 30px 34px}
+  .wor b{font-size:23px}
   .know-g{grid-template-columns:minmax(0,540px) minmax(0,1fr);column-gap:80px;row-gap:40px;align-items:start}
   .know-hd{grid-column:1/-1;display:grid;grid-template-columns:400px minmax(0,1fr);column-gap:80px;align-items:end}
   .know-hd .sec-p{margin-top:0;max-width:30em}
   .know{margin-top:0}
   .know li{padding:24px 0 26px}
-  .mer-g{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:80px;align-items:start}
-  .mer{margin-top:14px}
-  .mer li{padding:26px 0 28px}
+  .sec--mer .sec-h .ln{display:inline}
+  .mer{margin-top:48px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:0}
+  .mer li{padding:4px 36px 6px;border-bottom:0;border-left:1px solid #3a4468}
+  .mer li:first-child{padding-left:0;border-left:0}
+  .mer li:last-child{padding-right:0}
   .stp{display:grid;grid-template-columns:repeat(4,1fr);margin-top:44px;border-top:0}
   .stp li{display:block;padding:0 28px 4px;border-bottom:0;border-left:1px solid var(--line)}
   .stp li:first-child{padding-left:0;border-left:0}
@@ -707,7 +701,7 @@ address{font-style:normal}
   .stp-a{margin-top:48px}
   .exp-g{grid-template-columns:300px minmax(0,1fr);column-gap:88px;align-items:start}
   .exp-who{grid-template-columns:1fr;gap:18px;padding-bottom:0;border-bottom:0;position:sticky;top:calc(var(--hd) + 32px)}
-  .exp-who img{width:192px;height:256px}
+  .exp-who img{width:128px;height:171px}
   .exp-who b{font-size:30px}
   .exp-who span{font-size:14px}
   .exp{margin-top:36px;border-top:1px solid var(--night)}
@@ -717,4 +711,16 @@ address{font-style:normal}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+
+/* 高さの小さいPC画面（1366×768 など）でも、最初の画面に街並みが入るようにする */
+@media (min-width:1080px) and (max-height:820px){
+  .intro{row-gap:14px;padding-top:18px;padding-bottom:18px}
+  .hero-h{margin-top:8px;font-size:clamp(44px,4vw,56px)}
+  .sub{margin-top:12px;font-size:18px}
+  .lead{font-size:14.5px;line-height:1.8}
+  .start{padding:22px 28px 18px}
+  .type{min-height:124px;padding-top:12px}
+  .facts{margin-top:12px}
+  .app .town{min-height:150px}
 }

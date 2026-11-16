@@ -1,4 +1,4 @@
-/* B案｜AI不動産価値チェック（打ち合わせ用コンセプトデモ）
+/* B案｜不動産価値チェック（仮称。打ち合わせ用コンセプトデモ）
    ・入力内容は、ページを表示している間だけメモリ上に持つ。
      保存（Cookie・localStorage・sessionStorage・IndexedDB）も、送信（fetch・XHR・フォーム送信・画像ビーコン）もしない。
    ・価格の計算はしない。結果画面の数値は、下の SAMPLE に書いた架空の固定値（ひとつだけ）で、入力内容とは連動しない。
@@ -16,22 +16,20 @@
   /* ====================================================================
      架空の見本データ（種別ごとに固定。入力内容からは作らない）
      ==================================================================== */
-  var YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
   /* 見本はひとつだけ。入力した種別・エリア・広さ・築年のどれを変えても、同じ見本を表示する。
      要因は、構想中のサービスが入力と公開データから言える範囲に限る（道路・法令上の制限・階数などは扱わない）。
      影響の大きさは 2＝大きく、1＝やや（＋は押し上げ、−は押し下げ）。細かい％は出さない。 */
   var SAMPLE = {
     kind: '架空のマンション', spec: '専有面積 68m²／築16年',
-    low: 3480, mid: 3960, high: 4440, min: 3000, max: 5000, digits: '3960',
-    unit: 'まんなかの価格を面積で割ると、1m²あたり約58万円',
+    low: 3480, mid: 3960, high: 4440, min: 3000, max: 5000,
+    unit: ['まんなかの価格を', '面積で割ると、', '1m²あたり約58万円'],
     why: '同じ広さ・同じ築年でも、階数や向き、室内の状態などで価格は変わります。このチェックではそこまで見ていないため、ひとつの数字ではなく幅で示します。',
     factors: [
-      ['この地域の取引の動き', 2, 'この1年、同じ市区町村で取引されたマンションの価格が上がっている'],
-      ['広さ', 1, '68m²は、この地域で取引の多い広さ'],
-      ['取引の件数', 1, '同じ市区町村で、似た条件の取引が多い'],
-      ['築年数', -2, '築16年。この地域で取引された物件の平均より古い']
-    ],
-    trend: [100, 102, 105, 107, 108, 112, 118, 124, 129, 133]
+      ['地域の取引の動き', 2, '見本の地域では、この1年、マンションの取引価格が上がっている'],
+      ['広さ', 1, '68m²は、見本の地域で取引の多い広さ'],
+      ['取引の件数', 1, '見本の地域では、似た条件の取引が多い'],
+      ['築年数', -2, '築16年。見本の地域で取引された物件の平均より古い']
+    ]
   };
   var TYPE_LABEL = { mansion: 'マンション', kodate: '一戸建て', tochi: '土地' };
   var STEP_LABEL = { 2: '所在エリア', 3: '広さ・築年', 4: '知りたい理由' };
@@ -44,11 +42,6 @@
     var e = document.createElement(tag);
     if (cls) e.className = cls;
     if (text != null) e.textContent = text;
-    return e;
-  }
-  function svgEl(tag, attrs) {
-    var e = document.createElementNS('http://www.w3.org/2000/svg', tag);
-    for (var k in attrs) e.setAttribute(k, attrs[k]);
     return e;
   }
 
@@ -70,6 +63,14 @@
     '?': ['01110', '10001', '00001', '00010', '00100', '00000', '00100'],
     ' ': ['00000', '00000', '00000', '00000', '00000', '00000', '00000']
   };
+  /* 2段で表示するときの小さい数字（3列×5段） */
+  var GLYPH3 = {
+    '0': ['111', '101', '101', '101', '111'], '1': ['010', '110', '010', '010', '111'],
+    '2': ['111', '001', '111', '100', '111'], '3': ['111', '001', '111', '001', '111'],
+    '4': ['101', '101', '111', '001', '001'], '5': ['111', '100', '111', '001', '111'],
+    '6': ['111', '100', '111', '101', '111'], '7': ['111', '001', '001', '010', '010'],
+    '8': ['111', '101', '111', '101', '111'], '9': ['111', '101', '111', '001', '111']
+  };
   var wins = town ? all('#mwin .mw', town) : [];
   var timers = [];
   function later(fn, ms) { var t = setTimeout(fn, ms); timers.push(t); return t; }
@@ -86,6 +87,32 @@
       }
     }
     return on;
+  }
+  /* 上の段に下限、下の段に上限（どちらも4桁） */
+  function rangePattern(lo, hi) {
+    var on = [], i, g, r, c, rows, left = Math.floor((COLS - 15) / 2);
+    for (i = 0; i < COLS * ROWS; i++) on.push(false);
+    [lo, hi].forEach(function (text, line) {
+      for (g = 0; g < 4; g++) {
+        rows = GLYPH3[String(text).charAt(g)];
+        if (!rows) continue;
+        for (r = 0; r < 5; r++) for (c = 0; c < 3; c++) {
+          if (rows[r].charAt(c) === '1') on[(line * 6 + r) * COLS + left + g * 4 + c] = true;
+        }
+      }
+    });
+    return on;
+  }
+  function rnd4() { var t = ''; for (var i = 0; i < 4; i++) t += String(Math.floor(Math.random() * 10)); return t; }
+  /* 数字がぱらぱらと入れ替わって、下限と上限に落ち着く（約0.6秒） */
+  function townRange(lo, hi) {
+    clearTimers();
+    if (reduce || !wins.length) { paint(rangePattern(lo, hi)); return; }
+    var n = 0;
+    (function tick() {
+      if (n++ < 6) { paint(rangePattern(rnd4(), rnd4())); later(tick, 90); }
+      else paint(rangePattern(lo, hi));
+    })();
   }
   function paint(on) { wins.forEach(function (w, i) { w.classList.toggle('on', !!on[i]); }); }
   function townSet(text) { clearTimers(); paint(pattern(text)); }
@@ -160,11 +187,18 @@
       town.removeAttribute('data-hl');
       if (t === 'other') { town.removeAttribute('data-sel'); show('other', $('other-h')); return; }
       state.type = t;
+      markType();
       town.setAttribute('data-sel', t);
       townShuffle('???');
       goStep(2);
     });
   });
+  function markType() {
+    all('.type').forEach(function (b) {
+      if (b.getAttribute('data-type') === state.type) b.setAttribute('aria-pressed', 'true');
+      else b.removeAttribute('aria-pressed');
+    });
+  }
   all('[data-go="intro"]').forEach(function (b) { b.addEventListener('click', toIntro); });
   var again = $('start-again');
   if (again) again.addEventListener('click', function (e) {
@@ -399,35 +433,23 @@
   /* ====================================================================
      結果（見本）
      ==================================================================== */
-  var tip = $('tip');
-  function showTip(title, text, rect) {
-    tip.textContent = '';
-    tip.appendChild(el('b', null, title));
-    if (text) tip.appendChild(document.createTextNode(text));
-    tip.hidden = false;
-    var w = tip.offsetWidth, h = tip.offsetHeight;
-    var x = Math.min(Math.max(8, rect.left + rect.width / 2 - w / 2), window.innerWidth - w - 8);
-    var y = rect.top - h - 8;
-    if (y < 8) y = rect.bottom + 8;
-    tip.style.left = x + 'px';
-    tip.style.top = y + 'px';
-  }
-  function hideTip() { tip.hidden = true; }
-  window.addEventListener('scroll', hideTip, { passive: true });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hideTip(); });
-
   function result() {
     runTimers.forEach(clearTimeout); runTimers = [];
     var d = SAMPLE; // 入力内容にかかわらず、同じ見本
     renderTicket();
 
-    $('s-spec').textContent = d.kind + '｜' + d.spec;
+    var sp = $('s-spec');
+    sp.textContent = '';
+    sp.appendChild(el('span', 'nb', d.kind + '｜'));
+    d.spec.split('／').forEach(function (t, i, a) { sp.appendChild(el('span', 'nb', t + (i < a.length - 1 ? '／' : ''))); });
     $('s-why').textContent = d.why;
     var tv = ticketValues();
     $('s-in').textContent = [tv.type[0], tv.area[0], tv.size.filter(Boolean).join('・'), tv.year[0]].filter(function (x) { return x && x.charAt(0) !== '（'; }).join('／') + '（この見本には反映していません）';
     $('s-low').textContent = fmt(d.low);
     $('s-high').textContent = fmt(d.high);
-    $('s-unit').textContent = d.unit;
+    var un = $('s-unit');
+    un.textContent = '';
+    d.unit.forEach(function (t) { un.appendChild(el('span', 'nb', t)); });
 
     /* 価格帯のメーター */
     var pos = function (v) { return (v - d.min) / (d.max - d.min) * 100; };
@@ -443,105 +465,31 @@
     $('meter-max').textContent = fmt(d.max) + '万円';
     $('meter-t').textContent = '参考価格帯は' + fmt(d.low) + '万円から' + fmt(d.high) + '万円、まんなかは' + fmt(d.mid) + '万円（架空の見本）';
 
-    /* 価格を左右するポイント */
-    var fac = $('fac'), ftb = $('fac-t').tBodies[0];
-    fac.textContent = ''; ftb.textContent = '';
+    /* 価格を左右するポイント（棒は飾りで、内容は文字でも読める） */
+    var fac = $('fac');
+    fac.textContent = '';
     var WORD = { '2': '大きく押し上げ', '1': 'やや押し上げ', '-1': 'やや押し下げ', '-2': '大きく押し下げ' };
     d.factors.forEach(function (f) {
       var word = WORD[String(f[1])];
-      var row = el('div', 'fac-r');
-      row.tabIndex = 0;
-      row.setAttribute('role', 'img');
-      row.setAttribute('aria-label', f[0] + '：' + word + '。' + f[2]);
+      var row = el('li', 'fac-r');
       row.appendChild(el('span', 'fac-n', f[0]));
       var bar = el('span', 'fac-b');
+      bar.setAttribute('aria-hidden', 'true');
       var b = el('i', f[1] > 0 ? 'up' : 'dn');
-      b.style.width = (Math.abs(f[1]) / 2 * 44) + '%';
+      b.style.width = (Math.abs(f[1]) / 2 * 46) + '%';
       bar.appendChild(b);
       row.appendChild(bar);
       row.appendChild(el('span', 'fac-v', word));
-      var on = function () { showTip(word, f[2], bar.getBoundingClientRect()); };
-      row.addEventListener('mouseenter', on); row.addEventListener('focus', on);
-      row.addEventListener('mouseleave', hideTip); row.addEventListener('blur', hideTip);
+      row.appendChild(el('span', 'fac-w', f[2]));
       fac.appendChild(row);
-      var tr = el('tr');
-      tr.appendChild(el('td', null, f[0])); tr.appendChild(el('td', null, word)); tr.appendChild(el('td', null, f[2]));
-      ftb.appendChild(tr);
     });
 
     /* 知りたい理由に合わせた、相談のご案内 */
     tailor();
 
-    townSet(d.digits);
     show('res', $('res-h'));
-    drawTrend(d.trend); // 表示してから描く（表示幅に合わせるため）
-    if (!reduce) townShuffle(d.digits);
+    townRange(String(d.low), String(d.high));
   }
-  var rz;
-  window.addEventListener('resize', function () {
-    clearTimeout(rz);
-    rz = setTimeout(function () {
-      if (app.getAttribute('data-view') === 'res') { hideTip(); drawTrend(SAMPLE.trend); }
-    }, 150);
-  });
-
-  /* ---------- 推移の折れ線 ---------- */
-  function drawTrend(vals) {
-    var box = $('trend'), ttb = $('trend-t').tBodies[0];
-    box.textContent = ''; ttb.textContent = '';
-    var W = Math.max(280, Math.round(box.clientWidth || 640)), H = W < 480 ? 210 : 240, L = 36, R = 42, T = 16, B = 30;
-    var lo = 90, hi = Math.ceil((Math.max.apply(null, vals) + 2) / 10) * 10;
-    var x = function (i) { return L + (W - L - R) * i / (vals.length - 1); };
-    var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
-    var svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': '2016年の100から、2025年の' + vals[vals.length - 1] + 'まで上昇している折れ線グラフ（架空の見本）' });
-    var v, i, t;
-    for (v = 100; v <= hi; v += 10) {
-      svg.appendChild(svgEl('line', { class: 'tr-g', x1: L, x2: W - R, y1: y(v), y2: y(v) }));
-      t = svgEl('text', { class: 'tr-ax', x: L - 8, y: y(v) + 4, 'text-anchor': 'end' }); t.textContent = v; svg.appendChild(t);
-    }
-    for (i = 0; i < vals.length; i += 3) {
-      t = svgEl('text', { class: 'tr-ax', x: x(i), y: H - 8, 'text-anchor': i === 0 ? 'start' : i === vals.length - 1 ? 'end' : 'middle' });
-      t.textContent = YEARS[i] + '年'; svg.appendChild(t);
-    }
-    var line = vals.map(function (val, i) { return (i ? 'L' : 'M') + x(i).toFixed(1) + ',' + y(val).toFixed(1); }).join('');
-    svg.appendChild(svgEl('path', { class: 'tr-area', d: line + 'L' + x(vals.length - 1) + ',' + y(lo) + 'L' + x(0) + ',' + y(lo) + 'Z' }));
-    svg.appendChild(svgEl('path', { class: 'tr-line', d: line }));
-    var xl = svgEl('line', { class: 'tr-x', y1: T, y2: y(lo) }); svg.appendChild(xl);
-    var last = vals.length - 1;
-    svg.appendChild(svgEl('circle', { class: 'tr-dot', cx: x(last), cy: y(vals[last]), r: 5 }));
-    t = svgEl('text', { class: 'tr-end', x: x(last) + 10, y: y(vals[last]) + 5 }); t.textContent = vals[last]; svg.appendChild(t);
-    var xd = svgEl('circle', { class: 'tr-xd', r: 5 }); svg.appendChild(xd);
-    box.appendChild(svg);
-
-    vals.forEach(function (val, i) {
-      var tr = el('tr'); tr.appendChild(el('td', null, YEARS[i] + '年')); tr.appendChild(el('td', null, String(val))); ttb.appendChild(tr);
-    });
-
-    var cur = last;
-    function at(i) {
-      cur = Math.max(0, Math.min(last, i));
-      xl.setAttribute('x1', x(cur)); xl.setAttribute('x2', x(cur));
-      xd.setAttribute('cx', x(cur)); xd.setAttribute('cy', y(vals[cur]));
-      box.classList.add('is-on');
-      var r = svg.getBoundingClientRect(), s = r.width / W;
-      showTip('指数 ' + vals[cur], YEARS[cur] + '年', { left: r.left + x(cur) * s - 1, width: 2, top: r.top + y(vals[cur]) * s - 6, bottom: r.top + y(vals[cur]) * s + 6 });
-    }
-    function off() { box.classList.remove('is-on'); hideTip(); }
-    box.onpointermove = function (e) {
-      var r = svg.getBoundingClientRect();
-      at(Math.round(((e.clientX - r.left) / r.width * W - L) / ((W - L - R) / last)));
-    };
-    box.onpointerleave = off;
-    box.onfocus = function () { at(cur); };
-    box.onblur = off;
-    box.onkeydown = function (e) {
-      if (e.key === 'ArrowLeft') { at(cur - 1); e.preventDefault(); }
-      if (e.key === 'ArrowRight') { at(cur + 1); e.preventDefault(); }
-      if (e.key === 'Home') { at(0); e.preventDefault(); }
-      if (e.key === 'End') { at(last); e.preventDefault(); }
-    };
-  }
-
   /* ---------- 相談のご案内を、選んだ理由に合わせる ---------- */
   var GUIDE = {
     '売却を考えている': '売却をお考えの場合は、売り出す価格の考え方について、不動産鑑定士がご相談に応じます。',
@@ -574,7 +522,7 @@
     all('.chips button', stepsForm).forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
     all('[aria-invalid="true"]', stepsForm).forEach(clearErr);
     $('cta-x').hidden = true;
-    hideTip();
+    markType();
     toIntro();
   }); });
 
@@ -591,7 +539,7 @@
       var c = toHalf(contact.value.trim()).replace(/[ー－―‐]/g, '-');
       var digits = c.replace(/[^0-9]/g, '');
       if (!c) errs.push([contact, '電話番号かメールアドレスを入力してください。']);
-      else if (c.indexOf('@') !== -1) { if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c)) errs.push([contact, 'メールアドレスは「@」を含む形で入力してください。（例：name@example.com）']); }
+      else if (c.indexOf('@') !== -1) { if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c)) errs.push([contact, 'メールアドレスの形をご確認ください。（例：name@example.com）']); }
       else if (digits.length < 10 || digits.length > 11) errs.push([contact, '電話番号は、市外局番から10〜11桁で入力してください。（例：090-1234-5678）']);
       summary.textContent = '';
       if (errs.length) {

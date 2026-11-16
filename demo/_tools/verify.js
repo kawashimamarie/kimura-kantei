@@ -108,6 +108,26 @@ async function runB(page, type, opts = {}) {
       (await page.$$eval('img', is => is.map(i => ({ src: i.getAttribute('src'), ok: i.complete && i.naturalWidth > 0, alt: i.getAttribute('alt') })))).forEach(i => { if (!i.ok || i.alt === null) imgs.push(key + ' ' + JSON.stringify(i)); });
     }
     add('T-02c', 'リンク切れ 0（ページ内リンクの移動先・相対リンク・電話リンクの形式）', bad.length === 0, bad.length ? bad : nLinks + '本を確認');
+    // id の重複と、ヘッダーのリンクが目的の章に着地するか（PC）
+    {
+      const { ctx, page } = await newPage(browser, 1440, 900); const dup = [], nav = [];
+      for (const key of ['A', 'B']) {
+        await open(page, PAGES[key]);
+        const d = await page.evaluate(() => { const c = {}; document.querySelectorAll('[id]').forEach(e => { c[e.id] = (c[e.id] || 0) + 1; }); return Object.keys(c).filter(k => c[k] > 1); });
+        if (d.length) dup.push(key + ': ' + d.join(', '));
+        const hrefs = await page.$$eval('header a[href^="#"]', n => [...new Set(n.filter(a => a.offsetParent !== null).map(a => a.getAttribute('href')))].filter(h => h.length > 1 && h !== '#top'));
+        for (const h of hrefs) {
+          await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(150);
+          await page.locator('header a[href="' + h + '"]:visible').first().click();
+          let last = -1; for (let i = 0; i < 30; i++) { await page.waitForTimeout(120); const y = await page.evaluate(() => window.scrollY); if (y === last) break; last = y; }
+          const top = await page.evaluate(h => Math.round(document.querySelector(h).getBoundingClientRect().top), h);
+          if (!(top >= 0 && top <= 220)) nav.push(key + ' ' + h + ' → 画面上端から ' + top + 'px');
+        }
+      }
+      await ctx.close();
+      add('T-02e', 'id の重複 0（A案・B案）', dup.length === 0, dup.length ? dup : '重複なし');
+      add('T-02f', 'ヘッダーのリンクが、目的の章の先頭に着地する（PC。A案・B案の全リンク）', nav.length === 0, nav.length ? nav : 'すべて目的の章に着地');
+    }
     add('T-02d', '画像の欠落 0・alt属性あり', imgs.length === 0, imgs.length ? imgs : 'すべて読み込み済み');
     await ctx.close();
   }
@@ -166,11 +186,11 @@ async function runB(page, type, opts = {}) {
       await page.waitForSelector('.step[data-step="4"]:not([hidden])');
       await page.click('#next'); // 理由は選ばずに進む
       await page.waitForSelector('.view.res:not([hidden])', { timeout: 9000 }); await page.waitForTimeout(800);
-      const r = await page.evaluate(() => ({ view: document.getElementById('app').dataset.view, low: document.getElementById('s-low').textContent, high: document.getElementById('s-high').textContent, warn: !!document.querySelector('.sheet-warn') && getComputedStyle(document.querySelector('.sheet-warn')).display !== 'none' && document.querySelector('.sheet-warn').textContent.includes('計算していません'), stamp: document.querySelector('.sheet-warn b').textContent, bars: document.querySelectorAll('.fac-r').length, spec: document.getElementById('s-spec').textContent, trend: !!document.querySelector('#trend svg path.tr-line'), smp: document.querySelectorAll('.sheet .smp').length, ticket: [...document.querySelectorAll('#tk2 dd')].map(d => d.textContent), digits: document.querySelectorAll('#mwin .mw.on').length }));
+      const r = await page.evaluate(() => ({ view: document.getElementById('app').dataset.view, low: document.getElementById('s-low').textContent, high: document.getElementById('s-high').textContent, warn: !!document.querySelector('.sheet-warn') && getComputedStyle(document.querySelector('.sheet-warn')).display !== 'none' && document.querySelector('.sheet-warn').textContent.includes('計算していません'), stamp: document.querySelector('.sheet-warn b').textContent, bars: document.querySelectorAll('.fac-r').length, spec: document.getElementById('s-spec').textContent, facText: [...document.querySelectorAll('.fac-r')].every(r => r.querySelector('.fac-v').textContent && r.querySelector('.fac-w').textContent), smp: document.querySelectorAll('.sheet .smp').length, ticket: [...document.querySelectorAll('#tk2 dd')].map(d => d.textContent), digits: document.querySelectorAll('#mwin .mw.on').length }));
       const storage = await page.evaluate(async () => ({ ls: localStorage.length, ss: sessionStorage.length, cookie: document.cookie, idb: (indexedDB.databases ? (await indexedDB.databases()).length : 'n/a') }));
       const req = log.requests.length - before; const reqUrls = log.requests.slice(before);
       await page.locator('[data-restart]:visible').first().click(); const backIntro = await page.getAttribute('#app', 'data-view'); const cleared = await page.inputValue('#city');
-      const good = e2 === 2 && e2b && e3 >= 1 && e3b && e3c && backTo2 && kept === '吹田市' && r.view === 'res' && r.warn && r.stamp.includes('見本') && r.spec.includes('架空') && r.bars >= 3 && r.trend && r.smp === 3 && r.ticket[2].includes('75.5') && req === 0 && storage.ls === 0 && storage.ss === 0 && storage.cookie === '' && backIntro === 'intro' && cleared === '';
+      const good = e2 === 2 && e2b && e3 >= 1 && e3b && e3c && backTo2 && kept === '吹田市' && r.view === 'res' && r.warn && r.stamp.includes('見本') && r.spec.includes('架空') && r.bars >= 3 && r.facText && r.smp === 2 && r.digits > 0 && r.ticket[2].includes('75.5') && req === 0 && storage.ls === 0 && storage.ss === 0 && storage.cookie === '' && backIntro === 'intro' && cleared === '';
       ok = ok && good; out[t + '@' + w] = { good, reqUrls, e2, e2b, e3, e3b, e3c, backTo2, kept, r, req, storage, backIntro, cleared, console: log.console };
       await ctx.close();
     }
@@ -183,9 +203,9 @@ async function runB(page, type, opts = {}) {
       await open(page, PAGES.B); await page.click(`.type[data-type="${type}"]`); await page.selectOption('#pref', { label: pref }); await page.fill('#city', city); await page.click('#next');
       await page.fill(type === 'mansion' ? '#a-sen' : '#a-tochi', a1); if (a2) await page.fill('#a-tate', a2); if (year) await page.selectOption('#year', year);
       await page.click('#next'); await page.click('#next'); await page.waitForSelector('.view.res:not([hidden])', { timeout: 9000 }); await page.waitForTimeout(1500); // 窓の数字の切り替え演出（約0.6秒）が終わってから読む
-      vals.push([await page.textContent('#s-low'), await page.textContent('#s-high'), await page.textContent('#s-spec'), (await page.$$eval('.fac-v', n => n.map(x => x.textContent))).join('/'), await page.$eval('#trend svg', e => e.getAttribute('aria-label')), await page.$$eval('#mwin .mw.on', n => n.length)].join('|'));
+      vals.push([await page.textContent('#s-low'), await page.textContent('#s-high'), await page.textContent('#s-spec'), (await page.$$eval('.fac-v', n => n.map(x => x.textContent))).join('/'), (await page.$$eval('.fac-w', n => n.map(x => x.textContent))).join('/'), await page.$$eval('#mwin .mw', n => n.map(w => w.classList.contains('on') ? 1 : 0).join(''))].join('|'));
     }
-    add('B-CALC', 'B案：実際の価格を計算していない（種別・エリア・広さ・築年を大きく変えた4通りで、見本の金額・要因・推移・窓の表示がすべて同じ）', new Set(vals).size === 1, new Set(vals).size === 1 ? '4通りとも同一：' + vals[0].slice(0, 60) : vals);
+    add('B-CALC', 'B案：実際の価格を計算していない（種別・エリア・広さ・築年を大きく変えた4通りで、見本の金額・物件の表記・要因と説明文・窓の点灯パターンがすべて同じ）', new Set(vals).size === 1, new Set(vals).size === 1 ? '4通りとも同一：' + vals[0].slice(0, 60) : vals.map(v => v.slice(0, 200)));
     // 対象外・相談フォーム
     await open(page, PAGES.B); await page.click('.textbtn[data-type="other"]'); const other = await page.isVisible('.view.other'); await page.click('[data-go="intro"]'); const back = await page.getAttribute('#app', 'data-view');
     await page.locator('#form').scrollIntoViewIfNeeded(); await page.click('.form-btn'); const fe = await page.$$eval('#form [aria-invalid="true"]', n => n.length);
@@ -216,9 +236,9 @@ async function runB(page, type, opts = {}) {
     k.next = await tabTo('#next'); k.nextRing = await focusRing(); await page.keyboard.press('Enter');
     await page.waitForSelector('.view.res:not([hidden])', { timeout: 9000 }); await page.waitForTimeout(500);
     k.resFocus = await page.evaluate(() => document.activeElement.id);
-    k.chart = await tabTo('#trend'); await page.keyboard.press('ArrowLeft'); await page.keyboard.press('ArrowLeft'); k.chartTip = await page.evaluate(() => !document.getElementById('tip').hidden && document.getElementById('tip').textContent);
-    k.fac = await page.evaluate(() => { const r = document.querySelector('.fac-r'); r.focus(); return !document.getElementById('tip').hidden; });
-    add('KB-B', 'B案：キーボードだけで種別選択→入力→結果→グラフの読み取りまで操作でき、フォーカスが見える', Object.values(k).every(v => v !== false && v !== undefined && v !== ''), k);
+    k.facText = await page.$$eval('.fac-r', n => n.length >= 3 && n.every(r => !!r.querySelector('.fac-v').textContent && !!r.querySelector('.fac-w').textContent));
+    k.cta = await tabTo('.sheet-ft .btn[href="#consult"]'); k.ctaRing = await focusRing();
+    add('KB-B', 'B案：キーボードだけで種別選択→入力→結果→相談への移動まで操作でき、フォーカスが見える（結果の図の内容は、文字でも読める）', Object.values(k).every(v => v !== false && v !== undefined && v !== ''), k);
     // A案：フォーカスの順序と表示
     await open(page, PAGES.A);
     const a = {}; const seen = []; let rings = 0, total = 0;

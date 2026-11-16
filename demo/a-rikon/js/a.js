@@ -88,7 +88,7 @@
     } else {
       var v = mail.value.trim();
       if (!v) errors.push([mail, 'メールアドレスを入力してください。']);
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) errors.push([mail, 'メールアドレスは「@」を含む形で入力してください。（例：name@example.com）']);
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) errors.push([mail, 'メールアドレスの形をご確認ください。（例：name@example.com）']);
     }
     return errors;
   }

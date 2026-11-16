@@ -16,7 +16,7 @@
 <body id="top">
 <a class="skip" href="#app">本文へ進む</a>
 
-<aside class="demo-bar" aria-label="打ち合わせ用デモの表示"><b>打ち合わせ用デモ｜B案</b><span>結果は架空の見本で、実際の価格は計算しません。</span></aside>
+<aside class="demo-bar" aria-label="打ち合わせ用デモの表示"><b>打ち合わせ用デモ｜B案</b><span class="db-l">結果は架空の見本で、実際の価格は計算しません。</span><span class="db-s">名称は仮称・価格は架空の見本</span></aside>
 
 <header class="hd">
   <div class="hd-in">
@@ -28,7 +28,7 @@
     <nav class="hd-nav" aria-label="ページ内の案内">
       <ul>
         <li><a href="#sample">分かること</a></li>
-        <li><a href="#steps">使い方</a></li>
+        <li><a href="#howto">使い方</a></li>
         <li><a href="#difference">鑑定評価とのちがい</a></li>
         <li><a href="#about">ご質問</a></li>
       </ul>
@@ -410,6 +410,7 @@
 </svg>
 <!--/TOWN-->
   </div>
+  <p class="town-cap">窓の数字は、見本の下限と上限です（万円）。ご入力の物件の金額ではありません。</p>
 
   <!-- ============ はじめの画面 ============ -->
   <section class="view intro" data-view="intro" aria-labelledby="h1">
@@ -453,7 +454,7 @@
         <div class="peek-m" aria-hidden="true"><i></i></div>
         <p class="peek-l">価格を左右するポイント</p>
         <ul class="peek-f">
-          <li><i class="up" aria-hidden="true"></i>この地域の取引の動き</li>
+          <li><i class="up" aria-hidden="true"></i>地域の取引の動き</li>
           <li><i class="up" aria-hidden="true"></i>広さ</li>
           <li><i class="dn" aria-hidden="true"></i>築年数</li>
         </ul>
@@ -534,7 +535,7 @@
             <label><input type="radio" name="purpose" value="離婚・財産分与のため"><span>離婚・財産分与のため</span></label>
             <label><input type="radio" name="purpose" value="住み替えを考えている"><span>住み替えを考えている</span></label>
             <label><input type="radio" name="purpose" value="資産として把握したい"><span>資産として把握したい</span></label>
-            <label><input type="radio" name="purpose" value=""><span>とくに理由はない</span></label>
+            <label><input type="radio" name="purpose" value="とくに理由はない"><span>とくに理由はない</span></label>
           </div>
         </fieldset>
 
@@ -561,7 +562,7 @@
   <!-- ============ 対象外の種別 ============ -->
   <section class="view other" data-view="other" aria-labelledby="other-h" hidden>
     <div class="other-in">
-      <h2 class="step-h" id="other-h" tabindex="-1">この種類の不動産は、鑑定士が直接お話を伺います。</h2>
+      <h2 class="step-h" id="other-h" tabindex="-1"><span class="nb">この種類の不動産は、</span><span class="nb">鑑定士が直接</span><span class="nb">お話を伺います。</span></h2>
       <p>一棟のビルやアパート、借地（借りている土地）や貸している土地、店舗や事務所は、権利の関係や収益のしくみによって価格が大きく変わります。簡易なチェックでは目安を出せないため、不動産鑑定士がお話を伺います。</p>
       <div class="nav">
         <button type="button" class="btn btn--ghost" data-go="intro">種別を選び直す</button>
@@ -574,12 +575,11 @@
   <section class="view run" data-view="run" aria-labelledby="run-h" hidden>
     <div class="run-in">
       <h2 class="step-h" id="run-h" tabindex="-1">見本の結果を準備しています</h2>
-      <p class="run-d"><b>デモ</b>実際の解析は行っていません。サービスで想定している処理の流れを、画面上で再現しています。</p>
+      <p class="run-d"><b>デモ</b>価格の計算は行っていません。どなたにも、同じ架空の見本を表示します。</p>
       <ol class="run-l" id="run-l">
-        <li>周辺の取引事例を集める</li>
-        <li>地価公示など、公的な価格と照らし合わせる</li>
-        <li>広さや築年など、物件の条件に合わせて調整する</li>
-        <li>ひとつの数字ではなく、幅として表示する</li>
+        <li>入力内容を確かめる</li>
+        <li>結果画面の見本を用意する</li>
+        <li>見本を表示する</li>
       </ol>
       <p class="vh" id="run-live" role="status" aria-live="polite"></p>
       <button type="button" class="textbtn" id="skip">待たずに結果を見る<i aria-hidden="true"></i></button>
@@ -604,7 +604,7 @@
       </aside>
 
       <article class="sheet" id="sheet">
-        <p class="sheet-warn" role="note"><b>見本</b><span>架空の物件の数値です。<span class="nb">どなたが何を入力しても、</span><span class="nb">同じ見本を表示します。</span><span class="nb">ご入力の物件については、</span><span class="nb">計算していません。</span></span></p>
+        <p class="sheet-warn" role="note"><b>見本</b><span><span class="nb">架空の物件の数値です。</span><span class="w-l"><span class="nb">どなたが何を入力しても、</span><span class="nb">同じ見本を表示します。</span></span><span class="nb">ご入力の物件は、</span><span class="nb">計算していません。</span></span></p>
         <header class="sheet-hd">
           <h2 id="res-h" tabindex="-1">チェック結果の見本</h2>
           <p class="sheet-sp"><b>見本の物件</b><span id="s-spec"></span></p>
@@ -628,20 +628,11 @@
           </div>
         </section>
 
-        <div class="blk-2">
-          <section class="blk" aria-labelledby="b2-h">
-            <h3 id="b2-h">価格を左右するポイント<span class="smp">見本・架空データ</span><small>同じ地域で取引された物件と比べた影響</small></h3>
-            <div class="fac" id="fac"></div>
-            <ul class="lg" aria-hidden="true"><li><i class="lg-up"></i>価格を押し上げる</li><li><i class="lg-dn"></i>価格を押し下げる</li></ul>
-            <details class="tbl"><summary>表で見る</summary><div class="tbl-w"><table id="fac-t"><caption class="vh">価格を左右するポイント（架空の見本）</caption><thead><tr><th scope="col">ポイント</th><th scope="col">影響</th><th scope="col">内容</th></tr></thead><tbody></tbody></table></div></details>
-          </section>
-
-          <section class="blk" aria-labelledby="b3-h">
-            <h3 id="b3-h">周辺の価格水準の推移<span class="smp">見本・架空データ</span><small>2016年を100とした指数</small></h3>
-            <div class="trend" id="trend" tabindex="0" role="group" aria-label="周辺の価格水準の推移のグラフ。左右の矢印キーで年を移動できます"></div>
-            <details class="tbl"><summary>表で見る</summary><div class="tbl-w"><table id="trend-t"><caption class="vh">周辺の価格水準の推移（架空の見本。2016年を100とした指数）</caption><thead><tr><th scope="col">年</th><th scope="col">指数</th></tr></thead><tbody></tbody></table></div></details>
-          </section>
-        </div>
+        <section class="blk blk--fac" aria-labelledby="b2-h">
+          <h3 id="b2-h">価格を左右するポイント<span class="smp">見本・架空データ</span><small>見本の地域で取引された物件と比べた影響</small></h3>
+          <ul class="fac" id="fac"></ul>
+          <ul class="lg" aria-hidden="true"><li><i class="lg-up"></i>価格を押し上げる</li><li><i class="lg-dn"></i>価格を押し下げる</li></ul>
+        </section>
 
         <section class="blk blk--not" aria-labelledby="b4-h">
           <h3 id="b4-h">このチェックでは見ていないこと</h3>
@@ -700,7 +691,7 @@
         <div class="meter" aria-hidden="true"><div class="meter-tr"><i class="meter-f" style="left:24%;width:48%"></i><i class="meter-c" style="left:48%"></i></div></div>
         <p class="shot-l"><i class="mkr" aria-hidden="true">2</i>価格を左右するポイント</p>
         <ul class="shot-f">
-          <li><span>この地域の取引の動き</span><i class="fac-b" aria-hidden="true"><i class="up" style="width:44%"></i></i><em>大きく押し上げ</em></li>
+          <li><span>地域の取引の動き</span><i class="fac-b" aria-hidden="true"><i class="up" style="width:44%"></i></i><em>大きく押し上げ</em></li>
           <li><span>広さ</span><i class="fac-b" aria-hidden="true"><i class="up" style="width:22%"></i></i><em>やや押し上げ</em></li>
           <li><span>築年数</span><i class="fac-b" aria-hidden="true"><i class="dn" style="width:44%"></i></i><em>大きく押し下げ</em></li>
         </ul>
@@ -733,7 +724,7 @@
 </section>
 
 <!-- ============ 利用の流れ ============ -->
-<section class="sec sec--stp" id="steps" aria-labelledby="stp-h">
+<section class="sec sec--stp" id="howto" aria-labelledby="stp-h">
   <div class="sec-in">
     <h2 class="sec-h" id="stp-h"><span class="nb">入力は4ステップ、</span><span class="nb">約1分。</span></h2>
     <ol class="stp">
@@ -765,28 +756,21 @@
       <div class="cmp-r" role="row"><span role="rowheader">だれが</span><span role="cell" data-h="このチェック">プログラムが自動で</span><span role="cell" data-h="査定">不動産会社の担当者</span><span role="cell" data-h="鑑定評価" class="cmp-k">不動産鑑定士（国家資格）</span></div>
       <div class="cmp-r" role="row"><span role="rowheader">もとにするもの</span><span role="cell" data-h="このチェック">入力された条件と、公開されている取引などのデータ</span><span role="cell" data-h="査定">近隣の取引事例、価格査定マニュアルなど</span><span role="cell" data-h="鑑定評価" class="cmp-k">国が定めた不動産鑑定評価基準</span></div>
       <div class="cmp-r" role="row"><span role="rowheader">現地・資料の調査</span><span role="cell" data-h="このチェック">しない</span><span role="cell" data-h="査定">机上の査定から、訪問しての査定まで</span><span role="cell" data-h="鑑定評価" class="cmp-k">現地を調べ、権利関係・法令・市場を調査する</span></div>
-      <div class="cmp-r" role="row"><span role="rowheader">結果のかたち</span><span role="cell" data-h="このチェック">参考価格帯（画面に表示）</span><span role="cell" data-h="査定">査定書</span><span role="cell" data-h="鑑定評価" class="cmp-k">不動産鑑定評価書（鑑定士が署名）</span></div>
+      <div class="cmp-r" role="row"><span role="rowheader">結果のかたち</span><span role="cell" data-h="このチェック">参考価格帯（画面に表示）</span><span role="cell" data-h="査定">査定書</span><span role="cell" data-h="鑑定評価" class="cmp-k">不動産鑑定評価書<span class="nb">（鑑定士が署名）</span></span></div>
       <div class="cmp-r" role="row"><span role="rowheader">費用</span><span role="cell" data-h="このチェック">無料</span><span role="cell" data-h="査定">無料が一般的</span><span role="cell" data-h="鑑定評価" class="cmp-k">有料（事前にお見積り）</span></div>
       <div class="cmp-r" role="row"><span role="rowheader">向いている場面</span><span role="cell" data-h="このチェック">まず目安を知りたい</span><span role="cell" data-h="査定">売却を検討している</span><span role="cell" data-h="鑑定評価" class="cmp-k">相続・離婚・親族間の売買など、金額の根拠を第三者に示したい</span></div>
     </div>
 
     <div class="three">
-      <div class="three-h">
-        <h3><span class="nb">不動産鑑定士は、</span><span class="nb">価格を</span><span class="nb">3つの方向から</span><span class="nb">確かめます。</span></h3>
-        <svg class="three-fig" viewBox="0 0 300 150" role="img" aria-label="費用、取引、収益の3つの方向から求めた価格を照らし合わせて、ひとつの評価額を決める図" focusable="false">
-          <path class="tf-l" d="M38,27H150L236,75M38,75H236M38,123H150L236,75"/>
-          <rect class="tf-n" x="8" y="12" width="30" height="30"/><rect class="tf-n" x="8" y="60" width="30" height="30"/><rect class="tf-n" x="8" y="108" width="30" height="30"/>
-          <text class="tf-t" x="23" y="33" text-anchor="middle">1</text><text class="tf-t" x="23" y="81" text-anchor="middle">2</text><text class="tf-t" x="23" y="129" text-anchor="middle">3</text>
-          <rect class="tf-k" x="236" y="53" width="44" height="44"/>
-          <text class="tf-c" x="52" y="20">費用から</text><text class="tf-c" x="52" y="68">取引から</text><text class="tf-c" x="52" y="116">収益から</text>
-          <text class="tf-c tf-c--k" x="258" y="118" text-anchor="middle">評価額</text>
-        </svg>
+      <h3><span class="nb">不動産鑑定士は、</span><span class="nb">価格を</span><span class="nb">3つの方向から</span><span class="nb">確かめます。</span></h3>
+      <div class="three-b">
+        <ol>
+          <li><b>費用から</b><span>原価法</span><p>いま同じ建物を建て直すと、いくらかかるか。そこから古くなった分を差し引いて考えます。</p></li>
+          <li><b>取引から</b><span>取引事例比較法</span><p>似た不動産が、実際にいくらで取引されたか。条件のちがいを補正して比べます。</p></li>
+          <li><b>収益から</b><span>収益還元法</span><p>貸したら、どれだけの収益を生むか。将来の収益から、いまの価値を求めます。</p></li>
+        </ol>
+        <p class="three-k"><span>3つを照らし合わせて</span><b>鑑定評価額</b></p>
       </div>
-      <ol>
-        <li><b>費用から</b><span>原価法</span><p>いま同じ建物を建て直すと、いくらかかるか。そこから古くなった分を差し引いて考えます。</p></li>
-        <li><b>取引から</b><span>取引事例比較法</span><p>似た不動産が、実際にいくらで取引されたか。条件のちがいを補正して比べます。</p></li>
-        <li><b>収益から</b><span>収益還元法</span><p>貸したら、どれだけの収益を生むか。将来の収益から、いまの価値を求めます。</p></li>
-      </ol>
       <p class="three-n">どの方法をどう用いるかは、不動産の種類や評価の目的によって異なります。当社では、一級建築士の資格もあわせ持つ鑑定士が、建物の状態まで確認します。</p>
     </div>
   </div>
@@ -796,8 +780,9 @@
 <section class="sec sec--exp" id="expert" aria-labelledby="exp-h">
   <div class="sec-in exp-g">
     <div class="exp-who">
-      <img src="img/kimura-osamu.jpg" width="192" height="256" alt="木村 修の写真" decoding="async">
+      <img src="img/kimura-osamu.jpg" width="96" height="128" alt="木村 修の写真" decoding="async">
       <p><small>ご相談を受ける鑑定士</small><b>木村 修</b><span>不動産鑑定士・一級建築士</span><span>木村不動産鑑定（東京・阿佐ヶ谷）</span></p>
+      <p class="hold"><b>デモ</b>写真は仮のものです。経歴・実績は、確認のうえ掲載します。</p>
     </div>
     <div class="exp-b">
       <h2 class="sec-h" id="exp-h"><span class="ln">鑑定士に相談すると、</span><span class="ln">ここが変わります。</span></h2>
@@ -818,7 +803,19 @@
     <div class="faq">
       <details>
         <summary>目安は、どうやって出すのですか。</summary>
-        <div><p>サービスとして構想しているのは、入力された条件と、公開されている取引などのデータをもとに、参考となる価格の幅を自動で計算するしくみです。計算の方式や、AIを使うかどうかは、これから決めます。このデモでは計算を行わず、架空の見本を表示しています。</p></div>
+        <div><p>サービスとして構想しているのは、入力された条件と、公開されている取引などのデータをもとに、参考となる価格の幅をプログラムが自動で計算するしくみです。このデモでは計算を行わず、どなたにも同じ架空の見本を表示しています。</p></div>
+      </details>
+      <details>
+        <summary>どんな不動産が対象ですか。</summary>
+        <div><p>マンションの一室、一戸建て、土地を想定しています。一棟のビルやアパート、借地、店舗や事務所などは、権利の関係や収益のしくみが価格を大きく左右するため、チェックの対象にしていません。不動産鑑定士が直接お話を伺います。</p></div>
+      </details>
+      <details>
+        <summary>目安と鑑定評価額は、同じくらいになりますか。</summary>
+        <div><p>分かりません。チェックは、現地も資料も調べずに出す目安です。道路との関係や法令上の制限、建物の状態などによって、鑑定評価額が目安の幅の外になることもあります。</p></div>
+      </details>
+      <details>
+        <summary>結果を見たあと、営業の連絡が来ませんか。</summary>
+        <div><p>来ません。お名前・電話番号・メールアドレスを入力する欄がないため、当社から連絡することはできません。相談したいときだけ、ご自身で予約フォームかお電話をご利用ください。</p></div>
       </details>
       <details>
         <summary>入力した情報はどう扱われますか。</summary>
@@ -885,13 +882,12 @@
       <img src="img/kimura-logo.png" width="92" height="67" alt="">
       <p><b>株式会社木村不動産鑑定</b><span>不動産鑑定士・一級建築士事務所</span></p>
     </div>
-    <address>〒166-0001 東京都杉並区阿佐谷北1丁目3番5号 キリサワビル201号<br>JR中央線「阿佐ヶ谷」駅から徒歩1分　電話 <a href="tel:0353569158">03-5356-9158</a></address>
-    <p class="ft-dis">「不動産価値チェック」は仮の名称で、構想中のサービスです。このページは打ち合わせ用のデモで、表示される価格・グラフはすべて架空の見本です。不動産の鑑定評価に関する法律にもとづく鑑定評価ではありません。</p>
+    <address><span class="nb">〒166-0001</span> <span class="nb">東京都杉並区阿佐谷北1丁目3番5号</span> <span class="nb">キリサワビル201号</span><br><span class="nb">JR中央線「阿佐ヶ谷」駅から徒歩1分</span><br><a class="ft-tel" href="tel:0353569158">電話 03-5356-9158</a></address>
+    <p class="ft-dis">「不動産価値チェック」は仮の名称で、構想中のサービスです。このページは打ち合わせ用のデモで、表示される価格・図はすべて架空の見本です。不動産の鑑定評価に関する法律にもとづく鑑定評価ではありません。</p>
     <p class="ft-c">© 株式会社木村不動産鑑定</p>
   </div>
 </footer>
 
-<div class="tip" id="tip" role="tooltip" hidden></div>
 <script src="js/b.js" defer></script>
 </body>
 </html>
