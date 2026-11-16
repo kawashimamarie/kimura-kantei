@@ -131,7 +131,7 @@ async function runB(page, type, opts = {}) {
     res.doneText = (await page.textContent('#done .form-demo')).trim();
     await page.click('#done-back'); res.formBack = await page.isVisible('#form'); res.formCleared = (await page.inputValue('#f-name')) === '';
     await page.click('input[name="via"][value="mail"]', { force: true }); res.mailField = await page.isVisible('#f-mail') && !(await page.isVisible('#f-tel'));
-    await page.fill('#f-name', 'x'); await page.fill('#f-mail', 'abc'); await page.click('.form-btn'); res.mailError = (await page.textContent('#f-mail-e')).includes('形式');
+    await page.fill('#f-name', 'x'); await page.fill('#f-mail', 'abc'); await page.click('.form-btn'); res.mailError = (await page.textContent('#f-mail-e')).includes('@');
     res.requestsDuringForm = log.requests.length - before;
     res.storage = await page.evaluate(async () => ({ ls: localStorage.length, ss: sessionStorage.length, cookie: document.cookie, idb: (indexedDB.databases ? (await indexedDB.databases()).length : 'n/a') }));
     const ok = res.menuOpen && res.menuClosedAfterLink && res.jumpedToFee && res.errorSummary && res.errorCount === 2 && res.errorFocus === 'f-err' && res.doneShown && res.formHidden && res.formBack && res.formCleared && res.mailField && res.mailError;
@@ -166,15 +166,15 @@ async function runB(page, type, opts = {}) {
       await page.waitForSelector('.step[data-step="4"]:not([hidden])');
       await page.click('#next'); // 理由は選ばずに進む
       await page.waitForSelector('.view.res:not([hidden])', { timeout: 9000 }); await page.waitForTimeout(800);
-      const r = await page.evaluate(() => ({ view: document.getElementById('app').dataset.view, low: document.getElementById('s-low').textContent, high: document.getElementById('s-high').textContent, warn: !!document.querySelector('.res-warn') && getComputedStyle(document.querySelector('.res-warn')).display !== 'none', stamp: document.querySelector('.stamp').textContent, bars: document.querySelectorAll('.fac-r').length, trend: !!document.querySelector('#trend svg path.tr-line'), split: !document.getElementById('split').hidden, ticket: [...document.querySelectorAll('#tk2 dd')].map(d => d.textContent), digits: document.querySelectorAll('#mwin .mw.on').length }));
+      const r = await page.evaluate(() => ({ view: document.getElementById('app').dataset.view, low: document.getElementById('s-low').textContent, high: document.getElementById('s-high').textContent, warn: !!document.querySelector('.sheet-warn') && getComputedStyle(document.querySelector('.sheet-warn')).display !== 'none' && document.querySelector('.sheet-warn').textContent.includes('計算していません'), stamp: document.querySelector('.sheet-warn b').textContent, bars: document.querySelectorAll('.fac-r').length, spec: document.getElementById('s-spec').textContent, trend: !!document.querySelector('#trend svg path.tr-line'), split: !document.getElementById('split').hidden, ticket: [...document.querySelectorAll('#tk2 dd')].map(d => d.textContent), digits: document.querySelectorAll('#mwin .mw.on').length }));
       const storage = await page.evaluate(async () => ({ ls: localStorage.length, ss: sessionStorage.length, cookie: document.cookie, idb: (indexedDB.databases ? (await indexedDB.databases()).length : 'n/a') }));
       const req = log.requests.length - before; const reqUrls = log.requests.slice(before);
-      await page.click('#restart'); const backIntro = await page.getAttribute('#app', 'data-view'); const cleared = await page.inputValue('#city');
-      const good = e2 === 2 && e2b && e3 >= 1 && e3b && e3c && backTo2 && kept === '吹田市' && r.view === 'res' && r.warn && r.stamp.includes('見本') && r.bars === 5 && r.trend && r.split === (t === 'kodate') && r.ticket[2].includes('75.5') && req === 0 && storage.ls === 0 && storage.ss === 0 && storage.cookie === '' && backIntro === 'intro' && cleared === '';
+      await page.locator('[data-restart]:visible').first().click(); const backIntro = await page.getAttribute('#app', 'data-view'); const cleared = await page.inputValue('#city');
+      const good = e2 === 2 && e2b && e3 >= 1 && e3b && e3c && backTo2 && kept === '吹田市' && r.view === 'res' && r.warn && r.stamp.includes('見本') && r.spec.includes('架空') && r.bars >= 3 && r.trend && r.split === (t === 'kodate') && r.ticket[2].includes('75.5') && req === 0 && storage.ls === 0 && storage.ss === 0 && storage.cookie === '' && backIntro === 'intro' && cleared === '';
       ok = ok && good; out[t + '@' + w] = { good, reqUrls, e2, e2b, e3, e3b, e3c, backTo2, kept, r, req, storage, backIntro, cleared, console: log.console };
       await ctx.close();
     }
-    add('B-OP', 'B案の操作：3種別×PC・スマホで、入力→エラー表示→戻る→結果表示→やり直し', ok, ok ? '6通りすべて通過（結果に「表示サンプル」の帯・見本の印・架空の固定値を表示。全角数字の入力も処理）' : out);
+    add('B-OP', 'B案の操作：3種別×PC・スマホで、入力→エラー表示→戻る→結果表示→やり直し', ok, ok ? '6通りすべて通過（結果に「見本｜架空の物件の数値です。ご入力の物件については計算していません」の帯を常時表示。全角数字の入力も処理）' : out);
     const reqs = Object.values(out).map(o => o.req), st = Object.values(out).map(o => o.storage);
     add('B-SEND', 'B案：入力内容の送信・保存なし（操作中の通信 0、Cookie・Storage・IndexedDB 空）', reqs.every(n => n === 0) && st.every(s => s.ls === 0 && s.ss === 0 && s.cookie === ''), { requestsDuringFlow: reqs, storage: st[0] });
     // 同じ種別なら入力が違っても結果は同じ（＝計算していない）
@@ -239,7 +239,7 @@ async function runB(page, type, opts = {}) {
       await open(page, PAGES.index); v = v.concat(await axe(page, 'index@' + w));
       await open(page, PAGES.A); await scrollAll(page); v = v.concat(await axe(page, 'A@' + w));
       if (w < 700) { await page.click('#menuBtn'); v = v.concat(await axe(page, 'A:目次@' + w)); await page.keyboard.press('Escape'); }
-      await page.locator('#form').scrollIntoViewIfNeeded(); await page.click('.form-btn'); v = v.concat(await axe(page, 'A:フォームのエラー@' + w));
+      await page.locator('#form').scrollIntoViewIfNeeded(); await page.click('.form-btn'); await page.evaluate(() => window.scrollTo(0, document.getElementById('form').getBoundingClientRect().top + scrollY - 84)); /* 追従ヘッダーの下に操作対象が半分隠れた位置で検査しないよう、フォームの先頭に合わせる */ v = v.concat(await axe(page, 'A:フォームのエラー@' + w));
       await page.fill('#f-name', 'a'); await page.fill('#f-tel', '0312345678'); await page.click('.form-btn'); v = v.concat(await axe(page, 'A:デモ完了@' + w));
       await page.evaluate(() => document.querySelectorAll('details').forEach(d => d.open = true)); v = v.concat(await axe(page, 'A:質問を全て開く@' + w));
       await open(page, PAGES.B); await scrollAll(page); v = v.concat(await axe(page, 'B:はじめ@' + w));

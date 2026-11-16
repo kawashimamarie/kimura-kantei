@@ -14,47 +14,48 @@
   if (!app) return;
 
   /* ====================================================================
-     架空のサンプルデータ（種別ごとに固定。入力内容からは作らない）
+     架空の見本データ（種別ごとに固定。入力内容からは作らない）
      ==================================================================== */
   var YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+  /* 要因は、構想中のサービスが入力（種別・市区町村・広さ・築年）と公開データから言える範囲に限る。
+     影響の大きさは 2＝大きく、1＝やや（＋は押し上げ、−は押し下げ）。細かい％は出さない。 */
   var SAMPLE = {
     mansion: {
-      spec: '専有面積 68m²／築16年／7階（12階建て）／駅から徒歩7分',
-      low: 3680, mid: 3960, high: 4240, min: 3400, max: 4500, digits: '3960',
-      unit: '中心の価格を面積で割ると、1m²あたり約58万円',
+      kind: '架空のマンション', spec: '専有面積 68m²／築16年',
+      low: 3480, mid: 3960, high: 4440, min: 3000, max: 5000, digits: '3960',
+      unit: 'まんなかの価格を面積で割ると、1m²あたり約58万円',
+      why: '同じ広さ・同じ築年でも、階数や向き、室内の状態などで価格は変わります。このチェックではそこまで見ていないため、ひとつの数字ではなく幅で示します。',
       factors: [
-        ['駅からの距離', 3.2, '徒歩7分。地域の平均より駅に近い'],
-        ['階数・向き', 1.8, '7階・南東向き'],
-        ['周辺の取引の動き', 0.9, 'この1年、近くの成約価格がゆるやかに上昇'],
-        ['管理費・修繕積立金', -1.1, '近くの同規模の物件より、やや高め'],
-        ['築年数', -2.6, '築16年。地域の平均より古い']
+        ['この地域の取引の動き', 2, 'この1年、同じ市区町村で取引されたマンションの価格が上がっている'],
+        ['広さ', 1, '68m²は、この地域で取引の多い広さ'],
+        ['取引の件数', 1, '同じ市区町村で、似た条件の取引が多い'],
+        ['築年数', -2, '築16年。この地域で取引された物件の平均より古い']
       ],
       trend: [100, 102, 105, 107, 108, 112, 118, 124, 129, 133]
     },
     kodate: {
-      spec: '土地 112m²／建物 96m²／木造2階建て／築21年／駅から徒歩12分',
-      low: 4320, mid: 4680, high: 5040, min: 4000, max: 5400, digits: '4680',
-      unit: '中心の価格の内訳は、土地 3,560万円、建物 1,120万円',
-      split: [['土地', 3560], ['建物', 1120]],
+      kind: '架空の一戸建て', spec: '土地 165m²／建物 128m²／築9年',
+      low: 4560, mid: 5180, high: 5800, min: 4000, max: 6400, digits: '5180',
+      unit: 'まんなかの価格の内訳は、土地 3,560万円、建物 1,620万円',
+      why: '同じ広さ・同じ築年でも、土地の形や道路との関係、建物の状態などで価格は変わります。このチェックではそこまで見ていないため、ひとつの数字ではなく幅で示します。',
+      split: [['土地', 3560], ['建物', 1620]],
       factors: [
-        ['土地の形・道路との関係', 2.4, '整った形で、南側の道路に面している'],
-        ['周辺の取引の動き', 1.2, 'この1年、近くの土地の成約価格が上昇'],
-        ['日当たり・向き', 0.8, '南向きで、前面に高い建物がない'],
-        ['駅からの距離', -1.5, '徒歩12分。地域の平均より遠い'],
-        ['建物の築年数', -3.1, '築21年の木造']
+        ['築年数', 2, '築9年。この地域で取引された物件の平均より新しい'],
+        ['この地域の取引の動き', 1, 'この1年、同じ市区町村で取引された土地の価格が上がっている'],
+        ['建物の広さ', 1, '128m²は、この地域の平均より広い'],
+        ['土地の広さ', -1, '165m²は、この地域では買い手が限られる広さ']
       ],
       trend: [100, 101, 103, 104, 105, 108, 113, 118, 122, 125]
     },
     tochi: {
-      spec: '土地 148m²／第一種低層住居専用地域／南側6m道路に面する',
-      low: 5110, mid: 5480, high: 5850, min: 4800, max: 6200, digits: '5480',
-      unit: '中心の価格を面積で割ると、1m²あたり約37万円',
+      kind: '架空の土地', spec: '土地 148m²',
+      low: 4820, mid: 5480, high: 6140, min: 4200, max: 6800, digits: '5480',
+      unit: 'まんなかの価格を面積で割ると、1m²あたり約37万円',
+      why: '同じ広さでも、土地の形や道路との関係、建てられる建物の大きさなどで価格は変わります。このチェックではそこまで見ていないため、ひとつの数字ではなく幅で示します。',
       factors: [
-        ['面している道路', 2.8, '南側で幅6m。建物を建てやすい'],
-        ['周辺の取引の動き', 1.4, 'この1年、近くの土地の成約価格が上昇'],
-        ['土地の形', 1.1, '間口が広く、整った形'],
-        ['建てられる大きさの制限', -0.6, '低層の住宅向けの地域で、建物の大きさに上限がある'],
-        ['駅からの距離', -2.0, '徒歩14分。地域の平均より遠い']
+        ['この地域の取引の動き', 2, 'この1年、同じ市区町村で取引された土地の価格が上がっている'],
+        ['取引の件数', 1, '同じ市区町村で、似た広さの土地の取引が多い'],
+        ['広さ', -1, '148m²は、この地域では買い手が限られる広さ']
       ],
       trend: [100, 101, 103, 105, 106, 109, 114, 119, 123, 127]
     }
@@ -318,7 +319,7 @@
       if (!input.value) errs.push([input, '都道府県を選んでください。']);
       input = $('city'); v = input.value.trim();
       if (!v) errs.push([input, '市区町村を入力してください。（例：杉並区）']);
-      else if (/[0-9０-９]/.test(v)) errs.push([input, '市区町村までで大丈夫です。番地の数字は入れずにご入力ください。']);
+      else if (/[0-9０-９]/.test(v)) errs.push([input, '市区町村名だけを入力してください。（番地は不要です）']);
       if (!errs.length) { state.pref = $('pref').value; state.city = v; }
     }
     if (n === 3) {
@@ -327,13 +328,13 @@
         if (f.closest('.fld').hidden) { state[a.key] = ''; return; }
         var num = parseArea(f.value);
         if (!f.value.trim()) errs.push([f, a.label + 'を入力してください。おおよその数字で構いません。']);
-        else if (isNaN(num)) errs.push([f, a.label + 'は、数字で入力してください。（例：70）']);
+        else if (isNaN(num)) errs.push([f, a.label + 'は、m²の数字だけを入力してください。（例：70）坪数なら、3.3を掛けた数が目安です。']);
         else if (num < a.min || num > a.max) errs.push([f, a.label + 'は、' + fmt(a.min) + '〜' + fmt(a.max) + 'm²の範囲で入力してください。']);
         else state[a.key] = String(num);
       });
       y = $('year');
       if (y.closest('.fld').hidden) state.year = '';
-      else if (!y.value) errs.push([y, '建てられた年を選んでください。分からない場合は「わからない」を選べます。']);
+      else if (!y.value) errs.push([y, '建てられた年を選んでください。わからない場合は「わからない」を選べます。']);
       else state.year = y.value;
     }
     if (n === 4) {
@@ -372,7 +373,7 @@
       area: [state.pref ? state.pref + ' ' + state.city : ''],
       size: [size, sub],
       year: [year],
-      purpose: [state.purpose === null ? '' : state.purpose || '（選択なし）']
+      purpose: [state.purpose === null ? '' : state.purpose || '（選んでいません）']
     };
   }
   function renderTicket() {
@@ -415,7 +416,7 @@
   $('skip').addEventListener('click', function () { result(); });
 
   /* ====================================================================
-     結果（表示サンプル）
+     結果（見本）
      ==================================================================== */
   var tip = $('tip');
   function showTip(title, text, rect) {
@@ -439,7 +440,10 @@
     var d = SAMPLE[state.type] || SAMPLE.mansion;
     renderTicket();
 
-    $('s-spec').textContent = d.spec;
+    $('s-spec').textContent = d.kind + '｜' + d.spec;
+    $('s-why').textContent = d.why;
+    var tv = ticketValues();
+    $('s-in').textContent = [tv.type[0], tv.area[0], tv.size.filter(Boolean).join('・'), tv.year[0]].filter(function (x) { return x && x.charAt(0) !== '（'; }).join('／') + '（この見本には反映していません）';
     $('s-low').textContent = fmt(d.low);
     $('s-high').textContent = fmt(d.high);
     $('s-unit').textContent = d.unit;
@@ -451,14 +455,14 @@
     $('meter-c').style.left = pos(d.mid) + '%';
     var ct = $('meter-ct');
     ct.textContent = '';
-    var cs = el('span', null, '中心 ' + fmt(d.mid) + '万円');
+    var cs = el('span', null, 'まんなか ' + fmt(d.mid) + '万円');
     cs.style.left = pos(d.mid) + '%';
     ct.appendChild(cs);
     $('meter-min').textContent = fmt(d.min) + '万円';
     $('meter-max').textContent = fmt(d.max) + '万円';
-    $('meter-t').textContent = '参考価格帯は' + fmt(d.low) + '万円から' + fmt(d.high) + '万円、中心は' + fmt(d.mid) + '万円（架空のサンプル）';
+    $('meter-t').textContent = '参考価格帯は' + fmt(d.low) + '万円から' + fmt(d.high) + '万円、まんなかは' + fmt(d.mid) + '万円（架空の見本）';
 
-    /* 土地と建物の内訳（一戸建てのサンプルのみ） */
+    /* 土地と建物の内訳（一戸建ての見本のみ） */
     var split = $('split');
     split.hidden = !d.split;
     if (d.split) {
@@ -466,39 +470,42 @@
       seg.textContent = ''; lg.textContent = '';
       seg.setAttribute('aria-label', d.split.map(function (s) { return s[0] + ' ' + fmt(s[1]) + '万円（' + Math.round(s[1] / total * 100) + '％）'; }).join('、'));
       d.split.forEach(function (s, i) {
-        var b = el('i', 's' + (i + 1), fmt(s[1]) + '万円');
+        var b = el('i', 's' + (i + 1));
+        var lab = el('span', null, fmt(s[1]) + '万円');
+        b.appendChild(lab);
         b.style.flex = s[1] + ' 1 0';
         seg.appendChild(b);
         var li = el('li');
         li.appendChild(el('i', 's' + (i + 1)));
-        li.appendChild(document.createTextNode(s[0] + '（' + Math.round(s[1] / total * 100) + '％）'));
+        li.appendChild(document.createTextNode(s[0] + ' ' + fmt(s[1]) + '万円（' + Math.round(s[1] / total * 100) + '％）'));
         lg.appendChild(li);
       });
+      split.setAttribute('data-fit', '1'); // 表示後に、棒に入りきらないラベルを隠す（fitSeg）
     }
 
     /* 価格を左右するポイント */
     var fac = $('fac'), ftb = $('fac-t').tBodies[0];
     fac.textContent = ''; ftb.textContent = '';
-    var maxAbs = Math.max.apply(null, d.factors.map(function (f) { return Math.abs(f[1]); }));
+    var WORD = { '2': '大きく押し上げ', '1': 'やや押し上げ', '-1': 'やや押し下げ', '-2': '大きく押し下げ' };
     d.factors.forEach(function (f) {
-      var sign = (f[1] > 0 ? '＋' : '−') + Math.abs(f[1]).toFixed(1) + '％';
+      var word = WORD[String(f[1])];
       var row = el('div', 'fac-r');
       row.tabIndex = 0;
       row.setAttribute('role', 'img');
-      row.setAttribute('aria-label', f[0] + '：' + sign + '。' + f[2]);
+      row.setAttribute('aria-label', f[0] + '：' + word + '。' + f[2]);
       row.appendChild(el('span', 'fac-n', f[0]));
       var bar = el('span', 'fac-b');
       var b = el('i', f[1] > 0 ? 'up' : 'dn');
-      b.style.width = (Math.abs(f[1]) / maxAbs * 46) + '%';
+      b.style.width = (Math.abs(f[1]) / 2 * 44) + '%';
       bar.appendChild(b);
       row.appendChild(bar);
-      row.appendChild(el('span', 'fac-v', sign));
-      var on = function () { showTip(sign, f[2], bar.getBoundingClientRect()); };
+      row.appendChild(el('span', 'fac-v', word));
+      var on = function () { showTip(word, f[2], bar.getBoundingClientRect()); };
       row.addEventListener('mouseenter', on); row.addEventListener('focus', on);
       row.addEventListener('mouseleave', hideTip); row.addEventListener('blur', hideTip);
       fac.appendChild(row);
       var tr = el('tr');
-      tr.appendChild(el('td', null, f[0])); tr.appendChild(el('td', null, sign)); tr.appendChild(el('td', null, f[2]));
+      tr.appendChild(el('td', null, f[0])); tr.appendChild(el('td', null, word)); tr.appendChild(el('td', null, f[2]));
       ftb.appendChild(tr);
     });
 
@@ -508,13 +515,21 @@
     townSet(d.digits);
     show('res', $('res-h'));
     drawTrend(d.trend); // 表示してから描く（表示幅に合わせるため）
+    fitSeg();
     if (!reduce) townShuffle(d.digits);
+  }
+  /* 内訳の棒：金額のラベルが棒に入りきらないときは隠す（金額は凡例にも出している） */
+  function fitSeg() {
+    all('#seg i').forEach(function (b) {
+      var lab = b.firstChild;
+      if (lab && lab.style) { lab.style.visibility = ''; lab.style.visibility = lab.offsetWidth + 16 > b.clientWidth ? 'hidden' : ''; }
+    });
   }
   var rz;
   window.addEventListener('resize', function () {
     clearTimeout(rz);
     rz = setTimeout(function () {
-      if (app.getAttribute('data-view') === 'res' && SAMPLE[state.type]) { hideTip(); drawTrend(SAMPLE[state.type].trend); }
+      if (app.getAttribute('data-view') === 'res' && SAMPLE[state.type]) { hideTip(); drawTrend(SAMPLE[state.type].trend); fitSeg(); }
     }, 150);
   });
 
@@ -526,7 +541,7 @@
     var lo = 90, hi = Math.ceil((Math.max.apply(null, vals) + 2) / 10) * 10;
     var x = function (i) { return L + (W - L - R) * i / (vals.length - 1); };
     var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
-    var svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': '2016年の100から、2025年の' + vals[vals.length - 1] + 'まで上昇している折れ線グラフ（架空のサンプル）' });
+    var svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': '2016年の100から、2025年の' + vals[vals.length - 1] + 'まで上昇している折れ線グラフ（架空の見本）' });
     var v, i, t;
     for (v = 100; v <= hi; v += 10) {
       svg.appendChild(svgEl('line', { class: 'tr-g', x1: L, x2: W - R, y1: y(v), y2: y(v) }));
@@ -577,8 +592,8 @@
 
   /* ---------- 相談のご案内を、選んだ理由に合わせる ---------- */
   var GUIDE = {
-    '売却を考えている': '売却のご相談では、査定に、不動産鑑定士・一級建築士の助言を添えてお手伝いします。',
-    '住み替えを考えている': '売却・買い替えのご相談では、査定に、不動産鑑定士・一級建築士の助言を添えてお手伝いします。',
+    '売却を考えている': '売却をお考えの場合は、売り出す価格の考え方について、不動産鑑定士がご相談に応じます。',
+    '住み替えを考えている': '住み替えをお考えの場合は、いまの家の価格の考え方について、不動産鑑定士がご相談に応じます。',
     '相続・贈与のため': '相続や遺産分割では、不動産の評価が話し合いの土台になります。鑑定評価が必要かどうかから、ご相談いただけます。',
     '資産として把握したい': '資産の把握が目的の場合は、どの程度の調査が要るかを、無料相談でお伝えします。'
   };
@@ -590,7 +605,7 @@
     if (state.purpose === '離婚・財産分与のため') {
       box.appendChild(document.createTextNode('離婚・財産分与にともなう不動産の評価は、専用のページでご案内しています。'));
       var a = el('a', null, '離婚時の不動産鑑定を見る（A案のデモへ）');
-      a.href = '../a-rikon/';
+      a.href = '../a-rikon/index.html';
       box.appendChild(el('br'));
       box.appendChild(a);
     } else if (GUIDE[state.purpose]) {
@@ -600,7 +615,7 @@
     all('option', topic).forEach(function (o) { if (o.textContent === state.purpose) topic.value = o.value || o.textContent; });
   }
 
-  $('restart').addEventListener('click', function () {
+  all('[data-restart]').forEach(function (rb) { rb.addEventListener('click', function () {
     state = { type: '', pref: '', city: '', sen: '', tochi: '', tate: '', year: '', purpose: null, step: 2 };
     stepsForm.reset();
     all('.tsubo', stepsForm).forEach(function (s) { s.textContent = ''; });
@@ -609,7 +624,7 @@
     $('cta-x').hidden = true;
     hideTip();
     toIntro();
-  });
+  }); });
 
   /* ====================================================================
      相談の予約フォーム（デモ。送信も保存もしない）
@@ -624,7 +639,7 @@
       var c = toHalf(contact.value.trim()).replace(/[ー－―‐]/g, '-');
       var digits = c.replace(/[^0-9]/g, '');
       if (!c) errs.push([contact, '電話番号かメールアドレスを入力してください。']);
-      else if (c.indexOf('@') !== -1) { if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c)) errs.push([contact, 'メールアドレスの形式を確認してください。（例：name@example.com）']); }
+      else if (c.indexOf('@') !== -1) { if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c)) errs.push([contact, 'メールアドレスは「@」を含む形で入力してください。（例：name@example.com）']); }
       else if (digits.length < 10 || digits.length > 11) errs.push([contact, '電話番号は、市外局番から10〜11桁で入力してください。（例：090-1234-5678）']);
       summary.textContent = '';
       if (errs.length) {

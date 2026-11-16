@@ -24,6 +24,15 @@
     });
   }
 
+  /* ---------- スマホの固定バー：相談の予約の章が見えている間は隠す ---------- */
+  var fix = document.getElementById('fix');
+  var contact = document.getElementById('contact');
+  if (fix && contact && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      fix.classList.toggle('is-off', entries[0].isIntersecting);
+    }, { rootMargin: '0px 0px -80px 0px' }).observe(contact);
+  }
+
   /* ---------- 相談予約フォーム（デモ） ---------- */
   var form = document.getElementById('form');
   var done = document.getElementById('done');
@@ -79,7 +88,7 @@
     } else {
       var v = mail.value.trim();
       if (!v) errors.push([mail, 'メールアドレスを入力してください。']);
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) errors.push([mail, 'メールアドレスの形式を確認してください。（例：name@example.com）']);
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) errors.push([mail, 'メールアドレスは「@」を含む形で入力してください。（例：name@example.com）']);
     }
     return errors;
   }
