@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>不動産価値チェック（仮称）｜あなたの不動産、いくらになる？（打ち合わせ用デモ）</title>
+<meta name="description" content="物件の種別・エリア・広さを選んで、参考価格の幅と、価格を左右するポイントを確かめる体験型サービスのデモです。結果は架空の見本で、実際の価格は計算しません。運営：株式会社木村不動産鑑定。">
+<meta name="theme-color" content="#131a2c">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="img/favicon.png">
+<script>if(location.protocol!=='file:'){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='anonymous';l.href='fonts/m-plus-2-800.woff2';document.head.appendChild(l)}</script>
+<link rel="stylesheet" href="css/b.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body id="top">
+<a class="skip" href="#app">本文へ進む</a>
+
+<aside class="demo-bar" aria-label="打ち合わせ用デモの表示"><b>打ち合わせ用デモ｜B案</b><span class="db-l">結果は架空の見本で、実際の価格は計算しません。</span><span class="db-s">名称は仮称・価格は架空の見本</span></aside>
+
+<header class="hd">
+  <div class="hd-in">
+    <a class="logo" href="#top">
+      <svg class="logo-mark" viewBox="0 0 28 28" width="28" height="28" aria-hidden="true" focusable="false"><rect class="lm-b" width="28" height="28"/><rect class="lm-w" x="5" y="5" width="7.500" height="7.500"/><rect class="lm-on" x="15.500" y="5" width="7.500" height="7.500"/><rect class="lm-w" x="5" y="15.500" width="7.500" height="7.500"/><rect class="lm-w" x="15.500" y="15.500" width="7.500" height="7.500"/></svg>
+      <span class="logo-t"><b>不動産価値チェック</b><small>運営：木村不動産鑑定</small></span>
+      <span class="logo-tag">仮称・デモ</span>
+    </a>
+    <nav class="hd-nav" aria-label="ページ内の案内">
+      <ul>
+        <li><a href="#sample">分かること</a></li>
+        <li><a href="#howto">使い方</a></li>
+        <li><a href="#difference">鑑定評価とのちがい</a></li>
+        <li><a href="#about">ご質問</a></li>
+      </ul>
+    </nav>
+    <a class="hd-cta" href="#reserve"><span>不動産</span>鑑定士に相談</a>
+  </div>
+</header>
+
+<main>
+<h1 class="vh">不動産価値チェック（仮称・デモ）</h1>
+<div class="app" id="app" data-view="intro">
+
+  <!-- 街並み（全画面で共通。選んだ種別と、進み具合に合わせて表示が変わる） -->
+  <div class="town" id="town">
+<!--TOWN-->
+<svg class="town-svg" viewBox="0 0 1440 260" preserveAspectRatio="xMidYMax slice" role="img" aria-labelledby="townT" focusable="false"><title id="townT">夜の街並み。一戸建て、マンション、空き地が並び、マンションの窓の明かりが文字の形に灯っている</title>
+<path class="t-far" d="M0,228V150h46v-22h64v40h38v-58h52v26h70v-18h44v46h60v-70h58v34h40v-52h36v52h52v-30h70v62h46v-88h62v36h30v-58h44v58h56v30h64v-44h48v-34h52v60h44v-24h60v46h50v-64h56v36h40v-20h48v104z"/>
+<path class="t-wire" d="M330,131C420,146 500,146 560,112M330,137C420,152 500,152 560,120"/>
+<path class="t-wire" d="M880,112C960,150 1100,150 1215,128"/>
+<rect class="t-b2" x="22" y="162" width="132" height="66"/>
+<rect class="t-roof" x="16" y="158" width="144" height="5"/>
+<rect class="t-door" x="32" y="170" width="9" height="20"/>
+<rect class="t-w" x="44" y="172" width="12" height="11"/>
+<rect class="t-door" x="63" y="170" width="9" height="20"/>
+<rect class="t-w" x="75" y="172" width="12" height="11"/>
+<rect class="t-door" x="94" y="170" width="9" height="20"/>
+<rect class="t-w t-w--warm" x="106" y="172" width="12" height="11"/>
+<rect class="t-door" x="125" y="170" width="9" height="20"/>
+<rect class="t-w" x="137" y="172" width="12" height="11"/>
+<rect class="t-door" x="32" y="200" width="9" height="20"/>
+<rect class="t-w t-w--warm" x="44" y="202" width="12" height="11"/>
+<rect class="t-door" x="63" y="200" width="9" height="20"/>
+<rect class="t-w" x="75" y="202" width="12" height="11"/>
+<rect class="t-door" x="94" y="200" width="9" height="20"/>
+<rect class="t-w" x="106" y="202" width="12" height="11"/>
+<rect class="t-door" x="125" y="200" width="9" height="20"/>
+<rect class="t-w" x="137" y="202" width="12" height="11"/>
+<path class="t-rail" d="M22,194h132M22,188h132"/>
+<path class="t-trunk" d="M180,228v-26"/>
+<ellipse class="t-tree" cx="180" cy="188" rx="15" ry="21"/>
+<path class="t-b1" d="M206,228V178l46-30l46,30v50z"/>
+<path class="t-roof" d="M200,180l52-34l52,34l-4,5l-48-31l-48,31z"/>
+<rect class="t-w" x="222" y="186" width="16" height="13"/>
+<rect class="t-w t-w--warm" x="264" y="186" width="16" height="13"/>
+<rect class="t-w" x="222" y="206" width="20" height="14"/>
+<rect class="t-door" x="268" y="204" width="11" height="24"/>
+<path class="t-pole" d="M330,228V118M321,128h18M324,137h12"/>
+<rect class="t-pole-box" x="332" y="144" width="7" height="11"/>
+<g class="t-target" data-type="kodate" transform="translate(20 0)">
+<path class="t-b1 t-b1--l" d="M380,228V162l50-36l50,36v66z"/>
+<path class="t-roof" d="M373,164l57-41l57,41l-4,6l-53-38l-53,38z"/>
+<path class="t-b1 t-b1--l" d="M480,190l34,6v32h-34z"/>
+<path class="t-roof" d="M476,186l42,7v5l-42-7z"/>
+<rect class="t-w" x="394" y="170" width="22" height="15"/>
+<rect class="t-w t-w--lit" x="444" y="170" width="22" height="15"/>
+<rect class="t-w t-w--lit" x="392" y="198" width="30" height="22"/>
+<rect class="t-door" x="448" y="196" width="13" height="32"/>
+<rect class="t-w" x="490" y="206" width="14" height="11"/>
+<path class="t-hl" d="M374,228V160l56-40l56,40v26l32,6v36z"/>
+</g>
+<g class="t-target" data-type="mansion">
+<rect class="t-m" x="560" y="52" width="320" height="176"/>
+<rect class="t-roof" x="554" y="47" width="332" height="6"/>
+<rect class="t-m2" x="694" y="30" width="52" height="18"/>
+<rect class="t-roof" x="690" y="27" width="60" height="4"/>
+<path class="t-pole" d="M780,47V22M774,28h12M776,34h8"/>
+<rect class="t-m2" x="560" y="210" width="320" height="18"/>
+<rect class="t-col" x="578" y="210" width="5" height="18"/>
+<rect class="t-col" x="622" y="210" width="5" height="18"/>
+<rect class="t-col" x="666" y="210" width="5" height="18"/>
+<rect class="t-col" x="710" y="210" width="5" height="18"/>
+<rect class="t-col" x="754" y="210" width="5" height="18"/>
+<rect class="t-col" x="798" y="210" width="5" height="18"/>
+<rect class="t-col" x="842" y="210" width="5" height="18"/>
+<rect class="t-w t-w--warm" x="704" y="212" width="32" height="16"/>
+<path class="t-hl" d="M554,47h332v181h-6V53H560v175h-6z"/>
+<g id="mwin">
+<rect class="mw" x="572" y="59" width="9" height="9"/>
+<rect class="mw" x="585" y="59" width="9" height="9"/>
+<rect class="mw" x="598" y="59" width="9" height="9"/>
+<rect class="mw" x="611" y="59" width="9" height="9"/>
+<rect class="mw" x="624" y="59" width="9" height="9"/>
+<rect class="mw" x="637" y="59" width="9" height="9"/>
+<rect class="mw" x="650" y="59" width="9" height="9"/>
+<rect class="mw" x="663" y="59" width="9" height="9"/>
+<rect class="mw" x="676" y="59" width="9" height="9"/>
+<rect class="mw" x="689" y="59" width="9" height="9"/>
+<rect class="mw" x="702" y="59" width="9" height="9"/>
+<rect class="mw" x="715" y="59" width="9" height="9"/>
+<rect class="mw" x="728" y="59" width="9" height="9"/>
+<rect class="mw" x="741" y="59" width="9" height="9"/>
+<rect class="mw" x="754" y="59" width="9" height="9"/>
+<rect class="mw" x="767" y="59" width="9" height="9"/>
+<rect class="mw" x="780" y="59" width="9" height="9"/>
+<rect class="mw" x="793" y="59" width="9" height="9"/>
+<rect class="mw" x="806" y="59" width="9" height="9"/>
+<rect class="mw" x="819" y="59" width="9" height="9"/>
+<rect class="mw" x="832" y="59" width="9" height="9"/>
+<rect class="mw" x="845" y="59" width="9" height="9"/>
+<rect class="mw" x="858" y="59" width="9" height="9"/>
+<rect class="mw" x="572" y="73" width="9" height="9"/>
+<rect class="mw" x="585" y="73" width="9" height="9"/>
+<rect class="mw" x="598" y="73" width="9" height="9"/>
+<rect class="mw" x="611" y="73" width="9" height="9"/>
+<rect class="mw" x="624" y="73" width="9" height="9"/>
+<rect class="mw" x="637" y="73" width="9" height="9"/>
+<rect class="mw" x="650" y="73" width="9" height="9"/>
+<rect class="mw" x="663" y="73" width="9" height="9"/>
+<rect class="mw" x="676" y="73" width="9" height="9"/>
+<rect class="mw" x="689" y="73" width="9" height="9"/>
+<rect class="mw" x="702" y="73" width="9" height="9"/>
+<rect class="mw" x="715" y="73" width="9" height="9"/>
+<rect class="mw" x="728" y="73" width="9" height="9"/>
+<rect class="mw" x="741" y="73" width="9" height="9"/>
+<rect class="mw" x="754" y="73" width="9" height="9"/>
+<rect class="mw" x="767" y="73" width="9" height="9"/>
+<rect class="mw" x="780" y="73" width="9" height="9"/>
+<rect class="mw" x="793" y="73" width="9" height="9"/>
+<rect class="mw" x="806" y="73" width="9" height="9"/>
+<rect class="mw" x="819" y="73" width="9" height="9"/>
+<rect class="mw" x="832" y="73" width="9" height="9"/>
+<rect class="mw" x="845" y="73" width="9" height="9"/>
+<rect class="mw" x="858" y="73" width="9" height="9"/>
+<rect class="mw" x="572" y="87" width="9" height="9"/>
+<rect class="mw on" x="585" y="87" width="9" height="9"/>
+<rect class="mw on" x="598" y="87" width="9" height="9"/>
+<rect class="mw on" x="611" y="87" width="9" height="9"/>
+<rect class="mw" x="624" y="87" width="9" height="9"/>
+<rect class="mw" x="637" y="87" width="9" height="9"/>
+<rect class="mw" x="650" y="87" width="9" height="9"/>
+<rect class="mw" x="663" y="87" width="9" height="9"/>
+<rect class="mw" x="676" y="87" width="9" height="9"/>
+<rect class="mw" x="689" y="87" width="9" height="9"/>
+<rect class="mw on" x="702" y="87" width="9" height="9"/>
+<rect class="mw on" x="715" y="87" width="9" height="9"/>
+<rect class="mw on" x="728" y="87" width="9" height="9"/>
+<rect class="mw" x="741" y="87" width="9" height="9"/>
+<rect class="mw" x="754" y="87" width="9" height="9"/>
+<rect class="mw" x="767" y="87" width="9" height="9"/>
+<rect class="mw" x="780" y="87" width="9" height="9"/>
+<rect class="mw" x="793" y="87" width="9" height="9"/>
+<rect class="mw" x="806" y="87" width="9" height="9"/>
+<rect class="mw on" x="819" y="87" width="9" height="9"/>
+<rect class="mw on" x="832" y="87" width="9" height="9"/>
+<rect class="mw on" x="845" y="87" width="9" height="9"/>
+<rect class="mw" x="858" y="87" width="9" height="9"/>
+<rect class="mw on" x="572" y="101" width="9" height="9"/>
+<rect class="mw" x="585" y="101" width="9" height="9"/>
+<rect class="mw" x="598" y="101" width="9" height="9"/>
+<rect class="mw" x="611" y="101" width="9" height="9"/>
+<rect class="mw on" x="624" y="101" width="9" height="9"/>
+<rect class="mw" x="637" y="101" width="9" height="9"/>
+<rect class="mw" x="650" y="101" width="9" height="9"/>
+<rect class="mw" x="663" y="101" width="9" height="9"/>
+<rect class="mw" x="676" y="101" width="9" height="9"/>
+<rect class="mw on" x="689" y="101" width="9" height="9"/>
+<rect class="mw" x="702" y="101" width="9" height="9"/>
+<rect class="mw" x="715" y="101" width="9" height="9"/>
+<rect class="mw" x="728" y="101" width="9" height="9"/>
+<rect class="mw on" x="741" y="101" width="9" height="9"/>
+<rect class="mw" x="754" y="101" width="9" height="9"/>
+<rect class="mw" x="767" y="101" width="9" height="9"/>
+<rect class="mw" x="780" y="101" width="9" height="9"/>
+<rect class="mw" x="793" y="101" width="9" height="9"/>
+<rect class="mw on" x="806" y="101" width="9" height="9"/>
+<rect class="mw" x="819" y="101" width="9" height="9"/>
+<rect class="mw" x="832" y="101" width="9" height="9"/>
+<rect class="mw" x="845" y="101" width="9" height="9"/>
+<rect class="mw on" x="858" y="101" width="9" height="9"/>
+<rect class="mw" x="572" y="115" width="9" height="9"/>
+<rect class="mw" x="585" y="115" width="9" height="9"/>
+<rect class="mw" x="598" y="115" width="9" height="9"/>
+<rect class="mw" x="611" y="115" width="9" height="9"/>
+<rect class="mw on" x="624" y="115" width="9" height="9"/>
+<rect class="mw" x="637" y="115" width="9" height="9"/>
+<rect class="mw" x="650" y="115" width="9" height="9"/>
+<rect class="mw" x="663" y="115" width="9" height="9"/>
+<rect class="mw" x="676" y="115" width="9" height="9"/>
+<rect class="mw" x="689" y="115" width="9" height="9"/>
+<rect class="mw" x="702" y="115" width="9" height="9"/>
+<rect class="mw" x="715" y="115" width="9" height="9"/>
+<rect class="mw" x="728" y="115" width="9" height="9"/>
+<rect class="mw on" x="741" y="115" width="9" height="9"/>
+<rect class="mw" x="754" y="115" width="9" height="9"/>
+<rect class="mw" x="767" y="115" width="9" height="9"/>
+<rect class="mw" x="780" y="115" width="9" height="9"/>
+<rect class="mw" x="793" y="115" width="9" height="9"/>
+<rect class="mw" x="806" y="115" width="9" height="9"/>
+<rect class="mw" x="819" y="115" width="9" height="9"/>
+<rect class="mw" x="832" y="115" width="9" height="9"/>
+<rect class="mw" x="845" y="115" width="9" height="9"/>
+<rect class="mw on" x="858" y="115" width="9" height="9"/>
+<rect class="mw" x="572" y="129" width="9" height="9"/>
+<rect class="mw" x="585" y="129" width="9" height="9"/>
+<rect class="mw" x="598" y="129" width="9" height="9"/>
+<rect class="mw on" x="611" y="129" width="9" height="9"/>
+<rect class="mw" x="624" y="129" width="9" height="9"/>
+<rect class="mw" x="637" y="129" width="9" height="9"/>
+<rect class="mw" x="650" y="129" width="9" height="9"/>
+<rect class="mw" x="663" y="129" width="9" height="9"/>
+<rect class="mw" x="676" y="129" width="9" height="9"/>
+<rect class="mw" x="689" y="129" width="9" height="9"/>
+<rect class="mw" x="702" y="129" width="9" height="9"/>
+<rect class="mw" x="715" y="129" width="9" height="9"/>
+<rect class="mw on" x="728" y="129" width="9" height="9"/>
+<rect class="mw" x="741" y="129" width="9" height="9"/>
+<rect class="mw" x="754" y="129" width="9" height="9"/>
+<rect class="mw" x="767" y="129" width="9" height="9"/>
+<rect class="mw" x="780" y="129" width="9" height="9"/>
+<rect class="mw" x="793" y="129" width="9" height="9"/>
+<rect class="mw" x="806" y="129" width="9" height="9"/>
+<rect class="mw" x="819" y="129" width="9" height="9"/>
+<rect class="mw" x="832" y="129" width="9" height="9"/>
+<rect class="mw on" x="845" y="129" width="9" height="9"/>
+<rect class="mw" x="858" y="129" width="9" height="9"/>
+<rect class="mw" x="572" y="143" width="9" height="9"/>
+<rect class="mw" x="585" y="143" width="9" height="9"/>
+<rect class="mw on" x="598" y="143" width="9" height="9"/>
+<rect class="mw" x="611" y="143" width="9" height="9"/>
+<rect class="mw" x="624" y="143" width="9" height="9"/>
+<rect class="mw" x="637" y="143" width="9" height="9"/>
+<rect class="mw" x="650" y="143" width="9" height="9"/>
+<rect class="mw" x="663" y="143" width="9" height="9"/>
+<rect class="mw" x="676" y="143" width="9" height="9"/>
+<rect class="mw" x="689" y="143" width="9" height="9"/>
+<rect class="mw" x="702" y="143" width="9" height="9"/>
+<rect class="mw on" x="715" y="143" width="9" height="9"/>
+<rect class="mw" x="728" y="143" width="9" height="9"/>
+<rect class="mw" x="741" y="143" width="9" height="9"/>
+<rect class="mw" x="754" y="143" width="9" height="9"/>
+<rect class="mw" x="767" y="143" width="9" height="9"/>
+<rect class="mw" x="780" y="143" width="9" height="9"/>
+<rect class="mw" x="793" y="143" width="9" height="9"/>
+<rect class="mw" x="806" y="143" width="9" height="9"/>
+<rect class="mw" x="819" y="143" width="9" height="9"/>
+<rect class="mw on" x="832" y="143" width="9" height="9"/>
+<rect class="mw" x="845" y="143" width="9" height="9"/>
+<rect class="mw" x="858" y="143" width="9" height="9"/>
+<rect class="mw" x="572" y="157" width="9" height="9"/>
+<rect class="mw" x="585" y="157" width="9" height="9"/>
+<rect class="mw" x="598" y="157" width="9" height="9"/>
+<rect class="mw" x="611" y="157" width="9" height="9"/>
+<rect class="mw" x="624" y="157" width="9" height="9"/>
+<rect class="mw" x="637" y="157" width="9" height="9"/>
+<rect class="mw" x="650" y="157" width="9" height="9"/>
+<rect class="mw" x="663" y="157" width="9" height="9"/>
+<rect class="mw" x="676" y="157" width="9" height="9"/>
+<rect class="mw" x="689" y="157" width="9" height="9"/>
+<rect class="mw" x="702" y="157" width="9" height="9"/>
+<rect class="mw" x="715" y="157" width="9" height="9"/>
+<rect class="mw" x="728" y="157" width="9" height="9"/>
+<rect class="mw" x="741" y="157" width="9" height="9"/>
+<rect class="mw" x="754" y="157" width="9" height="9"/>
+<rect class="mw" x="767" y="157" width="9" height="9"/>
+<rect class="mw" x="780" y="157" width="9" height="9"/>
+<rect class="mw" x="793" y="157" width="9" height="9"/>
+<rect class="mw" x="806" y="157" width="9" height="9"/>
+<rect class="mw" x="819" y="157" width="9" height="9"/>
+<rect class="mw" x="832" y="157" width="9" height="9"/>
+<rect class="mw" x="845" y="157" width="9" height="9"/>
+<rect class="mw" x="858" y="157" width="9" height="9"/>
+<rect class="mw" x="572" y="171" width="9" height="9"/>
+<rect class="mw" x="585" y="171" width="9" height="9"/>
+<rect class="mw on" x="598" y="171" width="9" height="9"/>
+<rect class="mw" x="611" y="171" width="9" height="9"/>
+<rect class="mw" x="624" y="171" width="9" height="9"/>
+<rect class="mw" x="637" y="171" width="9" height="9"/>
+<rect class="mw" x="650" y="171" width="9" height="9"/>
+<rect class="mw" x="663" y="171" width="9" height="9"/>
+<rect class="mw" x="676" y="171" width="9" height="9"/>
+<rect class="mw" x="689" y="171" width="9" height="9"/>
+<rect class="mw" x="702" y="171" width="9" height="9"/>
+<rect class="mw on" x="715" y="171" width="9" height="9"/>
+<rect class="mw" x="728" y="171" width="9" height="9"/>
+<rect class="mw" x="741" y="171" width="9" height="9"/>
+<rect class="mw" x="754" y="171" width="9" height="9"/>
+<rect class="mw" x="767" y="171" width="9" height="9"/>
+<rect class="mw" x="780" y="171" width="9" height="9"/>
+<rect class="mw" x="793" y="171" width="9" height="9"/>
+<rect class="mw" x="806" y="171" width="9" height="9"/>
+<rect class="mw" x="819" y="171" width="9" height="9"/>
+<rect class="mw on" x="832" y="171" width="9" height="9"/>
+<rect class="mw" x="845" y="171" width="9" height="9"/>
+<rect class="mw" x="858" y="171" width="9" height="9"/>
+<rect class="mw" x="572" y="185" width="9" height="9"/>
+<rect class="mw" x="585" y="185" width="9" height="9"/>
+<rect class="mw" x="598" y="185" width="9" height="9"/>
+<rect class="mw" x="611" y="185" width="9" height="9"/>
+<rect class="mw" x="624" y="185" width="9" height="9"/>
+<rect class="mw" x="637" y="185" width="9" height="9"/>
+<rect class="mw" x="650" y="185" width="9" height="9"/>
+<rect class="mw" x="663" y="185" width="9" height="9"/>
+<rect class="mw" x="676" y="185" width="9" height="9"/>
+<rect class="mw" x="689" y="185" width="9" height="9"/>
+<rect class="mw" x="702" y="185" width="9" height="9"/>
+<rect class="mw" x="715" y="185" width="9" height="9"/>
+<rect class="mw" x="728" y="185" width="9" height="9"/>
+<rect class="mw" x="741" y="185" width="9" height="9"/>
+<rect class="mw" x="754" y="185" width="9" height="9"/>
+<rect class="mw" x="767" y="185" width="9" height="9"/>
+<rect class="mw" x="780" y="185" width="9" height="9"/>
+<rect class="mw" x="793" y="185" width="9" height="9"/>
+<rect class="mw" x="806" y="185" width="9" height="9"/>
+<rect class="mw" x="819" y="185" width="9" height="9"/>
+<rect class="mw" x="832" y="185" width="9" height="9"/>
+<rect class="mw" x="845" y="185" width="9" height="9"/>
+<rect class="mw" x="858" y="185" width="9" height="9"/>
+<rect class="mw" x="572" y="199" width="9" height="9"/>
+<rect class="mw" x="585" y="199" width="9" height="9"/>
+<rect class="mw" x="598" y="199" width="9" height="9"/>
+<rect class="mw" x="611" y="199" width="9" height="9"/>
+<rect class="mw" x="624" y="199" width="9" height="9"/>
+<rect class="mw" x="637" y="199" width="9" height="9"/>
+<rect class="mw" x="650" y="199" width="9" height="9"/>
+<rect class="mw" x="663" y="199" width="9" height="9"/>
+<rect class="mw" x="676" y="199" width="9" height="9"/>
+<rect class="mw" x="689" y="199" width="9" height="9"/>
+<rect class="mw" x="702" y="199" width="9" height="9"/>
+<rect class="mw" x="715" y="199" width="9" height="9"/>
+<rect class="mw" x="728" y="199" width="9" height="9"/>
+<rect class="mw" x="741" y="199" width="9" height="9"/>
+<rect class="mw" x="754" y="199" width="9" height="9"/>
+<rect class="mw" x="767" y="199" width="9" height="9"/>
+<rect class="mw" x="780" y="199" width="9" height="9"/>
+<rect class="mw" x="793" y="199" width="9" height="9"/>
+<rect class="mw" x="806" y="199" width="9" height="9"/>
+<rect class="mw" x="819" y="199" width="9" height="9"/>
+<rect class="mw" x="832" y="199" width="9" height="9"/>
+<rect class="mw" x="845" y="199" width="9" height="9"/>
+<rect class="mw" x="858" y="199" width="9" height="9"/>
+</g></g>
+<g class="t-target" data-type="tochi" transform="translate(-10 0)">
+<rect class="t-lot" x="906" y="224" width="140" height="4"/>
+<path class="t-grass" d="M912,224c2-6,3-8,4-10c1,4,2,6,3,10M934,224c1-4,2-6,3-7c1,3,2,4,2,7M1010,224c1-5,2-7,3-9c1,4,2,6,3,9M1030,224c1-3,1-4,2-5c1,2,1,3,2,5"/>
+<path class="t-pole" d="M960,228V196M992,228V196"/>
+<rect class="t-sign" x="950" y="186" width="52" height="26"/>
+<path class="t-sign-l" d="M958,195h36M958,201h24"/>
+<rect class="t-stake" x="906" y="214" width="4" height="14"/>
+<rect class="t-stake" x="1042" y="214" width="4" height="14"/>
+<rect class="t-stake-top" x="905" y="211" width="6" height="4"/>
+<rect class="t-stake-top" x="1041" y="211" width="6" height="4"/>
+<path class="t-hl t-hl--lot" d="M904,228v-18h8M1048,228v-18h-8M904,228h144"/>
+</g>
+<path class="t-b1" d="M1072,228V176h100v52z"/>
+<path class="t-roof" d="M1064,178l20-26h76l20,26z"/>
+<rect class="t-w t-w--warm" x="1086" y="186" width="20" height="14"/>
+<rect class="t-w" x="1132" y="186" width="20" height="14"/>
+<rect class="t-w" x="1084" y="206" width="28" height="16"/>
+<rect class="t-door" x="1136" y="204" width="12" height="24"/>
+<path class="t-trunk" d="M1196,228v-28.6"/>
+<ellipse class="t-tree" cx="1196" cy="184" rx="16.5" ry="23.1"/>
+<rect class="t-b2" x="1216" y="116" width="122" height="112"/>
+<rect class="t-roof" x="1212" y="112" width="130" height="5"/>
+<rect class="t-w" x="1228" y="126" width="17" height="11"/>
+<rect class="t-w" x="1255" y="126" width="17" height="11"/>
+<rect class="t-w t-w--warm" x="1282" y="126" width="17" height="11"/>
+<rect class="t-w" x="1309" y="126" width="17" height="11"/>
+<rect class="t-w" x="1228" y="146" width="17" height="11"/>
+<rect class="t-w" x="1255" y="146" width="17" height="11"/>
+<rect class="t-w" x="1282" y="146" width="17" height="11"/>
+<rect class="t-w" x="1309" y="146" width="17" height="11"/>
+<rect class="t-w" x="1228" y="166" width="17" height="11"/>
+<rect class="t-w t-w--warm" x="1255" y="166" width="17" height="11"/>
+<rect class="t-w" x="1282" y="166" width="17" height="11"/>
+<rect class="t-w" x="1309" y="166" width="17" height="11"/>
+<rect class="t-w" x="1228" y="186" width="17" height="11"/>
+<rect class="t-w t-w--warm" x="1255" y="186" width="17" height="11"/>
+<rect class="t-w" x="1282" y="186" width="17" height="11"/>
+<rect class="t-w" x="1309" y="186" width="17" height="11"/>
+<rect class="t-w t-w--shop" x="1228" y="206" width="98" height="22"/>
+<rect class="t-b1" x="1362" y="150" width="90" height="78"/>
+<rect class="t-roof" x="1356" y="146" width="96" height="5"/>
+<rect class="t-w" x="1376" y="162" width="16" height="12"/>
+<rect class="t-w" x="1404" y="162" width="16" height="12"/>
+<rect class="t-w t-w--warm" x="1376" y="186" width="16" height="12"/>
+<rect class="t-w" x="1404" y="186" width="16" height="12"/>
+<rect class="t-ground" x="0" y="228" width="1440" height="32"/>
+<path class="t-gl" d="M0,228h1440"/>
+</svg>
+<!--/TOWN-->
+  </div>
+  <p class="town-cap">窓の数字は、見本の下限と上限です（万円）。ご入力の物件の金額ではありません。</p>
+
+  <!-- ============ はじめの画面 ============ -->
+  <section class="view intro" data-view="intro" aria-labelledby="h1">
+    <div class="intro-copy">
+      <p class="eyebrow"><b>運営：木村不動産鑑定</b><span>不動産鑑定士・一級建築士事務所</span></p>
+      <h2 class="hero-h" id="h1" tabindex="-1"><span class="ln">あなたの不動産、</span><span class="ln"><span class="hl">いくら</span>になる<span class="q">？</span></span></h2>
+      <p class="sub"><span class="nb">売る・売らないを</span><span class="nb">決める前に、</span><span class="nb">まず目安を。</span></p>
+      <p class="lead"><span class="nb">物件の種別・エリア・広さを選ぶと、</span><span class="nb">参考価格の幅と、</span><span class="nb">価格を左右するポイントが</span><span class="nb">分かります。</span><span class="nb">結果は目安で、</span><span class="nb">不動産鑑定士による鑑定評価とは</span><span class="nb">別のものです。</span></p>
+    </div>
+
+    <div class="start">
+      <h2 class="start-h"><span class="no" aria-hidden="true">1</span><span><small>ステップ 1 / 4</small><span class="nb">物件の種別を選んで、</span><span class="nb">はじめる</span></span></h2>
+      <div class="types" role="group" aria-label="物件の種別">
+        <button type="button" class="type" data-type="mansion">
+          <svg viewBox="0 0 64 44" aria-hidden="true" focusable="false"><rect class="i-b" x="12" y="4" width="40" height="40"/><rect class="i-w" x="18" y="10" width="7" height="7"/><rect class="i-w" x="28.500" y="10" width="7" height="7"/><rect class="i-w" x="39" y="10" width="7" height="7"/><rect class="i-w" x="18" y="20.500" width="7" height="7"/><rect class="i-on" x="28.500" y="20.500" width="7" height="7"/><rect class="i-w" x="39" y="20.500" width="7" height="7"/><rect class="i-w" x="18" y="31" width="7" height="7"/><rect class="i-w" x="28.500" y="31" width="7" height="7"/><rect class="i-w" x="39" y="31" width="7" height="7"/></svg>
+          <b>マンション</b><small>一室（区分）</small>
+        </button>
+        <button type="button" class="type" data-type="kodate">
+          <svg viewBox="0 0 64 44" aria-hidden="true" focusable="false"><path class="i-b" d="M10,44V22L32,5l22,17v22z"/><rect class="i-on" x="18" y="25" width="10" height="9"/><rect class="i-w" x="37" y="25" width="9" height="19"/></svg>
+          <b>一戸建て</b><small>土地と建物</small>
+        </button>
+        <button type="button" class="type" data-type="tochi">
+          <svg viewBox="0 0 64 44" aria-hidden="true" focusable="false"><path class="i-b" d="M13,7h38v30H13zM18,12v20h28V12z" fill-rule="evenodd"/><rect class="i-on" x="8" y="2" width="11" height="11"/><rect class="i-on" x="45" y="2" width="11" height="11"/><rect class="i-on" x="8" y="31" width="11" height="11"/><rect class="i-on" x="45" y="31" width="11" height="11"/></svg>
+          <b>土地</b><small><span class="nb">更地・</span><span class="nb">古家つき</span></small>
+        </button>
+      </div>
+      <p class="start-other"><button type="button" class="textbtn" data-type="other">一棟のビル・アパート、借地などは、鑑定士へのご相談へ<i aria-hidden="true"></i></button></p>
+      <ul class="facts">
+        <li>入力は4ステップ、約1分</li>
+        <li>お名前・連絡先・番地の入力はありません</li>
+        <li>結果は目安です（鑑定評価とは別のものです）</li>
+      </ul>
+      <p class="demo-note"><b>デモ</b>結果には、架空の見本を表示します。実際の価格は計算しません。このデモでは、入力内容を保存・送信しません。</p>
+    </div>
+
+    <figure class="peek">
+      <figcaption><b>結果画面の見本<small>マンションの例</small></b><span>数値は架空です</span></figcaption>
+      <div class="peek-b">
+        <p class="peek-l">参考価格帯</p>
+        <p class="peek-v"><b>3,480</b>万円<i>〜</i><b>4,440</b>万円</p>
+        <div class="peek-m" aria-hidden="true"><i></i></div>
+        <p class="peek-l">価格を左右するポイント</p>
+        <ul class="peek-f">
+          <li><i class="up" aria-hidden="true"></i>地域の取引の動き</li>
+          <li><i class="up" aria-hidden="true"></i>広さ</li>
+          <li><i class="dn" aria-hidden="true"></i>築年数</li>
+        </ul>
+      </div>
+    </figure>
+
+  </section>
+
+  <!-- ============ 入力（ステップ2〜4） ============ -->
+  <section class="view wiz" data-view="wiz" aria-labelledby="wiz-h" hidden>
+    <div class="wiz-main">
+      <div class="prog" id="prog" role="img" aria-label="ステップ 2 / 4">
+        <ol aria-hidden="true"><li class="is-done"></li><li></li><li></li><li></li></ol>
+        <p id="prog-t" aria-hidden="true">ステップ 2 / 4</p>
+      </div>
+
+      <form class="steps" id="steps" novalidate>
+        <!-- ステップ2：所在エリア -->
+        <fieldset class="step" data-step="2" hidden>
+          <legend class="step-h" id="wiz-h" tabindex="-1">どのあたりにありますか？</legend>
+          <p class="step-p">市区町村までで大丈夫です。番地やマンション名は要りません。</p>
+          <div class="fld">
+            <label for="pref">都道府県</label>
+            <div class="sel"><select id="pref" name="pref" aria-describedby="pref-e" required>
+              <option value="">選んでください</option>
+              <optgroup label="関東"><option>東京都</option><option>神奈川県</option><option>埼玉県</option><option>千葉県</option><option>茨城県</option><option>栃木県</option><option>群馬県</option></optgroup>
+              <optgroup label="北海道・東北"><option>北海道</option><option>青森県</option><option>岩手県</option><option>宮城県</option><option>秋田県</option><option>山形県</option><option>福島県</option></optgroup>
+              <optgroup label="中部"><option>新潟県</option><option>富山県</option><option>石川県</option><option>福井県</option><option>山梨県</option><option>長野県</option><option>岐阜県</option><option>静岡県</option><option>愛知県</option></optgroup>
+              <optgroup label="近畿"><option>三重県</option><option>滋賀県</option><option>京都府</option><option>大阪府</option><option>兵庫県</option><option>奈良県</option><option>和歌山県</option></optgroup>
+              <optgroup label="中国・四国"><option>鳥取県</option><option>島根県</option><option>岡山県</option><option>広島県</option><option>山口県</option><option>徳島県</option><option>香川県</option><option>愛媛県</option><option>高知県</option></optgroup>
+              <optgroup label="九州・沖縄"><option>福岡県</option><option>佐賀県</option><option>長崎県</option><option>熊本県</option><option>大分県</option><option>宮崎県</option><option>鹿児島県</option><option>沖縄県</option></optgroup>
+            </select></div>
+            <p class="err" id="pref-e" hidden></p>
+          </div>
+          <div class="fld">
+            <label for="city">市区町村</label>
+            <input id="city" name="city" type="text" autocomplete="off" maxlength="20" placeholder="例）杉並区" aria-describedby="city-e" required>
+            <p class="err" id="city-e" hidden></p>
+          </div>
+        </fieldset>
+
+        <!-- ステップ3：広さ・築年 -->
+        <fieldset class="step" data-step="3" hidden>
+          <legend class="step-h" tabindex="-1" id="step3-h">広さと築年を教えてください。</legend>
+          <p class="step-p">おおよその数字で構いません。</p>
+          <div class="fld" data-for="mansion">
+            <label for="a-sen">専有面積<small>お部屋の広さ</small></label>
+            <div class="num"><input id="a-sen" name="sen" type="text" inputmode="decimal" autocomplete="off" aria-describedby="a-sen-s a-sen-e"><span class="unit" aria-hidden="true">m²</span><span class="tsubo" id="a-sen-s" aria-live="polite"></span></div>
+            <div class="chips" role="group" aria-label="専有面積のめやすから選ぶ"><button type="button" data-set="a-sen" data-v="40">40</button><button type="button" data-set="a-sen" data-v="55">55</button><button type="button" data-set="a-sen" data-v="70">70</button><button type="button" data-set="a-sen" data-v="85">85</button><span aria-hidden="true">m² くらい</span></div>
+            <p class="err" id="a-sen-e" hidden></p>
+          </div>
+          <div class="fld" data-for="kodate tochi">
+            <label for="a-tochi">土地の面積</label>
+            <div class="num"><input id="a-tochi" name="tochi" type="text" inputmode="decimal" autocomplete="off" aria-describedby="a-tochi-s a-tochi-e"><span class="unit" aria-hidden="true">m²</span><span class="tsubo" id="a-tochi-s" aria-live="polite"></span></div>
+            <div class="chips" role="group" aria-label="土地の面積のめやすから選ぶ"><button type="button" data-set="a-tochi" data-v="80">80</button><button type="button" data-set="a-tochi" data-v="100">100</button><button type="button" data-set="a-tochi" data-v="130">130</button><button type="button" data-set="a-tochi" data-v="165">165</button><span aria-hidden="true">m² くらい</span></div>
+            <p class="err" id="a-tochi-e" hidden></p>
+          </div>
+          <div class="fld" data-for="kodate">
+            <label for="a-tate">建物の延床面積<small>各階の床面積の合計</small></label>
+            <div class="num"><input id="a-tate" name="tate" type="text" inputmode="decimal" autocomplete="off" aria-describedby="a-tate-s a-tate-e"><span class="unit" aria-hidden="true">m²</span><span class="tsubo" id="a-tate-s" aria-live="polite"></span></div>
+            <div class="chips" role="group" aria-label="建物の延床面積のめやすから選ぶ"><button type="button" data-set="a-tate" data-v="80">80</button><button type="button" data-set="a-tate" data-v="95">95</button><button type="button" data-set="a-tate" data-v="110">110</button><button type="button" data-set="a-tate" data-v="130">130</button><span aria-hidden="true">m² くらい</span></div>
+            <p class="err" id="a-tate-e" hidden></p>
+          </div>
+          <div class="fld" data-for="mansion kodate">
+            <label for="year">建てられた年</label>
+            <div class="num"><div class="sel"><select id="year" name="year" aria-describedby="year-s year-e"><option value="">選んでください</option></select></div><span class="tsubo" id="year-s" aria-live="polite"></span></div>
+            <p class="err" id="year-e" hidden></p>
+          </div>
+        </fieldset>
+
+        <!-- ステップ4：目的（任意） -->
+        <fieldset class="step" data-step="4" hidden>
+          <legend class="step-h" tabindex="-1" id="step4-h">知りたい理由はありますか？</legend>
+          <p class="step-p">任意の質問です。選ばなくても先へ進めます。結果のあとのご案内に使います。</p>
+          <div class="opts">
+            <label><input type="radio" name="purpose" value="売却を考えている"><span>売却を考えている</span></label>
+            <label><input type="radio" name="purpose" value="相続・贈与のため"><span>相続・贈与のため</span></label>
+            <label><input type="radio" name="purpose" value="離婚・財産分与のため"><span>離婚・財産分与のため</span></label>
+            <label><input type="radio" name="purpose" value="住み替えを考えている"><span>住み替えを考えている</span></label>
+            <label><input type="radio" name="purpose" value="資産として把握したい"><span>資産として把握したい</span></label>
+            <label><input type="radio" name="purpose" value="とくに理由はない"><span>とくに理由はない</span></label>
+          </div>
+        </fieldset>
+
+        <div class="nav">
+          <button type="button" class="btn btn--ghost" id="back">戻る</button>
+          <button type="submit" class="btn" id="next"><span id="next-t">次へ</span><i class="arr" aria-hidden="true"></i></button>
+        </div>
+      </form>
+    </div>
+
+    <aside class="tk" aria-labelledby="tk-h">
+      <h2 class="tk-h" id="tk-h">入力内容</h2>
+      <dl class="tk-l" id="tk">
+        <div><dt>種別</dt><dd data-k="type">—</dd></div>
+        <div><dt>エリア</dt><dd data-k="area">—</dd></div>
+        <div><dt>広さ</dt><dd data-k="size">—</dd></div>
+        <div><dt>築年</dt><dd data-k="year">—</dd></div>
+        <div><dt>知りたい理由</dt><dd data-k="purpose">—</dd></div>
+      </dl>
+      <p class="tk-n">この内容は、保存も送信もされません。</p>
+    </aside>
+  </section>
+
+  <!-- ============ 対象外の種別 ============ -->
+  <section class="view other" data-view="other" aria-labelledby="other-h" hidden>
+    <div class="other-in">
+      <h2 class="step-h" id="other-h" tabindex="-1"><span class="nb">この種類の不動産は、</span><span class="nb">鑑定士が直接</span><span class="nb">お話を伺います。</span></h2>
+      <p>一棟のビルやアパート、借地（借りている土地）や貸している土地、店舗や事務所は、権利の関係や収益のしくみによって価格が大きく変わります。簡易なチェックでは目安を出せないため、不動産鑑定士がお話を伺います。</p>
+      <div class="nav">
+        <button type="button" class="btn btn--ghost" data-go="intro">種別を選び直す</button>
+        <a class="btn" href="#reserve"><span>不動産鑑定士に相談する</span><i class="arr" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ チェック中 ============ -->
+  <section class="view run" data-view="run" aria-labelledby="run-h" hidden>
+    <div class="run-in">
+      <h2 class="step-h" id="run-h" tabindex="-1">見本の結果を準備しています</h2>
+      <p class="run-d"><b>デモ</b>価格の計算は行っていません。どなたにも、同じ架空の見本を表示します。</p>
+      <ol class="run-l" id="run-l">
+        <li>入力内容を確かめる</li>
+        <li>結果画面の見本を用意する</li>
+        <li>見本を表示する</li>
+      </ol>
+      <p class="vh" id="run-live" role="status" aria-live="polite"></p>
+      <button type="button" class="textbtn" id="skip">待たずに結果を見る<i aria-hidden="true"></i></button>
+    </div>
+  </section>
+
+  <!-- ============ 結果（見本） ============ -->
+  <section class="view res" data-view="res" aria-labelledby="res-h" hidden>
+    <div class="res-g">
+      <aside class="tk tk--res" aria-labelledby="tk2-h">
+        <h2 class="tk-h" id="tk2-h">入力内容</h2>
+        <dl class="tk-l" id="tk2">
+          <div><dt>種別</dt><dd data-k="type">—</dd></div>
+          <div><dt>エリア</dt><dd data-k="area">—</dd></div>
+          <div><dt>広さ</dt><dd data-k="size">—</dd></div>
+          <div><dt>築年</dt><dd data-k="year">—</dd></div>
+          <div><dt>知りたい理由</dt><dd data-k="purpose">—</dd></div>
+        </dl>
+        <p class="tk-n">この内容は、保存も送信もされていません。見本には反映していません。</p>
+        <button type="button" class="btn btn--ghost btn--s" data-restart>最初からやり直す</button>
+        <a class="btn btn--s tk-cta" href="#reserve"><span>不動産鑑定士に相談する</span><i class="arr" aria-hidden="true"></i></a>
+      </aside>
+
+      <article class="sheet" id="sheet">
+        <p class="sheet-warn" role="note"><b>見本</b><span><span class="nb">架空の物件の数値です。</span><span class="w-l"><span class="nb">どなたが何を入力しても、</span><span class="nb">同じ見本を表示します。</span></span><span class="nb">ご入力の物件は、</span><span class="nb">計算していません。</span></span></p>
+        <header class="sheet-hd">
+          <h2 id="res-h" tabindex="-1">チェック結果の見本</h2>
+          <p class="sheet-sp"><b>見本の物件</b><span id="s-spec"></span></p>
+          <p class="sheet-in"><b>ご入力</b><span id="s-in"></span></p>
+        </header>
+
+        <section class="blk blk--hero" aria-labelledby="b1-h">
+          <div class="hero-l">
+            <h3 id="b1-h">参考価格帯<span class="smp">見本・架空データ</span></h3>
+            <p class="hero-v"><span class="hv"><b id="s-low"></b>万円</span><span class="hv"><i aria-hidden="true">〜</i><span class="vh">から</span><b id="s-high"></b>万円</span></p>
+            <div class="meter" id="meter" role="img" aria-labelledby="meter-t">
+              <div class="meter-tr"><i class="meter-f" id="meter-f"></i><i class="meter-c" id="meter-c"></i></div>
+              <p class="meter-ct" id="meter-ct"></p>
+              <p class="meter-ax" aria-hidden="true"><span id="meter-min"></span><span id="meter-max"></span></p>
+            </div>
+            <p class="vh" id="meter-t"></p>
+          </div>
+          <div class="hero-r">
+            <p class="blk-n" id="s-unit"></p>
+            <p class="blk-p" id="s-why"></p>
+          </div>
+        </section>
+
+        <section class="blk blk--fac" aria-labelledby="b2-h">
+          <h3 id="b2-h">価格を左右するポイント<span class="smp">見本・架空データ</span><small>見本の地域で取引された物件と比べた影響</small></h3>
+          <ul class="fac" id="fac"></ul>
+          <ul class="lg" aria-hidden="true"><li><i class="lg-up"></i>価格を押し上げる</li><li><i class="lg-dn"></i>価格を押し下げる</li></ul>
+        </section>
+
+        <section class="blk blk--not" aria-labelledby="b4-h">
+          <h3 id="b4-h">このチェックでは見ていないこと</h3>
+          <ul class="not">
+            <li>階数・向き・日当たり、室内の状態</li>
+            <li>駅からの距離、周辺の環境</li>
+            <li>道路との関係、土地の形、境界</li>
+            <li>建て替えができるかなど、法令上の制限</li>
+            <li>借地・共有など、権利の関係</li>
+            <li>建物の傷み、耐震性</li>
+          </ul>
+          <p class="blk-p">これらは、現地と資料を調べてはじめて分かることです。価格を大きく動かすこともあります。</p>
+        </section>
+
+        <footer class="sheet-ft">
+          <p><b>ここから先は、不動産鑑定士の仕事です。</b><span id="s-next">チェックの結果は、あくまで目安です。不動産鑑定士が個別に確認した金額ではありません。金額の根拠が必要なときは、鑑定評価をご検討ください。</span></p>
+          <div class="nav">
+            <a class="btn btn--ghost" href="#difference">鑑定評価とのちがいを見る</a>
+            <a class="btn" href="#reserve"><span>不動産鑑定士に相談する</span><i class="arr" aria-hidden="true"></i></a>
+          </div>
+          <button type="button" class="textbtn sheet-re" data-restart>最初からやり直す<i aria-hidden="true"></i></button>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+  <noscript><p class="nojs">このデモの操作には JavaScript が必要です。ご相談は、お電話（03-5356-9158）でも承ります。</p></noscript>
+</div>
+
+<!-- ============ こんなときに ============ -->
+<section class="sec sec--wor" id="worries" aria-labelledby="wor-h">
+  <div class="sec-in wor-g">
+    <h2 class="sec-h" id="wor-h"><span class="ln">こんなとき、</span><span class="ln">役に立ちます。</span></h2>
+    <ul class="wor">
+      <li><b><span class="nb">相続した実家を、</span><span class="nb">売るか、持ち続けるか。</span></b><span>家族で話し合う前に、おおよその水準を知っておきたい。</span></li>
+      <li><b>住み替えを考えはじめた。</b><span>いまの家がどのくらいか分かれば、次の予算が見えてくる。</span></li>
+      <li><b><span class="nb">離婚や相続で、</span><span class="nb">家をどう分けるか。</span></b><span>話し合いの前に、まず桁をつかんでおきたい。</span></li>
+      <li><b><span class="nb">不動産会社に聞くのは、</span><span class="nb">まだ早い気がする。</span></b><span>連絡先を伝える前に、自分で確かめておきたい。</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 分かること（結果の見本） ============ -->
+<section class="sec sec--know" id="sample" aria-labelledby="know-h">
+  <div class="sec-in know-g">
+    <div class="know-hd">
+      <h2 class="sec-h" id="know-h"><span class="ln">このチェックで</span><span class="ln">分かること</span></h2>
+      <p class="sec-p">結果は、このような画面で表示します。ここに出ている数値は、架空の見本です。</p>
+    </div>
+    <figure class="shot">
+      <figcaption class="vh">結果画面の見本（数値は架空）</figcaption>
+      <p class="shot-w"><b>見本</b><span>架空の物件の数値です。</span></p>
+      <div class="shot-b">
+        <p class="shot-l"><i class="mkr" aria-hidden="true">1</i>参考価格帯</p>
+        <p class="shot-v"><b>3,480</b>万円<i>〜</i><b>4,440</b>万円</p>
+        <div class="meter" aria-hidden="true"><div class="meter-tr"><i class="meter-f" style="left:24%;width:48%"></i><i class="meter-c" style="left:48%"></i></div></div>
+        <p class="shot-l"><i class="mkr" aria-hidden="true">2</i>価格を左右するポイント</p>
+        <ul class="shot-f">
+          <li><span>地域の取引の動き</span><i class="fac-b" aria-hidden="true"><i class="up" style="width:44%"></i></i><em>大きく押し上げ</em></li>
+          <li><span>広さ</span><i class="fac-b" aria-hidden="true"><i class="up" style="width:22%"></i></i><em>やや押し上げ</em></li>
+          <li><span>築年数</span><i class="fac-b" aria-hidden="true"><i class="dn" style="width:44%"></i></i><em>大きく押し下げ</em></li>
+        </ul>
+        <p class="shot-l"><i class="mkr" aria-hidden="true">3</i>このチェックでは見ていないこと</p>
+        <ul class="shot-n">
+          <li>階数・向き、室内の状態</li>
+          <li>道路との関係、法令上の制限</li>
+          <li>権利の関係、建物の傷み</li>
+        </ul>
+      </div>
+    </figure>
+    <ol class="know">
+      <li><b>参考価格の幅</b><p>ひとつの数字ではなく、幅で表示します。階数や室内の状態など、チェックで見ていない条件によって、価格が動くためです。</p></li>
+      <li><b>価格を左右するポイント</b><p>築年数や広さ、地域の取引の動きが、価格を押し上げているのか、押し下げているのかを示します。</p></li>
+      <li><b>チェックで見ていないこと</b><p>現地や資料を調べないと分からない項目を、あわせて示します。必要な方は、そこから不動産鑑定士に相談できます。</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 利用するメリット ============ -->
+<section class="sec sec--mer" id="merits" aria-labelledby="mer-h">
+  <div class="sec-in mer-g">
+    <h2 class="sec-h" id="mer-h"><span class="ln">不動産鑑定の</span><span class="ln">事務所がつくる、</span><span class="ln">目安の入口。</span></h2>
+    <ul class="mer">
+      <li><b>連絡先を入れずに、結果まで</b><p>お名前・電話番号・番地の入力はありません。結果を見るだけで終えても構いません。</p></li>
+      <li><b>ひとつの数字で言い切らない</b><p>価格は幅で示し、チェックで見ていない項目もあわせて表示します。分からないことは、分からないままお見せします。</p></li>
+      <li><b>必要になったら、そのまま鑑定士へ</b><p>金額の根拠が要るときは、不動産鑑定士・一級建築士に相談できます。鑑定が要らない場合は、そうお伝えします。</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 利用の流れ ============ -->
+<section class="sec sec--stp" id="howto" aria-labelledby="stp-h">
+  <div class="sec-in">
+    <h2 class="sec-h" id="stp-h"><span class="nb">入力は4ステップ、</span><span class="nb">約1分。</span></h2>
+    <ol class="stp">
+      <li><span class="stp-p" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></span><b>種別を選ぶ</b><p>マンション・一戸建て・土地から選びます。</p></li>
+      <li><span class="stp-p" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i></span><b>エリアを選ぶ</b><p>市区町村までで大丈夫です。番地は要りません。</p></li>
+      <li><span class="stp-p" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><b>広さと築年を入れる</b><p>おおよその数字で構いません。坪数への換算も表示します。</p></li>
+      <li><span class="stp-p" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><b>結果を見る</b><p>参考価格の幅と、価格を左右するポイントを表示します。<small>このデモでは、架空の見本を表示します。</small></p></li>
+    </ol>
+    <div class="stp-a">
+      <a class="btn" href="#app" id="start-again"><span>チェックをはじめる</span><i class="arr" aria-hidden="true"></i></a>
+      <p>結果のあと、必要な方は不動産鑑定士に相談できます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ちがい ============ -->
+<section class="sec sec--diff" id="difference" aria-labelledby="diff-h">
+  <div class="sec-in">
+    <h2 class="sec-h" id="diff-h"><span class="ln"><span class="nb">チェック、</span><span class="nb">査定、</span><span class="nb">鑑定評価。</span></span><span class="ln"><span class="nb">できることが、</span><span class="nb">ちがいます。</span></span></h2>
+    <p class="sec-p">このチェックは、気軽に目安を知るための入口です。正式な鑑定評価とは、調べる深さも、結果の重みも異なります。</p>
+
+    <div class="cmp" role="table" aria-label="不動産価値チェック、不動産会社の査定、不動産鑑定評価のちがい">
+      <div class="cmp-r cmp-hd" role="row">
+        <span role="columnheader" class="cmp-0"><span class="vh">比べる項目</span></span>
+        <span role="columnheader"><small>このサービス（構想中）</small><b>不動産価値チェック</b></span>
+        <span role="columnheader"><small>不動産会社の</small><b>査定</b></span>
+        <span role="columnheader" class="cmp-k"><small>不動産鑑定士の</small><b>鑑定評価</b></span>
+      </div>
+      <div class="cmp-r" role="row"><span role="rowheader">だれが</span><span role="cell" data-h="このチェック">プログラムが自動で</span><span role="cell" data-h="査定">不動産会社の担当者</span><span role="cell" data-h="鑑定評価" class="cmp-k">不動産鑑定士（国家資格）</span></div>
+      <div class="cmp-r" role="row"><span role="rowheader">もとにするもの</span><span role="cell" data-h="このチェック">入力された条件と、公開されている取引などのデータ</span><span role="cell" data-h="査定">近隣の取引事例、価格査定マニュアルなど</span><span role="cell" data-h="鑑定評価" class="cmp-k">国が定めた不動産鑑定評価基準</span></div>
+      <div class="cmp-r" role="row"><span role="rowheader">現地・資料の調査</span><span role="cell" data-h="このチェック">しない</span><span role="cell" data-h="査定">机上の査定から、訪問しての査定まで</span><span role="cell" data-h="鑑定評価" class="cmp-k">現地を調べ、権利関係・法令・市場を調査する</span></div>
+      <div class="cmp-r" role="row"><span role="rowheader">結果のかたち</span><span role="cell" data-h="このチェック">参考価格帯（画面に表示）</span><span role="cell" data-h="査定">査定書</span><span role="cell" data-h="鑑定評価" class="cmp-k"><span>不動産鑑定評価書<span class="nb">（鑑定士が署名）</span></span></span></div>
+      <div class="cmp-r" role="row"><span role="rowheader">費用</span><span role="cell" data-h="このチェック">未定（構想中）</span><span role="cell" data-h="査定">無料が一般的</span><span role="cell" data-h="鑑定評価" class="cmp-k">有料（事前にお見積り）</span></div>
+      <div class="cmp-r" role="row"><span role="rowheader">向いている場面</span><span role="cell" data-h="このチェック">まず目安を知りたい</span><span role="cell" data-h="査定">売却を検討している</span><span role="cell" data-h="鑑定評価" class="cmp-k">相続・離婚・親族間の売買など、金額の根拠を第三者に示したい</span></div>
+    </div>
+
+    <div class="three">
+      <h3><span class="nb">不動産鑑定士は、</span><span class="nb">価格を</span><span class="nb">3つの方向から</span><span class="nb">確かめます。</span></h3>
+      <div class="three-b">
+        <ol>
+          <li><b>費用から</b><span>原価法</span><p>いま同じ建物を建て直すと、いくらかかるか。そこから古くなった分を差し引いて考えます。</p></li>
+          <li><b>取引から</b><span>取引事例比較法</span><p>似た不動産が、実際にいくらで取引されたか。条件のちがいを補正して比べます。</p></li>
+          <li><b>収益から</b><span>収益還元法</span><p>貸したら、どれだけの収益を生むか。将来の収益から、いまの価値を求めます。</p></li>
+        </ol>
+        <p class="three-k"><span>3つを照らし合わせて</span><b>鑑定評価額</b></p>
+      </div>
+      <p class="three-n">どの方法をどう用いるかは、不動産の種類や評価の目的によって異なります。当社では、一級建築士の資格もあわせ持つ鑑定士が、建物の状態まで確認します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 専門家に相談するメリット ============ -->
+<section class="sec sec--exp" id="expert" aria-labelledby="exp-h">
+  <div class="sec-in exp-g">
+    <div class="exp-who">
+      <img src="img/kimura-osamu.jpg" width="96" height="128" alt="木村 修の写真" decoding="async">
+      <p><small>ご相談を受ける鑑定士</small><b>木村 修</b><span>不動産鑑定士・一級建築士</span><span>木村不動産鑑定（東京・阿佐ヶ谷）</span></p>
+      <p class="hold"><b>デモ</b>写真は仮のものです。経歴・実績は、確認のうえ掲載します。</p>
+    </div>
+    <div class="exp-b">
+      <h2 class="sec-h" id="exp-h"><span class="ln">鑑定士に相談すると、</span><span class="ln">ここが変わります。</span></h2>
+      <ol class="exp">
+        <li><b>現地と資料を調べます</b><p>室内の状態、道路との関係、法令上の制限、権利の関係。チェックでは見ていないことを、ひとつずつ確かめます。</p></li>
+        <li><b>金額の理由が、書面に残ります</b><p>何を調べ、どう判断したかを書いた鑑定評価書を作成します。相続や離婚、親族間の売買など、金額の根拠を示したい場面で用いられます。</p></li>
+        <li><b>鑑定が要らないときは、そうお伝えします</b><p>目安で足りる場合や、不動産会社の査定のほうが合う場合もあります。ご相談のなかで整理します。</p></li>
+      </ol>
+      <p class="exp-a"><a class="btn" href="#reserve"><span>不動産鑑定士に相談する</span><i class="arr" aria-hidden="true"></i></a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ よくある質問 ============ -->
+<section class="sec sec--faq" id="about" aria-labelledby="faq-h">
+  <div class="sec-in faq-g">
+    <h2 class="sec-h" id="faq-h"><span class="nb">このチェック</span><span class="nb">について</span></h2>
+    <div class="faq">
+      <details>
+        <summary>目安は、どうやって出すのですか。</summary>
+        <div><p>サービスとして構想しているのは、入力された条件と、公開されている取引などのデータをもとに、参考となる価格の幅をプログラムが自動で計算するしくみです。このデモでは計算を行わず、どなたにも同じ架空の見本を表示しています。</p></div>
+      </details>
+      <details>
+        <summary>どんな不動産が対象ですか。</summary>
+        <div><p>マンションの一室、一戸建て、土地を想定しています。一棟のビルやアパート、借地、店舗や事務所などは、権利の関係や収益のしくみが価格を大きく左右するため、チェックの対象にしていません。不動産鑑定士が直接お話を伺います。</p></div>
+      </details>
+      <details>
+        <summary>目安と鑑定評価額は、同じくらいになりますか。</summary>
+        <div><p>分かりません。チェックは、現地も資料も調べずに出す目安です。道路との関係や法令上の制限、建物の状態などによって、鑑定評価額が目安の幅の外になることもあります。</p></div>
+      </details>
+      <details>
+        <summary>結果を見たあと、営業の連絡が来ませんか。</summary>
+        <div><p>来ません。お名前・電話番号・メールアドレスを入力する欄がないため、当社から連絡することはできません。相談したいときだけ、ご自身で予約フォームかお電話をご利用ください。</p></div>
+      </details>
+      <details>
+        <summary>入力した情報はどう扱われますか。</summary>
+        <div><p>このデモでは、入力した内容を保存も送信もしません。ページを閉じると消えます。お名前や連絡先、番地を入力する欄もありません。実際のサービスでの取り扱いは、公開までに定めます。</p></div>
+      </details>
+      <details>
+        <summary>結果を売買や調停、申告に使えますか。</summary>
+        <div><p>根拠となる資料としては使えません。チェックの結果は目安で、不動産の鑑定評価に関する法律にもとづく鑑定評価ではありません。金額の根拠が必要な場面では、鑑定評価をご検討ください。なお、鑑定評価書も、裁判所や税務署が必ず採用するとは限りません。</p></div>
+      </details>
+      <details>
+        <summary>なぜ不動産鑑定の事務所が運営するのですか。</summary>
+        <div><p>「まず目安だけ知りたい」という方と、鑑定評価のあいだには、大きな距離があります。そのあいだをつなぐ入口をつくり、必要な方が迷わず専門家にたどり着けるようにするためです。</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+<!-- ============ 相談 ============ -->
+<section class="sec sec--cta" id="consult" aria-labelledby="cta-h">
+  <div class="sec-in cta-g">
+    <div class="cta-c">
+      <h2 class="sec-h" id="cta-h"><span class="ln">目安のその先は、</span><span class="ln">不動産鑑定士へ。</span></h2>
+      <p class="sec-p" id="cta-p">「この金額で話を進めてよいのか」「相手に説明できる根拠がほしい」。そう感じたら、ご相談ください。鑑定評価が必要かどうかから、一緒に整理します。</p>
+      <p class="cta-x" id="cta-x" hidden></p>
+      <a class="cta-tel" href="tel:0353569158"><small>お電話でのご予約</small><b>03-5356-9158</b></a>
+      <p class="hold cta-hold"><b>デモ</b>電話の受付時間は、確認のうえ掲載します。</p>
+    </div>
+
+    <div class="cta-f" id="reserve">
+    <form class="form" id="form" novalidate aria-labelledby="form-h">
+      <h3 class="form-h" id="form-h">相談の予約<span class="demo-tag">デモ表示：送信されません</span></h3>
+      <div class="f-err" id="f-err" role="alert" tabindex="-1" hidden></div>
+      <div class="fld">
+        <label for="f-name">お名前<span class="req">必須</span></label>
+        <input id="f-name" name="name" type="text" autocomplete="name" aria-describedby="f-name-e" required>
+        <p class="err" id="f-name-e" hidden></p>
+      </div>
+      <div class="fld">
+        <label for="f-contact">電話番号またはメールアドレス<span class="req">必須</span></label>
+        <input id="f-contact" name="contact" type="text" autocomplete="off" inputmode="email" placeholder="例）090-1234-5678" aria-describedby="f-contact-e" required>
+        <p class="err" id="f-contact-e" hidden></p>
+      </div>
+      <div class="fld">
+        <label for="f-topic">ご相談の内容<span class="opt">任意</span></label>
+        <div class="sel"><select id="f-topic" name="topic">
+          <option value="">選んでください</option>
+          <option>売却を考えている</option><option>相続・贈与のため</option><option>離婚・財産分与のため</option><option>住み替えを考えている</option><option>資産として把握したい</option><option>その他</option>
+        </select></div>
+      </div>
+      <button class="btn form-btn" type="submit"><span>入力内容を確認する</span><i class="arr" aria-hidden="true"></i></button>
+    </form>
+
+    <div class="done" id="done" tabindex="-1" aria-labelledby="done-h" hidden>
+      <p class="demo-tag">デモ表示：送信されていません</p>
+      <h3 id="done-h">ここで、受付完了の画面に切り替わります。</h3>
+      <p>実際のサービスでは、入力内容の確認のあと、受付の完了と、折り返しのご連絡についてご案内します。このデモでは、入力した内容はどこにも送信・保存されていません。</p>
+      <button type="button" class="btn btn--ghost btn--s" id="done-back">フォームに戻る</button>
+    </div>
+  
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="ft">
+  <div class="ft-in">
+    <div class="ft-co">
+      <img src="img/kimura-logo.png" width="92" height="67" alt="">
+      <p><b>株式会社木村不動産鑑定</b><span>不動産鑑定士・一級建築士事務所</span></p>
+    </div>
+    <address><span class="nb">〒166-0001</span> <span class="nb">東京都杉並区阿佐谷北1丁目3番5号</span> <span class="nb">キリサワビル201号</span><br><span class="nb">JR中央線「阿佐ヶ谷」駅から徒歩1分</span><br><a class="ft-tel" href="tel:0353569158">電話 03-5356-9158</a></address>
+    <p class="ft-dis">「不動産価値チェック」は仮の名称で、構想中のサービスです。このページは打ち合わせ用のデモで、表示される価格・図はすべて架空の見本です。不動産の鑑定評価に関する法律にもとづく鑑定評価ではありません。</p>
+    <p class="ft-c">© 株式会社木村不動産鑑定</p>
+  </div>
+</footer>
+
+<script src="js/b.js" defer></script>
+</body>
+</html>

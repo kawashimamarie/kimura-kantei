@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>不動産価値チェック（仮称）｜売ると決める前の目安｜木村不動産鑑定（確認用デモ・Fable版B案）</title>
+<meta name="description" content="売却の査定を頼む前に、不動産のおおよその価値を確かめる。不動産鑑定事務所が構想するチェックサービスの確認用デモです。結果は架空の見本で、価格は計算しません。">
+<link rel="icon" href="img/favicon.png">
+<link rel="preload" href="fonts/ibm-plex-sans-jp-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/ibm-plex-sans-jp-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/b.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へ進む</a>
+
+<p class="demo-bar"><strong>確認用デモ｜Fable版 B案</strong><span>名称は仮称です。結果は架空の見本で、価格は計算しません。入力内容は保存・送信されません。</span></p>
+
+<header class="site-header" id="top">
+  <a class="brand" href="#top" aria-label="不動産価値チェック（仮称） ページの先頭へ">
+    <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true"><path class="bm-lot" d="M5 8 30 5l2 24-27 2z"/><rect class="bm-pin" x="2.5" y="5.5" width="5" height="5"/><rect class="bm-pin" x="27.5" y="2.5" width="5" height="5"/><rect class="bm-pin" x="29.5" y="26.5" width="5" height="5"/><rect class="bm-pin" x="2.5" y="28.5" width="5" height="5"/></svg>
+    <span class="brand-text"><span class="brand-name">不動産価値チェック<small>仮称</small></span><span class="brand-sub">運営　木村不動産鑑定</span></span>
+  </a>
+  <nav class="gnav" aria-label="ページ内">
+    <a href="#tokucho">特徴</a>
+    <a href="#nagare">使い方</a>
+    <a href="#check">チェック</a>
+    <a href="#chigai">鑑定との違い</a>
+    <a href="#faq">ご質問</a>
+  </nav>
+  <div class="header-cta">
+    <a class="btn btn-line btn-s" href="#soudan">鑑定士に相談</a>
+    <a class="btn btn-primary btn-s hd-start" href="#check">チェックをはじめる</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ========== 1. ファーストビュー ========== -->
+<section class="hero" aria-labelledby="hero-h">
+  <div class="hero-copy">
+    <p class="eyebrow"><span>不動産鑑定事務所がつくる、価値の目安</span></p>
+    <h1 id="hero-h">売ると決める前の、<br>不動産価値チェック。</h1>
+    <p class="hero-lead">査定を頼むほどではない。でも、おおよその価値は知っておきたい。<br class="pc">種別・所在地・広さ・築年を入れると、参考価格の<em>幅</em>と、<br class="pc">その幅が<em>動く理由</em>を確かめられます。</p>
+    <div class="hero-start" id="hero-start">
+      <p class="hs-label" id="hs-label">物件の種別を選んで、チェックをはじめる</p>
+      <div class="hs-btns" role="group" aria-labelledby="hs-label">
+        <button type="button" data-type="mansion"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 42V8h24v34M8 42h32M18 15h4M26 15h4M18 22h4M26 22h4M18 29h4M26 29h4M21 42v-6h6v6"/></svg><b>マンション</b></button>
+        <button type="button" data-type="house"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 24 24 9l18 15M11 20v22h26V20M8 42h32M20 42V31h8v11M30 12V8h4v7"/></svg><b>一戸建て</b></button>
+        <button type="button" data-type="land"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 14 39 11l2 26-34 2z"/><path class="pin" d="M6.500 11.500h5v5h-5zM36.500 8.500h5v5h-5zM38.500 34.500h5v5h-5zM4.500 36.500h5v5h-5z"/></svg><b>土地</b></button>
+      </div>
+      <p class="hero-meta"><span>入力は4項目・約1分</span><span>お名前や連絡先は要りません</span></p>
+    </div>
+    <p class="hero-demo"><span class="tag-demo">デモ</span>価格は計算しません。結果は、どなたにも同じ架空の見本です。</p>
+  </div>
+
+  <div class="hero-visual" aria-hidden="true">
+    <svg class="map" viewBox="0 0 760 640" preserveAspectRatio="xMidYMid slice">
+      <defs><pattern id="tg-h" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0v8" class="tg-hl"/></pattern></defs>
+      <g transform="translate(70 96) rotate(-8) skewX(-5)">
+<g class="mp-lots">
+<rect x="-190" y="0" width="190" height="80"/>
+<rect x="-190" y="80" width="190" height="90"/>
+<rect x="-190" y="200" width="190" height="100"/>
+<rect x="-190" y="300" width="190" height="120"/>
+<rect x="-190" y="450" width="190" height="190"/>
+<rect x="0" y="0" width="90" height="80"/>
+<rect x="90" y="0" width="70" height="80"/>
+<rect x="160" y="0" width="80" height="80"/>
+<rect x="240" y="0" width="90" height="80"/>
+<rect x="0" y="80" width="120" height="90"/>
+<rect x="120" y="80" width="100" height="90"/>
+<rect x="220" y="80" width="110" height="90"/>
+<rect x="0" y="200" width="110" height="100"/>
+<rect x="110" y="200" width="100" height="100"/>
+<rect x="210" y="200" width="120" height="100"/>
+<rect x="0" y="300" width="80" height="120"/>
+<rect x="80" y="300" width="130" height="120"/>
+<rect x="210" y="300" width="120" height="120"/>
+<rect x="362" y="-60" width="130" height="120"/>
+<rect x="492" y="-60" width="120" height="120"/>
+<rect x="612" y="-60" width="150" height="120"/>
+<rect x="362" y="60" width="100" height="110"/>
+<rect x="462" y="60" width="140" height="110"/>
+<rect x="602" y="60" width="160" height="110"/>
+<rect x="502" y="200" width="110" height="120"/>
+<rect x="612" y="200" width="150" height="120"/>
+<rect x="362" y="320" width="110" height="100"/>
+<rect x="472" y="320" width="140" height="100"/>
+<rect x="612" y="320" width="150" height="100"/>
+<rect x="0" y="450" width="140" height="190"/>
+<rect x="140" y="450" width="190" height="190"/>
+<rect x="362" y="450" width="120" height="190"/>
+<rect x="482" y="450" width="150" height="190"/>
+<rect x="632" y="450" width="130" height="190"/>
+<rect x="-190" y="-110" width="280" height="80"/>
+<rect x="90" y="-110" width="240" height="80"/>
+<rect x="762" y="-60" width="200" height="230"/>
+<rect x="762" y="200" width="200" height="220"/>
+<rect x="762" y="450" width="200" height="190"/>
+<rect x="362" y="-170" width="400" height="80"/>
+</g><g class="mp-bld">
+<rect x="-172" y="20" width="96" height="36"/>
+<rect x="-172" y="100" width="96" height="46"/>
+<rect x="-172" y="220" width="96" height="56"/>
+<rect x="-172" y="320" width="96" height="70"/>
+<rect x="-172" y="470" width="96" height="70"/>
+<rect x="19" y="19" width="43" height="35"/>
+<rect x="105" y="14" width="39" height="48"/>
+<rect x="180" y="17" width="38" height="37"/>
+<rect x="256" y="12" width="46" height="50"/>
+<rect x="12" y="95" width="92" height="49"/>
+<rect x="137" y="98" width="61" height="54"/>
+<rect x="233" y="93" width="69" height="51"/>
+<rect x="18" y="216" width="76" height="66"/>
+<rect x="124" y="219" width="64" height="55"/>
+<rect x="229" y="214" width="73" height="68"/>
+<rect x="15" y="317" width="49" height="77"/>
+<rect x="100" y="312" width="88" height="90"/>
+<rect x="226" y="315" width="76" height="79"/>
+<rect x="374" y="-42" width="102" height="84"/>
+<rect x="509" y="-47" width="81" height="81"/>
+<rect x="625" y="-44" width="109" height="86"/>
+<rect x="380" y="79" width="66" height="65"/>
+<rect x="476" y="74" width="104" height="78"/>
+<rect x="621" y="77" width="113" height="67"/>
+<rect x="517" y="212" width="79" height="90"/>
+<rect x="632" y="215" width="108" height="79"/>
+<rect x="378" y="338" width="66" height="64"/>
+<rect x="484" y="333" width="112" height="61"/>
+<rect x="629" y="336" width="111" height="66"/>
+<rect x="18" y="470" width="96" height="70"/>
+<rect x="158" y="470" width="96" height="70"/>
+<rect x="380" y="470" width="80" height="70"/>
+<rect x="500" y="470" width="96" height="70"/>
+<rect x="650" y="470" width="90" height="70"/>
+<rect x="-172" y="-90" width="96" height="36"/>
+<rect x="108" y="-90" width="96" height="36"/>
+<rect x="780" y="-40" width="96" height="70"/>
+<rect x="780" y="220" width="96" height="70"/>
+<rect x="780" y="470" width="96" height="70"/>
+<rect x="380" y="-150" width="96" height="36"/>
+</g><g class="mp-num">
+<text x="82" y="73">101-2</text>
+<text x="152" y="73">108-3</text>
+<text x="232" y="73">115-4</text>
+<text x="322" y="73">122-5</text>
+<text x="112" y="163">129-1</text>
+<text x="212" y="163">136-2</text>
+<text x="322" y="163">102-3</text>
+<text x="102" y="293">109-4</text>
+<text x="202" y="293">116-5</text>
+<text x="322" y="293">123-1</text>
+<text x="72" y="413">130-2</text>
+<text x="202" y="413">137-3</text>
+<text x="322" y="413">103-4</text>
+<text x="484" y="53">110-5</text>
+<text x="604" y="53">117-1</text>
+<text x="754" y="53">124-2</text>
+<text x="454" y="163">131-3</text>
+<text x="594" y="163">138-4</text>
+<text x="754" y="163">104-5</text>
+<text x="604" y="313">111-1</text>
+<text x="754" y="313">118-2</text>
+<text x="464" y="413">125-3</text>
+<text x="604" y="413">132-4</text>
+<text x="754" y="413">139-5</text>
+<text x="132" y="633">105-1</text>
+<text x="322" y="633">112-2</text>
+<text x="474" y="633">119-3</text>
+<text x="624" y="633">126-4</text>
+<text x="754" y="633">133-5</text>
+</g>
+<g class="mp-target"><rect class="tg-fill" x="362" y="200" width="140" height="120"/><rect class="tg-line" x="362" y="200" width="140" height="120"/>
+<rect class="tg-pin" x="357.5" y="195.5" width="9" height="9"/>
+<rect class="tg-pin" x="497.5" y="195.5" width="9" height="9"/>
+<rect class="tg-pin" x="497.5" y="315.5" width="9" height="9"/>
+<rect class="tg-pin" x="357.5" y="315.5" width="9" height="9"/>
+</g>
+      </g>
+      <g class="mp-compass" transform="translate(704 54)"><circle r="20"/><path d="M0-30V20M0-30-7-14M0-30 7-14"/><text y="-36">N</text></g>
+    </svg>
+    <div class="report">
+      <p class="rp-head"><span>チェック結果</span><span class="tag-sample">見本・架空データ</span></p>
+      <p class="rp-prop">架空の一戸建て｜土地 120㎡・建物 95㎡・築18年</p>
+      <p class="rp-label">参考価格帯</p>
+      <p class="rp-price"><span class="num">3,200</span><span class="unit">万円</span><span class="tilde">〜</span><span class="num">3,900</span><span class="unit">万円</span></p>
+      <div class="rp-bar"><i></i></div>
+      <ul class="rp-factors">
+        <li><span>周辺の取引水準</span><b class="up">押し上げ</b></li>
+        <li><span>土地の広さ</span><b class="up">やや押し上げ</b></li>
+        <li><span>建物の築年数</span><b class="down">押し下げ</b></li>
+      </ul>
+      <p class="rp-foot">このチェックで見ていないこと<b>6項目</b></p>
+    </div>
+  </div>
+
+  <ul class="hero-facts">
+    <li><b>連絡先の入力なし</b><span>営業の連絡は届きません</span></li>
+    <li><b>価格は幅で表示</b><span>幅のまま示します</span></li>
+    <li><b>見ていない点も明示</b><span>目安の限界も示します</span></li>
+  </ul>
+</section>
+
+<!-- ========== 2. サービスの価値・特徴 ========== -->
+<section class="sec tokucho" id="tokucho" aria-labelledby="tokucho-h">
+  <div class="sec-head">
+    <p class="sec-label">特徴</p>
+    <h2 id="tokucho-h">売却の査定サイトとは、<br>つくりが違います。</h2>
+    <p class="sec-lead">売却の査定サービスは、不動産会社が売却の依頼を受けるための入口です。このチェックは、売る・売らないを決める前に、落ち着いて目安を確かめるための道具として構想しています。</p>
+  </div>
+  <ul class="feat">
+    <li>
+      <div class="feat-fig" aria-hidden="true">
+        <ul class="fg-fields">
+          <li>物件の種別</li><li>所在地</li><li>広さ・築年</li>
+          <li class="off">お名前</li><li class="off">電話番号</li><li class="off">メールアドレス</li>
+        </ul>
+      </div>
+      <h3>連絡先を聞きません</h3>
+      <p>お名前・電話番号・メールアドレス・番地の入力欄がありません。結果を見たあとに、こちらから連絡が届くことはありません。</p>
+    </li>
+    <li>
+      <div class="feat-fig" aria-hidden="true">
+        <div class="fg-range"><span class="fg-one">○,○○○万円</span><span class="fg-band"><i></i></span><span class="fg-cap"><b>下限</b><b>上限</b></span></div>
+      </div>
+      <h3>ひとつの数字で言い切りません</h3>
+      <p>現地を見ずに出す目安には、かならず幅があります。その幅を隠さず、参考価格帯として表示します。</p>
+    </li>
+    <li>
+      <div class="feat-fig" aria-hidden="true">
+        <ul class="fg-unseen"><li>室内の状態</li><li>道路との関係</li><li>法令上の制限</li><li>権利の関係</li></ul>
+      </div>
+      <h3>見ていないことを隠しません</h3>
+      <p>このチェックで確かめていない項目を、結果とあわせて示します。目安の限界が分かるので、次に何を確かめればよいかが見えます。</p>
+    </li>
+  </ul>
+</section>
+
+<!-- ========== 3. 利用者の悩み ========== -->
+<section class="sec nayami" id="nayami" aria-labelledby="nayami-h">
+  <div class="sec-head">
+    <p class="sec-label">こんなときに</p>
+    <h2 id="nayami-h">決める前の、<span class="nw">最初の手がかりに。</span></h2>
+  </div>
+  <ul class="nayami-list">
+    <li><span class="ny-k">相続</span><h3>相続した実家を、売るか、<span class="nw">持ち続けるか。</span></h3><p>家族で話し合う前に、おおよその水準を知っておきたい。</p></li>
+    <li><span class="ny-k">住み替え</span><h3>住み替えを<span class="nw">考えはじめた。</span></h3><p>いまの家の目安が分かれば、次の予算を考えやすくなる。</p></li>
+    <li><span class="ny-k">財産分与</span><h3>離婚や相続で、家を<span class="nw">どう分けるか。</span></h3><p>話し合いの前に、まず桁をつかんでおきたい。</p></li>
+    <li><span class="ny-k">まだ早い</span><h3>不動産会社に聞くのは、<span class="nw">まだ早い気がする。</span></h3><p>連絡先を伝える前に、自分で確かめておきたい。</p></li>
+  </ul>
+</section>
+
+<!-- ========== 4. 利用するメリット ========== -->
+<section class="sec merit" id="merit" aria-labelledby="merit-h">
+  <div class="sec-head">
+    <p class="sec-label">メリット</p>
+    <h2 id="merit-h">目安があると、<span class="nw">次の一手を選べます。</span></h2>
+    <p class="sec-lead">チェックの結果は、ゴールではなく分かれ道です。結果を見たうえで、ご自身に合う進み方を選べます。</p>
+  </div>
+  <div class="route">
+    <div class="route-from"><span class="tag-sample">チェックの結果</span><p>参考価格の幅と、<br>見ていない点が分かる</p></div>
+    <svg class="route-lines" viewBox="0 0 120 300" preserveAspectRatio="none" aria-hidden="true"><path d="M0 150H40V40H120M40 150H120M40 150V260H120"/></svg>
+    <ol class="route-to">
+      <li><h3>そのまま、様子を見る</h3><p>目安が分かれば十分なら、そこで終えて構いません。連絡先を伝えていないので、あとから連絡が届くこともありません。</p></li>
+      <li><h3>不動産会社の査定へ</h3><p>売却を進めると決めたら、不動産会社に査定を依頼します。目安を知ったうえで、査定額を受けとめられます。</p></li>
+      <li class="is-key"><h3>不動産鑑定士へ</h3><p>相続・離婚・親族間の売買など、金額の理由を相手や第三者に示す必要があるときは、鑑定評価をご検討ください。</p><a href="#senmon">鑑定士に相談すると<svg class="arr" viewBox="0 0 28 8" aria-hidden="true"><path d="M0 4h26M22 .8 26.4 4 22 7.2"/></svg></a></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ========== 5. 利用の流れ ＋ 6. 入力フォーム ========== -->
+<section class="sec check-sec" id="nagare" aria-labelledby="nagare-h">
+  <div class="sec-head">
+    <p class="sec-label">使い方</p>
+    <h2 id="nagare-h">入力は4項目。<span class="nw">約1分で、</span><span class="nw">結果の見本まで。</span></h2>
+  </div>
+  <ol class="flow">
+    <li><b>種別を選ぶ</b><span>マンション・一戸建て・土地から</span></li>
+    <li><b>所在地を入れる</b><span>市区町村まで。番地は要りません</span></li>
+    <li><b>広さと築年を入れる</b><span>おおよその数字で構いません</span></li>
+    <li><b>結果を見る</b><span>このデモでは架空の見本を表示</span></li>
+  </ol>
+
+  <div class="checker" id="check" aria-labelledby="check-h">
+    <div class="ck-main">
+      <div class="ck-top">
+        <h3 id="check-h">不動産価値チェック<small>操作デモ</small></h3>
+        <p class="ck-demo"><span class="tag-demo">デモ</span>価格は計算しません。入力内容は保存・送信されません。</p>
+      </div>
+      <ol class="ck-prog" id="ck-prog" aria-label="入力の進み具合">
+        <li data-s="1"><span>1</span>種別</li>
+        <li data-s="2"><span>2</span>所在地</li>
+        <li data-s="3"><span>3</span>広さ・築年</li>
+        <li data-s="4"><span>4</span>確認</li>
+      </ol>
+
+      <form id="ck-form" novalidate>
+        <!-- STEP 1 -->
+        <fieldset class="ck-step" data-step="1">
+          <legend tabindex="-1">物件の種別を選んでください。</legend>
+          <div class="tiles" role="radiogroup" aria-describedby="e-type">
+            <label><input type="radio" name="type" value="mansion"><span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 42V8h24v34M8 42h32M18 15h4M26 15h4M18 22h4M26 22h4M18 29h4M26 29h4M21 42v-6h6v6"/></svg><b>マンション</b><small>一室（区分所有）</small></span></label>
+            <label><input type="radio" name="type" value="house"><span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 24 24 9l18 15M11 20v22h26V20M8 42h32M20 42V31h8v11M30 12V8h4v7"/></svg><b>一戸建て</b><small>土地と建物</small></span></label>
+            <label><input type="radio" name="type" value="land"><span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 14 39 11l2 26-34 2z"/><path class="pin" d="M6.500 11.500h5v5h-5zM36.500 8.500h5v5h-5zM38.500 34.500h5v5h-5zM4.500 36.500h5v5h-5z"/></svg><b>土地</b><small>更地・古家つき</small></span></label>
+          </div>
+          <p class="err" id="e-type" role="alert"></p>
+          <p class="ck-other">一棟のビル・アパート、借地、店舗などは、チェックの対象外です。<a href="#soudan">不動産鑑定士へのご相談</a>をご利用ください。</p>
+        </fieldset>
+
+        <!-- STEP 2 -->
+        <fieldset class="ck-step" data-step="2" hidden>
+          <legend tabindex="-1">どのあたりにありますか。</legend>
+          <p class="ck-hint">市区町村までで大丈夫です。番地やマンション名は入力しないでください。</p>
+          <div class="ck-fields two">
+            <div class="fld" data-f="pref">
+              <label for="ck-pref">都道府県</label>
+              <select id="ck-pref" name="pref" aria-describedby="e-pref"><option value="">選んでください</option></select>
+              <p class="err" id="e-pref" role="alert"></p>
+            </div>
+            <div class="fld" data-f="city">
+              <label for="ck-city">市区町村</label>
+              <input id="ck-city" name="city" type="text" autocomplete="off" maxlength="20" placeholder="例）杉並区" aria-describedby="e-city">
+              <p class="err" id="e-city" role="alert"></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- STEP 3 -->
+        <fieldset class="ck-step" data-step="3" hidden>
+          <legend tabindex="-1">広さと築年を教えてください。</legend>
+          <p class="ck-hint">おおよその数字で構いません。半角の数字で入力してください。</p>
+          <div class="ck-fields">
+            <div class="fld" data-f="senyu" data-for="mansion">
+              <label for="ck-senyu">専有面積<small>お部屋の広さ</small></label>
+              <div class="unit"><input id="ck-senyu" name="senyu" type="text" inputmode="decimal" autocomplete="off" placeholder="例）65" aria-describedby="t-senyu e-senyu"><span>㎡</span><output id="t-senyu"></output></div>
+              <p class="err" id="e-senyu" role="alert"></p>
+            </div>
+            <div class="fld" data-f="tochi" data-for="house land">
+              <label for="ck-tochi">土地の面積</label>
+              <div class="unit"><input id="ck-tochi" name="tochi" type="text" inputmode="decimal" autocomplete="off" placeholder="例）100" aria-describedby="t-tochi e-tochi"><span>㎡</span><output id="t-tochi"></output></div>
+              <p class="err" id="e-tochi" role="alert"></p>
+            </div>
+            <div class="fld" data-f="tatemono" data-for="house">
+              <label for="ck-tatemono">建物の延床面積<small>各階の床面積の合計</small></label>
+              <div class="unit"><input id="ck-tatemono" name="tatemono" type="text" inputmode="decimal" autocomplete="off" placeholder="例）90" aria-describedby="t-tatemono e-tatemono"><span>㎡</span><output id="t-tatemono"></output></div>
+              <p class="err" id="e-tatemono" role="alert"></p>
+            </div>
+            <div class="fld" data-f="chiku" data-for="mansion house">
+              <label for="ck-chiku">築年数<small>新築は 0</small></label>
+              <div class="unit"><input id="ck-chiku" name="chiku" type="text" inputmode="numeric" autocomplete="off" placeholder="例）25" aria-describedby="e-chiku"><span>年</span></div>
+              <label class="chk"><input type="checkbox" name="chiku_unknown" id="ck-chiku-unknown"><span>わからない</span></label>
+              <p class="err" id="e-chiku" role="alert"></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- STEP 4 -->
+        <fieldset class="ck-step" data-step="4" hidden>
+          <legend tabindex="-1">入力内容をご確認ください。</legend>
+          <dl class="ck-confirm" id="ck-confirm"></dl>
+          <p class="ck-notice"><b>このデモでは、価格を計算しません。</b>次の画面には、どなたが何を入力しても同じ、架空の見本を表示します。</p>
+        </fieldset>
+
+        <div class="ck-nav">
+          <button type="button" class="btn btn-line" id="ck-back" hidden>戻る</button>
+          <button type="submit" class="btn btn-primary" id="ck-next">次へ<svg class="arr" viewBox="0 0 28 8" aria-hidden="true"><path d="M0 4h26M22 .8 26.4 4 22 7.2"/></svg></button>
+        </div>
+      </form>
+      <noscript><p class="ck-notice">この操作デモには JavaScript が必要です。結果の見本は、下の「結果の見本」でご覧いただけます。</p></noscript>
+    </div>
+
+    <aside class="ck-side" aria-label="入力中の内容">
+      <p class="ck-side-h">ご入力の内容</p>
+      <dl id="ck-summary">
+        <div><dt>種別</dt><dd data-k="type">—</dd></div>
+        <div><dt>所在地</dt><dd data-k="place">—</dd></div>
+        <div><dt>広さ</dt><dd data-k="area">—</dd></div>
+        <div><dt>築年数</dt><dd data-k="chiku">—</dd></div>
+      </dl>
+      <p class="ck-side-n">この内容は、お使いの画面の中だけで扱います。保存も送信もしません。ページを閉じると消えます。</p>
+    </aside>
+  </div>
+</section>
+
+<!-- ========== 7. 結果の見本 ========== -->
+<section class="sec result-sec" id="result" aria-labelledby="result-h" tabindex="-1">
+  <div class="sec-head">
+    <p class="sec-label">結果の見本</p>
+    <h2 id="result-h">結果は、このように<span class="nw">表示します。</span></h2>
+    <p class="sec-lead">下の数値は、架空の物件を想定した見本です。このデモでは、入力した内容にかかわらず、同じ見本を表示します。</p>
+  </div>
+
+  <div class="rs-echo" id="rs-echo" hidden>
+    <div>
+      <p class="rs-echo-h">ご入力ありがとうございました。</p>
+      <p><b>下の見本は、ご入力の物件とは無関係です。</b>どなたにも同じ「架空の一戸建て」を表示しており、価格は計算していません。</p>
+      <dl id="rs-echo-list"></dl>
+    </div>
+    <div class="rs-echo-btns">
+      <button type="button" class="btn btn-line btn-s" id="rs-edit">入力を修正する</button>
+      <button type="button" class="btn btn-line btn-s" id="rs-reset">最初からやり直す</button>
+    </div>
+  </div>
+
+  <div class="rs" aria-label="チェック結果の見本（架空データ）">
+    <p class="rs-banner"><b>見本・架空データ</b><span>架空の一戸建て（土地 120㎡・建物 95㎡・築18年）を想定した表示例です。</span></p>
+
+    <div class="rs-price-block">
+      <div class="rs-h"><span class="rs-no">1</span><h3>参考価格帯</h3><span class="tag-sample">見本・架空データ</span></div>
+      <p class="rs-price"><span class="num">3,200</span><span class="unit">万円</span><span class="tilde">〜</span><span class="num">3,900</span><span class="unit">万円</span></p>
+      <div class="rs-axis" aria-hidden="true">
+        <div class="rs-track"><i></i></div>
+        <ol><li>2,500</li><li>3,000</li><li>3,500</li><li>4,000</li><li>4,500<small>万円</small></li></ol>
+      </div>
+      <p class="rs-note">幅があるのは、室内の状態や道路との関係など、このチェックで見ていない条件によって、価格が動くためです。</p>
+    </div>
+
+    <div class="rs-factor-block">
+      <div class="rs-h"><span class="rs-no">2</span><h3>価格を左右する点</h3><span class="tag-sample">見本・架空データ</span></div>
+      <div class="fc" role="img" aria-label="見本：所在地の取引水準は押し上げ、土地の広さはやや押し上げ、建物の広さは影響小、築年数は押し下げ">
+        <p class="fc-legend"><span class="dn">押し下げ</span><span class="up">押し上げ</span></p>
+        <ul>
+          <li><span>所在地の取引水準</span><i class="up" style="--v:78%"></i></li>
+          <li><span>土地の広さ</span><i class="up" style="--v:34%"></i></li>
+          <li><span>建物の広さ</span><i class="up" style="--v:8%"></i></li>
+          <li><span>築年数</span><i class="dn" style="--v:56%"></i></li>
+        </ul>
+      </div>
+      <p class="rs-note">実際のサービスでは、入力した条件のうち、どれが価格を押し上げ、どれが押し下げているかを示します。<b>この図は架空の見本で、ご入力の内容とは無関係です。</b></p>
+    </div>
+
+    <div class="rs-unseen-block">
+      <div class="rs-h"><span class="rs-no">3</span><h3>このチェックで見ていないこと</h3></div>
+      <ul class="unseen">
+        <li>室内の状態、日当たり、眺望</li>
+        <li>駅からの距離、周辺の環境</li>
+        <li>道路との関係、土地の形、境界</li>
+        <li>建て替えの可否など、法令上の制限</li>
+        <li>借地・共有など、権利の関係</li>
+        <li>建物の傷み、耐震性</li>
+      </ul>
+      <div class="rs-next">
+        <p>これらは、現地と資料を調べてはじめて分かることです。価格を大きく動かすこともあります。<b>ここから先は、<span class="nw">不動産鑑定士の仕事です。</span></b></p>
+        <a class="btn btn-primary" href="#soudan">不動産鑑定士に相談する<svg class="arr" viewBox="0 0 28 8" aria-hidden="true"><path d="M0 4h26M22 .8 26.4 4 22 7.2"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 8. 正式な不動産鑑定との違い ========== -->
+<section class="sec chigai" id="chigai" aria-labelledby="chigai-h">
+  <div class="sec-head">
+    <p class="sec-label">鑑定との違い</p>
+    <h2 id="chigai-h">チェック、査定、鑑定評価。<br>調べる深さが違います。</h2>
+    <p class="sec-lead">このチェックは、気軽に目安を知るための入口です。不動産鑑定士による鑑定評価とは、調べる深さも、結果の重みも異なります。チェックの結果は、鑑定評価ではありません。</p>
+  </div>
+  <div class="tri" role="table" aria-label="チェック、査定、鑑定評価の違い">
+    <div class="tri-row tri-head" role="row">
+      <span role="columnheader" class="tri-k"><em>調べる深さ</em></span>
+      <span role="columnheader"><b>不動産価値チェック</b><small>仮称・構想中</small><i class="depth d1" aria-hidden="true"></i></span>
+      <span role="columnheader"><b>不動産会社の査定</b><small>売却のための価格の意見</small><i class="depth d2" aria-hidden="true"></i></span>
+      <span role="columnheader"><b>不動産鑑定士の鑑定評価</b><small>理由を示す正式な評価</small><i class="depth d3" aria-hidden="true"></i></span>
+    </div>
+    <div class="tri-row" role="row"><span role="rowheader" class="tri-k">だれが</span><span role="cell" data-l="チェック">プログラムが自動で</span><span role="cell" data-l="査定">不動産会社の担当者</span><span role="cell" data-l="鑑定評価">不動産鑑定士（国家資格）</span></div>
+    <div class="tri-row" role="row"><span role="rowheader" class="tri-k">もとにするもの</span><span role="cell" data-l="チェック">入力された条件と、公開されている取引などのデータ（構想）</span><span role="cell" data-l="査定">近隣の取引事例、価格査定のマニュアルなど</span><span role="cell" data-l="鑑定評価">国が定めた不動産鑑定評価基準</span></div>
+    <div class="tri-row" role="row"><span role="rowheader" class="tri-k">現地・資料の調査</span><span role="cell" data-l="チェック">しない</span><span role="cell" data-l="査定">机上の査定から、訪問しての査定まで</span><span role="cell" data-l="鑑定評価">現地を調べ、権利の関係・法令・市場を調査する</span></div>
+    <div class="tri-row" role="row"><span role="rowheader" class="tri-k">結果のかたち</span><span role="cell" data-l="チェック">参考価格帯（画面に表示）</span><span role="cell" data-l="査定">査定書</span><span role="cell" data-l="鑑定評価">不動産鑑定評価書（鑑定士が署名）</span></div>
+    <div class="tri-row" role="row"><span role="rowheader" class="tri-k">向いている場面</span><span role="cell" data-l="チェック">まず目安を知りたい</span><span role="cell" data-l="査定">売却を検討している</span><span role="cell" data-l="鑑定評価">相続・離婚・親族間の売買など、金額の理由を第三者に示したい</span></div>
+  </div>
+  <p class="fine"><span class="tag-demo">デモ</span>チェックの計算のしくみ・利用料金は構想段階で、確定していません。</p>
+</section>
+
+<!-- ========== 9. 専門家への相談導線 ========== -->
+<section class="senmon" id="senmon" aria-labelledby="senmon-h">
+  <div class="senmon-in">
+    <div class="senmon-copy">
+      <p class="sec-label">専門家への相談</p>
+      <h2 id="senmon-h">目安の先は、<br>不動産鑑定士が<span class="nw">確かめます。</span></h2>
+      <p>「この金額で話を進めてよいのか」「相手に説明できる理由がほしい」。そう感じたときは、チェックを運営する木村不動産鑑定にご相談ください。</p>
+      <a class="btn btn-white" href="#soudan">不動産鑑定士に相談する<svg class="arr" viewBox="0 0 28 8" aria-hidden="true"><path d="M0 4h26M22 .8 26.4 4 22 7.2"/></svg></a>
+    </div>
+    <ol class="senmon-list">
+      <li><h3>現地と資料を調べます</h3><p>室内の状態、道路との関係、法令上の制限、権利の関係。チェックでは見ていないことを、ひとつずつ確かめます。</p></li>
+      <li><h3>金額の理由が、書面に残ります</h3><p>何を調べ、どう判断したかを書いた不動産鑑定評価書を作成します。相続や離婚、親族間の売買など、金額の理由を示したい場面で用いられます。</p></li>
+      <li><h3>鑑定が要らないときは、そうお伝えします</h3><p>目安で足りる場合や、不動産会社の査定のほうが合う場合もあります。ご相談のなかで整理します。</p></li>
+    </ol>
+    <div class="senmon-who">
+      <p><b>木村不動産鑑定</b>担当する不動産鑑定士　木村 修</p>
+      <p class="fine"><span class="tag-demo">デモ</span>資格・経歴・実績・写真は、ご本人に確認した内容だけを掲載します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 10. FAQ ========== -->
+<section class="sec faq" id="faq" aria-labelledby="faq-h">
+  <div class="sec-head">
+    <p class="sec-label">ご質問</p>
+    <h2 id="faq-h">よくあるご質問</h2>
+  </div>
+  <div class="faq-list">
+    <details>
+      <summary>目安は、どうやって出すのですか。</summary>
+      <div><p>サービスとして構想しているのは、入力された条件と、公開されている取引などのデータをもとに、参考となる価格の幅をプログラムが計算するしくみです。このデモでは計算を行わず、どなたにも同じ架空の見本を表示しています。</p></div>
+    </details>
+    <details>
+      <summary>結果を見たあと、営業の連絡が来ませんか。</summary>
+      <div><p>来ません。お名前・電話番号・メールアドレスを入力する欄がないため、こちらから連絡することができません。相談したいときだけ、ご自身で予約フォームかお電話をご利用ください。</p></div>
+    </details>
+    <details>
+      <summary>目安と鑑定評価額は、同じくらいになりますか。</summary>
+      <div><p>分かりません。チェックは、現地も資料も調べずに出す目安です。道路との関係や法令上の制限、建物の状態などによって、鑑定評価額が目安の幅の外になることもあります。</p></div>
+    </details>
+    <details>
+      <summary>結果を、売買や調停、申告に使えますか。</summary>
+      <div><p>根拠となる資料としては使えません。チェックの結果は目安で、不動産の鑑定評価に関する法律にもとづく鑑定評価ではありません。金額の理由が必要な場面では、鑑定評価をご検討ください。なお、鑑定評価書も、裁判所や税務署が必ず採用するとは限りません。</p></div>
+    </details>
+    <details>
+      <summary>どんな不動産が対象ですか。</summary>
+      <div><p>マンションの一室、一戸建て、土地を想定しています。一棟のビルやアパート、借地、店舗や事務所などは、権利の関係や収益のしくみが価格を大きく左右するため、チェックの対象にしていません。不動産鑑定士が直接お話を伺います。</p></div>
+    </details>
+    <details>
+      <summary>入力した情報は、どう扱われますか。</summary>
+      <div><p>このデモでは、入力した内容を保存も送信もしません。ページを閉じると消えます。実際のサービスでの取り扱いは、公開までに定めます。</p></div>
+    </details>
+    <details>
+      <summary>なぜ、不動産鑑定の事務所が運営するのですか。</summary>
+      <div><p>「まず目安だけ知りたい」という方と、鑑定評価のあいだには、大きな距離があります。そのあいだをつなぐ入口をつくり、必要な方が迷わず専門家にたどり着けるようにするためです。</p></div>
+    </details>
+  </div>
+</section>
+
+<!-- ========== 11. 問い合わせCTA ========== -->
+<section class="sec soudan" id="soudan" aria-labelledby="soudan-h">
+  <div class="soudan-copy">
+    <p class="sec-label">ご相談</p>
+    <h2 id="soudan-h">金額の理由が<span class="nw">必要になったら。</span></h2>
+    <p>相続、離婚、親族間の売買、共有の解消。金額の理由を示す必要があるときは、不動産鑑定士がお話を伺います。鑑定評価が必要かどうかから、一緒に整理します。</p>
+    <a class="tel" href="tel:0353569158"><span class="tel-label">お電話でのご予約｜木村不動産鑑定</span><span class="tel-num num">03-5356-9158</span></a>
+    <p class="fine"><span class="tag-demo">デモ</span>受付時間・相談料・ご相談の方法は、確認のうえ掲載します。</p>
+  </div>
+  <div class="form-wrap">
+    <form id="soudan-form" novalidate>
+      <p class="form-title">相談の予約<span class="tag-demo tag-gap">デモ：送信されません</span></p>
+      <div class="fld" data-f="name">
+        <label for="f-name">お名前<span class="req">必須</span></label>
+        <input id="f-name" name="name" type="text" autocomplete="name" aria-describedby="e-name">
+        <p class="err" id="e-name" role="alert"></p>
+      </div>
+      <div class="fld" data-f="contact">
+        <label for="f-contact">電話番号またはメールアドレス<span class="req">必須</span></label>
+        <input id="f-contact" name="contact" type="text" autocomplete="off" aria-describedby="e-contact">
+        <p class="err" id="e-contact" role="alert"></p>
+      </div>
+      <div class="fld" data-f="topic">
+        <label for="f-topic">ご相談の内容<span class="opt">任意</span></label>
+        <select id="f-topic" name="topic">
+          <option value="">選んでください</option>
+          <option>売却を考えている</option><option>相続・贈与のため</option><option>離婚・財産分与のため</option><option>親族間の売買・共有の解消</option><option>資産として把握したい</option><option>その他</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">入力内容を確認する</button>
+      <p class="fine">このデモでは、入力した内容は送信も保存もされません。本番では、個人情報の取り扱いについての説明と同意の欄を設けます。</p>
+    </form>
+    <div class="form-done" id="soudan-done" hidden tabindex="-1">
+      <p class="tag-demo">デモ表示：送信されていません</p>
+      <h3>ここで、受付完了の画面に切り替わります。</h3>
+      <p>実際のサービスでは、入力内容の確認のあと、受付の完了と、折り返しのご連絡についてご案内します。このデモでは、入力した内容はどこにも送信・保存されていません。</p>
+      <button class="btn btn-line" type="button" id="soudan-back">フォームに戻る</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-in">
+    <div>
+      <p class="footer-name">株式会社木村不動産鑑定</p>
+      <p>電話　<a class="num" href="tel:0353569158">03-5356-9158</a></p>
+      <p class="fine"><span class="tag-demo">デモ</span>所在地・アクセス・受付時間は、確認のうえ掲載します。</p>
+    </div>
+    <p class="footer-note">「不動産価値チェック」は仮の名称で、構想中のサービスです。このページは確認用のデモで、表示される価格・図はすべて架空の見本です。不動産の鑑定評価に関する法律にもとづく鑑定評価ではありません。</p>
+  </div>
+  <p class="footer-copy">確認用デモ（Fable版 B案）。掲載内容は確認前の案です。　© 株式会社木村不動産鑑定</p>
+</footer>
+
+<div class="sp-bar" id="sp-bar">
+  <a class="btn btn-primary bar-start" href="#check">チェックをはじめる</a>
+  <a class="btn btn-line bar-soudan" href="#soudan">鑑定士に相談</a>
+</div>
+<script src="js/b.js"></script>
+</body>
+</html>
