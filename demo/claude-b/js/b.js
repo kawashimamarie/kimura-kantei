@@ -103,59 +103,25 @@
     });
     return on;
   }
-  function rnd4() { var t = ''; for (var i = 0; i < 4; i++) t += String(Math.floor(Math.random() * 10)); return t; }
-  /* 数字がぱらぱらと入れ替わって、下限と上限に落ち着く（約0.6秒） */
-  function townRange(lo, hi) {
-    clearTimers();
-    if (reduce || !wins.length) { paint(rangePattern(lo, hi)); return; }
-    var n = 0;
-    (function tick() {
-      if (n++ < 6) { paint(rangePattern(rnd4(), rnd4())); later(tick, 90); }
-      else paint(rangePattern(lo, hi));
-    })();
-  }
   function paint(on) { wins.forEach(function (w, i) { w.classList.toggle('on', !!on[i]); }); }
-  function townSet(text) { clearTimers(); paint(pattern(text)); }
-  /* 左の列から順に灯す（1回だけ・約1秒） */
-  function townWipe(text) {
+  function townSet(text) { clearTimers(); town.classList.remove('is-busy'); paint(pattern(text)); }
+  /* 下の階から順に、窓の明かりが灯っていく（1回だけ・約0.8秒）。数字を入れ替える演出はしない */
+  function townRise(on) {
     clearTimers();
-    var on = pattern(text);
+    town.classList.remove('is-busy');
     if (reduce || !wins.length) { paint(on); return; }
     paint([]);
-    for (var c = 0; c < COLS; c++) (function (c) {
+    for (var r = ROWS - 1; r >= 0; r--) (function (r) {
       later(function () {
-        for (var r = 0; r < ROWS; r++) wins[r * COLS + c].classList.toggle('on', on[r * COLS + c]);
-      }, 150 + c * 36);
-    })(c);
+        for (var c = 0; c < COLS; c++) wins[r * COLS + c].classList.toggle('on', on[r * COLS + c]);
+      }, 120 + (ROWS - 1 - r) * 70);
+    })(r);
   }
-  /* 数字がぱらぱらと入れ替わって、指定の表示に落ち着く（約0.6秒） */
-  function townShuffle(text) {
-    clearTimers();
-    if (reduce || !wins.length) { paint(pattern(text)); return; }
-    var n = 0;
-    (function tick() {
-      if (n++ < 6) {
-        var t = '';
-        for (var i = 0; i < 4; i++) t += String(Math.floor(Math.random() * 10));
-        paint(pattern(t));
-        later(tick, 90);
-      } else paint(pattern(text));
-    })();
-  }
-  /* 縦の帯が左から右へ流れる（チェック中の表示） */
-  function townScan(ms) {
-    clearTimers();
-    if (reduce || !wins.length) return;
-    var start = Date.now();
-    (function tick() {
-      var t = Date.now() - start;
-      if (t > ms) return;
-      var col = Math.floor((t / 28) % (COLS + 6)) - 3, on = [], r, c;
-      for (r = 0; r < ROWS; r++) for (c = 0; c < COLS; c++) on.push(c >= col && c < col + 3);
-      paint(on);
-      later(tick, 28);
-    })();
-  }
+  /* 上の段に見本の下限、下の段に上限 */
+  function townRange(lo, hi) { townRise(rangePattern(lo, hi)); }
+  function townWipe(text) { townRise(pattern(text)); }
+  /* 見本を準備している間は、明かりを落として待つ（点滅や走査はしない） */
+  function townScan() { clearTimers(); town.classList.add('is-busy'); }
   if (wins.length) townWipe('???');
 
   /* ====================================================================
@@ -189,7 +155,7 @@
       state.type = t;
       markType();
       town.setAttribute('data-sel', t);
-      townShuffle('???');
+      townSet('???');
       goStep(2);
     });
   });
@@ -200,14 +166,28 @@
     });
   }
   all('[data-go="intro"]').forEach(function (b) { b.addEventListener('click', toIntro); });
-  var again = $('start-again');
-  if (again) again.addEventListener('click', function (e) {
+  [$('start-again'), $('dock-a')].forEach(function (again) { if (again) again.addEventListener('click', function (e) {
     e.preventDefault();
     if (app.getAttribute('data-view') !== 'intro') toIntro();
     window.scrollTo(0, 0);
     var first = document.querySelector('.type');
     if (first) { try { first.focus({ preventScroll: true }); } catch (err) { first.focus(); } }
-  });
+  }); });
+
+  /* スマホ：種別の選択が画面から外れたら、下に「はじめる」ボタンを出す（相談の章・入力中は出さない） */
+  (function dock() {
+    var d = $('dock'), start = document.querySelector('.start'), cta = $('consult');
+    if (!d || !start || !('IntersectionObserver' in window)) return;
+    var seen = { start: true, cta: false, startAbove: false };
+    function upd() {
+      var on = app.getAttribute('data-view') === 'intro' && !seen.start && !seen.cta && seen.startAbove;
+      d.classList.toggle('is-on', on);
+      document.body.classList.toggle('has-dock', on);
+    }
+    new IntersectionObserver(function (es) { es.forEach(function (e) { seen.start = e.isIntersecting; seen.startAbove = !e.isIntersecting && e.boundingClientRect.top < 0; }); upd(); }).observe(start);
+    if (cta) new IntersectionObserver(function (es) { es.forEach(function (e) { seen.cta = e.isIntersecting; }); upd(); }, { rootMargin: '0px 0px -30% 0px' }).observe(cta);
+    new MutationObserver(upd).observe(app, { attributes: true, attributeFilter: ['data-view'] });
+  })();
   function toIntro() {
     town.removeAttribute('data-sel');
     townSet('???');
@@ -314,7 +294,9 @@
       all('.fld[data-for]', stepsForm).forEach(function (f) {
         f.hidden = f.getAttribute('data-for').split(' ').indexOf(state.type) === -1;
       });
-      $('step3-h').textContent = state.type === 'tochi' ? '土地の広さを教えてください。' : '広さと築年を教えてください。';
+      var h3 = $('step3-h');
+      h3.textContent = '';
+      [state.type === 'tochi' ? '土地の広さを' : '広さと築年を', '教えてください。'].forEach(function (t) { h3.appendChild(el('span', 'nb', t)); });
     }
     progItems.forEach(function (li, i) {
       li.className = i + 1 < n ? 'is-done' : i + 1 === n ? 'is-now' : '';
@@ -416,7 +398,7 @@
     show('run', $('run-h'));
     if (reduce) { runItems.forEach(function (li) { li.className = 'is-done'; }); result(); return; }
     var STEP = 620;
-    townScan(STEP * runItems.length);
+    townScan();
     runItems.forEach(function (li, i) {
       runTimers.push(setTimeout(function () {
         if (i > 0) runItems[i - 1].className = 'is-done';
@@ -444,6 +426,13 @@
     d.spec.split('／').forEach(function (t, i, a) { sp.appendChild(el('span', 'nb', t + (i < a.length - 1 ? '／' : ''))); });
     $('s-why').textContent = d.why;
     var tv = ticketValues();
+    var where = [tv.type[0], tv.area[0]].filter(Boolean).join('・');
+    var sn = $('s-not');
+    sn.textContent = '';
+    var tx = function (t) { sn.appendChild(document.createTextNode(t)); };
+    tx('上の金額は、架空の物件'); sn.appendChild(el('span', 'nb', '（' + d.spec.replace('／', '・') + '）の')); tx('見本です。ご入力の物件');
+    if (where) sn.appendChild(el('span', 'nb', '（' + where + '）の')); else tx('の');
+    sn.appendChild(el('span', 'nb', '価格ではありません。'));
     $('s-in').textContent = [tv.type[0], tv.area[0], tv.size.filter(Boolean).join('・'), tv.year[0]].filter(function (x) { return x && x.charAt(0) !== '（'; }).join('／') + '（この見本には反映していません）';
     $('s-low').textContent = fmt(d.low);
     $('s-high').textContent = fmt(d.high);

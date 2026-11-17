@@ -19,6 +19,7 @@
     var step = 1, LAST = 4;
     var back = $('#ck-back'), next = $('#ck-next');
     var steps = $$('.ck-step', form), prog = $$('#ck-prog li');
+    var checker = $('#check'), wrap = $('#rs-wrap');
     var el = function (n) { return form.elements[n]; };
     var fld = function (n) { return $('[data-f="' + n + '"]', form); };
 
@@ -83,9 +84,9 @@
 
     function values() {
       var t = type(), a = [];
-      if (t === 'mansion') a.push('専有 ' + fmt(num('senyu')) + '㎡');
-      if (t === 'house' || t === 'land') a.push('土地 ' + fmt(num('tochi')) + '㎡');
-      if (t === 'house') a.push('建物 ' + fmt(num('tatemono')) + '㎡');
+      if (t === 'mansion') a.push('専有\u00a0' + fmt(num('senyu')) + '㎡');
+      if (t === 'house' || t === 'land') a.push('土地\u00a0' + fmt(num('tochi')) + '㎡');
+      if (t === 'house') a.push('建物\u00a0' + fmt(num('tatemono')) + '㎡');
       return {
         type: TYPES[t] || '',
         place: (el('pref').value || '') + (el('city').value.trim() ? ' ' + el('city').value.trim() : ''),
@@ -94,22 +95,33 @@
       };
     }
     var LABELS = { type: '種別', place: '所在地', area: '広さ', chiku: '築年数' };
+    // 値を dd に入れる。「土地 110㎡・建物 95㎡」は項目の途中で折り返さないよう、「・」区切りごとにまとめる
+    function setDD(dd, k, val) {
+      dd.textContent = '';
+      if (k === 'area' && val) {
+        val.split('・').forEach(function (part, i, all) {
+          var sp = document.createElement('span'); sp.className = 'nw'; sp.textContent = part + (i < all.length - 1 ? '・' : ''); dd.appendChild(sp);
+        });
+      } else dd.textContent = val || '—';
+    }
     function fillList(dl, v) {
       dl.textContent = '';
       Object.keys(LABELS).forEach(function (k) {
         var d = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd');
-        dt.textContent = LABELS[k]; dd.textContent = v[k] || '—'; d.appendChild(dt); d.appendChild(dd); dl.appendChild(d);
+        dt.textContent = LABELS[k]; setDD(dd, k, v[k]);
+        d.appendChild(dt); d.appendChild(dd); dl.appendChild(d);
       });
     }
     function summary() {
       var v = { type: TYPES[type()] || '', place: '', area: '', chiku: '' };
       if (step > 2) v.place = values().place;
       if (step > 3) { v.area = values().area; v.chiku = values().chiku; }
-      $$('#ck-summary dd').forEach(function (dd) { dd.textContent = v[dd.dataset.k] || '—'; });
+      $$('#ck-summary dd').forEach(function (dd) { setDD(dd, dd.dataset.k, v[dd.dataset.k]); });
     }
 
     function show(s, focus) {
       step = s;
+      checker.setAttribute('data-step', String(s)); // 進み具合の表示（区画の四隅の印）にだけ使う
       steps.forEach(function (f) { f.hidden = Number(f.dataset.step) !== s; });
       prog.forEach(function (li) {
         var n = Number(li.dataset.s);
@@ -132,6 +144,8 @@
       var echo = $('#rs-echo');
       fillList($('#rs-echo-list'), values());
       echo.hidden = false;
+      if (wrap) wrap.classList.add('has-echo');
+      checker.setAttribute('data-step', '5');
       if (bar) bar.classList.add('is-result');
       echo.setAttribute('tabindex', '-1'); echo.scrollIntoView(); echo.focus({ preventScroll: true });
     });
@@ -166,6 +180,7 @@
       ['pref', 'city', 'senyu', 'tochi', 'tatemono', 'chiku'].forEach(function (n) { setErr(n, ''); });
       setErr('type', ''); $$('output', form).forEach(function (o) { o.textContent = ''; });
       $('#rs-echo').hidden = true;  $('#rs-echo-list').textContent = '';
+      if (wrap) wrap.classList.remove('has-echo');
       show(1, false); goCheck(); $('legend', steps[0]).focus({ preventScroll: true });
     });
     show(1, false);
