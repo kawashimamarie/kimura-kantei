@@ -22,16 +22,16 @@
   var SAMPLE = {
     kind: '架空のマンション', spec: '専有面積 68m²／築16年',
     low: 3480, mid: 3960, high: 4440, min: 3000, max: 5000,
-    unit: ['まんなかの価格を', '面積で割ると、', '1m²あたり約58万円'],
+    unit: ['約58万円', '（見本のまんなかの価格を、', '専有面積で割った値）'],
     why: '同じ広さ・同じ築年でも、階数や向き、室内の状態などで価格は変わります。このチェックではそこまで見ていないため、ひとつの数字ではなく幅で示します。',
     factors: [
       ['地域の取引の動き', 2, '見本の地域では、この1年、マンションの取引価格が上がっている'],
-      ['広さ', 1, '68m²は、見本の地域で取引の多い広さ'],
-      ['取引の件数', 1, '見本の地域では、似た条件の取引が多い'],
+      ['広さ', 1, '68m²は、見本の地域で取引されたマンションの平均より、やや広い'],
       ['築年数', -2, '築16年。見本の地域で取引された物件の平均より古い']
     ]
   };
   var TYPE_LABEL = { mansion: 'マンション', kodate: '一戸建て', tochi: '土地' };
+  var NOYEAR = '不要（土地のため）';
   var STEP_LABEL = { 2: '所在エリア', 3: '広さ・築年', 4: '知りたい理由' };
 
   /* 入力内容（メモリ上だけ） */
@@ -313,7 +313,7 @@
     });
     $('prog').setAttribute('aria-label', 'ステップ ' + n + ' / 4：' + STEP_LABEL[n]);
     $('prog-t').textContent = 'ステップ ' + n + ' / 4｜' + STEP_LABEL[n];
-    nextT.textContent = n === 4 ? 'チェックを開始する' : '次へ';
+    nextT.textContent = n === 4 ? '結果の見本を見る' : '次へ';
     renderTicket();
     var cur = stepEls.filter(function (s) { return !s.hidden; })[0];
     show('wiz', cur ? cur.querySelector('.step-h') : null);
@@ -371,7 +371,7 @@
     if (state.type === 'mansion' && state.sen) { size = '専有 ' + state.sen + 'm²'; sub = '約' + tsubo(parseFloat(state.sen)) + '坪'; }
     if (state.type === 'kodate' && state.tochi) { size = '土地 ' + state.tochi + 'm²'; sub = state.tate ? '建物 ' + state.tate + 'm²' : ''; }
     if (state.type === 'tochi' && state.tochi) { size = '土地 ' + state.tochi + 'm²'; sub = '約' + tsubo(parseFloat(state.tochi)) + '坪'; }
-    if (state.type === 'tochi') year = state.tochi ? '（土地のため不要）' : '';
+    if (state.type === 'tochi') year = state.tochi ? NOYEAR : '';
     else if (/^\d+$/.test(state.year)) year = state.year + '年（築' + Math.max(0, NOW - parseInt(state.year, 10)) + '年）';
     else if (state.year === 'old') year = '1959年以前';
     else if (state.year === 'unknown') year = 'わからない';
@@ -380,7 +380,7 @@
       area: [state.pref ? state.pref + ' ' + state.city : ''],
       size: [size, sub],
       year: [year],
-      purpose: [state.purpose === null ? '' : state.purpose || '（選んでいません）']
+      purpose: [state.purpose === null ? '' : state.purpose || '選んでいません']
     };
   }
   function renderTicket() {
@@ -418,9 +418,9 @@
     sn.appendChild(el('span', 'nb', '価格ではありません。'));
     var si = $('s-in');
     si.textContent = '';
-    [tv.type[0], tv.area[0], tv.size.filter(Boolean).join('・'), tv.year[0]].filter(function (x) { return x && x.charAt(0) !== '（'; })
+    [tv.type[0], tv.area[0], tv.size.filter(Boolean).join('・'), tv.year[0]].filter(function (x) { return x && x !== NOYEAR; })
       .forEach(function (t, i, a) { si.appendChild(el('span', 'nb', t + (i < a.length - 1 ? '／' : ''))); });
-    si.appendChild(el('span', 'nb', '（この見本には反映していません）'));
+    si.appendChild(el('span', 'nb', '（この見本には')); si.appendChild(el('span', 'nb', '反映していません）'));
     $('s-low').textContent = fmt(d.low);
     $('s-high').textContent = fmt(d.high);
     var un = $('s-unit');

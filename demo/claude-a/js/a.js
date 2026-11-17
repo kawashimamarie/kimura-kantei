@@ -12,6 +12,7 @@
     if (!btn || !menu) return;
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     menu.hidden = !open;
+    document.documentElement.classList.toggle('menu-open', open);
   }
   if (btn && menu) {
     btn.addEventListener('click', function () { setMenu(btn.getAttribute('aria-expanded') !== 'true'); });

@@ -841,3 +841,45 @@ body.has-dock .ft{padding-bottom:76px}
 @media (min-width:1080px){
   .intro-who{padding-top:16px}
 }
+
+/* ============ 確認レビュー対応（第3版） ============ */
+/* 結果：見本がマンションの例であることと、1m²あたりの値を「見本の物件」の欄にまとめる */
+.sheet-k{margin-top:4px;font-size:13px;font-weight:500;line-height:1.6;color:var(--ink2)}
+.sheet-hd .sheet-sp{grid-template-columns:6.6em 1fr}
+.sheet-u{margin-top:2px}
+.sheet-u span{font-weight:500}
+.sheet-u span span{font-weight:400;color:var(--ink2);font-size:12.5px}
+
+/* 使い方：実際の4ステップ（4番目は任意の理由）と、そのあとの結果 */
+.stp .stp-o,.stp-o{display:inline-block;margin-left:10px;padding:0 6px;border:1px solid var(--line);font-size:12px;font-weight:500;line-height:1.5;color:var(--ink3);vertical-align:2px}
+.stp-r{display:grid;gap:2px;margin-top:18px;padding:14px 16px;background:var(--white);border-left:3px solid var(--night);font-size:14.5px;line-height:1.8;color:var(--ink2)}
+.stp-r b{font-size:12.5px;letter-spacing:.1em;color:var(--lit-d)}
+.stp-r small{display:block;font-size:13px;color:var(--ink3)}
+
+/* こんなとき：2×2の枠をやめ、ひとことずつ縦に読む並びに */
+.wor{display:block}
+.wor li{display:grid;gap:6px;padding:22px 0 24px;border-right:0!important;border-bottom:1px solid var(--line)}
+.wor li:nth-child(n+3){border-bottom:1px solid var(--line)}
+
+@media (min-width:700px){
+  .wor li{padding:24px 0 26px}
+  .wor b{font-size:20px}
+  .wor li>span{font-size:15px}
+}
+@media (min-width:1080px){
+  .wor b{font-size:22px;line-height:1.55}
+  /* 使い方：見出しとボタンを左、手順を縦の流れで右に */
+  .stp-g{display:grid;grid-template-rows:auto 1fr auto;grid-template-columns:400px minmax(0,1fr);grid-template-areas:"h list" "a list" ". r";column-gap:80px;align-items:start}
+  .stp-g .sec-h{grid-area:h}
+  .stp-g .stp-a{grid-area:a;grid-template-columns:1fr;margin-top:32px;gap:14px}
+  .stp-g .stp-a .btn{justify-self:start}
+  .stp{grid-area:list;display:block;margin-top:10px;border-top:0}
+  .stp li{display:grid;grid-template-columns:7em minmax(0,1fr);column-gap:24px;padding:20px 0 22px 0;border-bottom:1px solid var(--line)}
+  .stp li+li{padding-left:0}
+  .stp li::before{left:0;right:auto;top:0;width:100%;height:1px;background:var(--line)}
+  .stp li:first-child::before{height:1px;background:var(--night)}
+  .stp-n{grid-column:1;grid-row:1/3;margin:3px 0 0;font-size:13px}
+  .stp b{grid-column:2;font-size:20px}
+  .stp p{grid-column:2;margin-top:4px}
+  .stp-r{grid-area:r;margin-top:20px}
+}

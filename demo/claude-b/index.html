@@ -605,7 +605,9 @@
         <p class="sheet-warn" role="note"><b>見本</b><span><span class="nb">架空の物件の数値です。</span><span class="w-l"><span class="nb">どなたが何を入力しても、</span><span class="nb">同じ見本を表示します。</span></span><span class="nb">ご入力の物件は、</span><span class="nb">計算していません。</span></span></p>
         <header class="sheet-hd">
           <h2 id="res-h" tabindex="-1">チェック結果の見本</h2>
+          <p class="sheet-k"><span class="nb">見本はマンションの例です。</span><span class="nb">選んだ種別にかかわらず、</span><span class="nb">同じ見本を表示します。</span></p>
           <p class="sheet-sp"><b>見本の物件</b><span id="s-spec"></span></p>
+          <p class="sheet-sp sheet-u"><b>1m²あたり</b><span id="s-unit"></span></p>
         </header>
 
         <section class="blk blk--hero" aria-labelledby="b1-h">
@@ -622,7 +624,6 @@
             <p class="sheet-in"><b>ご入力</b><span id="s-in"></span></p>
           </div>
           <div class="hero-r">
-            <p class="blk-n" id="s-unit"></p>
             <p class="blk-p" id="s-why"></p>
           </div>
         </section>
@@ -724,14 +725,15 @@
 
 <!-- ============ 利用の流れ ============ -->
 <section class="sec sec--stp" id="howto" aria-labelledby="stp-h">
-  <div class="sec-in">
+  <div class="sec-in stp-g">
     <h2 class="sec-h" id="stp-h"><span class="nb">入力は4ステップ、</span><span class="nb">約1分。</span></h2>
     <ol class="stp">
       <li><span class="stp-n" aria-hidden="true">ステップ 1</span><b>種別を選ぶ</b><p>マンション・一戸建て・土地から選びます。</p></li>
       <li><span class="stp-n" aria-hidden="true">ステップ 2</span><b>エリアを選ぶ</b><p>市区町村までで大丈夫です。番地は要りません。</p></li>
-      <li><span class="stp-n" aria-hidden="true">ステップ 3</span><b>広さと築年を入れる</b><p>おおよその数字で構いません。坪数への換算も表示します。</p></li>
-      <li><span class="stp-n" aria-hidden="true">ステップ 4</span><b>結果を見る</b><p>参考価格の幅と、価格を左右するポイントを表示します。<small>このデモでは、架空の見本を表示します。</small></p></li>
+      <li><span class="stp-n" aria-hidden="true">ステップ 3</span><b>広さと築年を入れる</b><p><span class="nb">おおよその数字で構いません。</span><span class="nb">坪数への換算も表示します。</span></p></li>
+      <li><span class="stp-n" aria-hidden="true">ステップ 4</span><b>知りたい理由を選ぶ<small class="stp-o">任意</small></b><p><span class="nb">売却・相続など、</span><span class="nb">目安を知りたい理由を選びます。</span><span class="nb">選ばずに進むこともできます。</span></p></li>
     </ol>
+    <p class="stp-r"><b>そのあと</b><span><span class="nb">参考価格の幅と、</span><span class="nb">価格を左右するポイントを</span><span class="nb">表示します。</span><small><span class="nb">このデモでは、</span><span class="nb">どの入力でも同じ</span><span class="nb">架空の見本を表示します。</span></small></span></p>
     <div class="stp-a">
       <a class="btn" href="#app" id="start-again"><span>チェックをはじめる</span><i class="arr" aria-hidden="true"></i></a>
       <p>結果のあと、必要な方は不動産鑑定士に相談できます。</p>
@@ -810,7 +812,7 @@
       </details>
       <details>
         <summary><span class="nb">目安と鑑定評価額は、</span><span class="nb">同じくらいになりますか。</span></summary>
-        <div><p>分かりません。チェックは、現地も資料も調べずに出す目安です。道路との関係や法令上の制限、建物の状態などによって、鑑定評価額が目安の幅の外になることもあります。</p></div>
+        <div><p>一致するとは限りません。チェックは、現地も資料も調べずに出す目安です。道路との関係や法令上の制限、建物の状態などによって、鑑定評価額が目安の幅の外になることもあります。</p></div>
       </details>
       <details>
         <summary><span class="nb">結果を見たあと、</span><span class="nb">営業の連絡が来ませんか。</span></summary>
@@ -822,7 +824,7 @@
       </details>
       <details>
         <summary><span class="nb">結果を売買や調停、</span><span class="nb">申告に使えますか。</span></summary>
-        <div><p>根拠となる資料としては使えません。チェックの結果は目安で、不動産の鑑定評価に関する法律にもとづく鑑定評価ではありません。金額の根拠が必要な場面では、鑑定評価をご検討ください。なお、鑑定評価書も、裁判所や税務署が必ず採用するとは限りません。</p></div>
+        <div><p>根拠資料としての利用は想定していません。チェックの結果は目安で、不動産の鑑定評価に関する法律にもとづく鑑定評価ではありません。金額の根拠が必要な場面では、鑑定評価をご検討ください。なお、鑑定評価書も、裁判所や税務署が必ず採用するとは限りません。</p></div>
       </details>
       <details>
         <summary><span class="nb">なぜ不動産鑑定の事務所が</span><span class="nb">運営するのですか。</span></summary>
@@ -839,7 +841,7 @@
       <p class="sec-p" id="cta-p">「この金額で話を進めてよいのか」「相手に説明できる根拠がほしい」。そう感じたら、ご相談ください。鑑定評価が必要かどうかから、一緒に整理します。</p>
       <p class="cta-x" id="cta-x" hidden></p>
       <a class="cta-tel" href="tel:0353569158"><small>お電話でのご予約</small><b>03-5356-9158</b></a>
-      <p class="hold cta-hold"><b>デモ</b>電話の受付時間は、確認のうえ掲載します。</p>
+      <p class="hold cta-hold"><b>デモ</b><span class="nb">電話の受付時間と、</span><span class="nb">ご相談の方法は、</span><span class="nb">確認のうえ掲載します。</span></p>
     </div>
 
     <div class="cta-f" id="reserve">
@@ -887,14 +889,14 @@
       <img src="img/kimura-logo.png" width="92" height="67" alt="">
       <p><b>株式会社木村不動産鑑定</b><span>不動産鑑定士・一級建築士事務所</span></p>
     </div>
-    <address><span class="nb">〒166-0001</span> <span class="nb">東京都杉並区阿佐谷北1丁目3番5号</span> <span class="nb">キリサワビル201号</span><br><span class="nb">JR中央線「阿佐ヶ谷」駅から徒歩1分</span><br><a class="ft-tel" href="tel:0353569158">電話 03-5356-9158</a></address>
+    <address><span class="nb">〒166-0001</span> <span class="nb">東京都杉並区阿佐谷北1丁目3番5号</span> <span class="nb">キリサワビル201号</span><br><a class="ft-tel" href="tel:0353569158">電話 03-5356-9158</a></address>
     <p class="ft-dis">「不動産価値チェック」は仮の名称で、構想中のサービスです。このページは打ち合わせ用のデモで、表示される価格・図はすべて架空の見本です。不動産の鑑定評価に関する法律にもとづく鑑定評価ではありません。</p>
     <p class="ft-c">© 株式会社木村不動産鑑定</p>
   </div>
 </footer>
 
 <aside class="dock" id="dock" aria-label="チェックの開始">
-  <a class="btn dock-a" href="#app" id="dock-a"><span>物件の種別を選んで、目安をチェック</span><i class="arr" aria-hidden="true"></i></a>
+  <a class="btn dock-a" href="#app" id="dock-a"><span><span class="nb">種別を選んで、</span><span class="nb">目安をチェック</span></span><i class="arr" aria-hidden="true"></i></a>
 </aside>
 
 <script src="js/b.js" defer></script>

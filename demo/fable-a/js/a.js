@@ -59,7 +59,10 @@
       if (first) first.focus();
       return;
     }
-    form.hidden = true; done.hidden = false; done.focus();
+    form.hidden = true; done.hidden = false;
+    // 固定ヘッダーに隠れない位置（CSS の scroll-margin-top）へ動かしてから、見出しの枠に移る
+    done.focus({ preventScroll: true });
+    done.scrollIntoView({ block: 'start' });
   });
   back.addEventListener('click', function () { done.hidden = true; form.hidden = false; form.elements.name.focus(); });
 
