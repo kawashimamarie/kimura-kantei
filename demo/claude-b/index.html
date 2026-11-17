@@ -44,8 +44,8 @@
   <!-- 街並み（全画面で共通。選んだ種別と、進み具合に合わせて表示が変わる） -->
   <div class="town" id="town">
 <!--TOWN-->
-<svg class="town-svg" viewBox="0 0 1440 260" preserveAspectRatio="xMidYMax slice" role="img" aria-labelledby="townT" focusable="false"><title id="townT">夜の街並み。一戸建て、マンション、空き地が並び、マンションの窓の明かりが文字の形に灯っている</title>
-<path class="t-far" d="M0,228V150h46v-22h64v40h38v-58h52v26h70v-18h44v46h60v-70h58v34h40v-52h36v52h52v-30h70v62h46v-88h62v36h30v-58h44v58h56v30h64v-44h48v-34h52v60h44v-24h60v46h50v-64h56v36h40v-20h48v104z"/>
+<svg class="town-svg" viewBox="0 0 1440 260" preserveAspectRatio="xMidYMax slice" role="img" aria-labelledby="townT" focusable="false"><title id="townT">夜の街並み。一戸建て、マンション、空き地が並び、マンションの窓の明かりが文字の形に灯っている。結果の画面では、マンションの脇に「見本」の看板が出る</title>
+<path class="t-far" id="tfar" d="M0,228V150h46v-22h64v40h38v-58h52v26h70v-18h44v46h60v-70h58v34h40v-52h36v52h52v-30h70v62h46v-88h62v36h30v-58h44v58h56v30h64v-44h48v-34h52v60h44v-24h60v46h50v-64h56v36h40v-20h48v104z"/>
 <path class="t-wire" d="M330,131C420,146 500,146 560,112M330,137C420,152 500,152 560,120"/>
 <path class="t-wire" d="M880,112C960,150 1100,150 1215,128"/>
 <rect class="t-b2" x="22" y="162" width="132" height="66"/>
@@ -418,12 +418,19 @@
 <rect class="t-w" x="1404" y="162" width="16" height="12"/>
 <rect class="t-w t-w--warm" x="1376" y="186" width="16" height="12"/>
 <rect class="t-w" x="1404" y="186" width="16" height="12"/>
-<rect class="t-ground" x="0" y="228" width="1440" height="32"/>
-<path class="t-gl" d="M0,228h1440"/>
+<use href="#tfar" x="-1440"/>
+<use href="#tfar" x="1440"/>
+<g class="t-plate">
+<path class="t-plate-arm" d="M880,86h12M880,150h12"/>
+<rect class="t-plate-b" x="892" y="68" width="42" height="100" rx="2"/>
+<text class="t-plate-t" x="913" y="107">見</text>
+<text class="t-plate-t" x="913" y="146">本</text>
+</g>
+<rect class="t-ground" x="-1440" y="228" width="4320" height="32"/>
+<path class="t-gl" d="M-1440,228h4320"/>
 </svg>
 <!--/TOWN-->
   </div>
-  <p class="town-cap">窓の数字は、見本の下限と上限です（万円）。ご入力の物件の金額ではありません。</p>
 
   <!-- ============ はじめの画面 ============ -->
   <section class="view intro" data-view="intro" aria-labelledby="h1">
@@ -451,6 +458,12 @@
       </div>
       <p class="start-other"><button type="button" class="textbtn" data-type="other"><span><span class="nb">一棟のビル・アパート、</span><span class="nb">借地などは、</span><span class="nb">鑑定士へのご相談へ</span></span><i aria-hidden="true"></i></button></p>
       <p class="demo-note"><b>デモ</b><span><span class="nb">結果には、架空の見本を表示します。</span><span class="nb">実際の価格は計算しません。</span><span class="nb">このデモでは、</span><span class="nb">入力内容を保存・送信しません。</span></span></p>
+    </div>
+
+    <div class="intro-who">
+      <img src="img/kimura-osamu.jpg" width="48" height="64" alt="木村 修の写真" decoding="async">
+      <p><small>結果のあと、相談を受ける鑑定士</small><b>木村 修</b><span>不動産鑑定士・一級建築士</span></p>
+      <p class="hold"><b>デモ</b>写真は仮のものです。</p>
     </div>
 
     <div class="intro-more">
@@ -571,21 +584,6 @@
     </div>
   </section>
 
-  <!-- ============ チェック中 ============ -->
-  <section class="view run" data-view="run" aria-labelledby="run-h" hidden>
-    <div class="run-in">
-      <h2 class="step-h" id="run-h" tabindex="-1">見本の結果を準備しています</h2>
-      <p class="run-d"><b>デモ</b>価格の計算は行っていません。どなたにも、同じ架空の見本を表示します。</p>
-      <ol class="run-l" id="run-l">
-        <li>入力内容を確かめる</li>
-        <li>結果画面の見本を用意する</li>
-        <li>見本を表示する</li>
-      </ol>
-      <p class="vh" id="run-live" role="status" aria-live="polite"></p>
-      <button type="button" class="textbtn" id="skip">待たずに結果を見る<i aria-hidden="true"></i></button>
-    </div>
-  </section>
-
   <!-- ============ 結果（見本） ============ -->
   <section class="view res" data-view="res" aria-labelledby="res-h" hidden>
     <div class="res-g">
@@ -608,7 +606,6 @@
         <header class="sheet-hd">
           <h2 id="res-h" tabindex="-1">チェック結果の見本</h2>
           <p class="sheet-sp"><b>見本の物件</b><span id="s-spec"></span></p>
-          <p class="sheet-in"><b>ご入力</b><span id="s-in"></span></p>
         </header>
 
         <section class="blk blk--hero" aria-labelledby="b1-h">
@@ -622,6 +619,7 @@
             </div>
             <p class="vh" id="meter-t"></p>
             <p class="hero-not" id="s-not"></p>
+            <p class="sheet-in"><b>ご入力</b><span id="s-in"></span></p>
           </div>
           <div class="hero-r">
             <p class="blk-n" id="s-unit"></p>
@@ -717,9 +715,9 @@
   <div class="sec-in mer-g">
     <h2 class="sec-h" id="mer-h"><span class="ln">不動産鑑定の</span><span class="ln">事務所がつくる、</span><span class="ln">目安の入口。</span></h2>
     <ul class="mer">
-      <li><b>連絡先を入れずに、結果まで</b><p>お名前・電話番号・番地の入力はありません。結果を見るだけで終えても構いません。</p></li>
-      <li><b>ひとつの数字で言い切らない</b><p>価格は幅で示し、チェックで見ていない項目もあわせて表示します。分からないことは、分からないままお見せします。</p></li>
-      <li><b><span class="nb">必要になったら、</span><span class="nb">そのまま鑑定士へ</span></b><p>金額の根拠が要るときは、不動産鑑定士・一級建築士に相談できます。鑑定が要らない場合は、そうお伝えします。</p></li>
+      <li><b><span class="nb">連絡先を入れずに、</span><span class="nb">結果まで</span></b><p>お名前・電話番号・番地の入力はありません。結果を見るだけで終えても構いません。</p></li>
+      <li><b><span class="nb">ひとつの数字で</span><span class="nb">言い切らない</span></b><p>価格は幅で示し、チェックで見ていない項目もあわせて表示します。分からないことは、分からないままお見せします。</p></li>
+      <li><b><span class="nb">必要になったら、</span><span class="nb">そのまま鑑定士へ</span></b><p>金額の根拠が要るときは、不動産鑑定士に相談できます。鑑定評価が要るかどうかも、相談のなかで確かめられます。</p></li>
     </ul>
   </div>
 </section>
@@ -729,10 +727,10 @@
   <div class="sec-in">
     <h2 class="sec-h" id="stp-h"><span class="nb">入力は4ステップ、</span><span class="nb">約1分。</span></h2>
     <ol class="stp">
-      <li><span class="stp-n" aria-hidden="true">01</span><b>種別を選ぶ</b><p>マンション・一戸建て・土地から選びます。</p></li>
-      <li><span class="stp-n" aria-hidden="true">02</span><b>エリアを選ぶ</b><p>市区町村までで大丈夫です。番地は要りません。</p></li>
-      <li><span class="stp-n" aria-hidden="true">03</span><b>広さと築年を入れる</b><p>おおよその数字で構いません。坪数への換算も表示します。</p></li>
-      <li><span class="stp-n" aria-hidden="true">04</span><b>結果を見る</b><p>参考価格の幅と、価格を左右するポイントを表示します。<small>このデモでは、架空の見本を表示します。</small></p></li>
+      <li><span class="stp-n" aria-hidden="true">ステップ 1</span><b>種別を選ぶ</b><p>マンション・一戸建て・土地から選びます。</p></li>
+      <li><span class="stp-n" aria-hidden="true">ステップ 2</span><b>エリアを選ぶ</b><p>市区町村までで大丈夫です。番地は要りません。</p></li>
+      <li><span class="stp-n" aria-hidden="true">ステップ 3</span><b>広さと築年を入れる</b><p>おおよその数字で構いません。坪数への換算も表示します。</p></li>
+      <li><span class="stp-n" aria-hidden="true">ステップ 4</span><b>結果を見る</b><p>参考価格の幅と、価格を左右するポイントを表示します。<small>このデモでは、架空の見本を表示します。</small></p></li>
     </ol>
     <div class="stp-a">
       <a class="btn" href="#app" id="start-again"><span>チェックをはじめる</span><i class="arr" aria-hidden="true"></i></a>
@@ -772,7 +770,7 @@
         </ol>
         <p class="three-k"><span>3つを照らし合わせて</span><b>鑑定評価額</b></p>
       </div>
-      <p class="three-n">どの方法をどう用いるかは、不動産の種類や評価の目的によって異なります。当社では、一級建築士の資格もあわせ持つ鑑定士が、建物の状態まで確認します。</p>
+      <p class="three-n">どの方法をどう用いるかは、不動産の種類や評価の目的によって異なります。鑑定評価では、土地だけでなく、建物の状態も調べます。</p>
     </div>
   </div>
 </section>
@@ -816,11 +814,11 @@
       </details>
       <details>
         <summary><span class="nb">結果を見たあと、</span><span class="nb">営業の連絡が来ませんか。</span></summary>
-        <div><p>来ません。お名前・電話番号・メールアドレスを入力する欄がないため、当社から連絡することはできません。相談したいときだけ、ご自身で予約フォームかお電話をご利用ください。</p></div>
+        <div><p>このチェックには、お名前・電話番号・メールアドレスを入力する欄がありません。チェックに入力しただけでは、当社からご連絡する手段がないしくみです。相談をご希望のときだけ、ページ下の相談の予約フォームか、お電話をご利用ください。</p></div>
       </details>
       <details>
         <summary>入力した情報はどう扱われますか。</summary>
-        <div><p>このデモでは、入力した内容を保存も送信もしません。ページを閉じると消えます。お名前や連絡先、番地を入力する欄もありません。実際のサービスでの取り扱いは、公開までに定めます。</p></div>
+        <div><p>このデモでは、チェックに入力した内容を保存も送信もしません。ページを閉じると消えます。チェックには、お名前や連絡先、番地を入力する欄はありません（相談の予約フォームは、チェックとは別のものです）。実際のサービスでの取り扱いは、公開までに定めます。</p></div>
       </details>
       <details>
         <summary><span class="nb">結果を売買や調停、</span><span class="nb">申告に使えますか。</span></summary>
@@ -865,13 +863,15 @@
           <option>売却を考えている</option><option>相続・贈与のため</option><option>離婚・財産分与のため</option><option>住み替えを考えている</option><option>資産として把握したい</option><option>その他</option>
         </select></div>
       </div>
-      <button class="btn form-btn" type="submit"><span>入力内容を確認する</span><i class="arr" aria-hidden="true"></i></button>
+      <button class="btn form-btn" type="submit"><span>この内容で申し込む（デモ）</span><i class="arr" aria-hidden="true"></i></button>
     </form>
 
     <div class="done" id="done" tabindex="-1" aria-labelledby="done-h" hidden>
       <p class="demo-tag">デモ表示：送信されていません</p>
-      <h3 id="done-h">ここで、受付完了の画面に切り替わります。</h3>
-      <p>実際のサービスでは、入力内容の確認のあと、受付の完了と、折り返しのご連絡についてご案内します。このデモでは、入力した内容はどこにも送信・保存されていません。</p>
+      <p class="done-k">完了画面の文面の見本</p>
+      <h3 id="done-h">相談のお申し込みを受け付けました。</h3>
+      <p><span class="nb">お申し込みありがとうございます。</span><span class="nb">いただいた内容を確認いたします。</span></p>
+      <p class="hold"><b>デモ</b><span class="nb">このデモでは、</span><span class="nb">入力した内容はどこにも</span><span class="nb">送信・保存されていません。</span><span class="nb">本番の文面は、</span><span class="nb">受付の運用が決まってから</span><span class="nb">確定します。</span></p>
       <button type="button" class="btn btn--ghost btn--s" id="done-back">フォームに戻る</button>
     </div>
   

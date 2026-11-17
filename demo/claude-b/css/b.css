@@ -63,7 +63,7 @@ h1,h2,h3,legend{text-wrap:balance}
 .demo-bar .db-l{display:none}
 
 /* ---- ヘッダー ---- */
-.hd{position:sticky;top:0;z-index:30;background:rgba(245,243,238,.97);border-bottom:1px solid var(--line)}
+.hd{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
 .hd-in{height:var(--hd);display:flex;align-items:center;gap:12px;padding:0 var(--gut);max-width:calc(var(--w) + var(--gut)*2);margin:0 auto}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto;min-height:44px}
 .logo-mark{flex:none;width:28px;height:28px}
@@ -129,13 +129,20 @@ h1,h2,h3,legend{text-wrap:balance}
 /* マンションの窓：消えている窓は暗いガラス、灯った窓は暖かい明かり（にじみはごく弱く） */
 .mw{fill:#1a233b;transition:fill .35s,opacity .35s}
 .mw.on{fill:var(--lit);filter:drop-shadow(0 0 2px rgba(239,195,106,.55))}
-.town.is-busy .mw.on{opacity:.28}
 .town[data-hl="kodate"] [data-type="kodate"] .t-hl,.town[data-sel="kodate"] [data-type="kodate"] .t-hl,
 .town[data-hl="mansion"] [data-type="mansion"] .t-hl,.town[data-sel="mansion"] [data-type="mansion"] .t-hl,
 .town[data-hl="tochi"] [data-type="tochi"] .t-hl,.town[data-sel="tochi"] [data-type="tochi"] .t-hl{opacity:.9}
 /* 結果の見本では、選んだ種別の強調を消す（見本は入力した物件の結果ではないため） */
 .app[data-view="res"] .town[data-sel] .t-hl,.app[data-view="res"] .town[data-hl] .t-hl{opacity:0}
 .app:not([data-view="intro"]) .town{height:88px}
+.app[data-view="res"] .town{height:76px;min-height:0}
+.app[data-view="res"] .town-svg{overflow:visible}
+/* 結果の画面だけ、マンションの脇に「見本」の看板を出す（窓の数字が切り抜かれても見本と分かるように） */
+.t-plate{display:none}
+.app[data-view="res"] .t-plate{display:inline}
+.t-plate-b{fill:var(--lit)}
+.t-plate-arm{fill:none;stroke:#8e7a52;stroke-width:3}
+.t-plate-t{font-family:var(--f);font-size:31px;font-weight:700;fill:var(--night);text-anchor:middle}
 
 /* ---- はじめの画面（スマホ）：夜の紺の上に見出し、その下に街並み、種別の選択を重ねる ---- */
 .intro{display:contents}
@@ -238,20 +245,10 @@ h1,h2,h3,legend{text-wrap:balance}
 .tk-l dd small{display:block;font-size:12.5px;font-weight:500;color:var(--ink2)}
 .tk-n{margin-top:10px;font-size:12px;line-height:1.7;color:var(--ink3)}
 
-/* 対象外・チェック中 */
-.other-in,.run-in{background:var(--white);padding:26px var(--gut) 30px;max-width:560px;margin:0 auto}
+/* 対象外 */
+.other-in{background:var(--white);padding:26px var(--gut) 30px;max-width:560px;margin:0 auto}
 .other-in p{margin-top:12px;font-size:15px;color:var(--ink2)}
 .other .nav{flex-direction:column}
-.run-d{margin-top:10px;font-size:13.5px;line-height:1.75;color:var(--ink2)}
-.run-d b{display:inline-block;margin-right:8px;font-size:12px;border:1px dashed var(--ink2);padding:0 6px;line-height:1.5}
-.run-l{margin-top:20px;border-top:1px solid var(--line)}
-.run-l li{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);font-size:15px;font-weight:500;line-height:1.5;color:var(--ink3);transition:color .2s}
-.run-l li::before{content:"";flex:none;width:12px;height:12px;border:1.500px solid var(--line);border-radius:50%;background:var(--white);transition:background .2s,border-color .2s}
-.run-l li.is-now{color:var(--night);font-weight:700}
-.run-l li.is-now::before{border-color:var(--lit-d);background:var(--lit)}
-.run-l li.is-done{color:var(--night)}
-.run-l li.is-done::before{background:var(--night);border-color:var(--night)}
-.run .textbtn{margin-top:14px}
 
 /* ---- 結果（表示サンプル） ---- */
 .res-g{display:grid;gap:26px;padding:0 0 40px;max-width:560px;margin:0 auto}
@@ -266,7 +263,7 @@ h1,h2,h3,legend{text-wrap:balance}
 .sheet-sp,.sheet-in{margin-top:10px;display:grid;grid-template-columns:5.6em 1fr;gap:10px;font-size:13.5px;line-height:1.6}
 .sheet-sp b,.sheet-in b{font-size:12.5px;font-weight:500;color:var(--ink3)}
 .sheet-sp span{font-weight:700}
-.sheet-in{margin-top:6px;color:var(--ink2)}
+.sheet-in{margin-top:12px;color:var(--ink2)}
 .blk{padding:24px var(--gut) 26px;border-bottom:1px solid var(--line)}
 .blk h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;font-size:16px;font-weight:700;line-height:1.5;letter-spacing:.06em}
 .blk h3 small{font-size:13px;font-weight:400;color:var(--ink3);letter-spacing:.02em}
@@ -474,8 +471,6 @@ h1,h2,h3,legend{text-wrap:balance}
 .ft :focus-visible{outline-color:var(--lit)}
 
 /* 結果画面：窓の数字が見本であることを、街並みのすぐ下に添える */
-.town-cap{display:none}
-.app[data-view="res"] .town-cap{display:block;flex:none;padding:6px var(--gut) 7px;background:#0c1322;color:var(--on-d);font-size:12px;font-weight:500;line-height:1.55;letter-spacing:.04em}
 
 /* スマホ：下に出る「はじめる」ボタン（種別の選択が画面から外れたときだけ） */
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(245,243,238,.96);border-top:1px solid var(--line);transform:translateY(110%);visibility:hidden;transition:transform .25s ease,visibility 0s .25s}
@@ -528,9 +523,10 @@ body.has-dock .ft{padding-bottom:76px}
   .hd-cta{padding:0 20px;font-size:14px}
   .hd-cta span{display:inline}
   .fld input[type="text"]:not(.num input),.fld>.sel{max-width:420px}
-  .form .fld input[type="text"],.form .fld>.sel{max-width:none}
+  .form .fld input[type="text"]:not(.num input),.form .fld>.sel{max-width:none}
   .town{height:170px}
   .app:not([data-view="intro"]) .town{height:120px}
+  .app[data-view="res"] .town{height:112px}
   /* はじめの画面：紺の面にまとめる */
   .app[data-view="intro"]{background:var(--sky)}
   .app[data-view="intro"]>.town{height:200px}
@@ -557,9 +553,9 @@ body.has-dock .ft{padding-bottom:76px}
   .nav{margin-top:34px}
   .nav .btn{flex:0 1 280px}
   .nav .btn--ghost{flex:0 0 auto;min-width:110px}
-  .other-in,.run-in{max-width:720px;margin-top:32px;margin-bottom:56px;padding:34px 40px 38px;border:1px solid var(--line)}
+  .other-in{max-width:720px;margin-top:32px;margin-bottom:56px;padding:34px 40px 38px;border:1px solid var(--line)}
   .other .nav,.sheet-ft .nav{flex-direction:row}
-  .res-g{max-width:720px;padding-top:32px;padding-bottom:64px}
+  .res-g{max-width:720px;padding-top:24px;padding-bottom:64px}
   .sheet{border:1px solid var(--line)}
   .sheet-hd,.blk,.sheet-ft,.sheet-warn{padding-left:36px;padding-right:36px}
   .sheet-warn{font-size:14px}
@@ -593,8 +589,7 @@ body.has-dock .ft{padding-bottom:76px}
   .app .town{order:2;flex:1 0 auto;height:auto;min-height:max(clamp(170px,24vh,250px),14.8vw)}
   .app[data-view="intro"]>.town{order:2;height:auto;min-height:max(clamp(180px,26vh,260px),15vw)}
   .app:not([data-view="intro"]) .town{height:150px}
-  .app[data-view="res"] .town{order:0;height:170px}
-  .app[data-view="res"] .town-cap{order:0}
+  .app[data-view="res"] .town{order:0;flex:none;height:118px;min-height:0}
 
   .intro{flex:1;max-width:calc(var(--w) + var(--gut)*2);grid-template-columns:minmax(0,1fr) 480px;grid-template-areas:"copy start" "more start";grid-template-rows:auto 1fr;column-gap:80px;row-gap:28px;align-content:center;padding-top:clamp(28px,5vh,64px);padding-bottom:clamp(20px,3.5vh,40px)}
   .intro-copy{grid-area:copy;padding-top:8px}
@@ -623,9 +618,9 @@ body.has-dock .ft{padding-bottom:76px}
   .step-h{font-size:28px}
   .prog li{font-size:13px}
   .tk{position:sticky;top:calc(var(--hd) + 24px);padding:22px 24px 20px;background:var(--white);border:1px solid var(--line)}
-  .other,.run{max-width:calc(var(--w) + var(--gut)*2);margin:0 auto;padding:44px var(--gut) 56px;flex:1}
-  .other-in,.run-in{max-width:760px;margin:0}
-  .res-g{max-width:calc(var(--w) + var(--gut)*2);grid-template-columns:290px minmax(0,1fr);column-gap:48px;align-items:start;padding:40px var(--gut) 80px}
+  .other{max-width:calc(var(--w) + var(--gut)*2);margin:0 auto;padding:44px var(--gut) 56px;flex:1}
+  .other-in{max-width:760px;margin:0}
+  .res-g{max-width:calc(var(--w) + var(--gut)*2);grid-template-columns:290px minmax(0,1fr);column-gap:48px;align-items:start;padding:28px var(--gut) 80px}
   .tk--res{display:block}
   .tk--res .btn{margin-top:14px}
   .tk--res .tk-cta{margin-top:10px}
@@ -756,4 +751,93 @@ body.has-dock .ft{padding-bottom:76px}
   .type{min-height:128px;padding-top:14px}
   .type svg{margin-bottom:8px}
   .app[data-view="intro"]>.town{min-height:15vw}
+}
+
+/* ============ レビュー対応（第2版） ============ */
+/* 結果：見出しまわりを詰めて、価格と「見本・架空データ」を最初の画面に入れる */
+.sheet-hd{padding:16px var(--gut) 14px}
+.sheet-hd h2{font-size:20px}
+.sheet-hd .sheet-sp{margin-top:6px}
+.blk--hero{padding-top:18px}
+.hero-not{margin-top:14px}
+
+/* 入力：エラーで移動したとき、進み具合の表示が固定ヘッダーに隠れないように */
+.steps .fld input,.steps .fld select{scroll-margin-top:calc(var(--hd) + 150px)}
+
+/* 相談フォーム：完了画面の見本 */
+.done-k{margin-top:14px;font-size:12.5px;font-weight:500;letter-spacing:.08em;color:var(--ink3)}
+.done-k+h3{margin-top:2px}
+.done .hold{margin-top:14px;padding-top:12px;border-top:1px solid var(--line-l)}
+.sec--cta .done .hold{color:var(--ink2)}
+
+/* はじめの画面：相談を受ける鑑定士 */
+.intro-who{order:4;display:grid;grid-template-columns:48px 1fr;column-gap:14px;align-items:center;margin:0 var(--gut) 40px;padding-top:16px;border-top:1px solid var(--line)}
+.intro-who img{width:48px;height:64px;object-fit:cover;filter:grayscale(.15)}
+.intro-who p{display:grid;line-height:1.5}
+.intro-who small{font-size:12px;color:var(--ink3);letter-spacing:.04em}
+.intro-who b{font-size:16px;font-weight:700;letter-spacing:.14em}
+.intro-who span{font-size:12.5px;color:var(--ink2)}
+.intro-who .hold{grid-column:1/-1;display:block;margin-top:10px;font-size:12px}
+.intro-more{padding-bottom:20px}
+
+/* 分かること：説明の番号を、左の見本の番号（丸数字）とそろえる */
+.know li::before{content:counter(kn);display:grid;place-items:center;width:24px;height:24px;margin-top:5px;border:1px solid var(--night);border-radius:50%;color:var(--night);font-size:12.5px;line-height:1;letter-spacing:0}
+
+/* 特長：紺地の3列をやめ、見出しと本文の2段組みの一覧に */
+.sec--mer{background:var(--white);color:var(--night)}
+.sec--mer :focus-visible{outline-color:var(--up)}
+.mer{border-top:1px solid var(--night)}
+.mer li{border-bottom:1px solid var(--line)}
+.mer b{color:var(--night)}
+.mer b::before{display:none}
+.mer p{color:var(--ink2)}
+
+/* 使い方：入力画面の進み具合と同じ、4つの区切りで見せる */
+.stp{border-top:0}
+.stp li{position:relative;padding-top:22px;border-bottom:0}
+.stp li::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--line-l)}
+.stp li:first-child::before{background:var(--night)}
+.stp-n{grid-row:auto;grid-column:1/-1;font-size:12.5px;letter-spacing:.1em;line-height:1.6;margin-bottom:2px}
+.stp li{grid-template-columns:1fr}
+
+@media (min-width:700px){
+  .sheet-hd{padding-top:20px;padding-bottom:16px}
+  .sheet-hd h2{font-size:22px}
+  .intro-who{margin:0;padding-top:0;border-top:0;grid-template-columns:52px 1fr}
+  .intro-who img{width:52px;height:69px}
+  .intro-who small{color:var(--on-d)}
+  .intro-who b{color:#fff}
+  .intro-who span{color:var(--on-d)}
+  .intro-who .hold{color:var(--on-d)}
+  .intro-who :focus-visible{outline-color:var(--lit)}
+}
+@media (min-width:1080px){
+  .sheet-hd{padding-top:22px}
+  .sheet-hd h2{font-size:24px}
+  .blk--hero{padding-top:22px}
+  .intro{grid-template-areas:"copy start" "more start" "more who";grid-template-rows:auto auto 1fr}
+  .intro-who{grid-area:who;align-self:start;padding:18px 32px 0}
+  .mer-g{display:grid;grid-template-columns:400px minmax(0,1fr);column-gap:80px;align-items:start}
+  .sec--mer .sec-h .ln{display:block}
+  .mer{margin-top:10px;display:block;border-top:1px solid var(--night)}
+  .mer li{display:grid;grid-template-columns:minmax(0,17em) minmax(0,1fr);column-gap:40px;padding:26px 0 28px;border-left:0;border-bottom:1px solid var(--line)}
+  .mer li:first-child,.mer li:last-child{padding-left:0;padding-right:0}
+  .mer p{margin-top:0}
+  .mer b{font-size:19px}
+  .stp li{padding:22px 28px 4px 0;border-top:0}
+  .stp li+li{padding-left:0}
+  .stp li::before{right:12px}
+}
+.intro-who .hold b{font-size:12px;letter-spacing:0;color:inherit}
+.intro-who{grid-template-columns:48px 1fr;row-gap:2px}
+.intro-who img{grid-row:1/3}
+.intro-who .hold{grid-column:2;margin-top:0}
+@media (min-width:700px){
+  .intro-who{grid-template-columns:46px 1fr}
+  .intro-who img{width:46px;height:61px}
+  .intro-who p:not(.hold){display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px}
+  .intro-who small{flex-basis:100%}
+}
+@media (min-width:1080px){
+  .intro-who{padding-top:16px}
 }

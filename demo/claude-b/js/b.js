@@ -104,11 +104,10 @@
     return on;
   }
   function paint(on) { wins.forEach(function (w, i) { w.classList.toggle('on', !!on[i]); }); }
-  function townSet(text) { clearTimers(); town.classList.remove('is-busy'); paint(pattern(text)); }
+  function townSet(text) { clearTimers(); paint(pattern(text)); }
   /* 下の階から順に、窓の明かりが灯っていく（1回だけ・約0.8秒）。数字を入れ替える演出はしない */
   function townRise(on) {
     clearTimers();
-    town.classList.remove('is-busy');
     if (reduce || !wins.length) { paint(on); return; }
     paint([]);
     for (var r = ROWS - 1; r >= 0; r--) (function (r) {
@@ -120,8 +119,6 @@
   /* 上の段に見本の下限、下の段に上限 */
   function townRange(lo, hi) { townRise(rangePattern(lo, hi)); }
   function townWipe(text) { townRise(pattern(text)); }
-  /* 見本を準備している間は、明かりを落として待つ（点滅や走査はしない） */
-  function townScan() { clearTimers(); town.classList.add('is-busy'); }
   if (wins.length) townWipe('???');
 
   /* ====================================================================
@@ -135,10 +132,23 @@
       v.classList.toggle('is-in', on);
     });
     app.setAttribute('data-view', name);
+    frameTown(name);
     var top = app.getBoundingClientRect().top + window.pageYOffset - (document.querySelector('.hd') || {}).offsetHeight || 0;
     if (Math.abs(window.pageYOffset - top) > 4) window.scrollTo(0, Math.max(0, top));
     if (focusTarget) { try { focusTarget.focus({ preventScroll: true }); } catch (e) { focusTarget.focus(); } }
   }
+
+  /* 結果の画面では街並みの帯を低くする。横長の帯でも建物が切れないよう、絵全体を縮めて中央に置き、
+     左右は遠景の街並みだけが続くようにする（スマホ幅では従来どおり切り抜き） */
+  var townSvg = town ? town.querySelector('.town-svg') : null;
+  function frameTown(name) {
+    if (!townSvg) return;
+    var box = town.getBoundingClientRect();
+    var wide = name === 'res' && box.height > 0 && box.width / box.height > 1440 / 236;
+    townSvg.setAttribute('viewBox', name === 'res' ? '0 16 1440 236' : '0 0 1440 260');
+    townSvg.setAttribute('preserveAspectRatio', wide ? 'xMidYMax meet' : 'xMidYMax slice');
+  }
+  window.addEventListener('resize', function () { frameTown(app.getAttribute('data-view')); });
 
   /* ---------- はじめの画面：種別を選ぶ ---------- */
   all('[data-type]', document.querySelector('.start')).forEach(function (b) {
@@ -223,7 +233,7 @@
     var s = toHalf(v).replace(/(m2|m²|㎡|平米)$/i, '');
     return /^\d+(\.\d+)?$/.test(s) ? parseFloat(s) : NaN;
   }
-  function tsubo(m2) { return (m2 * 121 / 400).toFixed(1); } // 1坪＝400/121 m²
+  function tsubo(m2) { return String(parseFloat((m2 * 121 / 400).toFixed(1))); } // 1坪＝400/121 m²。整数なら小数を出さない
 
   var AREA = {
     'a-sen': { key: 'sen', label: '専有面積', min: 10, max: 500 },
@@ -348,7 +358,7 @@
     e.preventDefault(); // どこにも送信しない
     if (!validateStep(state.step)) return;
     if (state.step < 4) goStep(state.step + 1);
-    else run();
+    else { renderTicket(); result(); } // 待ち時間の演出はしない（計算していないため）
   });
   $('back').addEventListener('click', function () {
     if (state.step > 2) goStep(state.step - 1);
@@ -387,36 +397,9 @@
   }
 
   /* ====================================================================
-     チェック中の表示（デモ。実際の解析はしない）
-     ==================================================================== */
-  var runItems = all('#run-l li');
-  var runTimers = [];
-  function run() {
-    renderTicket();
-    runItems.forEach(function (li) { li.className = ''; });
-    $('run-live').textContent = '結果画面を準備しています。';
-    show('run', $('run-h'));
-    if (reduce) { runItems.forEach(function (li) { li.className = 'is-done'; }); result(); return; }
-    var STEP = 620;
-    townScan();
-    runItems.forEach(function (li, i) {
-      runTimers.push(setTimeout(function () {
-        if (i > 0) runItems[i - 1].className = 'is-done';
-        li.className = 'is-now';
-      }, i * STEP));
-    });
-    runTimers.push(setTimeout(function () {
-      runItems[runItems.length - 1].className = 'is-done';
-      result();
-    }, runItems.length * STEP + 250));
-  }
-  $('skip').addEventListener('click', function () { result(); });
-
-  /* ====================================================================
      結果（見本）
      ==================================================================== */
   function result() {
-    runTimers.forEach(clearTimeout); runTimers = [];
     var d = SAMPLE; // 入力内容にかかわらず、同じ見本
     renderTicket();
 
@@ -430,10 +413,14 @@
     var sn = $('s-not');
     sn.textContent = '';
     var tx = function (t) { sn.appendChild(document.createTextNode(t)); };
-    tx('上の金額は、架空の物件'); sn.appendChild(el('span', 'nb', '（' + d.spec.replace('／', '・') + '）の')); tx('見本です。ご入力の物件');
+    tx('上の金額と窓の数字は、架空の物件'); sn.appendChild(el('span', 'nb', '（' + d.spec.replace('／', '・') + '）の')); tx('見本です。ご入力の物件');
     if (where) sn.appendChild(el('span', 'nb', '（' + where + '）の')); else tx('の');
     sn.appendChild(el('span', 'nb', '価格ではありません。'));
-    $('s-in').textContent = [tv.type[0], tv.area[0], tv.size.filter(Boolean).join('・'), tv.year[0]].filter(function (x) { return x && x.charAt(0) !== '（'; }).join('／') + '（この見本には反映していません）';
+    var si = $('s-in');
+    si.textContent = '';
+    [tv.type[0], tv.area[0], tv.size.filter(Boolean).join('・'), tv.year[0]].filter(function (x) { return x && x.charAt(0) !== '（'; })
+      .forEach(function (t, i, a) { si.appendChild(el('span', 'nb', t + (i < a.length - 1 ? '／' : ''))); });
+    si.appendChild(el('span', 'nb', '（この見本には反映していません）'));
     $('s-low').textContent = fmt(d.low);
     $('s-high').textContent = fmt(d.high);
     var un = $('s-unit');
@@ -529,7 +516,7 @@
       var digits = c.replace(/[^0-9]/g, '');
       if (!c) errs.push([contact, '電話番号かメールアドレスを入力してください。']);
       else if (c.indexOf('@') !== -1) { if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c)) errs.push([contact, 'メールアドレスの形をご確認ください。（例：name@example.com）']); }
-      else if (digits.length < 10 || digits.length > 11) errs.push([contact, '電話番号は、市外局番から10〜11桁で入力してください。（例：090-1234-5678）']);
+      else if (digits.length < 10 || digits.length > 11) errs.push([contact, '電話番号なら市外局番から10〜11桁、メールアドレスなら「@」を含む形で入力してください。（例：090-1234-5678／name@example.com）']);
       summary.textContent = '';
       if (errs.length) {
         summary.appendChild(el('b', null, '入力内容をご確認ください（' + errs.length + '件）'));

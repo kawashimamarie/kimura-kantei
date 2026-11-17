@@ -104,13 +104,26 @@
         });
       } else dd.textContent = val || '—';
     }
-    function fillList(dl, v) {
+    var STEP_OF = { type: 1, place: 2, area: 3, chiku: 3 };
+    // 一覧を作る。from を渡すと、各行に「変更」ボタン（その項目のステップへ戻る）を付ける
+    function fillList(dl, v, from) {
       dl.textContent = '';
       Object.keys(LABELS).forEach(function (k) {
         var d = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd');
         dt.textContent = LABELS[k]; setDD(dd, k, v[k]);
-        d.appendChild(dt); d.appendChild(dd); dl.appendChild(d);
+        d.appendChild(dt); d.appendChild(dd);
+        if (from && !(k === 'chiku' && type() === 'land')) {
+          var b = document.createElement('button');
+          b.type = 'button'; b.className = 'chg'; b.textContent = '変更'; b.setAttribute('aria-label', LABELS[k] + 'を変更');
+          b.addEventListener('click', function () { goStep(STEP_OF[k], from === 'echo'); });
+          d.appendChild(b);
+        }
+        dl.appendChild(d);
       });
+    }
+    function goStep(n, fromEcho) {
+      show(n, !fromEcho);
+      if (fromEcho) { goCheck(); $('legend', steps[n - 1]).focus({ preventScroll: true }); }
     }
     function summary() {
       var v = { type: TYPES[type()] || '', place: '', area: '', chiku: '' };
@@ -129,25 +142,31 @@
         if (n === s) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
       });
       if (s === 3) $$('[data-for]', form).forEach(function (f) { f.hidden = f.dataset.for.split(' ').indexOf(type()) < 0; });
-      if (s === 4) fillList($('#ck-confirm'), values());
-      back.hidden = s === 1;
+      if (s === 4) fillList($('#ck-confirm'), values(), 'confirm');
+      back.hidden = s === 1 || s > LAST;
+      next.hidden = s > LAST;
       next.firstChild.textContent = s === LAST ? '見本を表示する' : '次へ';
       summary();
-      if (focus) $('legend', steps[s - 1]).focus();
+      if (focus) {
+        // パネルの上端が画面の上に隠れていたら、パネルの頭（進み具合）から見えるように戻す
+        if (checker.getBoundingClientRect().top < 0) jump(checker);
+        var t = s > LAST ? $('.ck-result-h', form) : $('legend', steps[s - 1]);
+        t.focus({ preventScroll: true });
+      }
     }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault(); // 送信しない
-      if (!validate(step)) return;
+      if (step > LAST || !validate(step)) return;
       if (step < LAST) { show(step + 1, true); return; }
       // 見本の表示：入力内容は表示するだけで、見本の数値には使わない
       var echo = $('#rs-echo');
-      fillList($('#rs-echo-list'), values());
+      fillList($('#rs-echo-list'), values(), 'echo');
+      show(LAST + 1, false); // パネルは「結果を表示中」（ステップ5）に切り替える
       echo.hidden = false;
       if (wrap) wrap.classList.add('has-echo');
-      checker.setAttribute('data-step', '5');
       if (bar) bar.classList.add('is-result');
-      echo.setAttribute('tabindex', '-1'); echo.scrollIntoView(); echo.focus({ preventScroll: true });
+      echo.setAttribute('tabindex', '-1'); jump(echo); echo.focus({ preventScroll: true });
     });
     back.addEventListener('click', function () { if (step > 1) show(step - 1, true); });
 
@@ -173,8 +192,11 @@
         setErr('type', ''); show(2, false); goCheck(); $('legend', steps[1]).focus({ preventScroll: true });
       });
     });
-    function goCheck() { var c = $('#check'); c.scrollIntoView(); }
-    $('#rs-edit').addEventListener('click', function () { show(LAST, false); goCheck(); $('legend', steps[LAST - 1]).focus({ preventScroll: true }); });
+    function goCheck() { jump(checker); }
+    // 画面内の移動は一気に行う（長い距離をなめらかに流すと、途中の見出しが半端に見えるため）
+    function jump(target) { var h = document.documentElement, b = h.style.scrollBehavior; h.style.scrollBehavior = "auto"; target.scrollIntoView(); h.style.scrollBehavior = b; }
+    $('#ck-edit').addEventListener('click', function () { show(LAST, true); });
+    $('#rs-edit').addEventListener('click',function () { show(LAST, false); goCheck(); $('legend', steps[LAST - 1]).focus({ preventScroll: true }); });
     $('#rs-reset').addEventListener('click', function () {
       form.reset(); el('chiku').disabled = false; if (bar) bar.classList.remove('is-result');
       ['pref', 'city', 'senyu', 'tochi', 'tatemono', 'chiku'].forEach(function (n) { setErr(n, ''); });
