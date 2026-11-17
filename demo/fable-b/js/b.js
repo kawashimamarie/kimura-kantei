@@ -7,6 +7,15 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
+  // 画面内の移動は一気に行う（長い距離をなめらかに流すと、途中の見出しが半端に見えるため）
+  function jump(target) { var h = document.documentElement, b = h.style.scrollBehavior; h.style.scrollBehavior = 'auto'; target.scrollIntoView(); h.style.scrollBehavior = b; }
+  // 要素の下端が、画面下に固定した操作ボタン（スマホ）や画面の外に隠れていたら、見える位置まで送る
+  function reveal(target, cover) {
+    var r = target.getBoundingClientRect(), limit = window.innerHeight;
+    if (cover && getComputedStyle(cover).position === 'sticky') { var c = cover.getBoundingClientRect(); if (c.top < limit) limit = c.top; }
+    if (r.bottom > limit - 12) { var h = document.documentElement, b = h.style.scrollBehavior; h.style.scrollBehavior = 'auto'; window.scrollBy(0, r.bottom - limit + 20); h.style.scrollBehavior = b; }
+  }
+
   /* ---------- 入力ウィザード ---------- */
   var bar = $('#sp-bar');
   var form = $('#ck-form');
@@ -19,6 +28,7 @@
     var step = 1, LAST = 4;
     var back = $('#ck-back'), next = $('#ck-next');
     var steps = $$('.ck-step', form), prog = $$('#ck-prog li');
+    var checker = $('#check'), wrap = $('#rs-wrap');
     var el = function (n) { return form.elements[n]; };
     var fld = function (n) { return $('[data-f="' + n + '"]', form); };
 
@@ -43,7 +53,7 @@
         if (!/^\d+(\.\d+)?$/.test(v)) return '数字で入力してください（例：70）。';
         var x = Number(v);
         if (x < min) return min + '㎡以上の数字を入力してください。';
-        if (x > max) return max.toLocaleString('ja-JP') + '㎡を超える不動産は、チェックの対象外です。鑑定士へのご相談をご利用ください。';
+        if (x > max) return 'このデモでは、' + max.toLocaleString('ja-JP') + '㎡を超える面積は扱っていません。鑑定士へのご相談をご利用ください。';
         return '';
       };
     }
@@ -77,15 +87,25 @@
       var bad = [];
       if (s === 1) { var ok = !!type(); setErr('type', ok ? '' : '物件の種別を選んでください。'); if (!ok) bad.push($('input[name="type"]', form)); }
       fieldsOf(s).forEach(function (n) { var m = rules[n](el(n).value); setErr(n, m); if (m) bad.push(el(n)); });
-      if (bad.length) { bad[0].focus(); return false; }
+      if (bad.length) {
+        bad[0].focus();
+        var box = s === 1 ? $('#e-type') : $('#e-' + bad[0].name);
+        if (box) reveal(box, $('.ck-nav', form));
+        return false;
+      }
       return true;
+    }
+    // エラー表示を出さずに、そのステップの入力がそろっているかを調べる
+    function stepValid(s) {
+      if (s === 1) return !!type();
+      return fieldsOf(s).every(function (n) { return !rules[n](el(n).value); });
     }
 
     function values() {
       var t = type(), a = [];
-      if (t === 'mansion') a.push('専有 ' + fmt(num('senyu')) + '㎡');
-      if (t === 'house' || t === 'land') a.push('土地 ' + fmt(num('tochi')) + '㎡');
-      if (t === 'house') a.push('建物 ' + fmt(num('tatemono')) + '㎡');
+      if (t === 'mansion') a.push('専有\u00a0' + fmt(num('senyu')) + '㎡');
+      if (t === 'house' || t === 'land') a.push('土地\u00a0' + fmt(num('tochi')) + '㎡');
+      if (t === 'house') a.push('建物\u00a0' + fmt(num('tatemono')) + '㎡');
       return {
         type: TYPES[t] || '',
         place: (el('pref').value || '') + (el('city').value.trim() ? ' ' + el('city').value.trim() : ''),
@@ -94,22 +114,58 @@
       };
     }
     var LABELS = { type: '種別', place: '所在地', area: '広さ', chiku: '築年数' };
-    function fillList(dl, v) {
+    // 値を dd に入れる。「土地 110㎡・建物 95㎡」は項目の途中で折り返さないよう、「・」区切りごとにまとめる
+    function setDD(dd, k, val) {
+      dd.textContent = '';
+      if (k === 'area' && val) {
+        val.split('・').forEach(function (part, i, all) {
+          var sp = document.createElement('span'); sp.className = 'nw'; sp.textContent = part + (i < all.length - 1 ? '・' : ''); dd.appendChild(sp);
+        });
+      } else dd.textContent = val || '—';
+    }
+    var STEP_OF = { type: 1, place: 2, area: 3, chiku: 3 };
+    // 一覧を作る。from を渡すと、各行に「変更」ボタン（その項目のステップへ戻る）を付ける
+    function fillList(dl, v, from) {
       dl.textContent = '';
       Object.keys(LABELS).forEach(function (k) {
         var d = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd');
-        dt.textContent = LABELS[k]; dd.textContent = v[k] || '—'; d.appendChild(dt); d.appendChild(dd); dl.appendChild(d);
+        dt.textContent = LABELS[k]; setDD(dd, k, v[k]);
+        d.appendChild(dt); d.appendChild(dd);
+        if (from && !(k === 'chiku' && type() === 'land')) {
+          var b = document.createElement('button');
+          b.type = 'button'; b.className = 'chg'; b.textContent = '変更'; b.setAttribute('aria-label', LABELS[k] + 'を変更');
+          b.addEventListener('click', function () { goStep(STEP_OF[k], from === 'echo'); });
+          d.appendChild(b);
+        }
+        dl.appendChild(d);
       });
     }
+    // 「変更」：その項目のステップへ戻る。直し終えたら、後ろの手順は飛ばして確認（ステップ4）へ戻す
+    var editing = false;
+    function goStep(n, fromEcho) {
+      editing = true;
+      show(n, !fromEcho);
+      if (fromEcho) { goCheck(); $('legend', steps[n - 1]).focus({ preventScroll: true }); }
+    }
+    // 入力済みでそろっている項目は、どのステップにいても値を表示する（ステップを戻っても「—」にしない）
+    function current() {
+      var all = values(), v = { type: all.type, place: '', area: '', chiku: '' };
+      if (stepValid(2)) v.place = all.place;
+      var a = fieldsOf(3).filter(function (n) { return n !== 'chiku'; });
+      if (type() && a.length && a.every(function (n) { return !rules[n](el(n).value); })) v.area = all.area;
+      if (type() === 'land' || (type() && !rules.chiku(el('chiku').value))) v.chiku = all.chiku;
+      return v;
+    }
     function summary() {
-      var v = { type: TYPES[type()] || '', place: '', area: '', chiku: '' };
-      if (step > 2) v.place = values().place;
-      if (step > 3) { v.area = values().area; v.chiku = values().chiku; }
-      $$('#ck-summary dd').forEach(function (dd) { dd.textContent = v[dd.dataset.k] || '—'; });
+      var v = current();
+      $$('#ck-summary dd').forEach(function (dd) { setDD(dd, dd.dataset.k, v[dd.dataset.k]); });
+      // 結果欄の「ご入力の内容」も最新に揃える（見本の数値は変えない）
+      if (!$('#rs-echo').hidden) fillList($('#rs-echo-list'), v, 'echo');
     }
 
     function show(s, focus) {
       step = s;
+      checker.setAttribute('data-step', String(s)); // 進み具合の表示（区画の四隅の印）にだけ使う
       steps.forEach(function (f) { f.hidden = Number(f.dataset.step) !== s; });
       prog.forEach(function (li) {
         var n = Number(li.dataset.s);
@@ -117,23 +173,37 @@
         if (n === s) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
       });
       if (s === 3) $$('[data-for]', form).forEach(function (f) { f.hidden = f.dataset.for.split(' ').indexOf(type()) < 0; });
-      if (s === 4) fillList($('#ck-confirm'), values());
-      back.hidden = s === 1;
+      if (s === 4) fillList($('#ck-confirm'), values(), 'confirm');
+      back.hidden = s === 1 || s > LAST;
+      next.hidden = s > LAST;
       next.firstChild.textContent = s === LAST ? '見本を表示する' : '次へ';
       summary();
-      if (focus) $('legend', steps[s - 1]).focus();
+      if (focus) {
+        // パネルの上端が画面の上に隠れていたら、パネルの頭（進み具合）から見えるように戻す
+        if (checker.getBoundingClientRect().top < 0) jump(checker);
+        var t = s > LAST ? $('.ck-result-h', form) : $('legend', steps[s - 1]);
+        t.focus({ preventScroll: true });
+      }
     }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault(); // 送信しない
-      if (!validate(step)) return;
-      if (step < LAST) { show(step + 1, true); return; }
+      if (step > LAST || !validate(step)) return;
+      if (step < LAST) {
+        var rest = true;
+        for (var i = step + 1; i < LAST; i++) if (!stepValid(i)) rest = false;
+        if (editing && rest) { editing = false; show(LAST, true); } else show(step + 1, true);
+        return;
+      }
+      editing = false;
       // 見本の表示：入力内容は表示するだけで、見本の数値には使わない
       var echo = $('#rs-echo');
-      fillList($('#rs-echo-list'), values());
+      fillList($('#rs-echo-list'), values(), 'echo');
+      show(LAST + 1, false); // パネルは「結果を表示中」（ステップ5）に切り替える
       echo.hidden = false;
+      if (wrap) wrap.classList.add('has-echo');
       if (bar) bar.classList.add('is-result');
-      echo.setAttribute('tabindex', '-1'); echo.scrollIntoView(); echo.focus({ preventScroll: true });
+      echo.setAttribute('tabindex', '-1'); jump(echo); echo.focus({ preventScroll: true });
     });
     back.addEventListener('click', function () { if (step > 1) show(step - 1, true); });
 
@@ -141,7 +211,7 @@
     $$('input[name="type"]', form).forEach(function (r) { r.addEventListener('change', function () { setErr('type', ''); summary(); }); });
     ['pref', 'city', 'senyu', 'tochi', 'tatemono', 'chiku'].forEach(function (n) {
       var input = el(n);
-      var h = function () { if (fld(n).classList.contains('is-error') && !rules[n](input.value)) setErr(n, ''); };
+      var h = function () { if (fld(n).classList.contains('is-error') && !rules[n](input.value)) setErr(n, ''); summary(); };
       input.addEventListener('input', h); input.addEventListener('change', h);
       var out = $('#t-' + n);
       if (out) input.addEventListener('input', function () {
@@ -151,7 +221,7 @@
     });
 
     var unk = $('#ck-chiku-unknown');
-    unk.addEventListener('change', function () { el('chiku').disabled = unk.checked; if (unk.checked) { el('chiku').value = ''; setErr('chiku', ''); } });
+    unk.addEventListener('change', function () { el('chiku').disabled = unk.checked; if (unk.checked) { el('chiku').value = ''; setErr('chiku', ''); } summary(); });
     // FVの種別ボタン：種別を選んだ状態で、所在地の入力（ステップ2）から始める
     $$('#hero-start button[data-type]').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -159,13 +229,15 @@
         setErr('type', ''); show(2, false); goCheck(); $('legend', steps[1]).focus({ preventScroll: true });
       });
     });
-    function goCheck() { var c = $('#check'); c.scrollIntoView(); }
-    $('#rs-edit').addEventListener('click', function () { show(LAST, false); goCheck(); $('legend', steps[LAST - 1]).focus({ preventScroll: true }); });
+    function goCheck() { jump(checker); }
+    $('#ck-edit').addEventListener('click', function () { show(LAST, true); });
+    $('#rs-edit').addEventListener('click',function () { show(LAST, false); goCheck(); $('legend', steps[LAST - 1]).focus({ preventScroll: true }); });
     $('#rs-reset').addEventListener('click', function () {
-      form.reset(); el('chiku').disabled = false; if (bar) bar.classList.remove('is-result');
+      form.reset(); editing = false; el('chiku').disabled = false; if (bar) bar.classList.remove('is-result');
       ['pref', 'city', 'senyu', 'tochi', 'tatemono', 'chiku'].forEach(function (n) { setErr(n, ''); });
       setErr('type', ''); $$('output', form).forEach(function (o) { o.textContent = ''; });
       $('#rs-echo').hidden = true;  $('#rs-echo-list').textContent = '';
+      if (wrap) wrap.classList.remove('has-echo');
       show(1, false); goCheck(); $('legend', steps[0]).focus({ preventScroll: true });
     });
     show(1, false);
@@ -197,7 +269,10 @@
       var bad = [];
       ['name', 'contact'].forEach(function (n) { var m = sr[n](sf.elements[n].value); sErr(n, m); if (m) bad.push(n); });
       if (bad.length) { sf.elements[bad[0]].focus(); return; }
-      sf.hidden = true; done.hidden = false; done.focus();
+      sf.hidden = true; done.hidden = false;
+      // 完了表示の上端がヘッダーの下に隠れないよう、枠の頭から見せる
+      var fw = done.parentNode; if (fw.getBoundingClientRect().top < 90) jump(fw);
+      done.focus({ preventScroll: true });
     });
     $('#soudan-back').addEventListener('click', function () { done.hidden = true; sf.hidden = false; sf.elements.name.focus(); });
   }

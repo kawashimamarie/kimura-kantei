@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#131a2c">
 <meta name="format-detection" content="telephone=no">
 <link rel="icon" href="img/favicon.png">
-<script>if(location.protocol!=='file:'){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='anonymous';l.href='fonts/m-plus-2-800.woff2';document.head.appendChild(l)}</script>
+<script>if(location.protocol!=='file:'){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='anonymous';l.href='fonts/m-plus-2-700.woff2';document.head.appendChild(l)}</script>
 <link rel="stylesheet" href="css/b.css">
 <script>document.documentElement.classList.add('js')</script>
 </head>
@@ -21,7 +21,7 @@
 <header class="hd">
   <div class="hd-in">
     <a class="logo" href="#top">
-      <svg class="logo-mark" viewBox="0 0 28 28" width="28" height="28" aria-hidden="true" focusable="false"><rect class="lm-b" width="28" height="28"/><rect class="lm-w" x="5" y="5" width="7.500" height="7.500"/><rect class="lm-on" x="15.500" y="5" width="7.500" height="7.500"/><rect class="lm-w" x="5" y="15.500" width="7.500" height="7.500"/><rect class="lm-w" x="15.500" y="15.500" width="7.500" height="7.500"/></svg>
+      <svg class="logo-mark" viewBox="0 0 28 28" width="28" height="28" aria-hidden="true" focusable="false"><rect class="lm-b" width="28" height="28" rx="2"/><path class="lm-l" d="M8 23V7h12v16M6 23h16"/><path class="lm-w" d="M11 10.500h2M15 10.500h2M11 14.500h2M11 18.500h2M15 18.500h2"/><path class="lm-on" d="M15 14.500h2"/></svg>
       <span class="logo-t"><b>不動産価値チェック</b><small>運営：木村不動産鑑定</small></span>
       <span class="logo-tag">仮称・デモ</span>
     </a>
@@ -44,8 +44,8 @@
   <!-- 街並み（全画面で共通。選んだ種別と、進み具合に合わせて表示が変わる） -->
   <div class="town" id="town">
 <!--TOWN-->
-<svg class="town-svg" viewBox="0 0 1440 260" preserveAspectRatio="xMidYMax slice" role="img" aria-labelledby="townT" focusable="false"><title id="townT">夜の街並み。一戸建て、マンション、空き地が並び、マンションの窓の明かりが文字の形に灯っている</title>
-<path class="t-far" d="M0,228V150h46v-22h64v40h38v-58h52v26h70v-18h44v46h60v-70h58v34h40v-52h36v52h52v-30h70v62h46v-88h62v36h30v-58h44v58h56v30h64v-44h48v-34h52v60h44v-24h60v46h50v-64h56v36h40v-20h48v104z"/>
+<svg class="town-svg" viewBox="0 0 1440 260" preserveAspectRatio="xMidYMax slice" role="img" aria-labelledby="townT" focusable="false"><title id="townT">夜の街並み。一戸建て、マンション、空き地が並び、マンションの窓の明かりが文字の形に灯っている。結果の画面では、マンションの脇に「見本」の看板が出る</title>
+<path class="t-far" id="tfar" d="M0,228V150h46v-22h64v40h38v-58h52v26h70v-18h44v46h60v-70h58v34h40v-52h36v52h52v-30h70v62h46v-88h62v36h30v-58h44v58h56v30h64v-44h48v-34h52v60h44v-24h60v46h50v-64h56v36h40v-20h48v104z"/>
 <path class="t-wire" d="M330,131C420,146 500,146 560,112M330,137C420,152 500,152 560,120"/>
 <path class="t-wire" d="M880,112C960,150 1100,150 1215,128"/>
 <rect class="t-b2" x="22" y="162" width="132" height="66"/>
@@ -105,260 +105,273 @@
 <rect class="t-col" x="842" y="210" width="5" height="18"/>
 <rect class="t-w t-w--warm" x="704" y="212" width="32" height="16"/>
 <path class="t-hl" d="M554,47h332v181h-6V53H560v175h-6z"/>
+<g class="t-slabs">
+<rect class="t-slab" x="563" y="69.5" width="314" height="1.5"/>
+<rect class="t-slab" x="563" y="83.5" width="314" height="1.5"/>
+<rect class="t-slab" x="563" y="97.5" width="314" height="1.5"/>
+<rect class="t-slab" x="563" y="111.5" width="314" height="1.5"/>
+<rect class="t-slab" x="563" y="125.5" width="314" height="1.5"/>
+<rect class="t-slab" x="563" y="139.5" width="314" height="1.5"/>
+<rect class="t-slab" x="563" y="153.5" width="314" height="1.5"/>
+<rect class="t-slab" x="563" y="167.5" width="314" height="1.5"/>
+<rect class="t-slab" x="563" y="181.5" width="314" height="1.5"/>
+<rect class="t-slab" x="563" y="195.5" width="314" height="1.5"/>
+<rect class="t-slab" x="563" y="209.5" width="314" height="1.5"/>
+</g>
 <g id="mwin">
-<rect class="mw" x="572" y="59" width="9" height="9"/>
-<rect class="mw" x="585" y="59" width="9" height="9"/>
-<rect class="mw" x="598" y="59" width="9" height="9"/>
-<rect class="mw" x="611" y="59" width="9" height="9"/>
-<rect class="mw" x="624" y="59" width="9" height="9"/>
-<rect class="mw" x="637" y="59" width="9" height="9"/>
-<rect class="mw" x="650" y="59" width="9" height="9"/>
-<rect class="mw" x="663" y="59" width="9" height="9"/>
-<rect class="mw" x="676" y="59" width="9" height="9"/>
-<rect class="mw" x="689" y="59" width="9" height="9"/>
-<rect class="mw" x="702" y="59" width="9" height="9"/>
-<rect class="mw" x="715" y="59" width="9" height="9"/>
-<rect class="mw" x="728" y="59" width="9" height="9"/>
-<rect class="mw" x="741" y="59" width="9" height="9"/>
-<rect class="mw" x="754" y="59" width="9" height="9"/>
-<rect class="mw" x="767" y="59" width="9" height="9"/>
-<rect class="mw" x="780" y="59" width="9" height="9"/>
-<rect class="mw" x="793" y="59" width="9" height="9"/>
-<rect class="mw" x="806" y="59" width="9" height="9"/>
-<rect class="mw" x="819" y="59" width="9" height="9"/>
-<rect class="mw" x="832" y="59" width="9" height="9"/>
-<rect class="mw" x="845" y="59" width="9" height="9"/>
-<rect class="mw" x="858" y="59" width="9" height="9"/>
-<rect class="mw" x="572" y="73" width="9" height="9"/>
-<rect class="mw" x="585" y="73" width="9" height="9"/>
-<rect class="mw" x="598" y="73" width="9" height="9"/>
-<rect class="mw" x="611" y="73" width="9" height="9"/>
-<rect class="mw" x="624" y="73" width="9" height="9"/>
-<rect class="mw" x="637" y="73" width="9" height="9"/>
-<rect class="mw" x="650" y="73" width="9" height="9"/>
-<rect class="mw" x="663" y="73" width="9" height="9"/>
-<rect class="mw" x="676" y="73" width="9" height="9"/>
-<rect class="mw" x="689" y="73" width="9" height="9"/>
-<rect class="mw" x="702" y="73" width="9" height="9"/>
-<rect class="mw" x="715" y="73" width="9" height="9"/>
-<rect class="mw" x="728" y="73" width="9" height="9"/>
-<rect class="mw" x="741" y="73" width="9" height="9"/>
-<rect class="mw" x="754" y="73" width="9" height="9"/>
-<rect class="mw" x="767" y="73" width="9" height="9"/>
-<rect class="mw" x="780" y="73" width="9" height="9"/>
-<rect class="mw" x="793" y="73" width="9" height="9"/>
-<rect class="mw" x="806" y="73" width="9" height="9"/>
-<rect class="mw" x="819" y="73" width="9" height="9"/>
-<rect class="mw" x="832" y="73" width="9" height="9"/>
-<rect class="mw" x="845" y="73" width="9" height="9"/>
-<rect class="mw" x="858" y="73" width="9" height="9"/>
-<rect class="mw" x="572" y="87" width="9" height="9"/>
-<rect class="mw on" x="585" y="87" width="9" height="9"/>
-<rect class="mw on" x="598" y="87" width="9" height="9"/>
-<rect class="mw on" x="611" y="87" width="9" height="9"/>
-<rect class="mw" x="624" y="87" width="9" height="9"/>
-<rect class="mw" x="637" y="87" width="9" height="9"/>
-<rect class="mw" x="650" y="87" width="9" height="9"/>
-<rect class="mw" x="663" y="87" width="9" height="9"/>
-<rect class="mw" x="676" y="87" width="9" height="9"/>
-<rect class="mw" x="689" y="87" width="9" height="9"/>
-<rect class="mw on" x="702" y="87" width="9" height="9"/>
-<rect class="mw on" x="715" y="87" width="9" height="9"/>
-<rect class="mw on" x="728" y="87" width="9" height="9"/>
-<rect class="mw" x="741" y="87" width="9" height="9"/>
-<rect class="mw" x="754" y="87" width="9" height="9"/>
-<rect class="mw" x="767" y="87" width="9" height="9"/>
-<rect class="mw" x="780" y="87" width="9" height="9"/>
-<rect class="mw" x="793" y="87" width="9" height="9"/>
-<rect class="mw" x="806" y="87" width="9" height="9"/>
-<rect class="mw on" x="819" y="87" width="9" height="9"/>
-<rect class="mw on" x="832" y="87" width="9" height="9"/>
-<rect class="mw on" x="845" y="87" width="9" height="9"/>
-<rect class="mw" x="858" y="87" width="9" height="9"/>
-<rect class="mw on" x="572" y="101" width="9" height="9"/>
-<rect class="mw" x="585" y="101" width="9" height="9"/>
-<rect class="mw" x="598" y="101" width="9" height="9"/>
-<rect class="mw" x="611" y="101" width="9" height="9"/>
-<rect class="mw on" x="624" y="101" width="9" height="9"/>
-<rect class="mw" x="637" y="101" width="9" height="9"/>
-<rect class="mw" x="650" y="101" width="9" height="9"/>
-<rect class="mw" x="663" y="101" width="9" height="9"/>
-<rect class="mw" x="676" y="101" width="9" height="9"/>
-<rect class="mw on" x="689" y="101" width="9" height="9"/>
-<rect class="mw" x="702" y="101" width="9" height="9"/>
-<rect class="mw" x="715" y="101" width="9" height="9"/>
-<rect class="mw" x="728" y="101" width="9" height="9"/>
-<rect class="mw on" x="741" y="101" width="9" height="9"/>
-<rect class="mw" x="754" y="101" width="9" height="9"/>
-<rect class="mw" x="767" y="101" width="9" height="9"/>
-<rect class="mw" x="780" y="101" width="9" height="9"/>
-<rect class="mw" x="793" y="101" width="9" height="9"/>
-<rect class="mw on" x="806" y="101" width="9" height="9"/>
-<rect class="mw" x="819" y="101" width="9" height="9"/>
-<rect class="mw" x="832" y="101" width="9" height="9"/>
-<rect class="mw" x="845" y="101" width="9" height="9"/>
-<rect class="mw on" x="858" y="101" width="9" height="9"/>
-<rect class="mw" x="572" y="115" width="9" height="9"/>
-<rect class="mw" x="585" y="115" width="9" height="9"/>
-<rect class="mw" x="598" y="115" width="9" height="9"/>
-<rect class="mw" x="611" y="115" width="9" height="9"/>
-<rect class="mw on" x="624" y="115" width="9" height="9"/>
-<rect class="mw" x="637" y="115" width="9" height="9"/>
-<rect class="mw" x="650" y="115" width="9" height="9"/>
-<rect class="mw" x="663" y="115" width="9" height="9"/>
-<rect class="mw" x="676" y="115" width="9" height="9"/>
-<rect class="mw" x="689" y="115" width="9" height="9"/>
-<rect class="mw" x="702" y="115" width="9" height="9"/>
-<rect class="mw" x="715" y="115" width="9" height="9"/>
-<rect class="mw" x="728" y="115" width="9" height="9"/>
-<rect class="mw on" x="741" y="115" width="9" height="9"/>
-<rect class="mw" x="754" y="115" width="9" height="9"/>
-<rect class="mw" x="767" y="115" width="9" height="9"/>
-<rect class="mw" x="780" y="115" width="9" height="9"/>
-<rect class="mw" x="793" y="115" width="9" height="9"/>
-<rect class="mw" x="806" y="115" width="9" height="9"/>
-<rect class="mw" x="819" y="115" width="9" height="9"/>
-<rect class="mw" x="832" y="115" width="9" height="9"/>
-<rect class="mw" x="845" y="115" width="9" height="9"/>
-<rect class="mw on" x="858" y="115" width="9" height="9"/>
-<rect class="mw" x="572" y="129" width="9" height="9"/>
-<rect class="mw" x="585" y="129" width="9" height="9"/>
-<rect class="mw" x="598" y="129" width="9" height="9"/>
-<rect class="mw on" x="611" y="129" width="9" height="9"/>
-<rect class="mw" x="624" y="129" width="9" height="9"/>
-<rect class="mw" x="637" y="129" width="9" height="9"/>
-<rect class="mw" x="650" y="129" width="9" height="9"/>
-<rect class="mw" x="663" y="129" width="9" height="9"/>
-<rect class="mw" x="676" y="129" width="9" height="9"/>
-<rect class="mw" x="689" y="129" width="9" height="9"/>
-<rect class="mw" x="702" y="129" width="9" height="9"/>
-<rect class="mw" x="715" y="129" width="9" height="9"/>
-<rect class="mw on" x="728" y="129" width="9" height="9"/>
-<rect class="mw" x="741" y="129" width="9" height="9"/>
-<rect class="mw" x="754" y="129" width="9" height="9"/>
-<rect class="mw" x="767" y="129" width="9" height="9"/>
-<rect class="mw" x="780" y="129" width="9" height="9"/>
-<rect class="mw" x="793" y="129" width="9" height="9"/>
-<rect class="mw" x="806" y="129" width="9" height="9"/>
-<rect class="mw" x="819" y="129" width="9" height="9"/>
-<rect class="mw" x="832" y="129" width="9" height="9"/>
-<rect class="mw on" x="845" y="129" width="9" height="9"/>
-<rect class="mw" x="858" y="129" width="9" height="9"/>
-<rect class="mw" x="572" y="143" width="9" height="9"/>
-<rect class="mw" x="585" y="143" width="9" height="9"/>
-<rect class="mw on" x="598" y="143" width="9" height="9"/>
-<rect class="mw" x="611" y="143" width="9" height="9"/>
-<rect class="mw" x="624" y="143" width="9" height="9"/>
-<rect class="mw" x="637" y="143" width="9" height="9"/>
-<rect class="mw" x="650" y="143" width="9" height="9"/>
-<rect class="mw" x="663" y="143" width="9" height="9"/>
-<rect class="mw" x="676" y="143" width="9" height="9"/>
-<rect class="mw" x="689" y="143" width="9" height="9"/>
-<rect class="mw" x="702" y="143" width="9" height="9"/>
-<rect class="mw on" x="715" y="143" width="9" height="9"/>
-<rect class="mw" x="728" y="143" width="9" height="9"/>
-<rect class="mw" x="741" y="143" width="9" height="9"/>
-<rect class="mw" x="754" y="143" width="9" height="9"/>
-<rect class="mw" x="767" y="143" width="9" height="9"/>
-<rect class="mw" x="780" y="143" width="9" height="9"/>
-<rect class="mw" x="793" y="143" width="9" height="9"/>
-<rect class="mw" x="806" y="143" width="9" height="9"/>
-<rect class="mw" x="819" y="143" width="9" height="9"/>
-<rect class="mw on" x="832" y="143" width="9" height="9"/>
-<rect class="mw" x="845" y="143" width="9" height="9"/>
-<rect class="mw" x="858" y="143" width="9" height="9"/>
-<rect class="mw" x="572" y="157" width="9" height="9"/>
-<rect class="mw" x="585" y="157" width="9" height="9"/>
-<rect class="mw" x="598" y="157" width="9" height="9"/>
-<rect class="mw" x="611" y="157" width="9" height="9"/>
-<rect class="mw" x="624" y="157" width="9" height="9"/>
-<rect class="mw" x="637" y="157" width="9" height="9"/>
-<rect class="mw" x="650" y="157" width="9" height="9"/>
-<rect class="mw" x="663" y="157" width="9" height="9"/>
-<rect class="mw" x="676" y="157" width="9" height="9"/>
-<rect class="mw" x="689" y="157" width="9" height="9"/>
-<rect class="mw" x="702" y="157" width="9" height="9"/>
-<rect class="mw" x="715" y="157" width="9" height="9"/>
-<rect class="mw" x="728" y="157" width="9" height="9"/>
-<rect class="mw" x="741" y="157" width="9" height="9"/>
-<rect class="mw" x="754" y="157" width="9" height="9"/>
-<rect class="mw" x="767" y="157" width="9" height="9"/>
-<rect class="mw" x="780" y="157" width="9" height="9"/>
-<rect class="mw" x="793" y="157" width="9" height="9"/>
-<rect class="mw" x="806" y="157" width="9" height="9"/>
-<rect class="mw" x="819" y="157" width="9" height="9"/>
-<rect class="mw" x="832" y="157" width="9" height="9"/>
-<rect class="mw" x="845" y="157" width="9" height="9"/>
-<rect class="mw" x="858" y="157" width="9" height="9"/>
-<rect class="mw" x="572" y="171" width="9" height="9"/>
-<rect class="mw" x="585" y="171" width="9" height="9"/>
-<rect class="mw on" x="598" y="171" width="9" height="9"/>
-<rect class="mw" x="611" y="171" width="9" height="9"/>
-<rect class="mw" x="624" y="171" width="9" height="9"/>
-<rect class="mw" x="637" y="171" width="9" height="9"/>
-<rect class="mw" x="650" y="171" width="9" height="9"/>
-<rect class="mw" x="663" y="171" width="9" height="9"/>
-<rect class="mw" x="676" y="171" width="9" height="9"/>
-<rect class="mw" x="689" y="171" width="9" height="9"/>
-<rect class="mw" x="702" y="171" width="9" height="9"/>
-<rect class="mw on" x="715" y="171" width="9" height="9"/>
-<rect class="mw" x="728" y="171" width="9" height="9"/>
-<rect class="mw" x="741" y="171" width="9" height="9"/>
-<rect class="mw" x="754" y="171" width="9" height="9"/>
-<rect class="mw" x="767" y="171" width="9" height="9"/>
-<rect class="mw" x="780" y="171" width="9" height="9"/>
-<rect class="mw" x="793" y="171" width="9" height="9"/>
-<rect class="mw" x="806" y="171" width="9" height="9"/>
-<rect class="mw" x="819" y="171" width="9" height="9"/>
-<rect class="mw on" x="832" y="171" width="9" height="9"/>
-<rect class="mw" x="845" y="171" width="9" height="9"/>
-<rect class="mw" x="858" y="171" width="9" height="9"/>
-<rect class="mw" x="572" y="185" width="9" height="9"/>
-<rect class="mw" x="585" y="185" width="9" height="9"/>
-<rect class="mw" x="598" y="185" width="9" height="9"/>
-<rect class="mw" x="611" y="185" width="9" height="9"/>
-<rect class="mw" x="624" y="185" width="9" height="9"/>
-<rect class="mw" x="637" y="185" width="9" height="9"/>
-<rect class="mw" x="650" y="185" width="9" height="9"/>
-<rect class="mw" x="663" y="185" width="9" height="9"/>
-<rect class="mw" x="676" y="185" width="9" height="9"/>
-<rect class="mw" x="689" y="185" width="9" height="9"/>
-<rect class="mw" x="702" y="185" width="9" height="9"/>
-<rect class="mw" x="715" y="185" width="9" height="9"/>
-<rect class="mw" x="728" y="185" width="9" height="9"/>
-<rect class="mw" x="741" y="185" width="9" height="9"/>
-<rect class="mw" x="754" y="185" width="9" height="9"/>
-<rect class="mw" x="767" y="185" width="9" height="9"/>
-<rect class="mw" x="780" y="185" width="9" height="9"/>
-<rect class="mw" x="793" y="185" width="9" height="9"/>
-<rect class="mw" x="806" y="185" width="9" height="9"/>
-<rect class="mw" x="819" y="185" width="9" height="9"/>
-<rect class="mw" x="832" y="185" width="9" height="9"/>
-<rect class="mw" x="845" y="185" width="9" height="9"/>
-<rect class="mw" x="858" y="185" width="9" height="9"/>
-<rect class="mw" x="572" y="199" width="9" height="9"/>
-<rect class="mw" x="585" y="199" width="9" height="9"/>
-<rect class="mw" x="598" y="199" width="9" height="9"/>
-<rect class="mw" x="611" y="199" width="9" height="9"/>
-<rect class="mw" x="624" y="199" width="9" height="9"/>
-<rect class="mw" x="637" y="199" width="9" height="9"/>
-<rect class="mw" x="650" y="199" width="9" height="9"/>
-<rect class="mw" x="663" y="199" width="9" height="9"/>
-<rect class="mw" x="676" y="199" width="9" height="9"/>
-<rect class="mw" x="689" y="199" width="9" height="9"/>
-<rect class="mw" x="702" y="199" width="9" height="9"/>
-<rect class="mw" x="715" y="199" width="9" height="9"/>
-<rect class="mw" x="728" y="199" width="9" height="9"/>
-<rect class="mw" x="741" y="199" width="9" height="9"/>
-<rect class="mw" x="754" y="199" width="9" height="9"/>
-<rect class="mw" x="767" y="199" width="9" height="9"/>
-<rect class="mw" x="780" y="199" width="9" height="9"/>
-<rect class="mw" x="793" y="199" width="9" height="9"/>
-<rect class="mw" x="806" y="199" width="9" height="9"/>
-<rect class="mw" x="819" y="199" width="9" height="9"/>
-<rect class="mw" x="832" y="199" width="9" height="9"/>
-<rect class="mw" x="845" y="199" width="9" height="9"/>
-<rect class="mw" x="858" y="199" width="9" height="9"/>
+<rect class="mw" x="572.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="585.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="598.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="611.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="624.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="637.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="650.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="663.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="676.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="689.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="702.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="715.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="728.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="741.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="754.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="767.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="780.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="793.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="806.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="819.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="832.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="845.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="858.5" y="58" width="8" height="10.5"/>
+<rect class="mw" x="572.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="585.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="598.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="611.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="624.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="637.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="650.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="663.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="676.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="689.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="702.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="715.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="728.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="741.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="754.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="767.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="780.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="793.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="806.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="819.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="832.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="845.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="858.5" y="72" width="8" height="10.5"/>
+<rect class="mw" x="572.5" y="86" width="8" height="10.5"/>
+<rect class="mw on" x="585.5" y="86" width="8" height="10.5"/>
+<rect class="mw on" x="598.5" y="86" width="8" height="10.5"/>
+<rect class="mw on" x="611.5" y="86" width="8" height="10.5"/>
+<rect class="mw" x="624.5" y="86" width="8" height="10.5"/>
+<rect class="mw" x="637.5" y="86" width="8" height="10.5"/>
+<rect class="mw" x="650.5" y="86" width="8" height="10.5"/>
+<rect class="mw" x="663.5" y="86" width="8" height="10.5"/>
+<rect class="mw" x="676.5" y="86" width="8" height="10.5"/>
+<rect class="mw" x="689.5" y="86" width="8" height="10.5"/>
+<rect class="mw on" x="702.5" y="86" width="8" height="10.5"/>
+<rect class="mw on" x="715.5" y="86" width="8" height="10.5"/>
+<rect class="mw on" x="728.5" y="86" width="8" height="10.5"/>
+<rect class="mw" x="741.5" y="86" width="8" height="10.5"/>
+<rect class="mw" x="754.5" y="86" width="8" height="10.5"/>
+<rect class="mw" x="767.5" y="86" width="8" height="10.5"/>
+<rect class="mw" x="780.5" y="86" width="8" height="10.5"/>
+<rect class="mw" x="793.5" y="86" width="8" height="10.5"/>
+<rect class="mw" x="806.5" y="86" width="8" height="10.5"/>
+<rect class="mw on" x="819.5" y="86" width="8" height="10.5"/>
+<rect class="mw on" x="832.5" y="86" width="8" height="10.5"/>
+<rect class="mw on" x="845.5" y="86" width="8" height="10.5"/>
+<rect class="mw" x="858.5" y="86" width="8" height="10.5"/>
+<rect class="mw on" x="572.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="585.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="598.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="611.5" y="100" width="8" height="10.5"/>
+<rect class="mw on" x="624.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="637.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="650.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="663.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="676.5" y="100" width="8" height="10.5"/>
+<rect class="mw on" x="689.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="702.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="715.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="728.5" y="100" width="8" height="10.5"/>
+<rect class="mw on" x="741.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="754.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="767.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="780.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="793.5" y="100" width="8" height="10.5"/>
+<rect class="mw on" x="806.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="819.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="832.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="845.5" y="100" width="8" height="10.5"/>
+<rect class="mw on" x="858.5" y="100" width="8" height="10.5"/>
+<rect class="mw" x="572.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="585.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="598.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="611.5" y="114" width="8" height="10.5"/>
+<rect class="mw on" x="624.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="637.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="650.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="663.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="676.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="689.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="702.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="715.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="728.5" y="114" width="8" height="10.5"/>
+<rect class="mw on" x="741.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="754.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="767.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="780.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="793.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="806.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="819.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="832.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="845.5" y="114" width="8" height="10.5"/>
+<rect class="mw on" x="858.5" y="114" width="8" height="10.5"/>
+<rect class="mw" x="572.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="585.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="598.5" y="128" width="8" height="10.5"/>
+<rect class="mw on" x="611.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="624.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="637.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="650.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="663.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="676.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="689.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="702.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="715.5" y="128" width="8" height="10.5"/>
+<rect class="mw on" x="728.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="741.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="754.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="767.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="780.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="793.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="806.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="819.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="832.5" y="128" width="8" height="10.5"/>
+<rect class="mw on" x="845.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="858.5" y="128" width="8" height="10.5"/>
+<rect class="mw" x="572.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="585.5" y="142" width="8" height="10.5"/>
+<rect class="mw on" x="598.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="611.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="624.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="637.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="650.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="663.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="676.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="689.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="702.5" y="142" width="8" height="10.5"/>
+<rect class="mw on" x="715.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="728.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="741.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="754.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="767.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="780.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="793.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="806.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="819.5" y="142" width="8" height="10.5"/>
+<rect class="mw on" x="832.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="845.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="858.5" y="142" width="8" height="10.5"/>
+<rect class="mw" x="572.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="585.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="598.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="611.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="624.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="637.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="650.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="663.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="676.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="689.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="702.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="715.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="728.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="741.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="754.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="767.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="780.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="793.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="806.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="819.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="832.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="845.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="858.5" y="156" width="8" height="10.5"/>
+<rect class="mw" x="572.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="585.5" y="170" width="8" height="10.5"/>
+<rect class="mw on" x="598.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="611.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="624.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="637.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="650.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="663.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="676.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="689.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="702.5" y="170" width="8" height="10.5"/>
+<rect class="mw on" x="715.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="728.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="741.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="754.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="767.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="780.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="793.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="806.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="819.5" y="170" width="8" height="10.5"/>
+<rect class="mw on" x="832.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="845.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="858.5" y="170" width="8" height="10.5"/>
+<rect class="mw" x="572.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="585.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="598.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="611.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="624.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="637.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="650.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="663.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="676.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="689.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="702.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="715.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="728.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="741.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="754.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="767.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="780.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="793.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="806.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="819.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="832.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="845.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="858.5" y="184" width="8" height="10.5"/>
+<rect class="mw" x="572.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="585.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="598.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="611.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="624.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="637.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="650.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="663.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="676.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="689.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="702.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="715.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="728.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="741.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="754.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="767.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="780.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="793.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="806.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="819.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="832.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="845.5" y="198" width="8" height="10.5"/>
+<rect class="mw" x="858.5" y="198" width="8" height="10.5"/>
 </g></g>
 <g class="t-target" data-type="tochi" transform="translate(-10 0)">
 <rect class="t-lot" x="906" y="224" width="140" height="4"/>
@@ -405,12 +418,19 @@
 <rect class="t-w" x="1404" y="162" width="16" height="12"/>
 <rect class="t-w t-w--warm" x="1376" y="186" width="16" height="12"/>
 <rect class="t-w" x="1404" y="186" width="16" height="12"/>
-<rect class="t-ground" x="0" y="228" width="1440" height="32"/>
-<path class="t-gl" d="M0,228h1440"/>
+<use href="#tfar" x="-1440"/>
+<use href="#tfar" x="1440"/>
+<g class="t-plate">
+<path class="t-plate-arm" d="M880,86h12M880,150h12"/>
+<rect class="t-plate-b" x="892" y="68" width="42" height="100" rx="2"/>
+<text class="t-plate-t" x="913" y="107">見</text>
+<text class="t-plate-t" x="913" y="146">本</text>
+</g>
+<rect class="t-ground" x="-1440" y="228" width="4320" height="32"/>
+<path class="t-gl" d="M-1440,228h4320"/>
 </svg>
 <!--/TOWN-->
   </div>
-  <p class="town-cap">窓の数字は、見本の下限と上限です（万円）。ご入力の物件の金額ではありません。</p>
 
   <!-- ============ はじめの画面 ============ -->
   <section class="view intro" data-view="intro" aria-labelledby="h1">
@@ -418,63 +438,56 @@
       <p class="eyebrow"><b>運営：木村不動産鑑定</b><span>不動産鑑定士・一級建築士事務所</span></p>
       <h2 class="hero-h" id="h1" tabindex="-1"><span class="ln">あなたの不動産、</span><span class="ln"><span class="hl">いくら</span>になる<span class="q">？</span></span></h2>
       <p class="sub"><span class="nb">売る・売らないを</span><span class="nb">決める前に、</span><span class="nb">まず目安を。</span></p>
-      <p class="lead"><span class="nb">物件の種別・エリア・広さを選ぶと、</span><span class="nb">参考価格の幅と、</span><span class="nb">価格を左右するポイントが</span><span class="nb">分かります。</span><span class="nb">結果は目安で、</span><span class="nb">不動産鑑定士による鑑定評価とは</span><span class="nb">別のものです。</span></p>
     </div>
 
     <div class="start">
-      <h2 class="start-h"><span class="no" aria-hidden="true">1</span><span><small>ステップ 1 / 4</small><span class="nb">物件の種別を選んで、</span><span class="nb">はじめる</span></span></h2>
+      <h2 class="start-h"><small>ステップ 1 / 4</small><span><span class="nb">物件の種別を選んで、</span><span class="nb">はじめる</span></span></h2>
       <div class="types" role="group" aria-label="物件の種別">
         <button type="button" class="type" data-type="mansion">
-          <svg viewBox="0 0 64 44" aria-hidden="true" focusable="false"><rect class="i-b" x="12" y="4" width="40" height="40"/><rect class="i-w" x="18" y="10" width="7" height="7"/><rect class="i-w" x="28.500" y="10" width="7" height="7"/><rect class="i-w" x="39" y="10" width="7" height="7"/><rect class="i-w" x="18" y="20.500" width="7" height="7"/><rect class="i-on" x="28.500" y="20.500" width="7" height="7"/><rect class="i-w" x="39" y="20.500" width="7" height="7"/><rect class="i-w" x="18" y="31" width="7" height="7"/><rect class="i-w" x="28.500" y="31" width="7" height="7"/><rect class="i-w" x="39" y="31" width="7" height="7"/></svg>
+          <svg viewBox="0 0 64 48" aria-hidden="true" focusable="false"><path class="i-l" d="M18 46V6h28v40M12 46h40M24 13h4M36 13h4M24 21h4M36 21h4M24 29h4M24 37h4M36 37h4"/><path class="i-on" d="M36 29h4"/></svg>
           <b>マンション</b><small>一室（区分）</small>
         </button>
         <button type="button" class="type" data-type="kodate">
-          <svg viewBox="0 0 64 44" aria-hidden="true" focusable="false"><path class="i-b" d="M10,44V22L32,5l22,17v22z"/><rect class="i-on" x="18" y="25" width="10" height="9"/><rect class="i-w" x="37" y="25" width="9" height="19"/></svg>
+          <svg viewBox="0 0 64 48" aria-hidden="true" focusable="false"><path class="i-l" d="M14 46V24L32 10l18 14v22M8 28L32 9l24 19M8 46h48M37 46V34h7v12"/><path class="i-on" d="M21 33h8"/></svg>
           <b>一戸建て</b><small>土地と建物</small>
         </button>
         <button type="button" class="type" data-type="tochi">
-          <svg viewBox="0 0 64 44" aria-hidden="true" focusable="false"><path class="i-b" d="M13,7h38v30H13zM18,12v20h28V12z" fill-rule="evenodd"/><rect class="i-on" x="8" y="2" width="11" height="11"/><rect class="i-on" x="45" y="2" width="11" height="11"/><rect class="i-on" x="8" y="31" width="11" height="11"/><rect class="i-on" x="45" y="31" width="11" height="11"/></svg>
+          <svg viewBox="0 0 64 48" aria-hidden="true" focusable="false"><path class="i-l" d="M8 40l14-22h32L40 40zM6 46h52"/><path class="i-d" d="M22 18v-8M40 40v-8"/><path class="i-on" d="M22 10h7"/></svg>
           <b>土地</b><small><span class="nb">更地・</span><span class="nb">古家つき</span></small>
         </button>
       </div>
-      <p class="start-other"><button type="button" class="textbtn" data-type="other">一棟のビル・アパート、借地などは、鑑定士へのご相談へ<i aria-hidden="true"></i></button></p>
-      <ul class="facts">
-        <li>入力は4ステップ、約1分</li>
-        <li>お名前・連絡先・番地の入力はありません</li>
-        <li>結果は目安です（鑑定評価とは別のものです）</li>
-      </ul>
-      <p class="demo-note"><b>デモ</b>結果には、架空の見本を表示します。実際の価格は計算しません。このデモでは、入力内容を保存・送信しません。</p>
+      <p class="start-other"><button type="button" class="textbtn" data-type="other"><span><span class="nb">一棟のビル・アパート、</span><span class="nb">借地などは、</span><span class="nb">鑑定士へのご相談へ</span></span><i aria-hidden="true"></i></button></p>
+      <p class="demo-note"><b>デモ</b><span><span class="nb">結果には、架空の見本を表示します。</span><span class="nb">実際の価格は計算しません。</span><span class="nb">このデモでは、</span><span class="nb">入力内容を保存・送信しません。</span></span></p>
     </div>
 
-    <figure class="peek">
-      <figcaption><b>結果画面の見本<small>マンションの例</small></b><span>数値は架空です</span></figcaption>
-      <div class="peek-b">
-        <p class="peek-l">参考価格帯</p>
-        <p class="peek-v"><b>3,480</b>万円<i>〜</i><b>4,440</b>万円</p>
-        <div class="peek-m" aria-hidden="true"><i></i></div>
-        <p class="peek-l">価格を左右するポイント</p>
-        <ul class="peek-f">
-          <li><i class="up" aria-hidden="true"></i>地域の取引の動き</li>
-          <li><i class="up" aria-hidden="true"></i>広さ</li>
-          <li><i class="dn" aria-hidden="true"></i>築年数</li>
-        </ul>
-      </div>
-    </figure>
+    <div class="intro-who">
+      <img src="img/kimura-osamu.jpg" width="48" height="64" alt="木村 修の写真" decoding="async">
+      <p><small>結果のあと、相談を受ける鑑定士</small><b>木村 修</b><span>不動産鑑定士・一級建築士</span></p>
+      <p class="hold"><b>デモ</b>写真は仮のものです。</p>
+    </div>
 
+    <div class="intro-more">
+      <p class="lead"><span class="nb">物件の種別・エリア・広さを選ぶと、</span><span class="nb">参考価格の幅と、</span><span class="nb">価格を左右するポイントが</span><span class="nb">分かります。</span><span class="nb">結果は目安で、</span><span class="nb">不動産鑑定士による鑑定評価とは</span><span class="nb">別のものです。</span></p>
+      <ul class="facts">
+        <li><b>4ステップ</b><span>入力は約1分</span></li>
+        <li><b>連絡先は不要</b><span><span class="nb">お名前・番地の</span><span class="nb">入力もありません</span></span></li>
+        <li><b>目安です</b><span><span class="nb">鑑定評価とは</span><span class="nb">別のものです</span></span></li>
+      </ul>
+    </div>
   </section>
 
   <!-- ============ 入力（ステップ2〜4） ============ -->
   <section class="view wiz" data-view="wiz" aria-labelledby="wiz-h" hidden>
     <div class="wiz-main">
       <div class="prog" id="prog" role="img" aria-label="ステップ 2 / 4">
-        <ol aria-hidden="true"><li class="is-done"></li><li></li><li></li><li></li></ol>
+        <ol aria-hidden="true"><li class="is-done"><span>種別</span></li><li><span>エリア</span></li><li><span>広さ・築年</span></li><li><span>理由</span></li></ol>
         <p id="prog-t" aria-hidden="true">ステップ 2 / 4</p>
       </div>
 
       <form class="steps" id="steps" novalidate>
         <!-- ステップ2：所在エリア -->
         <fieldset class="step" data-step="2" hidden>
-          <legend class="step-h" id="wiz-h" tabindex="-1">どのあたりにありますか？</legend>
+          <legend class="step-h" id="wiz-h" tabindex="-1"><span class="nb">どのあたりに</span><span class="nb">ありますか？</span></legend>
           <p class="step-p">市区町村までで大丈夫です。番地やマンション名は要りません。</p>
           <div class="fld">
             <label for="pref">都道府県</label>
@@ -498,7 +511,7 @@
 
         <!-- ステップ3：広さ・築年 -->
         <fieldset class="step" data-step="3" hidden>
-          <legend class="step-h" tabindex="-1" id="step3-h">広さと築年を教えてください。</legend>
+          <legend class="step-h" tabindex="-1" id="step3-h"><span class="nb">広さと築年を</span><span class="nb">教えてください。</span></legend>
           <p class="step-p">おおよその数字で構いません。</p>
           <div class="fld" data-for="mansion">
             <label for="a-sen">専有面積<small>お部屋の広さ</small></label>
@@ -527,7 +540,7 @@
 
         <!-- ステップ4：目的（任意） -->
         <fieldset class="step" data-step="4" hidden>
-          <legend class="step-h" tabindex="-1" id="step4-h">知りたい理由はありますか？</legend>
+          <legend class="step-h" tabindex="-1" id="step4-h"><span class="nb">知りたい理由は</span><span class="nb">ありますか？</span></legend>
           <p class="step-p">任意の質問です。選ばなくても先へ進めます。結果のあとのご案内に使います。</p>
           <div class="opts">
             <label><input type="radio" name="purpose" value="売却を考えている"><span>売却を考えている</span></label>
@@ -571,21 +584,6 @@
     </div>
   </section>
 
-  <!-- ============ チェック中 ============ -->
-  <section class="view run" data-view="run" aria-labelledby="run-h" hidden>
-    <div class="run-in">
-      <h2 class="step-h" id="run-h" tabindex="-1">見本の結果を準備しています</h2>
-      <p class="run-d"><b>デモ</b>価格の計算は行っていません。どなたにも、同じ架空の見本を表示します。</p>
-      <ol class="run-l" id="run-l">
-        <li>入力内容を確かめる</li>
-        <li>結果画面の見本を用意する</li>
-        <li>見本を表示する</li>
-      </ol>
-      <p class="vh" id="run-live" role="status" aria-live="polite"></p>
-      <button type="button" class="textbtn" id="skip">待たずに結果を見る<i aria-hidden="true"></i></button>
-    </div>
-  </section>
-
   <!-- ============ 結果（見本） ============ -->
   <section class="view res" data-view="res" aria-labelledby="res-h" hidden>
     <div class="res-g">
@@ -598,7 +596,7 @@
           <div><dt>築年</dt><dd data-k="year">—</dd></div>
           <div><dt>知りたい理由</dt><dd data-k="purpose">—</dd></div>
         </dl>
-        <p class="tk-n">この内容は、保存も送信もされていません。見本には反映していません。</p>
+        <p class="tk-n"><span class="nb">この内容は、</span><span class="nb">保存も送信も</span><span class="nb">されていません。</span><span class="nb">見本には</span><span class="nb">反映していません。</span></p>
         <button type="button" class="btn btn--ghost btn--s" data-restart>最初からやり直す</button>
         <a class="btn btn--s tk-cta" href="#reserve"><span>不動産鑑定士に相談する</span><i class="arr" aria-hidden="true"></i></a>
       </aside>
@@ -607,8 +605,9 @@
         <p class="sheet-warn" role="note"><b>見本</b><span><span class="nb">架空の物件の数値です。</span><span class="w-l"><span class="nb">どなたが何を入力しても、</span><span class="nb">同じ見本を表示します。</span></span><span class="nb">ご入力の物件は、</span><span class="nb">計算していません。</span></span></p>
         <header class="sheet-hd">
           <h2 id="res-h" tabindex="-1">チェック結果の見本</h2>
+          <p class="sheet-k"><span class="nb">見本はマンションの例です。</span><span class="nb">選んだ種別にかかわらず、</span><span class="nb">同じ見本を表示します。</span></p>
           <p class="sheet-sp"><b>見本の物件</b><span id="s-spec"></span></p>
-          <p class="sheet-in"><b>ご入力</b><span id="s-in"></span></p>
+          <p class="sheet-sp sheet-u"><b>1m²あたり</b><span id="s-unit"></span></p>
         </header>
 
         <section class="blk blk--hero" aria-labelledby="b1-h">
@@ -621,9 +620,10 @@
               <p class="meter-ax" aria-hidden="true"><span id="meter-min"></span><span id="meter-max"></span></p>
             </div>
             <p class="vh" id="meter-t"></p>
+            <p class="hero-not" id="s-not"></p>
+            <p class="sheet-in"><b>ご入力</b><span id="s-in"></span></p>
           </div>
           <div class="hero-r">
-            <p class="blk-n" id="s-unit"></p>
             <p class="blk-p" id="s-why"></p>
           </div>
         </section>
@@ -648,7 +648,7 @@
         </section>
 
         <footer class="sheet-ft">
-          <p><b>ここから先は、不動産鑑定士の仕事です。</b><span id="s-next">チェックの結果は、あくまで目安です。不動産鑑定士が個別に確認した金額ではありません。金額の根拠が必要なときは、鑑定評価をご検討ください。</span></p>
+          <p><b><span class="nb">ここから先は、</span><span class="nb">不動産鑑定士の仕事です。</span></b><span id="s-next">チェックの結果は、あくまで目安です。不動産鑑定士が個別に確認した金額ではありません。金額の根拠が必要なときは、鑑定評価をご検討ください。</span></p>
           <div class="nav">
             <a class="btn btn--ghost" href="#difference">鑑定評価とのちがいを見る</a>
             <a class="btn" href="#reserve"><span>不動産鑑定士に相談する</span><i class="arr" aria-hidden="true"></i></a>
@@ -716,23 +716,24 @@
   <div class="sec-in mer-g">
     <h2 class="sec-h" id="mer-h"><span class="ln">不動産鑑定の</span><span class="ln">事務所がつくる、</span><span class="ln">目安の入口。</span></h2>
     <ul class="mer">
-      <li><b>連絡先を入れずに、結果まで</b><p>お名前・電話番号・番地の入力はありません。結果を見るだけで終えても構いません。</p></li>
-      <li><b>ひとつの数字で言い切らない</b><p>価格は幅で示し、チェックで見ていない項目もあわせて表示します。分からないことは、分からないままお見せします。</p></li>
-      <li><b>必要になったら、そのまま鑑定士へ</b><p>金額の根拠が要るときは、不動産鑑定士・一級建築士に相談できます。鑑定が要らない場合は、そうお伝えします。</p></li>
+      <li><b><span class="nb">連絡先を入れずに、</span><span class="nb">結果まで</span></b><p>お名前・電話番号・番地の入力はありません。結果を見るだけで終えても構いません。</p></li>
+      <li><b><span class="nb">ひとつの数字で</span><span class="nb">言い切らない</span></b><p>価格は幅で示し、チェックで見ていない項目もあわせて表示します。分からないことは、分からないままお見せします。</p></li>
+      <li><b><span class="nb">必要になったら、</span><span class="nb">そのまま鑑定士へ</span></b><p>金額の根拠が要るときは、不動産鑑定士に相談できます。鑑定評価が要るかどうかも、相談のなかで確かめられます。</p></li>
     </ul>
   </div>
 </section>
 
 <!-- ============ 利用の流れ ============ -->
 <section class="sec sec--stp" id="howto" aria-labelledby="stp-h">
-  <div class="sec-in">
+  <div class="sec-in stp-g">
     <h2 class="sec-h" id="stp-h"><span class="nb">入力は4ステップ、</span><span class="nb">約1分。</span></h2>
     <ol class="stp">
-      <li><span class="stp-p" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></span><b>種別を選ぶ</b><p>マンション・一戸建て・土地から選びます。</p></li>
-      <li><span class="stp-p" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i></span><b>エリアを選ぶ</b><p>市区町村までで大丈夫です。番地は要りません。</p></li>
-      <li><span class="stp-p" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><b>広さと築年を入れる</b><p>おおよその数字で構いません。坪数への換算も表示します。</p></li>
-      <li><span class="stp-p" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><b>結果を見る</b><p>参考価格の幅と、価格を左右するポイントを表示します。<small>このデモでは、架空の見本を表示します。</small></p></li>
+      <li><span class="stp-n" aria-hidden="true">ステップ 1</span><b>種別を選ぶ</b><p>マンション・一戸建て・土地から選びます。</p></li>
+      <li><span class="stp-n" aria-hidden="true">ステップ 2</span><b>エリアを選ぶ</b><p>市区町村までで大丈夫です。番地は要りません。</p></li>
+      <li><span class="stp-n" aria-hidden="true">ステップ 3</span><b>広さと築年を入れる</b><p><span class="nb">おおよその数字で構いません。</span><span class="nb">坪数への換算も表示します。</span></p></li>
+      <li><span class="stp-n" aria-hidden="true">ステップ 4</span><b>知りたい理由を選ぶ<small class="stp-o">任意</small></b><p><span class="nb">売却・相続など、</span><span class="nb">目安を知りたい理由を選びます。</span><span class="nb">選ばずに進むこともできます。</span></p></li>
     </ol>
+    <p class="stp-r"><b>そのあと</b><span><span class="nb">参考価格の幅と、</span><span class="nb">価格を左右するポイントを</span><span class="nb">表示します。</span><small><span class="nb">このデモでは、</span><span class="nb">どの入力でも同じ</span><span class="nb">架空の見本を表示します。</span></small></span></p>
     <div class="stp-a">
       <a class="btn" href="#app" id="start-again"><span>チェックをはじめる</span><i class="arr" aria-hidden="true"></i></a>
       <p>結果のあと、必要な方は不動産鑑定士に相談できます。</p>
@@ -771,7 +772,7 @@
         </ol>
         <p class="three-k"><span>3つを照らし合わせて</span><b>鑑定評価額</b></p>
       </div>
-      <p class="three-n">どの方法をどう用いるかは、不動産の種類や評価の目的によって異なります。当社では、一級建築士の資格もあわせ持つ鑑定士が、建物の状態まで確認します。</p>
+      <p class="three-n">どの方法をどう用いるかは、不動産の種類や評価の目的によって異なります。鑑定評価では、土地だけでなく、建物の状態も調べます。</p>
     </div>
   </div>
 </section>
@@ -789,7 +790,7 @@
       <ol class="exp">
         <li><b>現地と資料を調べます</b><p>室内の状態、道路との関係、法令上の制限、権利の関係。チェックでは見ていないことを、ひとつずつ確かめます。</p></li>
         <li><b>金額の理由が、書面に残ります</b><p>何を調べ、どう判断したかを書いた鑑定評価書を作成します。相続や離婚、親族間の売買など、金額の根拠を示したい場面で用いられます。</p></li>
-        <li><b>鑑定が要らないときは、そうお伝えします</b><p>目安で足りる場合や、不動産会社の査定のほうが合う場合もあります。ご相談のなかで整理します。</p></li>
+        <li><b><span class="nb">鑑定が要らないときは、</span><span class="nb">そうお伝えします</span></b><p>目安で足りる場合や、不動産会社の査定のほうが合う場合もあります。ご相談のなかで整理します。</p></li>
       </ol>
       <p class="exp-a"><a class="btn" href="#reserve"><span>不動産鑑定士に相談する</span><i class="arr" aria-hidden="true"></i></a></p>
     </div>
@@ -810,23 +811,23 @@
         <div><p>マンションの一室、一戸建て、土地を想定しています。一棟のビルやアパート、借地、店舗や事務所などは、権利の関係や収益のしくみが価格を大きく左右するため、チェックの対象にしていません。不動産鑑定士が直接お話を伺います。</p></div>
       </details>
       <details>
-        <summary>目安と鑑定評価額は、同じくらいになりますか。</summary>
-        <div><p>分かりません。チェックは、現地も資料も調べずに出す目安です。道路との関係や法令上の制限、建物の状態などによって、鑑定評価額が目安の幅の外になることもあります。</p></div>
+        <summary><span class="nb">目安と鑑定評価額は、</span><span class="nb">同じくらいになりますか。</span></summary>
+        <div><p>一致するとは限りません。チェックは、現地も資料も調べずに出す目安です。道路との関係や法令上の制限、建物の状態などによって、鑑定評価額が目安の幅の外になることもあります。</p></div>
       </details>
       <details>
-        <summary>結果を見たあと、営業の連絡が来ませんか。</summary>
-        <div><p>来ません。お名前・電話番号・メールアドレスを入力する欄がないため、当社から連絡することはできません。相談したいときだけ、ご自身で予約フォームかお電話をご利用ください。</p></div>
+        <summary><span class="nb">結果を見たあと、</span><span class="nb">営業の連絡が来ませんか。</span></summary>
+        <div><p>このチェックには、お名前・電話番号・メールアドレスを入力する欄がありません。チェックに入力しただけでは、当社からご連絡する手段がないしくみです。相談をご希望のときだけ、ページ下の相談の予約フォームか、お電話をご利用ください。</p></div>
       </details>
       <details>
         <summary>入力した情報はどう扱われますか。</summary>
-        <div><p>このデモでは、入力した内容を保存も送信もしません。ページを閉じると消えます。お名前や連絡先、番地を入力する欄もありません。実際のサービスでの取り扱いは、公開までに定めます。</p></div>
+        <div><p>このデモでは、チェックに入力した内容を保存も送信もしません。ページを閉じると消えます。チェックには、お名前や連絡先、番地を入力する欄はありません（相談の予約フォームは、チェックとは別のものです）。実際のサービスでの取り扱いは、公開までに定めます。</p></div>
       </details>
       <details>
-        <summary>結果を売買や調停、申告に使えますか。</summary>
-        <div><p>根拠となる資料としては使えません。チェックの結果は目安で、不動産の鑑定評価に関する法律にもとづく鑑定評価ではありません。金額の根拠が必要な場面では、鑑定評価をご検討ください。なお、鑑定評価書も、裁判所や税務署が必ず採用するとは限りません。</p></div>
+        <summary><span class="nb">結果を売買や調停、</span><span class="nb">申告に使えますか。</span></summary>
+        <div><p>根拠資料としての利用は想定していません。チェックの結果は目安で、不動産の鑑定評価に関する法律にもとづく鑑定評価ではありません。金額の根拠が必要な場面では、鑑定評価をご検討ください。なお、鑑定評価書も、裁判所や税務署が必ず採用するとは限りません。</p></div>
       </details>
       <details>
-        <summary>なぜ不動産鑑定の事務所が運営するのですか。</summary>
+        <summary><span class="nb">なぜ不動産鑑定の事務所が</span><span class="nb">運営するのですか。</span></summary>
         <div><p>「まず目安だけ知りたい」という方と、鑑定評価のあいだには、大きな距離があります。そのあいだをつなぐ入口をつくり、必要な方が迷わず専門家にたどり着けるようにするためです。</p></div>
       </details>
     </div>
@@ -840,7 +841,7 @@
       <p class="sec-p" id="cta-p">「この金額で話を進めてよいのか」「相手に説明できる根拠がほしい」。そう感じたら、ご相談ください。鑑定評価が必要かどうかから、一緒に整理します。</p>
       <p class="cta-x" id="cta-x" hidden></p>
       <a class="cta-tel" href="tel:0353569158"><small>お電話でのご予約</small><b>03-5356-9158</b></a>
-      <p class="hold cta-hold"><b>デモ</b>電話の受付時間は、確認のうえ掲載します。</p>
+      <p class="hold cta-hold"><b>デモ</b><span class="nb">電話の受付時間と、</span><span class="nb">ご相談の方法は、</span><span class="nb">確認のうえ掲載します。</span></p>
     </div>
 
     <div class="cta-f" id="reserve">
@@ -864,13 +865,15 @@
           <option>売却を考えている</option><option>相続・贈与のため</option><option>離婚・財産分与のため</option><option>住み替えを考えている</option><option>資産として把握したい</option><option>その他</option>
         </select></div>
       </div>
-      <button class="btn form-btn" type="submit"><span>入力内容を確認する</span><i class="arr" aria-hidden="true"></i></button>
+      <button class="btn form-btn" type="submit"><span>この内容で申し込む（デモ）</span><i class="arr" aria-hidden="true"></i></button>
     </form>
 
     <div class="done" id="done" tabindex="-1" aria-labelledby="done-h" hidden>
       <p class="demo-tag">デモ表示：送信されていません</p>
-      <h3 id="done-h">ここで、受付完了の画面に切り替わります。</h3>
-      <p>実際のサービスでは、入力内容の確認のあと、受付の完了と、折り返しのご連絡についてご案内します。このデモでは、入力した内容はどこにも送信・保存されていません。</p>
+      <p class="done-k">完了画面の文面の見本</p>
+      <h3 id="done-h">相談のお申し込みを受け付けました。</h3>
+      <p><span class="nb">お申し込みありがとうございます。</span><span class="nb">いただいた内容を確認いたします。</span></p>
+      <p class="hold"><b>デモ</b><span class="nb">このデモでは、</span><span class="nb">入力した内容はどこにも</span><span class="nb">送信・保存されていません。</span><span class="nb">本番の文面は、</span><span class="nb">受付の運用が決まってから</span><span class="nb">確定します。</span></p>
       <button type="button" class="btn btn--ghost btn--s" id="done-back">フォームに戻る</button>
     </div>
   
@@ -886,11 +889,15 @@
       <img src="img/kimura-logo.png" width="92" height="67" alt="">
       <p><b>株式会社木村不動産鑑定</b><span>不動産鑑定士・一級建築士事務所</span></p>
     </div>
-    <address><span class="nb">〒166-0001</span> <span class="nb">東京都杉並区阿佐谷北1丁目3番5号</span> <span class="nb">キリサワビル201号</span><br><span class="nb">JR中央線「阿佐ヶ谷」駅から徒歩1分</span><br><a class="ft-tel" href="tel:0353569158">電話 03-5356-9158</a></address>
+    <address><span class="nb">〒166-0001</span> <span class="nb">東京都杉並区阿佐谷北1丁目3番5号</span> <span class="nb">キリサワビル201号</span><br><a class="ft-tel" href="tel:0353569158">電話 03-5356-9158</a></address>
     <p class="ft-dis">「不動産価値チェック」は仮の名称で、構想中のサービスです。このページは打ち合わせ用のデモで、表示される価格・図はすべて架空の見本です。不動産の鑑定評価に関する法律にもとづく鑑定評価ではありません。</p>
     <p class="ft-c">© 株式会社木村不動産鑑定</p>
   </div>
 </footer>
+
+<aside class="dock" id="dock" aria-label="チェックの開始">
+  <a class="btn dock-a" href="#app" id="dock-a"><span><span class="nb">種別を選んで、</span><span class="nb">目安をチェック</span></span><i class="arr" aria-hidden="true"></i></a>
+</aside>
 
 <script src="js/b.js" defer></script>
 </body>

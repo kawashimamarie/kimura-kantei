@@ -22,16 +22,16 @@
   var SAMPLE = {
     kind: '架空のマンション', spec: '専有面積 68m²／築16年',
     low: 3480, mid: 3960, high: 4440, min: 3000, max: 5000,
-    unit: ['まんなかの価格を', '面積で割ると、', '1m²あたり約58万円'],
+    unit: ['約58万円', '（見本のまんなかの価格を、', '専有面積で割った値）'],
     why: '同じ広さ・同じ築年でも、階数や向き、室内の状態などで価格は変わります。このチェックではそこまで見ていないため、ひとつの数字ではなく幅で示します。',
     factors: [
       ['地域の取引の動き', 2, '見本の地域では、この1年、マンションの取引価格が上がっている'],
-      ['広さ', 1, '68m²は、見本の地域で取引の多い広さ'],
-      ['取引の件数', 1, '見本の地域では、似た条件の取引が多い'],
+      ['広さ', 1, '68m²は、見本の地域で取引されたマンションの平均より、やや広い'],
       ['築年数', -2, '築16年。見本の地域で取引された物件の平均より古い']
     ]
   };
   var TYPE_LABEL = { mansion: 'マンション', kodate: '一戸建て', tochi: '土地' };
+  var NOYEAR = '不要（土地のため）';
   var STEP_LABEL = { 2: '所在エリア', 3: '広さ・築年', 4: '知りたい理由' };
 
   /* 入力内容（メモリ上だけ） */
@@ -103,59 +103,22 @@
     });
     return on;
   }
-  function rnd4() { var t = ''; for (var i = 0; i < 4; i++) t += String(Math.floor(Math.random() * 10)); return t; }
-  /* 数字がぱらぱらと入れ替わって、下限と上限に落ち着く（約0.6秒） */
-  function townRange(lo, hi) {
-    clearTimers();
-    if (reduce || !wins.length) { paint(rangePattern(lo, hi)); return; }
-    var n = 0;
-    (function tick() {
-      if (n++ < 6) { paint(rangePattern(rnd4(), rnd4())); later(tick, 90); }
-      else paint(rangePattern(lo, hi));
-    })();
-  }
   function paint(on) { wins.forEach(function (w, i) { w.classList.toggle('on', !!on[i]); }); }
   function townSet(text) { clearTimers(); paint(pattern(text)); }
-  /* 左の列から順に灯す（1回だけ・約1秒） */
-  function townWipe(text) {
+  /* 下の階から順に、窓の明かりが灯っていく（1回だけ・約0.8秒）。数字を入れ替える演出はしない */
+  function townRise(on) {
     clearTimers();
-    var on = pattern(text);
     if (reduce || !wins.length) { paint(on); return; }
     paint([]);
-    for (var c = 0; c < COLS; c++) (function (c) {
+    for (var r = ROWS - 1; r >= 0; r--) (function (r) {
       later(function () {
-        for (var r = 0; r < ROWS; r++) wins[r * COLS + c].classList.toggle('on', on[r * COLS + c]);
-      }, 150 + c * 36);
-    })(c);
+        for (var c = 0; c < COLS; c++) wins[r * COLS + c].classList.toggle('on', on[r * COLS + c]);
+      }, 120 + (ROWS - 1 - r) * 70);
+    })(r);
   }
-  /* 数字がぱらぱらと入れ替わって、指定の表示に落ち着く（約0.6秒） */
-  function townShuffle(text) {
-    clearTimers();
-    if (reduce || !wins.length) { paint(pattern(text)); return; }
-    var n = 0;
-    (function tick() {
-      if (n++ < 6) {
-        var t = '';
-        for (var i = 0; i < 4; i++) t += String(Math.floor(Math.random() * 10));
-        paint(pattern(t));
-        later(tick, 90);
-      } else paint(pattern(text));
-    })();
-  }
-  /* 縦の帯が左から右へ流れる（チェック中の表示） */
-  function townScan(ms) {
-    clearTimers();
-    if (reduce || !wins.length) return;
-    var start = Date.now();
-    (function tick() {
-      var t = Date.now() - start;
-      if (t > ms) return;
-      var col = Math.floor((t / 28) % (COLS + 6)) - 3, on = [], r, c;
-      for (r = 0; r < ROWS; r++) for (c = 0; c < COLS; c++) on.push(c >= col && c < col + 3);
-      paint(on);
-      later(tick, 28);
-    })();
-  }
+  /* 上の段に見本の下限、下の段に上限 */
+  function townRange(lo, hi) { townRise(rangePattern(lo, hi)); }
+  function townWipe(text) { townRise(pattern(text)); }
   if (wins.length) townWipe('???');
 
   /* ====================================================================
@@ -169,10 +132,23 @@
       v.classList.toggle('is-in', on);
     });
     app.setAttribute('data-view', name);
+    frameTown(name);
     var top = app.getBoundingClientRect().top + window.pageYOffset - (document.querySelector('.hd') || {}).offsetHeight || 0;
     if (Math.abs(window.pageYOffset - top) > 4) window.scrollTo(0, Math.max(0, top));
     if (focusTarget) { try { focusTarget.focus({ preventScroll: true }); } catch (e) { focusTarget.focus(); } }
   }
+
+  /* 結果の画面では街並みの帯を低くする。横長の帯でも建物が切れないよう、絵全体を縮めて中央に置き、
+     左右は遠景の街並みだけが続くようにする（スマホ幅では従来どおり切り抜き） */
+  var townSvg = town ? town.querySelector('.town-svg') : null;
+  function frameTown(name) {
+    if (!townSvg) return;
+    var box = town.getBoundingClientRect();
+    var wide = name === 'res' && box.height > 0 && box.width / box.height > 1440 / 236;
+    townSvg.setAttribute('viewBox', name === 'res' ? '0 16 1440 236' : '0 0 1440 260');
+    townSvg.setAttribute('preserveAspectRatio', wide ? 'xMidYMax meet' : 'xMidYMax slice');
+  }
+  window.addEventListener('resize', function () { frameTown(app.getAttribute('data-view')); });
 
   /* ---------- はじめの画面：種別を選ぶ ---------- */
   all('[data-type]', document.querySelector('.start')).forEach(function (b) {
@@ -189,7 +165,7 @@
       state.type = t;
       markType();
       town.setAttribute('data-sel', t);
-      townShuffle('???');
+      townSet('???');
       goStep(2);
     });
   });
@@ -200,14 +176,28 @@
     });
   }
   all('[data-go="intro"]').forEach(function (b) { b.addEventListener('click', toIntro); });
-  var again = $('start-again');
-  if (again) again.addEventListener('click', function (e) {
+  [$('start-again'), $('dock-a')].forEach(function (again) { if (again) again.addEventListener('click', function (e) {
     e.preventDefault();
     if (app.getAttribute('data-view') !== 'intro') toIntro();
     window.scrollTo(0, 0);
     var first = document.querySelector('.type');
     if (first) { try { first.focus({ preventScroll: true }); } catch (err) { first.focus(); } }
-  });
+  }); });
+
+  /* スマホ：種別の選択が画面から外れたら、下に「はじめる」ボタンを出す（相談の章・入力中は出さない） */
+  (function dock() {
+    var d = $('dock'), start = document.querySelector('.start'), cta = $('consult');
+    if (!d || !start || !('IntersectionObserver' in window)) return;
+    var seen = { start: true, cta: false, startAbove: false };
+    function upd() {
+      var on = app.getAttribute('data-view') === 'intro' && !seen.start && !seen.cta && seen.startAbove;
+      d.classList.toggle('is-on', on);
+      document.body.classList.toggle('has-dock', on);
+    }
+    new IntersectionObserver(function (es) { es.forEach(function (e) { seen.start = e.isIntersecting; seen.startAbove = !e.isIntersecting && e.boundingClientRect.top < 0; }); upd(); }).observe(start);
+    if (cta) new IntersectionObserver(function (es) { es.forEach(function (e) { seen.cta = e.isIntersecting; }); upd(); }, { rootMargin: '0px 0px -30% 0px' }).observe(cta);
+    new MutationObserver(upd).observe(app, { attributes: true, attributeFilter: ['data-view'] });
+  })();
   function toIntro() {
     town.removeAttribute('data-sel');
     townSet('???');
@@ -243,7 +233,7 @@
     var s = toHalf(v).replace(/(m2|m²|㎡|平米)$/i, '');
     return /^\d+(\.\d+)?$/.test(s) ? parseFloat(s) : NaN;
   }
-  function tsubo(m2) { return (m2 * 121 / 400).toFixed(1); } // 1坪＝400/121 m²
+  function tsubo(m2) { return String(parseFloat((m2 * 121 / 400).toFixed(1))); } // 1坪＝400/121 m²。整数なら小数を出さない
 
   var AREA = {
     'a-sen': { key: 'sen', label: '専有面積', min: 10, max: 500 },
@@ -314,14 +304,16 @@
       all('.fld[data-for]', stepsForm).forEach(function (f) {
         f.hidden = f.getAttribute('data-for').split(' ').indexOf(state.type) === -1;
       });
-      $('step3-h').textContent = state.type === 'tochi' ? '土地の広さを教えてください。' : '広さと築年を教えてください。';
+      var h3 = $('step3-h');
+      h3.textContent = '';
+      [state.type === 'tochi' ? '土地の広さを' : '広さと築年を', '教えてください。'].forEach(function (t) { h3.appendChild(el('span', 'nb', t)); });
     }
     progItems.forEach(function (li, i) {
       li.className = i + 1 < n ? 'is-done' : i + 1 === n ? 'is-now' : '';
     });
     $('prog').setAttribute('aria-label', 'ステップ ' + n + ' / 4：' + STEP_LABEL[n]);
     $('prog-t').textContent = 'ステップ ' + n + ' / 4｜' + STEP_LABEL[n];
-    nextT.textContent = n === 4 ? 'チェックを開始する' : '次へ';
+    nextT.textContent = n === 4 ? '結果の見本を見る' : '次へ';
     renderTicket();
     var cur = stepEls.filter(function (s) { return !s.hidden; })[0];
     show('wiz', cur ? cur.querySelector('.step-h') : null);
@@ -366,7 +358,7 @@
     e.preventDefault(); // どこにも送信しない
     if (!validateStep(state.step)) return;
     if (state.step < 4) goStep(state.step + 1);
-    else run();
+    else { renderTicket(); result(); } // 待ち時間の演出はしない（計算していないため）
   });
   $('back').addEventListener('click', function () {
     if (state.step > 2) goStep(state.step - 1);
@@ -379,7 +371,7 @@
     if (state.type === 'mansion' && state.sen) { size = '専有 ' + state.sen + 'm²'; sub = '約' + tsubo(parseFloat(state.sen)) + '坪'; }
     if (state.type === 'kodate' && state.tochi) { size = '土地 ' + state.tochi + 'm²'; sub = state.tate ? '建物 ' + state.tate + 'm²' : ''; }
     if (state.type === 'tochi' && state.tochi) { size = '土地 ' + state.tochi + 'm²'; sub = '約' + tsubo(parseFloat(state.tochi)) + '坪'; }
-    if (state.type === 'tochi') year = state.tochi ? '（土地のため不要）' : '';
+    if (state.type === 'tochi') year = state.tochi ? NOYEAR : '';
     else if (/^\d+$/.test(state.year)) year = state.year + '年（築' + Math.max(0, NOW - parseInt(state.year, 10)) + '年）';
     else if (state.year === 'old') year = '1959年以前';
     else if (state.year === 'unknown') year = 'わからない';
@@ -388,7 +380,7 @@
       area: [state.pref ? state.pref + ' ' + state.city : ''],
       size: [size, sub],
       year: [year],
-      purpose: [state.purpose === null ? '' : state.purpose || '（選んでいません）']
+      purpose: [state.purpose === null ? '' : state.purpose || '選んでいません']
     };
   }
   function renderTicket() {
@@ -405,36 +397,9 @@
   }
 
   /* ====================================================================
-     チェック中の表示（デモ。実際の解析はしない）
-     ==================================================================== */
-  var runItems = all('#run-l li');
-  var runTimers = [];
-  function run() {
-    renderTicket();
-    runItems.forEach(function (li) { li.className = ''; });
-    $('run-live').textContent = '結果画面を準備しています。';
-    show('run', $('run-h'));
-    if (reduce) { runItems.forEach(function (li) { li.className = 'is-done'; }); result(); return; }
-    var STEP = 620;
-    townScan(STEP * runItems.length);
-    runItems.forEach(function (li, i) {
-      runTimers.push(setTimeout(function () {
-        if (i > 0) runItems[i - 1].className = 'is-done';
-        li.className = 'is-now';
-      }, i * STEP));
-    });
-    runTimers.push(setTimeout(function () {
-      runItems[runItems.length - 1].className = 'is-done';
-      result();
-    }, runItems.length * STEP + 250));
-  }
-  $('skip').addEventListener('click', function () { result(); });
-
-  /* ====================================================================
      結果（見本）
      ==================================================================== */
   function result() {
-    runTimers.forEach(clearTimeout); runTimers = [];
     var d = SAMPLE; // 入力内容にかかわらず、同じ見本
     renderTicket();
 
@@ -444,7 +409,18 @@
     d.spec.split('／').forEach(function (t, i, a) { sp.appendChild(el('span', 'nb', t + (i < a.length - 1 ? '／' : ''))); });
     $('s-why').textContent = d.why;
     var tv = ticketValues();
-    $('s-in').textContent = [tv.type[0], tv.area[0], tv.size.filter(Boolean).join('・'), tv.year[0]].filter(function (x) { return x && x.charAt(0) !== '（'; }).join('／') + '（この見本には反映していません）';
+    var where = [tv.type[0], tv.area[0]].filter(Boolean).join('・');
+    var sn = $('s-not');
+    sn.textContent = '';
+    var tx = function (t) { sn.appendChild(document.createTextNode(t)); };
+    tx('上の金額と窓の数字は、架空の物件'); sn.appendChild(el('span', 'nb', '（' + d.spec.replace('／', '・') + '）の')); tx('見本です。ご入力の物件');
+    if (where) sn.appendChild(el('span', 'nb', '（' + where + '）の')); else tx('の');
+    sn.appendChild(el('span', 'nb', '価格ではありません。'));
+    var si = $('s-in');
+    si.textContent = '';
+    [tv.type[0], tv.area[0], tv.size.filter(Boolean).join('・'), tv.year[0]].filter(function (x) { return x && x !== NOYEAR; })
+      .forEach(function (t, i, a) { si.appendChild(el('span', 'nb', t + (i < a.length - 1 ? '／' : ''))); });
+    si.appendChild(el('span', 'nb', '（この見本には')); si.appendChild(el('span', 'nb', '反映していません）'));
     $('s-low').textContent = fmt(d.low);
     $('s-high').textContent = fmt(d.high);
     var un = $('s-unit');
@@ -540,7 +516,7 @@
       var digits = c.replace(/[^0-9]/g, '');
       if (!c) errs.push([contact, '電話番号かメールアドレスを入力してください。']);
       else if (c.indexOf('@') !== -1) { if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c)) errs.push([contact, 'メールアドレスの形をご確認ください。（例：name@example.com）']); }
-      else if (digits.length < 10 || digits.length > 11) errs.push([contact, '電話番号は、市外局番から10〜11桁で入力してください。（例：090-1234-5678）']);
+      else if (digits.length < 10 || digits.length > 11) errs.push([contact, '電話番号なら市外局番から10〜11桁、メールアドレスなら「@」を含む形で入力してください。（例：090-1234-5678／name@example.com）']);
       summary.textContent = '';
       if (errs.length) {
         summary.appendChild(el('b', null, '入力内容をご確認ください（' + errs.length + '件）'));
